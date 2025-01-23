@@ -1,0 +1,42 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Machine Learning in Industrial Image Processing",
+    "section": "",
+    "text": "Preface\nThese are the lecture notes for the Maschinelles Lernen in der industriellen Bildverarbeitung class, part of the MCI | The Entrepreneurial School master for Mechatronik - Automation, Robotics & AI in the summer term 2025.",
+    "crumbs": [
+      "Preface"
+    ]
+  },
+  {
+    "objectID": "index.html#acknowledgements",
+    "href": "index.html#acknowledgements",
+    "title": "Machine Learning in Industrial Image Processing",
+    "section": "Acknowledgements",
+    "text": "Acknowledgements\nWe want to thank the open source community for providing excellent tutorial and guides for Data Science topics in and with Python on the web. Individual sources are cited at the appropriate spot throughout document at hand.\nThese notes are built with Quarto.",
+    "crumbs": [
+      "Preface"
+    ]
+  },
+  {
+    "objectID": "intro.html",
+    "href": "intro.html",
+    "title": "Introduction",
+    "section": "",
+    "text": "In this class we are going to look at the basic concepts behind modern day Data Science techniques for industrial image processing. We will always try to not only discuss the theory but also use Python to illustrate the content programmatically.\nThe plan for this notes it to cover not only the basics of modern methods for machine learning in image processing but also topics in the near vicinity like\n\nData management, labeling and preprocessing\nLife-cycle management of models\nmachine learning operations (MLOps)\ncurrent and research topics\n\nThese notes are intended for engineering students and therefore the mathematical concepts will rarely include rigorous proofs.",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "summary.html",
+    "href": "summary.html",
+    "title": "Summary",
+    "section": "",
+    "text": "T.B.D.",
+    "crumbs": [
+      "Summary"
+    ]
+  }
+]
