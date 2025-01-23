@@ -1,0 +1,61 @@
+on:
+  workflow_dispatch:
+  push:
+    branches: main
+    tags:
+      - v*
+
+name: Quarto Publish
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up PDM
+        uses: pdm-project/setup-pdm@v4
+        
+      - name: Install dependencies, render
+        run: |
+          set -e
+          sudo apt-get install -qq language-pack-de librsvg2-bin
+          pdm install
+          pdm run quarto render --to html
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+      
+      - name: Build and Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: _book
+        if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+
+      - name: Create pdf
+        run: |
+          set -e
+          sudo apt-get install -qq language-pack-de librsvg2-bin
+          pdm install
+          pdm add yq
+          pdm run quarto install tinytex
+          pdm run quarto render --to pdf
+          TAG=$(git tag -l | tail -n 1)
+          FILENAME=$(pdm run yq -r ".book.title" _quarto.yml | tr ' ' '-')
+          cp ./_book/$FILENAME.pdf $FILENAME-$TAG.pdf
+          echo "FILE_NAME=$FILENAME-$TAG.pdf" >> $GITHUB_ENV
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: startsWith(github.ref, 'refs/tags/')
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: ${{ env.FILE_NAME }}
+          fail_on_unmatched_files: true

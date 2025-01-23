@@ -1,0 +1,19 @@
+## Preface {.unnumbered}
+
+These are the lecture notes for the _Maschinelles Lernen in der industriellen Bildverarbeitung_ class, part of the _MCI | The Entrepreneurial School_ master for [Mechatronik - Automation, Robotics & AI](https://www.mci.edu/de/studium/master/mechatronik-automation-robotics-ai#im_studium) in the summer term 2025.
+
+## Acknowledgements {.unnumbered}
+
+We want to thank the open source community for providing excellent tutorial and guides for Data Science topics in and with Python on the web.
+Individual sources are cited at the appropriate spot throughout document at hand.
+
+These notes are built with [Quarto](https://quarto.org/).
+
+::: {.content-visible unless-format="html"}
+:::: {.callout-note}
+To allow acceptable formatting for multiple output formats like _html_ or _pdf_ some figures are numbered differently.
+Furthermore, the interactive content in _html_ that is produced for example with `plotly` content is static in _pdf_.
+
+Furthermore, the numbering of some lists in the _pdf_ is not consistent with regards to the _html_.
+::::
+:::

@@ -1,0 +1,14 @@
+/*-- scss:defaults --*/
+
+.styled-output .cell-output {
+  background-color: lightgray;
+  border-radius: 4px;
+}
+
+.justify {
+  text-align: justify !important
+}
+
+p {
+  text-align: justify
+}
