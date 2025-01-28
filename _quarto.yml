@@ -21,8 +21,11 @@ book:
   chapters:
     - index.qmd
     - intro.qmd
+    - part: clustering/index.qmd
     - summary.qmd
     - references.qmd
+  appendices:
+    - appendices/explanations.qmd
 
 bibliography: references.bib
 

@@ -1,0 +1,119 @@
+---
+lightbox: true
+---
+# More detailed explanations
+
+## Wavelet decomposition for cats and dogs {#appendix-dvc}
+
+In @sec-clustering-cvd we discuss using the wavelet transformation to transform the image into a different basis.
+Here are the details of how this is performed with cat zero as example.
+
+```{python}
+#| label: fig-appendix-clustering-cat-2-wavelet
+#| fig-cap:
+#|   - "The original cat."
+#| code-fold: true
+#| code-summary: "Show the code for the figure"
+import numpy as np
+import scipy
+import requests
+import io
+import matplotlib.pyplot as plt
+%config InlineBackend.figure_formats = ["svg"]
+
+response = requests.get(
+    "https://github.com/dynamicslab/databook_python/"
+    "raw/refs/heads/master/DATA/catData.mat")
+cats = scipy.io.loadmat(io.BytesIO(response.content))["cat"]
+
+plt.figure()
+plt.imshow(np.reshape(cats[:, 0], (64, 64)).T, cmap=plt.get_cmap("gray"))
+plt.axis("off")
+```
+We use the Haar-Wavelet and we only need to do one level of transformation.
+As per usual we get four images, each half the resolution, that represent the decomposition.
+The images are, a downsampled version of the original image, one highlighting the vertical features, one highlighting the horizontal features, and one highlighting the diagonal features.
+
+```{python}
+#| label: fig-appendix-clustering-cat-2-wavelet2
+#| fig-cap:
+#|   - "Wavelet transformation of the cat."
+#| fig-subcap: 
+#|   - "The downsampled version of the image"
+#|   - "The vertical highlights of the image."
+#|   - "The horizontal highlights of the image."
+#|   - "The diagonal highlights of the image"
+#| layout-ncol: 2
+#| code-fold: true
+#| code-summary: "Show the code for the figure"
+import pywt
+
+[A_1, (cH1, cV1, cD1)] = pywt.wavedec2(np.reshape(cats[:, 0], (64, 64)).T,
+                                       wavelet="haar", level=1)
+plt.figure()
+plt.imshow(A_1, cmap=plt.get_cmap("gray"))
+plt.axis("off")
+plt.figure()
+plt.imshow(cH1, cmap=plt.get_cmap("gray"))
+plt.axis("off")
+plt.figure()
+plt.imshow(cV1, cmap=plt.get_cmap("gray"))
+plt.axis("off")
+plt.figure()
+plt.imshow(cD1, cmap=plt.get_cmap("gray"))
+plt.axis("off")
+```
+
+For our purposes only the vertical and horizontal feature are of interest and we combine these two images.
+In order to make sure the features are highlighted optimal we need to rescale the images before the combination.
+For this we use a similar function like the MATLAB [`wcodemat`](https://de.mathworks.com/help/wavelet/ref/wcodemat.html) function.
+
+```{python}
+def rescale(data, nb):
+    x = np.abs(data)
+    x = x - np.min(x)
+    x = nb * x / np.max(x)
+    x = 1 + np.fix(x)
+    x[x>nb] = nb
+    return x
+```
+
+```{python}
+#| label: fig-appendix-clustering-cat-2-wavelet3
+#| fig-cap:
+#|   - "Combination of vertical and horizontal features unaltered."
+#|   - "Combination of vertical and horizontal features rescaled."
+#| layout-ncol: 2
+#| code-fold: true
+#| code-summary: "Show the code for the figure"
+import pywt
+
+plt.figure()
+plt.imshow(cH1 + cV1, cmap=plt.get_cmap("gray"))
+plt.axis("off")
+plt.figure()
+plt.imshow(rescale(cH1, 256) + rescale(cV1, 256), cmap=plt.get_cmap("gray"))
+plt.axis("off")
+```
+
+In total this leads to the following function to transform a list of the images, given as row vectors.
+
+```{python}
+import pywt
+import math
+
+def img2wave(images):
+    l, w = data.shape
+    data_w = np.zeros((l // 4, w))
+    for i in range(w):
+        A = np.reshape(data[:, i], (math.isqrt(l), math.isqrt(l)))
+        [A_1, (cH1, cV1, cD1)] = pywt.wavedec2(A, wavelet="haar", level=1)
+        data_w[:, i] = np.matrix.flatten(rescale(cH1, 256) + rescale(cV1, 256))
+    return data_w
+```
+
+Note that the resulting image has only one forth of the pixels as the original image.
+We can also visualize the transformation steps as follows in @fig-appendices-dvc-workflow.
+
+![Workflow to get from the original image to the wavelet transformed version.](../_assets/appendices/catvdogs_workflow){#fig-appendices-dvc-workflow}
+

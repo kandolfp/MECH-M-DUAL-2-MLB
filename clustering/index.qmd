@@ -1,0 +1,356 @@
+# Clustering and Classification {.unnumbered}
+
+One aspect if machine learning is binning data into meaningful and distinct categories that can be used for decision making.
+This is often called clustering and classification. 
+To achieve this task the main modus of operation is to find a _low-rank feature space_ that is informative and interpretable.
+
+One way is to extract the dominate features in a data set are for example the singular value decomposition (SVD) or principal component analysis, see [@Kandolf_GDM].
+The idea is to not work in the heigh dimensional measurement space, but instead in the low rank feature space.
+This allows us to significantly reduce the cost by performing the our analysis in this low dimensional space. 
+
+In order to find the feature space there are two main paths for machine learning:
+
+- unsupervised learning
+- supervised learning
+
+As the names suggest in _unsupervised learning_ no labels are given to the algorithm and it must find patterns in the data to generate clusters and labels such that predictions can be made.
+This is often used to discover previously unknown patterns in the (low-rank) subspace of the data and leads to _feature engineering_ or _feature extraction_. 
+These features can than be used for building a model.
+
+Supervised learning, on the other hand, uses labelled data sets.
+The training data is labelled for _cross-validated_ by a teacher or expert.
+I.e. the input and output for a model is explicitly provided and regression methods are used to find the _best model_ for the given labelled data.
+There are several different form of supervised learning like _reinforcement learning_, _semi-supervised learning_, or _active learning_. 
+
+The main idea behind machine learning is to construct or exploit the intrinsic low-rank feature space of a given data set, how to find these is determined by the algorithm.
+
+## Feature selection and generation of a feature space
+Before we go into specific algorithms lets have a general look at what we are going to talk about.
+We will follow [@Brunton2022, Section 5.1] for this introduction.
+
+### Fischer Iris data set 
+First we look into one of the standard data sets well known in the community, the so called Fischer Iris data set @Fischer.
+
+::: {.callout-note}
+Luckily for us there are several data packages available for general use.
+One of them is the [Fisher Iris data set](https://en.wikipedia.org/wiki/Iris_flower_data_set).
+
+:::: {#fig-medium-iris}
+[![](https://miro.medium.com/v2/resize:fit:1400/format:webp/1*H2UmG5L1I5bzFCW006N5Ag.png)](https://eminebozkus.medium.com/exploring-the-iris-flower-dataset-4e000bcc266c)
+
+Illustration of the recorded features and structure of the iris dataset from the [Medium article - Exploring the Iris flower dataset](https://eminebozkus.medium.com/exploring-the-iris-flower-dataset-4e000bcc266c).
+::::
+
+We use the possibilities of [`sklearn`](https://scikit-learn.org/stable/) [^1] to access the dataset in Python.
+:::
+
+[^1]: To add it to `pdm` us `pdm add scikit-learn`.
+
+```{python}
+#| label: fig-clustering-iris
+#| fig-cap: "Iris dataset with 150 samples from three distinct species, _Setosa_, _Versicolor_, and _Virginica_, as a scatter 3D plot along the features sepal length, sepal width, and petal width, the forth feature petal width is not shown."
+#| code-fold: true
+#| code-summary: "Show the code for the figure"
+import plotly.express as px
+from sklearn.datasets import load_iris
+%config InlineBackend.figure_formats = ["svg"]
+
+iris = load_iris(as_frame=True)
+iris.frame["target"] = iris.target_names[iris.target]
+df = iris.frame
+
+fig = px.scatter_3d(df, x='sepal length (cm)', y='sepal width (cm)',
+                    z='petal width (cm)', color='target')
+camera = dict(
+    eye=dict(x=2, y=2, z=0.1)
+)
+fig.update_layout(scene_camera=camera)
+fig.show()
+```
+
+As can be seen in @fig-clustering-iris the three features are enough to easily separate _Sentosa_ and to a very good degree _Versicolor_ from _Virginica_, where the last two have a small overlap in the samples provided. 
+
+The petal length seems to be the best feature for the classification and no highly sophisticated machine learning algorithms are required.
+We can see the this even better if we use a so called Pair plot from the [`seaborn`](https://seaborn.pydata.org/) package as seen in @fig-clustering-iris2.
+
+```{python}
+#| label: fig-clustering-iris2
+#| fig-cap: "Iris dataset with 150 samples from three distinct species, _Setosa_, _Versicolor_, and _Virginica_, as a pair grid plot. The diagonal shows the univariate distribution of the feature."
+#| code-fold: true
+#| code-summary: "Show the code for the figure"
+import seaborn as sns
+from sklearn.datasets import load_iris
+%config InlineBackend.figure_formats = ["svg"]
+
+_ = sns.pairplot(iris.frame, hue="target", height=1.45)
+```
+Here a grid with plots is created where each (numeric) feature is shared across a row and a column.
+Therefore, we can see the combination of two and in the diagonal we see the univariate distribution of the values.
+After a close inspection we can see that _petal width_ provides us with the best distinction feature and _sepal width_ with the worst.
+
+Even though we already have enough to give a good classification for this dataset it is worth to investigate a bit further in order to illustrate how, for example the principal component analysis (PCA) [see @Kandolf_GDM, Section 4.2] [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/matrixdc/svd.html#sec-matrixdc-pca) can be applied here.
+
+
+```{python}
+#| label: fig-clustering-iris-pca
+#| fig-cap: "Feature reduction with PCA for the Iris dataset. We show the first two components principal components."
+#| code-fold: true
+#| code-summary: "Show the code for the figure"
+import numpy as np
+import matplotlib.pyplot as plt
+%config InlineBackend.figure_formats = ["svg"]
+
+A = df.iloc[: , :4].to_numpy()
+
+Xavg = A.mean(0)
+B = A - np.tile(Xavg, (150, 1))
+U, S, VT = np.linalg.svd(B, full_matrices=False)
+C = B @ VT[:2, :].T
+q = np.linalg.norm(S[:2])**2 / np.linalg.norm(B, "fro")**2
+
+plt.figure()
+for name in iris.target_names:
+    index = df["target"] == name
+    plt.scatter(C[index, 0], C[index, 1], label=name)
+plt.legend()
+plt.xlabel(r"$PC_1$")
+plt.ylabel(r"$PC_2$")
+plt.show()
+```
+As can be seen in the @fig-clustering-pca the first two components cover about `{python} float(np.round(q*100, 2))`% of the total variation in the samples and in accordance with this result a very good separation of the three species.
+
+Now let us take a look at a more complicated example from @Brunton2022.
+
+### Dogs and Cats {#sec-clustering-cvd}
+
+In this data set we explore how distinguish between dogs and cats.
+The data set contains $80$ images of dogs and $80$ images of cats, each with $64 \times 64$ pixels and therefore a total of $4096$ feature measurements per image. 
+
+::: {.callout-important}
+The following data set and the basic structure of the code is from [@Brunton2022, Code 5.2 - 5.4].
+Also see [GitHub](https://github.com/dynamicslab/databook_python).
+:::
+
+```{python}
+#| label: fig-clustering-dvc-overview
+#| fig-cap:
+#|   - "The first 16 cats from the data set."
+#|   - "The first 16 dogs from the data set."
+#| layout-ncol: 2
+#| code-fold: true
+#| code-summary: "Show the code for the figure"
+import numpy as np
+import scipy
+import requests
+import io
+import matplotlib.pyplot as plt
+%config InlineBackend.figure_formats = ["svg"]
+
+def createImage(data, x, y, width=64, length=64):
+    image = np.zeros((width * x, length * y))
+    counter = 0
+    for i in range(x):
+        for j in range(y):
+            img = np.flipud(np.reshape(data[:, counter], (width, length)))
+            image[length * i: length * (i + 1), width * j: width * (j + 1)] \
+                    = img.T
+            counter += 1
+    return image
+
+response = requests.get(
+    "https://github.com/dynamicslab/databook_python/"
+    "raw/refs/heads/master/DATA/catData.mat")
+cats = scipy.io.loadmat(io.BytesIO(response.content))["cat"]
+
+plt.figure()
+plt.imshow(createImage(cats, 4, 4), cmap=plt.get_cmap("gray"))
+plt.axis("off")
+
+response = requests.get(
+    "https://github.com/dynamicslab/databook_python/"
+    "raw/refs/heads/master/DATA/dogData.mat")
+dogs = scipy.io.loadmat(io.BytesIO(response.content))["dog"]
+plt.figure()
+plt.imshow(createImage(dogs, 4, 4), cmap=plt.get_cmap("gray"))
+plt.axis("off")
+```
+Again, we use PCA to reduce the feature space of our data.
+```{python}
+#| label: fig-clustering-dvc-pca
+#| fig-cap: "First four modes of the PCA of the 160 images."
+#| fig-subcap: 
+#|   - "First principal component."
+#|   - "Second principal component."
+#|   - "Third principal component."
+#|   - "Forth principal component."
+#| code-fold: true
+#| layout-ncol: 2
+#| code-summary: "Show the code for the figure"
+import numpy as np
+import scipy
+import requests
+import io
+import matplotlib.pyplot as plt
+%config InlineBackend.figure_formats = ["svg"]
+
+CD = np.concatenate((dogs, cats), axis=1)
+U, S, VT = np.linalg.svd(CD - np.mean(CD), full_matrices=False)
+
+for j in range(4):
+    plt.figure()
+    U_ = np.flipud(np.reshape(U[:, j], (64, 64)))
+    plt.imshow(U_.T, cmap=plt.get_cmap("gray"))
+    plt.axis("off")
+plt.show()
+```
+
+In @fig-clustering-dvc-pca we can see the first four modes of the PCA.
+While mode 2 (@fig-clustering-dvc-pca-2) especially features the pointy ears common in cats, mode 3 (@fig-clustering-dvc-pca-3) is more dog like.
+Consequently, will the two different animals have either add or subtract this feature form the mean.
+
+Of course this is not the only possible representation of the initial data.
+As discussed in [@Kandolf_GDM, Section 10] [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/signal/wavelet.html) we can also use the Wavelet transform.
+
+The multi resolution analysis features of the Wavelet transformation can be used to transform the image in such a way that the resulting principal components yield a better separation of the two classes. 
+
+::: {.callout-note}
+
+We use the following workflow to get from the original image $A_0$ to the $\tilde{A}$ image in a sort of Wavelet basis. 
+
+![Workflow to get from the original image to the wavelet transformed version.](../_assets/appendices/catvdogs_workflow){#fig-appendices-dvc-workflow}
+
+In short, we combine the vertical and horizontal rescaled feature images, as we are most interested in edge detection for this example.
+
+Note that the image has now only a quarter of pixels as the original image.
+
+For a more detailed explanation see @#appendix-dvc.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show code required for the transformation."
+def rescale(data, nb):
+    x = np.abs(data)
+    x = x - np.min(x)
+    x = nb * x / np.max(x)
+    x = 1 + np.fix(x)
+    x[x>nb] = nb
+    return x
+
+import pywt
+import math
+
+def img2wave(data):
+    l, w = data.shape
+    data_w = np.zeros((l // 4, w))
+    for i in range(w):
+        A = np.reshape(data[:, i], (math.isqrt(l), math.isqrt(l)))
+        [A_1, (cH1, cV1, cD1)] = pywt.wavedec2(A, wavelet="haar", level=1)
+        data_w[:, i] = np.matrix.flatten(rescale(cH1, 256) + rescale(cV1, 256))
+    return data_w
+```
+
+:::
+
+Let us try how this changes our first four modes. 
+
+```{python}
+#| label: fig-clustering-dvc-wavelet-pca_wavelet
+#| fig-cap: "First four modes of the PCA of the 160 images in our wavelet basis."
+#| fig-subcap: 
+#|   - "First principal component."
+#|   - "Second principal component."
+#|   - "Third principal component."
+#|   - "Forth principal component."
+#| code-fold: true
+#| layout-ncol: 2
+#| code-summary: "Show the code for the figures"
+CD_w = img2wave(CD)
+U_w, S_w, VT_w = np.linalg.svd(CD_w - np.mean(CD_w), full_matrices=False)
+l = math.isqrt(CD_w[:, 0].shape[0])
+
+for j in range(4):
+    plt.figure()
+    U_ = np.flipud(np.reshape(U_w[:, j], (l, l)))
+    plt.imshow(U_.T, cmap=plt.get_cmap("gray"))
+    plt.axis("off")
+plt.show()
+```
+
+Right away we can see that the ears and eyes of the cats show up more pronounced in the second mode @fig-clustering-dvc-wavelet-pca_wavelet-2.
+
+Now how does this influence our classification problem?
+For this let us first see how easy it is to distinguish the two classes in a scatter plot for the first three modes. 
+
+```{python}
+#| label: fig-clustering-dvc-wavelet-pca_results_overview
+#| fig-cap: 
+#|   - "First four modes of the raw images for cats and dogs."
+#|   - "First four modes of the wavelet images for cats and dogs."
+#| code-fold: true
+#| layout-ncol: 1
+#| code-summary: "Show the code for the figure"
+import seaborn as sns
+import pandas as pd
+%config InlineBackend.figure_formats = ["svg"]
+
+
+target = ["cat"] * 80 + ["dog"] * 80
+C = U[:, :4].T @ (CD - np.mean(CD))
+df = pd.DataFrame(C.T, columns=["PV1", "PV2", "PV3", "PV4"])
+df["target"] = target
+
+C_w = U_w[:, :4].T @ (CD_w - np.mean(CD))
+df_w = pd.DataFrame(C_w.T, columns=["PV1", "PV2", "PV3", "PV4"])
+df_w["target"] = target
+
+_ = sns.pairplot(df, hue="target", height=1.45)
+_ = sns.pairplot(df_w, hue="target", height=1.45)
+```
+The two figures above give us a good idea what the different principal values can tell us. 
+It is quite clear, that the first mode is not of much use for differentiation of the two classes.
+In general the second mode seems to work best (the ears), in contrast to the raw image we can also see that the wavelet basis is slightly better for the separation. 
+```{python}
+#| label: fig-clustering-dvc-wavelet-pca_results
+#| fig-cap: 
+#|    - "Scatter plots of modes 2 to 4 for the raw images."
+#|    - "Scatter plots of modes 2 to 4 for the wavelet images."
+#| code-fold: true
+#| code-summary: "Show the code for the figures"
+import plotly.express as px
+
+
+fig = px.scatter_3d(df, x='PV2', y='PV3', z='PV4', color="target")
+fig.show()
+fig = px.scatter_3d(df_w, x="PV2", y="PV3", z="PV4", color="target")
+fig.show()
+```
+
+Now that we have an idea what we are dealing with we can start looking into the two previously described paths in machine learning.
+The difference between supervised and unsupervised learning can be summarized by the following two images.
+
+```{python}
+#| label: fig-clustering-unsupervised_vs_supervised
+#| fig-cap: 
+#|   - "Labelled data for supervised learning."
+#|   - "Unlabelled data for unsupervised learning."
+#| code-fold: true
+#| layout-ncol: 2
+#| code-summary: "Show the code for the figure"
+import plotly.express as px
+import matplotlib.pyplot as plt
+%config InlineBackend.figure_formats = ["svg"]
+
+iris = load_iris(as_frame=True)
+iris.frame["target"] = iris.target_names[iris.target]
+df = iris.frame
+
+plt.figure()
+for name in iris.target_names:
+    index = df["target"] == name
+    plt.scatter(df.iloc[:, 0][index], df.iloc[:, 2][index], label=name)
+
+plt.figure()
+plt.scatter(df.iloc[:, 0], df.iloc[:, 2], color="gray")
+```
+
+You either provide/have labels or not.
