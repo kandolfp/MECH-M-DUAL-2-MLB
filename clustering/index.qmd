@@ -119,6 +119,22 @@ plt.show()
 ```
 As can be seen in the @fig-clustering-iris-pca the first two components cover about `{python} float(np.round(q*100, 2))`% of the total variation in the samples and in accordance with this result a very good separation of the three species.
 
+::: {.callout-note}
+:::: {#def-expvariance}
+## Explained Variance
+
+The **explained variance** is a measure of how much of the total variance in the data is explained via the principal component.
+It is equivalent to the singular value associated with the component so in the above example it is nothing else than
+$$
+\rho_i = \frac{\sigma_i^2}{\|\Sigma\|^2}.
+$$
+
+The explained variance can be used to select the amount of principal values you use for a classification.
+::::
+:::
+
+:::
+
 Now let us take a look at a more complicated example from @Brunton2022.
 
 ### Dogs and Cats {#sec-clustering-cvd}
