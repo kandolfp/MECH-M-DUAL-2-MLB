@@ -20,7 +20,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -130,8 +150,21 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
-      <span class="sidebar-item-text sidebar-link text-start">
- <span class="menu-text">Clustering and Classification</span></span>
+      <div class="sidebar-item-container"> 
+            <a href="./clustering/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Clustering and Classification</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./clustering/unsupervised.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Unsupervised learning</span></span></a>
+  </div>
+</li>
+      </ul>
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
@@ -201,8 +234,46 @@ ul.task-list li input[type="checkbox"] {
 <li>current and research topics</li>
 </ol>
 <p>These notes are intended for engineering students and therefore the mathematical concepts will rarely include rigorous proofs.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The <code>sklearn</code> package has all the tools to perform a PCA, see <a href="https://scikit-learn.org/dev/auto_examples/decomposition/plot_pca_iris.html">Link</a> for an example using the Iris dataset same as in the beginning of this section.</p>
+</div>
+</div>
+<p>The following books are cover large sections of the content and are a good read to get further into the topics:</p>
+<ul>
+<li><span class="citation" data-cites="Brunton2022">Brunton and Kutz (<a href="references.html#ref-Brunton2022" role="doc-biblioref">2022</a>)</span></li>
+<li><span class="citation" data-cites="Geron2022-xh">Geron (<a href="references.html#ref-Geron2022-xh" role="doc-biblioref">2022</a>)</span></li>
+<li><span class="citation" data-cites="Goodfellow-et-al-2016">Goodfellow, Bengio, and Courville (<a href="references.html#ref-Goodfellow-et-al-2016" role="doc-biblioref">2016</a>)</span></li>
+<li><span class="citation" data-cites="Landup">Landup (<a href="references.html#ref-Landup" role="doc-biblioref">2022</a>)</span></li>
+<li><span class="citation" data-cites="Huyen2022-wh">Huyen (<a href="references.html#ref-Huyen2022-wh" role="doc-biblioref">2022</a>)</span></li>
+</ul>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-Brunton2022" class="csl-entry" role="listitem">
+Brunton, Steven L., and J. Nathan Kutz. 2022. <em>Data-Driven Science and Engineering - Machine Learning, Dynamical Systems, and Control</em>. 2nd ed. Cambridge: Cambridge University Press.
+</div>
+<div id="ref-Geron2022-xh" class="csl-entry" role="listitem">
+Geron, Aurelien. 2022. <em>Hands-on Machine Learning with Scikit-Learn, Keras, and <span>TensorFlow</span> 3e</em>. 3rd ed. Sebastopol, CA: O’Reilly Media.
+</div>
+<div id="ref-Goodfellow-et-al-2016" class="csl-entry" role="listitem">
+Goodfellow, Ian, Yoshua Bengio, and Aaron Courville. 2016. <em>Deep Learning</em>. MIT Press.
+</div>
+<div id="ref-Huyen2022-wh" class="csl-entry" role="listitem">
+Huyen, Chip. 2022. <em>Designing Machine Learning Systems</em>. Sebastopol, CA: O’Reilly Media.
+</div>
+<div id="ref-Landup" class="csl-entry" role="listitem">
+Landup, David. 2022. <em>Practical Deep Learning for Computer Vision with Python</em>.
+</div>
+</div>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
