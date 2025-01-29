@@ -117,7 +117,7 @@ plt.xlabel(r"$PC_1$")
 plt.ylabel(r"$PC_2$")
 plt.show()
 ```
-As can be seen in the @fig-clustering-pca the first two components cover about `{python} float(np.round(q*100, 2))`% of the total variation in the samples and in accordance with this result a very good separation of the three species.
+As can be seen in the @fig-clustering-iris-pca the first two components cover about `{python} float(np.round(q*100, 2))`% of the total variation in the samples and in accordance with this result a very good separation of the three species.
 
 Now let us take a look at a more complicated example from @Brunton2022.
 
