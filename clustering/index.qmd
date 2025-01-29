@@ -133,6 +133,20 @@ The explained variance can be used to select the amount of principal values you 
 ::::
 :::
 
+::: {.callout-important}
+
+## Dimensionality Reduction
+
+As we can see with the Iris data set we often have a problem of _dimensionality_ if we try to visualize something.
+The data has four dimensions but it is very hard for us to perceive, let alone visualize, four dimensions (if the forth dimension is not time).
+
+Therefore, **dimensional reduction** techniques are often applied.
+One of these is PCA others are
+
+- Multidimensional scaling (MDS) - preserve the distance between observations while doing the reduction.
+- Isomap - create a graph by connecting each observation to its neighbors and reduce the dimensions by keeping the geodesic distances, i.e. the number of nodes on the graph between observations
+- $t$-distributed stochastic neighbor embedding ($t$-SNE) - try to reduce dimensions while keeping _similar_ observations close and _dissimilar_ observations apart.
+- Linear discriminant analysis (LDA) - projects data onto a hyperplane where the hyperplane is chosen that is _most discriminative_ for the observations.
 :::
 
 Now let us take a look at a more complicated example from @Brunton2022.
