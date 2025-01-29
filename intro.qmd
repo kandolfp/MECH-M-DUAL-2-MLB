@@ -12,3 +12,14 @@ The plan for this notes it to cover not only the basics of modern methods for ma
 
 These notes are intended for engineering students and therefore the mathematical concepts will rarely include rigorous proofs.
 
+::: {.callout-note}
+The `sklearn` package has all the tools to perform a PCA, see [Link](https://scikit-learn.org/dev/auto_examples/decomposition/plot_pca_iris.html) for an example using the Iris dataset same as in the beginning of this section.
+:::
+
+The following books are cover large sections of the content and are a good read to get further into the topics:
+
+- @Brunton2022
+- @Geron2022-xh
+- @Goodfellow-et-al-2016
+- @Landup
+- @Huyen2022-wh
