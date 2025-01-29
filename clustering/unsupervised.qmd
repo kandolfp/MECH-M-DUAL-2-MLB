@@ -1,0 +1,254 @@
+# Unsupervised learning
+
+We start with unsupervised learning.
+The goal of unsupervised learning is to discover clusters in the data that has no labels.
+There are several algorithms to perform this task, the most prominent is the $k$-means clustering algorithm.
+
+## $k$-Means Clustering
+
+The $k$-means algorithm tries to partition a set of $m$ (vector-valued) data observations into $k$ clusters.
+Where in general the dimension of the data and the amount of observations is known, the number of clusters is often not known a priori.
+
+The general idea is, to label each observation as belonging to a cluster with the nearest mean (the _representative_ of the cluster).
+The resulting clusters are called Voronoi cells, see [Wikipedia - Voronoi diagram](https://en.wikipedia.org/wiki/Voronoi_diagram).
+
+::: {.callout appearance="simple"}
+:::: {#def-kmeans}
+
+## $k$-Means Algorithm
+
+For a given set of $m$ observations $(x_1, x_2, \ldots, x_m)$, with $x_i\in \mathrm{R}^n$ the algorithm strives to find $k$ sets $(S_1, S_2, \ldots, S_k)$ such that the variance inside the cluster is minimized, i.e.
+$$
+\underset{S}{\operatorname{argmin}} \sum_{i=1}^k \sum_{x\in S_i}\| x - \mu_i \|^2,
+$$
+where $\mu_i$ denotes the mean of $S_i$.
+
+The algorithm itself is recursive for a given $k$
+
+1. Randomly initialize $k$ points $\mu_1, \mu_2, \ldots, \mu_k$, as the cluster centers.
+1. Label each observation $x_i$ by the nearest cluster center $\mu_j$, all points with the same label form the set $S_j$.
+1. Compute the mean of each cluster $S_j$ and replace the current $\mu_j$ by it.
+1. Repeat until the cluster centers stay stable up to some tolerance.
+
+This algorithm was first introduced in @DBLP:journals/tit/Lloyd82 and is therefore often called Lloyd algorithm.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code for Lloyd algorithm"
+def lloyd(data, centers, steps):
+    classes = np.zeros(data.shape[0])
+    centers_ = np.copy(centers)
+    for i in range(steps):
+        for j in range(data.shape[0]):
+            classes[j] = np.argmin(np.linalg.norm(centers_ - np.tile(data[j, :],
+                                   (centers.shape[0], 1)), axis=1))
+        for j in range(centers.shape[0]):
+            centers_[j, :] = np.mean(data[classes == j, :], axis=0)
+        
+    return (classes, centers_)
+```
+::::
+:::
+
+::: {.callout-note}
+In general @def-kmeans is NP-hard and therefore computationally not viable.
+Nevertheless, a number of heuristic algorithms exist to provide a good performance, despite having no guarantee for global convergence.
+:::
+
+To illustrate the proceedings with the help of some artificial data and its clustering.
+
+```{python}
+#| label: fig-clustering-unsupervised_lloyd
+#| fig-cap: "Lloyds algorithm in action for a generic set of two datasets generated with a Gaussian distribution."
+#| fig-subcap: 
+#|   - "The original two classes and the initial guesses for the centers."
+#|   - "Point association to the clusters in the first step."
+#|   - "Point association to the clusters in the third step."
+#|   - "Point association to the clusters in the sixth step."
+#| code-fold: true
+#| layout-ncol: 2
+#| code-summary: "Show the code for the figure"
+import numpy as np
+import matplotlib.pyplot as plt
+%config InlineBackend.figure_formats = ["svg"]
+np.random.seed(6020)
+
+# Helper for plotting
+def plot_lloyd(data, centers, classes, ms=500):
+    plt.figure()
+    for i in range(centers.shape[0]):
+        plt.scatter(data[classes==i, 0], data[classes==i, 1])
+        plt.scatter(centers[i, 0], centers[i, 1], c="k", s=ms, marker="*")
+    plt.gca().set_aspect(1)
+
+# Create data for illustration
+n = 200
+# Random ellipse centred in (0, 0) and axis (1, 0.5)
+X = np.random.randn(n, 2) * np.array([1, 0.5])
+# Random ellipse centred in (1, -2) and axis (1, 0.2)
+X2 = (np.random.randn(n, 2) * np.array([1, 0.2])) + np.array([1, -2])
+# Rotate ellipse 2 by theta
+theta = np.pi / 4
+X2 = X2 @ np.array([[np.cos(theta), -np.sin(theta)],
+                  [np.sin(theta), np.cos(theta)]] )
+
+centers = np.array([[0., -1.], [-1., 0.]])
+data = np.concatenate((X, X2))
+# Plot initial step with theoretical assignment
+classes = np.concatenate((np.ones(X2.shape[0]), np.zeros(X.shape[0])))
+plot_lloyd(data, centers, classes)
+
+# Compute and plot consecutive steps of lloyds algorithm
+for i in [1, 2, 3]:
+    classes, centers_ = lloyd(data, centers, i)
+    plot_lloyd(data, centers, classes)
+    centers = centers_
+plt.show()
+```
+
+In @fig-clustering-unsupervised_lloyd-1 we see the two _distinct_ clusters and the initial guesses for th centers.
+In the successive plots we see how the centers move and converge to the _final_ position as seen in @fig-clustering-unsupervised_lloyd-4.
+In this case the algorithm converges after the sixth step.
+
+Of course the algorithm is sensitive to the initial guess and therefore modern versions provide strategies to determine the initial guess as well as the number of clusters.
+
+We can see this in action in the [`sklearn.cluster.KMeans`](https://scikit-learn.org/1.5/modules/generated/sklearn.cluster.KMeans.html) version.
+
+```{python}
+#| label: fig-clustering-unsupervised_lloyd2
+#| fig-cap: "KMeans algorithm in action for a generic set of two datasets generated with a Gaussian distribution."
+#| fig-subcap: 
+#|   - "Seeking two clusters."
+#|   - "Seeking three clusters."
+#| layout-ncol: 2
+#| code-fold: true
+#| code-summary: "Show the code for the figure"
+from sklearn.cluster import KMeans
+np.random.seed(6020)
+
+kmeans = KMeans(n_clusters=2, random_state=6020).fit(data)
+plot_lloyd(data, kmeans.cluster_centers_, kmeans.labels_)
+kmeans = KMeans(n_clusters=3, random_state=6020).fit(data)
+plot_lloyd(data, kmeans.cluster_centers_, kmeans.labels_)
+plt.show()
+```
+
+As can be seen in @fig-clustering-unsupervised_lloyd2-1 the algorithm comes up with the same split between the two sets.
+If we try for three clusters @fig-clustering-unsupervised_lloyd2-2 the result is sensible as well.
+
+::: {.callout-caution appearance="simple" icon=false}
+:::: {#exr-kmean}
+
+## Apply the $k$-means algorithm to the Iris dataset
+
+As an exercise to get some practice for using $k$-means apply the algorithm to the Iris data set to find a potential split for the three classes of flowers.
+
+Try with only two dimensional data and with all four dimensions.
+::::
+:::
+
+The major success, of this algorithm in general use, is based on the fast convergence, that requires no supervision.
+We can also see that it is not very accurate, compare @fig-clustering-unsupervised_lloyd-1 and @fig-clustering-unsupervised_lloyd-4.
+This is no surprise, as the algorithm has not _all information_ available.
+
+How can we determine how _accurate_ the algorithm is?
+If we have no labels this is of course not easy to do but cross-validation is a good tool.
+
+In our case we can produce the labels and we can also split the data beforehand into a training set and a test set.
+Usually a so called $80:20$ split is used, i.e. $80\%$ training data and $20\%$ test data.
+
+```{python}
+#| label: fig-clustering-unsupervised_lloyd3
+#| fig-cap: "Validation against a test set."
+#| code-fold: true
+#| code-summary: "Show the code for the figure"
+from sklearn.cluster import KMeans
+np.random.seed(6020)
+
+# Shuffle data
+X_shuffle = X[np.random.permutation(X.shape[0]), :]
+X2_shuffle = X2[np.random.permutation(X2.shape[0]), :]
+
+# Split data into two parts
+split = n // 5 * 4
+data = np.concatenate((X_shuffle[:split, :], X2_shuffle[:split, :]))
+test = np.concatenate((X_shuffle[split:, :], X2_shuffle[split:, :]))
+
+# Create clustesr
+kmeans = KMeans(n_clusters=2, random_state=6020).fit(data)
+classes = kmeans.predict(data)
+test_classes = kmeans.predict(test)
+
+# Find wrong classifications
+error = test_classes != np.concatenate((np.zeros(n-split), np.ones(n-split)))
+
+# Plotting
+plt.figure()
+colour = ["tab:orange", "tab:blue"]
+for i in range(2):
+    plt.scatter(data[classes==i, 0], data[classes==i, 1],
+                c=colour[i], alpha=0.5, label="train")
+    plt.scatter(test[test_classes==i, 0], test[test_classes==i, 1],
+                c=colour[i], label="test")
+
+plt.scatter(test[error, 0], test[error, 1], marker="x", c="k", label="error")
+plt.gca().set_aspect(1)
+plt.legend()
+plt.show()
+```
+
+The result of this can be seen in @fig-clustering-unsupervised_lloyd3 where we have two points wrongly classified to the opposite cluster.
+
+There exist several extensions of the basic $k$-means algorithm to improve the results and overall performance.
+Two such versions are the _accelerated $k$-means_, as well as _mini-batch $k$-means_.
+Both can be found in @Geron2022-xh.
+
+We want to highlight an application of $k$-means for image segmentation that can also be found in @Geron2022-xh.
+
+### Image Segmentation with $k$-means
+
+The idea of image segmentation is to decompose an image into different segments.
+The following variants exist:
+
+- Colour segmentation - pixels with similar colour get assigned the same cluster. An application of this is image satellite postprocessing to find areas of forest or sea.
+
+- Semantic segmentation - all pixels that are part of the same _object_ get assigned to the same segment. An application of this is in autonomous driving to find pedestrians - one segment containing all pedestrians.
+
+- Instance segmentation - similar to semantic segmentation but individual objects are assigned to the same segment. In the autonomous driving application we would find individual pedestrians.
+
+Here we show how to perform colour segmentation with $k$-means.
+The following code is based on [GitHub](https://github.com/ageron/handson-ml3/blob/main/09_unsupervised_learning.ipynb) the accompanying repository to @Geron2022-xh.
+
+```{python}
+#| label: fig-clustering-unsupervised-img-seg
+#| fig-cap: "Colour segmentation for the image of a lady bug."
+#| fig-subcap: 
+#|   - "Original image."
+#|   - "Segmentation by 8 colours."
+#|   - "Segmentation by 4 colours."
+#|   - "Segmentation by 2 colours."
+#| layout-ncol: 2
+#| code-fold: true
+#| code-summary: "Show the code for the figure"
+import numpy as np
+import imageio.v3 as iio
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+%config InlineBackend.figure_formats = ["svg"]
+
+im = np.asarray(iio.imread(
+        "https://github.com/ageron/handson-ml3/blob/main/images/"
+        "unsupervised_learning/ladybug.png?raw=true"))
+plt.figure()
+plt.imshow(im)
+plt.axis("off")
+
+X = im.reshape(-1, 3)
+for colours in [8, 4, 2]:
+    kmeans = KMeans(n_clusters=colours, n_init=10, random_state=6020).fit(X)
+    plt.figure()
+    plt.imshow(kmeans.cluster_centers_[kmeans.labels_].reshape(im.shape) / 255)
+    plt.axis("off")
+
+plt.show()
+```
