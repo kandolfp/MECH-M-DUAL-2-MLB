@@ -273,3 +273,87 @@ There exist more sophisticated methods in finance.
 
 1. **Traffic Analysis**: In transport and logistics you can analyze traffic patterns and use the information for optimization and similar trips, routes and vehicles.
 
+## Unsupervised hierarchical clustering - Dendrogram
+
+Similar to $k$-means a simple hierarchical algorithm is used to create a dendrogram.
+The resulting tree allows you to easily see if data is clustered without the need of labeling or supervision.
+
+We follow the example and discussion given in [@Brunton2022, Section 5.4]. 
+
+There are two main approaches in creating the desired hierarchy, bottom-up often called _agglomerative_ and top-down often called _divisive_.
+
+- For the agglomerative approach each observation $x_i$ is initially its own cluster and in each step points are combined according to their distance. Eventually everything ends up in a single cluster and the algorithm stops. 
+
+- For the divisive approach we go the opposite direction and start with the super cluster containing all observations §x_i$ and we gradually split up into smaller and smaller clusters. The algorithm stops, when each observation is its own leave. 
+
+Of course the norm[^norm] used has quite an influence as can be seen in [@Kandolf_GDM, Section 7.1] [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/regression/optimizers.html#over-determined-systems) where we compared LASSO and RIDGE algorithms for our optimization problem. 
+
+To illustrate the agglomerative approach and the difference in norms we use four points and construct the hierarchy by combining the two closest points.
+
+::: {#fig-clustering-unsupervised-dendrogram-explained}
+
+![Use two norm or euclidean norm to compute the distance - $\| \cdot \|_2$](../_assets/clustering/dendrogram_euclidean){#fig-clustering-unsupervised-dendrogram-explained-1}
+
+![Use two one or cityblock norm to compute the distance - $\| \cdot \|_1$](../_assets/clustering/dendrogram_city){#fig-clustering-unsupervised-dendrogram-explained-2}
+
+We always combine the two nearest points and replace them with the point in the middle. This iteration continues until only one point is left.
+The Dendrogram is build according to the order of points chosen.
+:::
+
+On a larger scale, with always the first 25 points of the two clusters above we get the results shown in @fig-clustering-unsupervised_dengrogram
+```{python}
+#| label: fig-clustering-unsupervised_dengrogram
+#| fig-cap: "Lloyds algorithm in action for a generic set of two datasets generated with a Gaussian distribution."
+#| fig-subcap: 
+#|   - "Dendrogram for euclidean norm."
+#|   - "Histogram showing the clustering for the euclidean norm."
+#|   - "Dendrogram for cityblock norm."
+#|   - "Histogram showing the clustering for the cityblock norm."
+#| code-fold: true
+#| layout-ncol: 2
+#| code-summary: "Show the code for the figure"
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.spatial.distance import pdist
+from scipy.cluster import hierarchy
+%config InlineBackend.figure_formats = ["svg"]
+np.random.seed(6020)
+
+XX = np.concatenate((X[:25, :], X2[:25, :]))
+XX.shape
+for metric in ["euclidean", "cityblock"]:
+    plt.figure()
+    Y = pdist(XX, metric=metric)
+    Z = hierarchy.linkage(Y, method="average", metric=metric)
+    thresh = 0.90 * np.max(Z[:, 2])
+    dn = hierarchy.dendrogram(Z, p=100, color_threshold=thresh)
+
+    plt.figure()
+    plt.bar(range(XX.shape[0]), dn["leaves"])
+    plt.plot(np.array([0, XX.shape[0]]),
+             np.array([XX.shape[0] // 2, XX.shape[0] // 2]),
+             "r:", linewidth=2)
+    plt.plot(np.array([(XX.shape[0] // 2) + 1/2, (XX.shape[0] // 2) + 1/2]),
+             np.array([0, XX.shape[0]]),
+             'r:', linewidth=2)
+
+plt.show()
+```
+
+The two dendrograms (@fig-clustering-unsupervised_dengrogram-1 @fig-clustering-unsupervised_dengrogram-3) show the hierarchical structure derived from the data set.
+The number of clusters can be influenced by the `thresh` parameter and it is also used to label the observation accordingly.
+It is quite similar to the number of clusters $k$ in the $k$-means algorithm.
+
+The two bar graphs on the right (@fig-clustering-unsupervised_dengrogram-2 @fig-clustering-unsupervised_dengrogram-4) shows how the data is clustered in the dendrogram. 
+The bars correspond to the distance metric produced by the algorithm.
+The red lines indicate the region of a perfect split for the separation if the algorithm works perfectly and places every point in the original cluster.
+If we recall, that the first 25 points are from set 1 and the next 25 from set 2 we can see that the euclidean distance generates the perfect split.
+On the other hand, the _cityblock_ norm is placing one point in the wrong cluster.
+
+::: {.callout-note}
+The function [`scipy.cluste.hierarchy.linkage`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html#scipy.cluster.hierarchy.linkage) allows to specify the method of computing the distance between two clusters. 
+The used `average` corresponds to unweighted pair group method with arithmetic mean [UPGMA](https://en.wikipedia.org/wiki/UPGMA) algorithm.
+:::
+
+
+[^norm]: [see @Kandolf_GDM, Section 1.2] [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/basics/linearalgebra.html#norms)
