@@ -210,7 +210,7 @@ We want to highlight an application of $k$-means for image segmentation that can
 The idea of image segmentation is to decompose an image into different segments.
 The following variants exist:
 
-- Colour segmentation - pixels with similar colour get assigned the same cluster. An application of this is image satellite postprocessing to find areas of forest or sea.
+- Colour segmentation - pixels with similar colour get assigned the same cluster. An application of this is image satellite postprocessing to find areas of forest or sea, or finding object in robotics applications, and organs in medical images. 
 
 - Semantic segmentation - all pixels that are part of the same _object_ get assigned to the same segment. An application of this is in autonomous driving to find pedestrians - one segment containing all pedestrians.
 
