@@ -274,7 +274,9 @@ window.Quarto = {
   <li><a href="#k-means-clustering" id="toc-k-means-clustering" class="nav-link active" data-scroll-target="#k-means-clustering"><span class="header-section-number">1.1</span> <span class="math inline">\(k\)</span>-Means Clustering</a>
   <ul class="collapse">
   <li><a href="#image-segmentation-with-k-means" id="toc-image-segmentation-with-k-means" class="nav-link" data-scroll-target="#image-segmentation-with-k-means"><span class="header-section-number">1.1.1</span> Image Segmentation with <span class="math inline">\(k\)</span>-means</a></li>
+  <li><a href="#further-applications-of-k-means" id="toc-further-applications-of-k-means" class="nav-link" data-scroll-target="#further-applications-of-k-means"><span class="header-section-number">1.1.2</span> Further applications of <span class="math inline">\(k\)</span>-means</a></li>
   </ul></li>
+  <li><a href="#unsupervised-hierarchical-clustering---dendrogram" id="toc-unsupervised-hierarchical-clustering---dendrogram" class="nav-link" data-scroll-target="#unsupervised-hierarchical-clustering---dendrogram"><span class="header-section-number">1.2</span> Unsupervised hierarchical clustering - Dendrogram</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/edit/main/clustering/unsupervised.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -323,7 +325,7 @@ window.Quarto = {
 <li>Repeat until the cluster centers stay stable up to some tolerance.</li>
 </ol>
 <p>This algorithm was first introduced in <span class="citation" data-cites="DBLP:journals/tit/Lloyd82">Lloyd (<a href="../references.html#ref-DBLP:journals/tit/Lloyd82" role="doc-biblioref">1982</a>)</span> and is therefore often called Lloyd algorithm.</p>
-<div id="d9760d8f" class="cell" data-execution_count="1">
+<div id="3e92a1a1" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code for Lloyd algorithm</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lloyd(data, centers, steps):</span>
@@ -580,11 +582,11 @@ Figure&nbsp;1.3: Validation against a test set.
 <h3 data-number="1.1.1" class="anchored" data-anchor-id="image-segmentation-with-k-means"><span class="header-section-number">1.1.1</span> Image Segmentation with <span class="math inline">\(k\)</span>-means</h3>
 <p>The idea of image segmentation is to decompose an image into different segments. The following variants exist:</p>
 <ul>
-<li><p>Colour segmentation - pixels with similar colour get assigned the same cluster. An application of this is image satellite postprocessing to find areas of forest or sea.</p></li>
+<li><p>Colour segmentation - pixels with similar colour get assigned the same cluster. An application of this is image satellite postprocessing to find areas of forest or sea, or finding object in robotics applications, and organs in medical images.</p></li>
 <li><p>Semantic segmentation - all pixels that are part of the same <em>object</em> get assigned to the same segment. An application of this is in autonomous driving to find pedestrians - one segment containing all pedestrians.</p></li>
 <li><p>Instance segmentation - similar to semantic segmentation but individual objects are assigned to the same segment. In the autonomous driving application we would find individual pedestrians.</p></li>
 </ul>
-<p>Here we show how to perform colour segmentation with <span class="math inline">\(k\)</span>-means. The following code is based on <a href="https://github.com/ageron/handson-ml3/blob/main/09_unsupervised_learning.ipynb">GitHub</a> the accompanying repository to <span class="citation" data-cites="Geron2022-xh">Geron (<a href="../references.html#ref-Geron2022-xh" role="doc-biblioref">2022</a>)</span>.</p>
+<p>Here we show how to perform colour segmentation with <span class="math inline">\(k\)</span>-means. The following code is based on notebook at <a href="https://github.com/ageron/handson-ml3/blob/main/09_unsupervised_learning.ipynb">GitHub</a>, the accompanying repository to <span class="citation" data-cites="Geron2022-xh">Geron (<a href="../references.html#ref-Geron2022-xh" role="doc-biblioref">2022</a>)</span>.</p>
 <details class="code-fold">
 <summary>Show the code for the figure</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -600,9 +602,9 @@ Figure&nbsp;1.3: Validation against a test set.
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>plt.imshow(im)</span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span>
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> im.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">3</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>Z <span class="op">=</span> im.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">3</span>)</span>
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> colours <span class="kw">in</span> [<span class="dv">8</span>, <span class="dv">4</span>, <span class="dv">2</span>]:</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    kmeans <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>colours, n_init<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">6020</span>).fit(X)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    kmeans <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>colours, n_init<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">6020</span>).fit(Z)</span>
 <span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    plt.figure()</span>
 <span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    plt.imshow(kmeans.cluster_centers_[kmeans.labels_].reshape(im.shape) <span class="op">/</span> <span class="dv">255</span>)</span>
 <span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    plt.axis(<span class="st">"off"</span>)</span>
@@ -670,17 +672,189 @@ Figure&nbsp;1.4: Colour segmentation for the image of a lady bug.
 </figcaption>
 </figure>
 </div>
+</section>
+<section id="further-applications-of-k-means" class="level3" data-number="1.1.2">
+<h3 data-number="1.1.2" class="anchored" data-anchor-id="further-applications-of-k-means"><span class="header-section-number">1.1.2</span> Further applications of <span class="math inline">\(k\)</span>-means</h3>
+<p>In addition to the image segmentation illustrated above, the <span class="math inline">\(k\)</span>-means algorithm is used in a multitude of applications, we list some here:</p>
+<ol type="1">
+<li><p><strong>Customer segmentation/social network analysis</strong>: To segment customers along e.g.&nbsp;their purchase history/behaviour, preferences, demographic data, amount spent, search queries, social media interactions, etc. <span class="math inline">\(k\)</span>-means is used in marketing, retail, and advertising to personalize the experience.</p></li>
+<li><p><strong>Text clustering</strong>: In natural language processing (NLP) <span class="math inline">\(k\)</span>-means is often used to cluster similar documents or text to make analysing large volumes of text data feasible.</p></li>
+<li><p><strong>Fraud detection</strong>: <span class="math inline">\(k\)</span>-means is a crude tool for fraud detection in finance and banking. Transactions are clustered according to similarities and anomalies are detected. There exist more sophisticated methods in finance.</p></li>
+<li><p><strong>Anomaly detection</strong>: In medical (image) data <span class="math inline">\(k\)</span>-means is often used to detect anomalies by finding points that <em>fall outside of clusters</em>. The same works for cybersecurity and e.g.&nbsp;network traffic.</p></li>
+<li><p><strong>Recommendation systems</strong>: By grouping users together it is easier to recommend them new songs, items for shopping and more.</p></li>
+<li><p><strong>Quality control</strong>: By grouping similar products you can detect quality issues and defects in production processes. If an issue is found the part can be checked and the process adjusted.</p></li>
+<li><p><strong>Traffic Analysis</strong>: In transport and logistics you can analyze traffic patterns and use the information for optimization and similar trips, routes and vehicles.</p></li>
+</ol>
+</section>
+</section>
+<section id="unsupervised-hierarchical-clustering---dendrogram" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="unsupervised-hierarchical-clustering---dendrogram"><span class="header-section-number">1.2</span> Unsupervised hierarchical clustering - Dendrogram</h2>
+<p>Similar to <span class="math inline">\(k\)</span>-means a simple hierarchical algorithm is used to create a dendrogram. The resulting tree allows you to easily see if data is clustered without the need of labeling or supervision.</p>
+<p>We follow the example and discussion given in <span class="citation" data-cites="Brunton2022">(<a href="../references.html#ref-Brunton2022" role="doc-biblioref">Brunton and Kutz 2022, sec. 5.4</a>)</span>.</p>
+<p>There are two main approaches in creating the desired hierarchy, bottom-up often called <em>agglomerative</em> and top-down often called <em>divisive</em>.</p>
+<ul>
+<li><p>For the agglomerative approach each observation <span class="math inline">\(x_i\)</span> is initially its own cluster and in each step points are combined according to their distance. Eventually everything ends up in a single cluster and the algorithm stops.</p></li>
+<li><p>For the divisive approach we go the opposite direction and start with the super cluster containing all observations §x_i$ and we gradually split up into smaller and smaller clusters. The algorithm stops, when each observation is its own leave.</p></li>
+</ul>
+<p>Of course the norm<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> used has quite an influence as can be seen in <span class="citation" data-cites="Kandolf_GDM">(<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">Kandolf 2025, sec. 7.1</a>)</span> <a href="https://kandolfp.github.io/MECH-M-DUAL-1-DBM/regression/optimizers.html#over-determined-systems">Link</a> where we compared LASSO and RIDGE algorithms for our optimization problem.</p>
+<p>To illustrate the agglomerative approach and the difference in norms we use four points and construct the hierarchy by combining the two closest points.</p>
+<div id="fig-clustering-unsupervised-dendrogram-explained" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-clustering-unsupervised-dendrogram-explained-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div id="fig-clustering-unsupervised-dendrogram-explained-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-clustering-unsupervised-dendrogram-explained-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../_assets/clustering/dendrogram_euclidean.svg" class="lightbox" data-gallery="fig-clustering-unsupervised-dendrogram-explained" title="Figure&nbsp;1.5&nbsp;(a): Use two norm or euclidean norm to compute the distance - \| \cdot \|_2"><img src="../_assets/clustering/dendrogram_euclidean.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-unsupervised-dendrogram-explained"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-unsupervised-dendrogram-explained-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Use two norm or euclidean norm to compute the distance - <span class="math inline">\(\| \cdot \|_2\)</span>
+</figcaption>
+</figure>
+</div>
+<div id="fig-clustering-unsupervised-dendrogram-explained-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-clustering-unsupervised-dendrogram-explained-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../_assets/clustering/dendrogram_city.svg" class="lightbox" data-gallery="fig-clustering-unsupervised-dendrogram-explained" title="Figure&nbsp;1.5&nbsp;(b): Use two one or cityblock norm to compute the distance - \| \cdot \|_1"><img src="../_assets/clustering/dendrogram_city.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-unsupervised-dendrogram-explained"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-unsupervised-dendrogram-explained-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Use two one or cityblock norm to compute the distance - <span class="math inline">\(\| \cdot \|_1\)</span>
+</figcaption>
+</figure>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-unsupervised-dendrogram-explained-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.5: We always combine the two nearest points and replace them with the point in the middle. This iteration continues until only one point is left. The Dendrogram is build according to the order of points chosen.
+</figcaption>
+</figure>
+</div>
+<p>On a larger scale, with always the first 25 points of the two clusters above we get the results shown in <a href="#fig-clustering-unsupervised_dengrogram" class="quarto-xref">Figure&nbsp;<span>1.6</span></a></p>
+<details class="code-fold">
+<summary>Show the code for the figure</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.spatial.distance <span class="im">import</span> pdist</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.cluster <span class="im">import</span> hierarchy</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">6020</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>XX <span class="op">=</span> np.concatenate((X[:<span class="dv">25</span>, :], X2[:<span class="dv">25</span>, :]))</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>XX.shape</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> metric <span class="kw">in</span> [<span class="st">"euclidean"</span>, <span class="st">"cityblock"</span>]:</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    plt.figure()</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    Y <span class="op">=</span> pdist(XX, metric<span class="op">=</span>metric)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    Z <span class="op">=</span> hierarchy.linkage(Y, method<span class="op">=</span><span class="st">"average"</span>, metric<span class="op">=</span>metric)</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    thresh <span class="op">=</span> <span class="fl">0.90</span> <span class="op">*</span> np.<span class="bu">max</span>(Z[:, <span class="dv">2</span>])</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    dn <span class="op">=</span> hierarchy.dendrogram(Z, p<span class="op">=</span><span class="dv">100</span>, color_threshold<span class="op">=</span>thresh)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    plt.figure()</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    plt.bar(<span class="bu">range</span>(XX.shape[<span class="dv">0</span>]), dn[<span class="st">"leaves"</span>])</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    plt.plot(np.array([<span class="dv">0</span>, XX.shape[<span class="dv">0</span>]]),</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>             np.array([XX.shape[<span class="dv">0</span>] <span class="op">//</span> <span class="dv">2</span>, XX.shape[<span class="dv">0</span>] <span class="op">//</span> <span class="dv">2</span>]),</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>             <span class="st">"r:"</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    plt.plot(np.array([(XX.shape[<span class="dv">0</span>] <span class="op">//</span> <span class="dv">2</span>) <span class="op">+</span> <span class="dv">1</span><span class="op">/</span><span class="dv">2</span>, (XX.shape[<span class="dv">0</span>] <span class="op">//</span> <span class="dv">2</span>) <span class="op">+</span> <span class="dv">1</span><span class="op">/</span><span class="dv">2</span>]),</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>             np.array([<span class="dv">0</span>, XX.shape[<span class="dv">0</span>]]),</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>             <span class="st">'r:'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="fig-clustering-unsupervised_dengrogram" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-clustering-unsupervised_dengrogram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-clustering-unsupervised_dengrogram" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-clustering-unsupervised_dengrogram-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-clustering-unsupervised_dengrogram-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="unsupervised_files/figure-html/fig-clustering-unsupervised_dengrogram-output-1.svg" class="lightbox" data-gallery="fig-clustering-unsupervised_dengrogram" title="Figure&nbsp;1.6&nbsp;(a): Dendrogram for euclidean norm."><img src="unsupervised_files/figure-html/fig-clustering-unsupervised_dengrogram-output-1.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-unsupervised_dengrogram"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-unsupervised_dengrogram-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Dendrogram for euclidean norm.
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-clustering-unsupervised_dengrogram" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-clustering-unsupervised_dengrogram-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-clustering-unsupervised_dengrogram-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="unsupervised_files/figure-html/fig-clustering-unsupervised_dengrogram-output-2.svg" class="lightbox" data-gallery="fig-clustering-unsupervised_dengrogram" title="Figure&nbsp;1.6&nbsp;(b): Histogram showing the clustering for the euclidean norm."><img src="unsupervised_files/figure-html/fig-clustering-unsupervised_dengrogram-output-2.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-unsupervised_dengrogram"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-unsupervised_dengrogram-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Histogram showing the clustering for the euclidean norm.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-clustering-unsupervised_dengrogram" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-clustering-unsupervised_dengrogram-3" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-clustering-unsupervised_dengrogram-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="unsupervised_files/figure-html/fig-clustering-unsupervised_dengrogram-output-3.svg" class="lightbox" data-gallery="fig-clustering-unsupervised_dengrogram" title="Figure&nbsp;1.6&nbsp;(c): Dendrogram for cityblock norm."><img src="unsupervised_files/figure-html/fig-clustering-unsupervised_dengrogram-output-3.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-unsupervised_dengrogram"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-unsupervised_dengrogram-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(c) Dendrogram for cityblock norm.
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-clustering-unsupervised_dengrogram" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-clustering-unsupervised_dengrogram-4" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-clustering-unsupervised_dengrogram-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="unsupervised_files/figure-html/fig-clustering-unsupervised_dengrogram-output-4.svg" class="lightbox" data-gallery="fig-clustering-unsupervised_dengrogram" title="Figure&nbsp;1.6&nbsp;(d): Histogram showing the clustering for the cityblock norm."><img src="unsupervised_files/figure-html/fig-clustering-unsupervised_dengrogram-output-4.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-unsupervised_dengrogram"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-unsupervised_dengrogram-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(d) Histogram showing the clustering for the cityblock norm.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-unsupervised_dengrogram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.6: Lloyds algorithm in action for a generic set of two datasets generated with a Gaussian distribution.
+</figcaption>
+</figure>
+</div>
+<p>The two dendrograms (<a href="#fig-clustering-unsupervised_dengrogram-1" class="quarto-xref">Figure&nbsp;<span>1.6 (a)</span></a> <a href="#fig-clustering-unsupervised_dengrogram-3" class="quarto-xref">Figure&nbsp;<span>1.6 (c)</span></a>) show the hierarchical structure derived from the data set. The number of clusters can be influenced by the <code>thresh</code> parameter and it is also used to label the observation accordingly. It is quite similar to the number of clusters <span class="math inline">\(k\)</span> in the <span class="math inline">\(k\)</span>-means algorithm.</p>
+<p>The two bar graphs on the right (<a href="#fig-clustering-unsupervised_dengrogram-2" class="quarto-xref">Figure&nbsp;<span>1.6 (b)</span></a> <a href="#fig-clustering-unsupervised_dengrogram-4" class="quarto-xref">Figure&nbsp;<span>1.6 (d)</span></a>) shows how the data is clustered in the dendrogram. The bars correspond to the distance metric produced by the algorithm. The red lines indicate the region of a perfect split for the separation if the algorithm works perfectly and places every point in the original cluster. If we recall, that the first 25 points are from set 1 and the next 25 from set 2 we can see that the euclidean distance generates the perfect split. On the other hand, the <em>cityblock</em> norm is placing one point in the wrong cluster.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The function <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html#scipy.cluster.hierarchy.linkage"><code>scipy.cluste.hierarchy.linkage</code></a> allows to specify the method of computing the distance between two clusters. The used <code>average</code> corresponds to unweighted pair group method with arithmetic mean <a href="https://en.wikipedia.org/wiki/UPGMA">UPGMA</a> algorithm.</p>
+</div>
+</div>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-Brunton2022" class="csl-entry" role="listitem">
+Brunton, Steven L., and J. Nathan Kutz. 2022. <em>Data-Driven Science and Engineering - Machine Learning, Dynamical Systems, and Control</em>. 2nd ed. Cambridge: Cambridge University Press.
+</div>
 <div id="ref-Geron2022-xh" class="csl-entry" role="listitem">
 Geron, Aurelien. 2022. <em>Hands-on Machine Learning with Scikit-Learn, Keras, and <span>TensorFlow</span> 3e</em>. 3rd ed. Sebastopol, CA: O’Reilly Media.
+</div>
+<div id="ref-Kandolf_GDM" class="csl-entry" role="listitem">
+Kandolf, Peter. 2025. <span>“MECH-m-DUAL-1-DBM - Grundlagen Datenbasierter Methoden.”</span> <em>Management Center Innsbruck, Course Material</em>. <a href="https://doi.org/10.5281/zenodo.14671708">https://doi.org/10.5281/zenodo.14671708</a>.
 </div>
 <div id="ref-DBLP:journals/tit/Lloyd82" class="csl-entry" role="listitem">
 Lloyd, Stuart P. 1982. <span>“Least Squares Quantization in <span>PCM</span>.”</span> <em><span>IEEE</span> Trans. Inf. Theory</em> 28 (2): 129–36. <a href="https://doi.org/10.1109/TIT.1982.1056489">https://doi.org/10.1109/TIT.1982.1056489</a>.
 </div>
 </div>
 </section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p><span class="citation" data-cites="Kandolf_GDM">(see <a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">Kandolf 2025, sec. 1.2</a>)</span> <a href="https://kandolfp.github.io/MECH-M-DUAL-1-DBM/basics/linearalgebra.html#norms">Link</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
 </section>
 
 </main> <!-- /main -->
