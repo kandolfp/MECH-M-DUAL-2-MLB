@@ -203,9 +203,30 @@ There exist several extensions of the basic $k$-means algorithm to improve the r
 Two such versions are the _accelerated $k$-means_, as well as _mini-batch $k$-means_.
 Both can be found in @Geron2022-xh.
 
-We want to highlight an application of $k$-means for image segmentation that can also be found in @Geron2022-xh.
+### Applications of $k$-means
 
-### Image Segmentation with $k$-means
+In addition to the image segmentation illustrated above, the $k$-means algorithm is used in a multitude of applications, we list some here:
+
+1. **Image segmentation**: To decompose an image into different regions we can use $k$-means. Applications range from robotics to surveillance where, where one or more objects are separated from the rest of the image.
+
+1. **Customer segmentation/social network analysis**: To segment customers along e.g. their purchase history/behaviour, preferences, demographic data, amount spent, search queries, social media interactions, etc. $k$-means is used in marketing, retail, and advertising to personalize the experience.
+
+1. **Text clustering**: In natural language processing (NLP) $k$-means is often used to cluster similar documents or text to make analysing large volumes of text data feasible.
+
+1. **Fraud detection**: $k$-means is a crude tool for fraud detection in finance and banking.
+Transactions are clustered according to similarities and anomalies are detected.
+There exist more sophisticated methods in finance.
+
+1. **Anomaly detection**: In medical (image) data $k$-means is often used to detect anomalies by finding points that _fall outside of clusters_. The same works for cybersecurity and e.g. network traffic.
+
+1. **Recommendation systems**: By grouping users together it is easier to recommend them new songs, items for shopping and more. 
+
+1. **Quality control**: By grouping similar products you can detect quality issues and defects in production processes. If an issue is found the part can be checked and the process adjusted.
+
+1. **Traffic Analysis**: In transport and logistics you can analyze traffic patterns and use the information for optimization and similar trips, routes and vehicles.
+
+We want to highlight _image segmentation_ as an application of $k$-means. 
+The example found here is first shown in @Geron2022-xh.
 
 The idea of image segmentation is to decompose an image into different segments.
 The following variants exist:
@@ -252,26 +273,6 @@ for colours in [8, 4, 2]:
 
 plt.show()
 ```
-
-### Further applications of $k$-means
-
-In addition to the image segmentation illustrated above, the $k$-means algorithm is used in a multitude of applications, we list some here:
-
-1. **Customer segmentation/social network analysis**: To segment customers along e.g. their purchase history/behaviour, preferences, demographic data, amount spent, search queries, social media interactions, etc. $k$-means is used in marketing, retail, and advertising to personalize the experience.
-
-1. **Text clustering**: In natural language processing (NLP) $k$-means is often used to cluster similar documents or text to make analysing large volumes of text data feasible.
-
-1. **Fraud detection**: $k$-means is a crude tool for fraud detection in finance and banking.
-Transactions are clustered according to similarities and anomalies are detected.
-There exist more sophisticated methods in finance.
-
-1. **Anomaly detection**: In medical (image) data $k$-means is often used to detect anomalies by finding points that _fall outside of clusters_. The same works for cybersecurity and e.g. network traffic.
-
-1. **Recommendation systems**: By grouping users together it is easier to recommend them new songs, items for shopping and more. 
-
-1. **Quality control**: By grouping similar products you can detect quality issues and defects in production processes. If an issue is found the part can be checked and the process adjusted.
-
-1. **Traffic Analysis**: In transport and logistics you can analyze traffic patterns and use the information for optimization and similar trips, routes and vehicles.
 
 ## Unsupervised hierarchical clustering - Dendrogram
 
