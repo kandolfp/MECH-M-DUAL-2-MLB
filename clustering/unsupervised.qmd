@@ -355,5 +355,113 @@ The function [`scipy.cluste.hierarchy.linkage`](https://docs.scipy.org/doc/scipy
 The used `average` corresponds to unweighted pair group method with arithmetic mean [UPGMA](https://en.wikipedia.org/wiki/UPGMA) algorithm.
 :::
 
+## Density-based spatial clustering of applications with noise (DBSCAN)
 
-[^norm]: [see @Kandolf_GDM, Section 1.2] [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/basics/linearalgebra.html#norms)
+The algorithm was introduced in @DBSCAN and is an algorithm that finds areas of high density.
+The main idea behind the algorithm is as follows.
+
+Our observations (we will call them points here for consistency) form the basis and they can be in any space but as for all the algorithms presented here, there needs to exist some form to measure distance.
+Furthermore, DBSCAN relies on two parameters, $\epsilon$ describing the radius of neighbourhood of a point and $minPts$ the minimum of points needed to form a cluster. 
+With these parameters we perform the following steps:
+
+1. A point $p$ is called a _core point_ if at least $minPts$ (including $p$) are within distance $\epsilon$ of $p$.
+This region is called the $\epsilon$-neighbourhood of $p$.
+
+1. A point $q$ is called _directly reachable_ form an core point $p$ iff[^iff] $q$ is in the $\epsilon$-neighbourhood of $p$.
+
+1. A point $p$ is _reachable_ from $p$ if there exists a sequence of points (path) $p=p_1, p_2,  \ldots, p_n=q$ where each $p_{i+1}$ is directly reachable form $p_i$.
+Consequently, all point on the path, except $p$, need to be core points.
+
+1. A point that is not reachable from any other point is considered an _outlier_ or _noise point_. 
+
+Therefore, we get our definition of a cluster: a point core point $p$ together with all points that are reachable from $p$. This includes core points (at least one) and none-core points (boundary points) on the boundary as they can not be used to reach more points.
+
+In contrast to $k$-means the algorithm we can find none linear clusters.
+We can illustrate this with the _moon data set_. 
+For the plotting function please see [GitHub](https://github.com/ageron/handson-ml3/blob/main/09_unsupervised_learning.ipynb), the accompanying repository to @Geron2022-xh, as it forms the basis.
+
+```{python}
+#| label: fig-clustering-unsupervised_dbscan
+#| fig-cap: "DBSCAN illustrated with the moons dataset."
+#| fig-subcap: 
+#|   - "Scikit-Learn's DBSCAN with `eps=0.05` and `min_samples=5`."
+#|   - "Scikit-Learn's DBSCAN with `eps=0.2` and `min_samples=5`."
+#| code-fold: true
+#| layout-ncol: 2
+#| code-summary: "Show the code for the figure"
+import numpy as np
+from sklearn.cluster import DBSCAN
+from sklearn.datasets import make_moons
+import matplotlib.pyplot as plt
+%config InlineBackend.figure_formats = ["svg"]
+
+def plot_dbscan(dbscan, X, size):
+    core_mask = np.zeros_like(dbscan.labels_, dtype=bool)
+    core_mask[dbscan.core_sample_indices_] = True
+    anomalies_mask = dbscan.labels_ == -1
+    non_core_mask = ~(core_mask | anomalies_mask)
+
+    cores = dbscan.components_
+    anomalies = X[anomalies_mask]
+    non_cores = X[non_core_mask]
+    
+    # Plotting the clusters
+    plt.scatter(cores[:, 0], cores[:, 1],
+                c=dbscan.labels_[core_mask],
+                marker="o", s=size, cmap="Paired")
+    # Plotting the core points of the clusters
+    plt.scatter(cores[:, 0], cores[:, 1],
+                c=dbscan.labels_[core_mask],
+                marker="*", s=20,)
+    # Plotting the anomalies
+    plt.scatter(anomalies[:, 0], anomalies[:, 1],
+                c="r", marker="x", s=100)
+    # Plotting the boundary points
+    plt.scatter(non_cores[:, 0], non_cores[:, 1],
+                c=dbscan.labels_[non_core_mask], marker=".")
+    plt.xlabel("$x_1$")
+    plt.ylabel("$x_2$", rotation=0)
+    plt.gca().set_aspect(1)
+
+np.random.seed(6020)
+M, M_y = make_moons(n_samples=1000, noise=0.05, random_state=6020)
+
+dbscan = DBSCAN(eps=0.05, min_samples=5)
+dbscan.fit(M)
+plt.figure()
+plot_dbscan(dbscan, M, size=100)
+
+dbscan = DBSCAN(eps=0.2, min_samples=5)
+dbscan.fit(M)
+plt.figure()
+plot_dbscan(dbscan, M, size=600)
+plt.show()
+```
+
+The algorithm works best for clusters well separated by low density regions.
+As all algorithms depending on distance measures it suffers from the curse of dimensionality[^1].
+
+As can be seen in @fig-clustering-unsupervised_dbscan-1 the algorithm produces quite a lot of clusters for a small $\epsilon=0.05$.
+In total we get 10 clusters and quite a lot of outliers that are not all easy to retract by the naked eye.
+
+Nevertheless, if we increase $\epsilon=0.2$ we can see that the two clusters are neatly reproduced, @fig-clustering-unsupervised_dbscan-2.
+
+
+::: {.callout-caution appearance="simple" icon=false}
+:::: {#exr-dbscan}
+
+## Application of DBSCAN
+
+1. Apply the DBSCAN algorithm to our toy example used throught this section to recover the two clusters as good as possible.
+Try different $\epsilon$ values as well as different norms (`metric` parameter).
+
+1. Additionally, for a higher dimensional problem, using DBSCAN split the Iris dataset into its three classes of flowers.
+::::
+:::
+
+
+[^norm]: see @Kandolf_GDM, Section 1.2 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/basics/linearalgebra.html#norms)
+
+[îff]: short for _if and only if_
+
+[^1]: Problems occurring for higher dimensional data and distance measures, see [WikiPedia](https://en.wikipedia.org/wiki/Curse_of_dimensionality#Distance_functions)
