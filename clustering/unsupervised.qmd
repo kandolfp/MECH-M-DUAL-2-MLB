@@ -303,7 +303,7 @@ The Dendrogram is build according to the order of points chosen.
 On a larger scale, with always the first 25 points of the two clusters above we get the results shown in @fig-clustering-unsupervised_dengrogram
 ```{python}
 #| label: fig-clustering-unsupervised_dengrogram
-#| fig-cap: "Lloyds algorithm in action for a generic set of two datasets generated with a Gaussian distribution."
+#| fig-cap: "Construction a agglomerative hierarchy for our data set."
 #| fig-subcap: 
 #|   - "Dendrogram for euclidean norm."
 #|   - "Histogram showing the clustering for the euclidean norm."
