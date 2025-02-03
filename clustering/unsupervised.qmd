@@ -238,7 +238,10 @@ The following variants exist:
 - Instance segmentation - similar to semantic segmentation but individual objects are assigned to the same segment. In the autonomous driving application we would find individual pedestrians.
 
 Here we show how to perform colour segmentation with $k$-means.
-The following code is based on notebook at [GitHub](https://github.com/ageron/handson-ml3/blob/main/09_unsupervised_learning.ipynb), the accompanying repository to @Geron2022-xh.
+
+::: {.callout-important}
+The following data set and the basic structure of the code is from @Geron2022-xh, see [GitHub](https://github.com/ageron/handson-ml3/blob/main/09_unsupervised_learning.ipynb), 
+:::
 
 ```{python}
 #| label: fig-clustering-unsupervised-img-seg
@@ -379,7 +382,11 @@ Therefore, we get our definition of a cluster: a point core point $p$ together w
 
 In contrast to $k$-means the algorithm we can find none linear clusters.
 We can illustrate this with the _moon data set_. 
+
+::: {.callout-important}
 For the plotting function please see [GitHub](https://github.com/ageron/handson-ml3/blob/main/09_unsupervised_learning.ipynb), the accompanying repository to @Geron2022-xh, as it forms the basis.
+:::
+
 
 ```{python}
 #| label: fig-clustering-unsupervised_dbscan
