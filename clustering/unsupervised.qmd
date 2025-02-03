@@ -454,6 +454,12 @@ In total we get 10 clusters and quite a lot of outliers that are not all easy to
 
 Nevertheless, if we increase $\epsilon=0.2$ we can see that the two clusters are neatly reproduced, @fig-clustering-unsupervised_dbscan-2.
 
+::: {.callout-note}
+
+The `DBSCAN` class in Scikit-Learn does not provide a `.predict()` method like many other such classes. 
+See @Geron2022-xh and  [GitHub](https://github.com/ageron/handson-ml3/blob/main/09_unsupervised_learning.ipynb) for how to train a $k$-nearest neighbour (kNN) to perform this task. 
+:::
+
 
 ::: {.callout-caution appearance="simple" icon=false}
 :::: {#exr-dbscan}
