@@ -1,10 +1,10 @@
-# Unsupervised learning
+# Unsupervised learning {#sec-clustering-usl}
 
 We start with unsupervised learning.
 The goal of unsupervised learning is to discover clusters in the data that has no labels.
 There are several algorithms to perform this task, the most prominent is the $k$-means clustering algorithm.
 
-## $k$-Means Clustering
+## $k$-Means Clustering {#sec-clustering-usl-kmeans}
 
 The $k$-means algorithm tries to partition a set of $m$ (vector-valued) data observations into $k$ clusters.
 Where in general the dimension of the data and the amount of observations is known, the number of clusters is often not known a priori.
@@ -359,7 +359,7 @@ The function [`scipy.cluste.hierarchy.linkage`](https://docs.scipy.org/doc/scipy
 The used `average` corresponds to unweighted pair group method with arithmetic mean [UPGMA](https://en.wikipedia.org/wiki/UPGMA) algorithm.
 :::
 
-## Density-based spatial clustering of applications with noise (DBSCAN)
+## Density-based spatial clustering of applications with noise (DBSCAN) {#sec-clustering-ul-dbscan}
 
 The algorithm was introduced in @DBSCAN and is an algorithm that finds areas of high density.
 The main idea behind the algorithm is as follows.
