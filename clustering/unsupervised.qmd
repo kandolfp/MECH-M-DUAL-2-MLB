@@ -57,6 +57,11 @@ Nevertheless, a number of heuristic algorithms exist to provide a good performan
 
 To illustrate the proceedings with the help of some artificial data and its clustering.
 
+::: {.callout-important}
+The following data set and the basic structure of the code is from [@Brunton2022, Code 5.5 - 5.6].
+Also see [GitHub](https://github.com/dynamicslab/databook_python).
+:::
+
 ```{python}
 #| label: fig-clustering-unsupervised_lloyd
 #| fig-cap: "Lloyds algorithm in action for a generic set of two datasets generated with a Gaussian distribution."
@@ -473,9 +478,221 @@ Try different $\epsilon$ values as well as different norms (`metric` parameter).
 ::::
 :::
 
+## Finite Mixtures Models
+
+Finite mixture models assume that the observations $x_i$ are mixtures of $k$ processes which combine in the measurement.
+Each mixture is defined via a probability model with unknown parameters.
+The aim of the algorithm is to find the parameters such that the $k$ processes best describe the $x_i$ observations.
+The basis of the algorithm is the so called _expectation-maximization_ (EM) algorithm of \cite{dempster1977maximum}, that is designed to find the _maximum-likelihood_ parameters of the defined statistical models.
+
+The most common choice for the probability models is the Gaussian distribution[^gauss] and for this choice, the method is better known as _Gaussian mixture models_ (GMM).
+This is often quite a sensible choice if nothing more is known about the observations and a Gaussian distribution is than always a save bet.
+As a result each process can be described by two parameters, _mean_ and _variance_.
+Each cluster in turn, will be described by an ellipsoidal shape where size, density, orientation and semi-axis vary. 
+
+Like $k$-means, in the simplest version, GMM is provided with the number of clusters $k$ and starts from an initial guess of the means and corresponding variances.
+The parameters are than iteratively updated to find a (local) maximum.
+There are some problems with this approach, e.g. if you set one of the processes to have zero variance and mean equal to a point.
+To avoid such problems _cross-validation_ can often help to avoid problems stemming from an initialization with a poor initial guess.
+
+As mentioned, the main idea of the mixture models is that the observations are a linear combination of probability density functions (PDF)
+$$
+f(x_j, \Theta) = \sum_{p=1}^k \alpha_p f_p(x_j, \Theta_p),
+$$
+where $f$ denotes the observed/measured PDF with parameters $\Theta$, $f_p$ the PDF of mixture $p$ with parameters $\Theta_p$, and $k$ denotes the number of mixtures. 
+The weights $\alpha_p$ fulfil $\sum_p \alpha_p = 1$.
+
+Overall we therefore can formulate the algorithm as:
+
+::: {.callout appearance="simple"}
+:::: {#def-ma}
+
+## Mixture Models Algorithm
+Given the observed PDF $f(x_j, \Theta)$, estimate the mixture weights $\alpha_p$ and the parameters fo the distribution $\Theta_p$.
+
+[see @Brunton2022]
+::::
+:::
+
+Lets follow the derivative for the GMM method in [@Brunton2022, Section 5.5] to bet a better idea what is happening. 
+
+For the GMM $f$ becomes
+$$
+f(x_j, \Theta) = \sum_{p=1}^k \alpha_p \mathcal{N}_p(x_j, \mu_p, \sigma_p)
+$$
+and for a given $k$ we need to find $\alpha_p, \mu_p, \sigma_p$.
+We get $\Theta$ from the roots of 
+$$
+L(\Theta) = \sum_{j=1}^n\log f(x_j | \Theta),
+$$
+$L$ is called the _log-likelihood_ function and we sum over all observations $x_j$.
+We transform it into a optimization problem by setting the derivative to zero
+$$
+\frac{\partial L(\Theta)}{\partial \Theta} = 0
+$$
+and solve it via the EM algorithm.
+As the name suggests, there are two steps E and M.
+
+The E step uses the following posterior to establish memberships. 
+Therefore, we start of by assuming an initial guess of the vector $\Theta$ and this leads to the _posterior probability of distribution $p$ of $x_j$ _
+$$
+\tau_p(x_j, \Theta) = \frac{\alpha_p f_p(x_j, \Theta_p)}{f(x_j, \Theta)}.
+$$
+In other words, we try to figure out if $x_j$ is part of the $p$th mixture.
+For the GMM this becomes, in the $l$ iteration:
+$$
+\tau_p^{(l)}(x_j) = \frac{\alpha_p^{(l)} \mathcal{N}_p(x_j, \mu_p^{(l)}, \sigma_p^{(l)})}{f(x_j, \Theta^{(l)})}.
+$$
+
+Now the M step starts to update the parameters and mixture weights as
+$$
+\begin{align}
+\alpha_p^{(l+1)} &= \frac1n \sum_{j=1}^n \tau_p^{(l)}(x_j), \\
+\mu_p^{(l+1)} &= \frac{\sum_{j=1}^n x_j\tau_p^{(l)}(x_j)}{\sum_{j=1}^n \tau_p^{(l)}(x_j)}, \\
+\Sigma_p^{(l+1)} &= \frac{\sum_{j=1}^n \tau_p^{(l)}(x_j)(x_j - \mu_p^{(l+1)})(x_j - \mu_p^{(l+1)})^\mathrm{T}}{\sum_{j=1}^n \tau_p^{(l)}(x_j)},
+\end{align}
+$$
+with $\Sigma_p^{(l+1)}$ denotes the covariance matrix.
+The algorithm now alternates between E and M until convergence is reached.
+
+Let us try it with the cats and dogs images in wavelet basis from @sec-clustering-cvd by fitting to the second and forth principal value of the SVD.
+Note, we directly load the images in wavelet basis and do not recompute them.
+
+::: {.callout-important}
+The following data set and the basic structure of the code is from [@Brunton2022, Code 5.8].
+Also see [GitHub](https://github.com/dynamicslab/databook_python).
+:::
+
+
+```{python}
+#| label: fig-clustering-gmm
+#| fig-cap: "Fitting of the second and fourth principal value of the cats and dogs images in wavelet basis via the GMM method. "
+#| fig-subcap: 
+#|   - "We can see a nice split along the tow animals via the Gaussian distributions."
+#|   - "The PDFs of the fitted distributions, weighted via the GMM algorithm."
+#| layout-ncol: 2
+#| code-fold: true
+#| code-summary: "Show the code for the figure"
+import numpy as np
+import scipy
+import requests
+import io
+from sklearn.mixture import GaussianMixture
+from scipy.stats import multivariate_normal
+import matplotlib.pyplot as plt
+%config InlineBackend.figure_formats = ["svg"]
+
+response = requests.get(
+    "https://github.com/dynamicslab/databook_python/"
+    "raw/refs/heads/master/DATA/catData_w.mat")
+cats = scipy.io.loadmat(io.BytesIO(response.content))["cat_wave"]
+
+response = requests.get(
+    "https://github.com/dynamicslab/databook_python/"
+    "raw/refs/heads/master/DATA/dogData_w.mat")
+dogs = scipy.io.loadmat(io.BytesIO(response.content))["dog_wave"]
+
+CD = np.concatenate((dogs, cats), axis=1)
+U,S,VT = np.linalg.svd(CD - np.mean(CD), full_matrices=0)
+v = VT.T
+
+dogcat = v[:,(1,3)]
+GMModel = GaussianMixture(n_components=2, n_init=10).fit(dogcat)
+AIC = GMModel.aic(dogcat)
+
+plt.figure()
+plt.scatter(v[:80,1], v[:80,3], label="dogs")
+plt.scatter(v[80:,1], v[80:,3], label="cats")
+plt.xlabel(r"$PC_1$")
+plt.ylabel(r"$PC_4$")
+
+x = np.linspace(-0.15, 0.25)
+y = np.linspace(-0.25, 0.2)
+X, Y = np.meshgrid(x, y)
+XX = np.array([X.ravel(), Y.ravel()]).T
+Z = np.exp(GMModel.score_samples(XX))
+Z = Z.reshape(X.shape)
+
+CS = plt.contour(X, Y, Z,
+                levels=np.arange(3,32,4), colors='k', linestyles='solid')
+plt.legend()
+plt.gca().set_aspect(1)
+
+plt.figure()
+ax = plt.axes(projection='3d')
+for i in range(GMModel.weights_.shape[0]):
+    rv = multivariate_normal(GMModel.means_[i], GMModel.covariances_[i])
+    z = GMModel.weights_[i] * rv.pdf(np.dstack((X, Y)))
+    ax.plot_surface(X, Y, z, alpha=0.5)
+
+ax.plot_wireframe(X, Y, Z, color='black', rstride=5, cstride=5)
+ax.view_init(30, -80)
+plt.xlabel(r"$PC_1$")
+plt.ylabel(r"$PC_4$")
+plt.legend([r"$\mathcal{N}(\mu_1, \sigma_1)$",
+            r"$\mathcal{N}(\mu_2, \sigma_2)$"])
+plt.show()
+```
+As can be seen in @fig-clustering-gmm-1 the two clusters are quite well captured by the GMM algorithm.
+The contour shows the linear combination of the two Gaussians.
+We see the two Gaussians on the right in @fig-clustering-gmm-2 where we use the same colours as for the cats and dogs respectively.
+Note that the distributions are weight $\alpha_p$ from GMM but other than that there is no unit in the z direction.
+
+As discussed above the algorithm is prone to problems during the initialization, therefore we use `n_init = 10` to initialize the algorithm 10 times and only keep the best result.
+
+We can draw new samples from the resulting object `.sample()` and we can also fit data to it and we can also perform hard and soft clustering. 
+For hard clustering the model assigns each instance to the most likely cluster (`.predict()`), where for soft clustering (`.predict_proba()`) we get the probability of _membership_ for each cluster. 
+
+If the algorithm struggles to recover the clusters, we can halp it by imposing the shape of the cluster via restricting the covariance matrix $\Sigma_p$.
+This can be done via the parameter `covariance_type`, see [docs](https://scikit-learn.org/stable/modules/generated/sklearn.mixture.GaussianMixture.html).
+
+::: {.callout-caution appearance="simple" icon=false}
+:::: {#exr-gmm}
+
+## Application of GMM
+
+1. Apply the GMM algorithm to our toy example used through this section to recover the two clusters as good as possible.
+This should be straight forward, as we constructed it via Gaussian distributions.
+Try constraining the algorithm by imposing the different values possible for `covariance_type`. 
+
+1. Additionally, for a higher dimensional problem, using DBSCAN split the Iris dataset into its three classes of flowers.
+
+1. Try to use GMM to get clusters for the two moon dataset used in @sec-clustering-ul-dbscan.
+::::
+:::
+
+::: {.callout-tip}
+GMM can also be used for anomaly detection. 
+Simply assume every observation located in a low density region an anomaly.
+For this the threshold needs to be defined in accordance to your expected anomalies. 
+
+E.g. to get about $4\%$ anomalies you can use the following snippet togethere with the above code:
+```{python}
+#| label: fig-clustering-gmm-ano
+#| fig-cap: "Fitting of the second and fourth principal value of the cats and dogs images in wavelet basis via the GMM method. "
+#| code-fold: true
+#| code-summary: "Show the code for the figure"
+S = GMModel.score_samples(dogcat)
+density_threshold = np.percentile(S, 2)
+anomalies = dogcat[S < density_threshold]
+plt.figure()
+plt.scatter(dogcat[:80,0], dogcat[:80,1], alpha=0.5, label="dogs")
+plt.scatter(dogcat[80:,0], dogcat[80:,1], alpha=0.5, label="cats")
+plt.xlabel(r"$PC_1$")
+plt.ylabel(r"$PC_4$")
+plt.scatter(anomalies[:, 0], anomalies[:, 1], color="k", marker="x",
+            label="anomaly")
+plt.legend()
+plt.show()
+```
+
+see @Geron2022-xh and the corresponding [GitHub repository](https://github.com/ageron/handson-ml3/blob/main/09_unsupervised_learning.ipynb)
+:::
 
 [^norm]: see @Kandolf_GDM, Section 1.2 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/basics/linearalgebra.html#norms)
 
 [îff]: short for _if and only if_
 
 [^1]: Problems occurring for higher dimensional data and distance measures, see [WikiPedia](https://en.wikipedia.org/wiki/Curse_of_dimensionality#Distance_functions)
+
+[^gauss]: see @Kandolf_GDM, Example 14.6 or for a direct [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/statistics/bayesian.html#exm-statistics-normal_dist) 
