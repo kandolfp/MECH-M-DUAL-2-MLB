@@ -691,7 +691,7 @@ see @Geron2022-xh and the corresponding [GitHub repository](https://github.com/a
 
 [^norm]: see @Kandolf_GDM, Section 1.2 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/basics/linearalgebra.html#norms)
 
-[îff]: short for _if and only if_
+[^iff]: short for _if and only if_
 
 [^1]: Problems occurring for higher dimensional data and distance measures, see [WikiPedia](https://en.wikipedia.org/wiki/Curse_of_dimensionality#Distance_functions)
 
