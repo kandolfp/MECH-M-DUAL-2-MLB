@@ -657,6 +657,7 @@ Try constraining the algorithm by imposing the different values possible for `co
 1. Additionally, for a higher dimensional problem, using DBSCAN split the Iris dataset into its three classes of flowers.
 
 1. Try to use GMM to get clusters for the two moon dataset used in @sec-clustering-ul-dbscan.
+Also try with the `BayesianGaussianMixture` class, where no amount of clusters needs to be specified.
 ::::
 :::
 
