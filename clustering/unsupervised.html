@@ -84,7 +84,7 @@ div.csl-indent {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../summary.html" rel="next">
+<link href="../clustering/supervised.html" rel="next">
 <link href="../clustering/index.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -230,6 +230,12 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Unsupervised learning</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../clustering/supervised.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Supervised learning</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item">
@@ -271,12 +277,14 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#k-means-clustering" id="toc-k-means-clustering" class="nav-link active" data-scroll-target="#k-means-clustering"><span class="header-section-number">1.1</span> <span class="math inline">\(k\)</span>-Means Clustering</a>
+  <li><a href="#sec-clustering-usl-kmeans" id="toc-sec-clustering-usl-kmeans" class="nav-link active" data-scroll-target="#sec-clustering-usl-kmeans"><span class="header-section-number">1.1</span> <span class="math inline">\(k\)</span>-Means Clustering</a>
   <ul class="collapse">
-  <li><a href="#image-segmentation-with-k-means" id="toc-image-segmentation-with-k-means" class="nav-link" data-scroll-target="#image-segmentation-with-k-means"><span class="header-section-number">1.1.1</span> Image Segmentation with <span class="math inline">\(k\)</span>-means</a></li>
-  <li><a href="#further-applications-of-k-means" id="toc-further-applications-of-k-means" class="nav-link" data-scroll-target="#further-applications-of-k-means"><span class="header-section-number">1.1.2</span> Further applications of <span class="math inline">\(k\)</span>-means</a></li>
+  <li><a href="#applications-of-k-means" id="toc-applications-of-k-means" class="nav-link" data-scroll-target="#applications-of-k-means"><span class="header-section-number">1.1.1</span> Applications of <span class="math inline">\(k\)</span>-means</a></li>
   </ul></li>
   <li><a href="#unsupervised-hierarchical-clustering---dendrogram" id="toc-unsupervised-hierarchical-clustering---dendrogram" class="nav-link" data-scroll-target="#unsupervised-hierarchical-clustering---dendrogram"><span class="header-section-number">1.2</span> Unsupervised hierarchical clustering - Dendrogram</a></li>
+  <li><a href="#sec-clustering-ul-dbscan" id="toc-sec-clustering-ul-dbscan" class="nav-link" data-scroll-target="#sec-clustering-ul-dbscan"><span class="header-section-number">1.3</span> Density-based spatial clustering of applications with noise (DBSCAN)</a></li>
+  <li><a href="#finite-mixtures-models" id="toc-finite-mixtures-models" class="nav-link" data-scroll-target="#finite-mixtures-models"><span class="header-section-number">1.4</span> Finite Mixtures Models</a></li>
+  <li><a href="#motivational-example" id="toc-motivational-example" class="nav-link" data-scroll-target="#motivational-example"><span class="header-section-number">1.5</span> Motivational example</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/edit/main/clustering/unsupervised.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -285,7 +293,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../clustering/index.html">Clustering and Classification</a></li><li class="breadcrumb-item"><a href="../clustering/unsupervised.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Unsupervised learning</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Unsupervised learning</span></h1>
+<h1 class="title"><span id="sec-clustering-usl" class="quarto-section-identifier"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Unsupervised learning</span></span></h1>
 </div>
 
 
@@ -303,8 +311,8 @@ window.Quarto = {
 
 
 <p>We start with unsupervised learning. The goal of unsupervised learning is to discover clusters in the data that has no labels. There are several algorithms to perform this task, the most prominent is the <span class="math inline">\(k\)</span>-means clustering algorithm.</p>
-<section id="k-means-clustering" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="k-means-clustering"><span class="header-section-number">1.1</span> <span class="math inline">\(k\)</span>-Means Clustering</h2>
+<section id="sec-clustering-usl-kmeans" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="sec-clustering-usl-kmeans"><span class="header-section-number">1.1</span> <span class="math inline">\(k\)</span>-Means Clustering</h2>
 <p>The <span class="math inline">\(k\)</span>-means algorithm tries to partition a set of <span class="math inline">\(m\)</span> (vector-valued) data observations into <span class="math inline">\(k\)</span> clusters. Where in general the dimension of the data and the amount of observations is known, the number of clusters is often not known a priori.</p>
 <p>The general idea is, to label each observation as belonging to a cluster with the nearest mean (the <em>representative</em> of the cluster). The resulting clusters are called Voronoi cells, see <a href="https://en.wikipedia.org/wiki/Voronoi_diagram">Wikipedia - Voronoi diagram</a>.</p>
 <div class="callout callout-style-simple callout-none no-icon">
@@ -325,7 +333,7 @@ window.Quarto = {
 <li>Repeat until the cluster centers stay stable up to some tolerance.</li>
 </ol>
 <p>This algorithm was first introduced in <span class="citation" data-cites="DBLP:journals/tit/Lloyd82">Lloyd (<a href="../references.html#ref-DBLP:journals/tit/Lloyd82" role="doc-biblioref">1982</a>)</span> and is therefore often called Lloyd algorithm.</p>
-<div id="3e92a1a1" class="cell" data-execution_count="1">
+<div id="4c1b5543" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code for Lloyd algorithm</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lloyd(data, centers, steps):</span>
@@ -359,6 +367,19 @@ Note
 </div>
 </div>
 <p>To illustrate the proceedings with the help of some artificial data and its clustering.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The following data set and the basic structure of the code is from <span class="citation" data-cites="Brunton2022">(<a href="../references.html#ref-Brunton2022" role="doc-biblioref">Brunton and Kutz 2022</a>, Code 5.5 - 5.6)</span>. Also see <a href="https://github.com/dynamicslab/databook_python">GitHub</a>.</p>
+</div>
+</div>
 <details class="code-fold">
 <summary>Show the code for the figure</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -577,16 +598,40 @@ Figure&nbsp;1.3: Validation against a test set.
 </div>
 <p>The result of this can be seen in <a href="#fig-clustering-unsupervised_lloyd3" class="quarto-xref">Figure&nbsp;<span>1.3</span></a> where we have two points wrongly classified to the opposite cluster.</p>
 <p>There exist several extensions of the basic <span class="math inline">\(k\)</span>-means algorithm to improve the results and overall performance. Two such versions are the <em>accelerated <span class="math inline">\(k\)</span>-means</em>, as well as <em>mini-batch <span class="math inline">\(k\)</span>-means</em>. Both can be found in <span class="citation" data-cites="Geron2022-xh">Geron (<a href="../references.html#ref-Geron2022-xh" role="doc-biblioref">2022</a>)</span>.</p>
-<p>We want to highlight an application of <span class="math inline">\(k\)</span>-means for image segmentation that can also be found in <span class="citation" data-cites="Geron2022-xh">Geron (<a href="../references.html#ref-Geron2022-xh" role="doc-biblioref">2022</a>)</span>.</p>
-<section id="image-segmentation-with-k-means" class="level3" data-number="1.1.1">
-<h3 data-number="1.1.1" class="anchored" data-anchor-id="image-segmentation-with-k-means"><span class="header-section-number">1.1.1</span> Image Segmentation with <span class="math inline">\(k\)</span>-means</h3>
+<section id="applications-of-k-means" class="level3" data-number="1.1.1">
+<h3 data-number="1.1.1" class="anchored" data-anchor-id="applications-of-k-means"><span class="header-section-number">1.1.1</span> Applications of <span class="math inline">\(k\)</span>-means</h3>
+<p>In addition to the image segmentation illustrated above, the <span class="math inline">\(k\)</span>-means algorithm is used in a multitude of applications, we list some here:</p>
+<ol type="1">
+<li><p><strong>Image segmentation</strong>: To decompose an image into different regions we can use <span class="math inline">\(k\)</span>-means. Applications range from robotics to surveillance where, where one or more objects are separated from the rest of the image.</p></li>
+<li><p><strong>Customer segmentation/social network analysis</strong>: To segment customers along e.g.&nbsp;their purchase history/behaviour, preferences, demographic data, amount spent, search queries, social media interactions, etc. <span class="math inline">\(k\)</span>-means is used in marketing, retail, and advertising to personalize the experience.</p></li>
+<li><p><strong>Text clustering</strong>: In natural language processing (NLP) <span class="math inline">\(k\)</span>-means is often used to cluster similar documents or text to make analysing large volumes of text data feasible.</p></li>
+<li><p><strong>Fraud detection</strong>: <span class="math inline">\(k\)</span>-means is a crude tool for fraud detection in finance and banking. Transactions are clustered according to similarities and anomalies are detected. There exist more sophisticated methods in finance.</p></li>
+<li><p><strong>Anomaly detection</strong>: In medical (image) data <span class="math inline">\(k\)</span>-means is often used to detect anomalies by finding points that <em>fall outside of clusters</em>. The same works for cybersecurity and e.g.&nbsp;network traffic.</p></li>
+<li><p><strong>Recommendation systems</strong>: By grouping users together it is easier to recommend them new songs, items for shopping and more.</p></li>
+<li><p><strong>Quality control</strong>: By grouping similar products you can detect quality issues and defects in production processes. If an issue is found the part can be checked and the process adjusted.</p></li>
+<li><p><strong>Traffic Analysis</strong>: In transport and logistics you can analyze traffic patterns and use the information for optimization and similar trips, routes and vehicles.</p></li>
+</ol>
+<p>We want to highlight <em>image segmentation</em> as an application of <span class="math inline">\(k\)</span>-means. The example found here is first shown in <span class="citation" data-cites="Geron2022-xh">Geron (<a href="../references.html#ref-Geron2022-xh" role="doc-biblioref">2022</a>)</span>.</p>
 <p>The idea of image segmentation is to decompose an image into different segments. The following variants exist:</p>
 <ul>
 <li><p>Colour segmentation - pixels with similar colour get assigned the same cluster. An application of this is image satellite postprocessing to find areas of forest or sea, or finding object in robotics applications, and organs in medical images.</p></li>
 <li><p>Semantic segmentation - all pixels that are part of the same <em>object</em> get assigned to the same segment. An application of this is in autonomous driving to find pedestrians - one segment containing all pedestrians.</p></li>
 <li><p>Instance segmentation - similar to semantic segmentation but individual objects are assigned to the same segment. In the autonomous driving application we would find individual pedestrians.</p></li>
 </ul>
-<p>Here we show how to perform colour segmentation with <span class="math inline">\(k\)</span>-means. The following code is based on notebook at <a href="https://github.com/ageron/handson-ml3/blob/main/09_unsupervised_learning.ipynb">GitHub</a>, the accompanying repository to <span class="citation" data-cites="Geron2022-xh">Geron (<a href="../references.html#ref-Geron2022-xh" role="doc-biblioref">2022</a>)</span>.</p>
+<p>Here we show how to perform colour segmentation with <span class="math inline">\(k\)</span>-means.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The following data set and the basic structure of the code is from <span class="citation" data-cites="Geron2022-xh">Geron (<a href="../references.html#ref-Geron2022-xh" role="doc-biblioref">2022</a>)</span>, see <a href="https://github.com/ageron/handson-ml3/blob/main/09_unsupervised_learning.ipynb">GitHub</a>,</p>
+</div>
+</div>
 <details class="code-fold">
 <summary>Show the code for the figure</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -672,19 +717,6 @@ Figure&nbsp;1.4: Colour segmentation for the image of a lady bug.
 </figcaption>
 </figure>
 </div>
-</section>
-<section id="further-applications-of-k-means" class="level3" data-number="1.1.2">
-<h3 data-number="1.1.2" class="anchored" data-anchor-id="further-applications-of-k-means"><span class="header-section-number">1.1.2</span> Further applications of <span class="math inline">\(k\)</span>-means</h3>
-<p>In addition to the image segmentation illustrated above, the <span class="math inline">\(k\)</span>-means algorithm is used in a multitude of applications, we list some here:</p>
-<ol type="1">
-<li><p><strong>Customer segmentation/social network analysis</strong>: To segment customers along e.g.&nbsp;their purchase history/behaviour, preferences, demographic data, amount spent, search queries, social media interactions, etc. <span class="math inline">\(k\)</span>-means is used in marketing, retail, and advertising to personalize the experience.</p></li>
-<li><p><strong>Text clustering</strong>: In natural language processing (NLP) <span class="math inline">\(k\)</span>-means is often used to cluster similar documents or text to make analysing large volumes of text data feasible.</p></li>
-<li><p><strong>Fraud detection</strong>: <span class="math inline">\(k\)</span>-means is a crude tool for fraud detection in finance and banking. Transactions are clustered according to similarities and anomalies are detected. There exist more sophisticated methods in finance.</p></li>
-<li><p><strong>Anomaly detection</strong>: In medical (image) data <span class="math inline">\(k\)</span>-means is often used to detect anomalies by finding points that <em>fall outside of clusters</em>. The same works for cybersecurity and e.g.&nbsp;network traffic.</p></li>
-<li><p><strong>Recommendation systems</strong>: By grouping users together it is easier to recommend them new songs, items for shopping and more.</p></li>
-<li><p><strong>Quality control</strong>: By grouping similar products you can detect quality issues and defects in production processes. If an issue is found the part can be checked and the process adjusted.</p></li>
-<li><p><strong>Traffic Analysis</strong>: In transport and logistics you can analyze traffic patterns and use the information for optimization and similar trips, routes and vehicles.</p></li>
-</ol>
 </section>
 </section>
 <section id="unsupervised-hierarchical-clustering---dendrogram" class="level2" data-number="1.2">
@@ -814,7 +846,7 @@ Figure&nbsp;1.5: We always combine the two nearest points and replace them with 
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-unsupervised_dengrogram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1.6: Lloyds algorithm in action for a generic set of two datasets generated with a Gaussian distribution.
+Figure&nbsp;1.6: Construction a agglomerative hierarchy for our data set.
 </figcaption>
 </figure>
 </div>
@@ -833,11 +865,484 @@ Note
 <p>The function <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html#scipy.cluster.hierarchy.linkage"><code>scipy.cluste.hierarchy.linkage</code></a> allows to specify the method of computing the distance between two clusters. The used <code>average</code> corresponds to unweighted pair group method with arithmetic mean <a href="https://en.wikipedia.org/wiki/UPGMA">UPGMA</a> algorithm.</p>
 </div>
 </div>
+</section>
+<section id="sec-clustering-ul-dbscan" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="sec-clustering-ul-dbscan"><span class="header-section-number">1.3</span> Density-based spatial clustering of applications with noise (DBSCAN)</h2>
+<p>The algorithm was introduced in <span class="citation" data-cites="DBSCAN">Ester et al. (<a href="../references.html#ref-DBSCAN" role="doc-biblioref">1996</a>)</span> and is an algorithm that finds areas of high density. The main idea behind the algorithm is as follows.</p>
+<p>Our observations (we will call them points here for consistency) form the basis and they can be in any space but as for all the algorithms presented here, there needs to exist some form to measure distance. Furthermore, DBSCAN relies on two parameters, <span class="math inline">\(\epsilon\)</span> describing the radius of neighbourhood of a point and <span class="math inline">\(minPts\)</span> the minimum of points needed to form a cluster. With these parameters we perform the following steps:</p>
+<ol type="1">
+<li><p>A point <span class="math inline">\(p\)</span> is called a <em>core point</em> if at least <span class="math inline">\(minPts\)</span> (including <span class="math inline">\(p\)</span>) are within distance <span class="math inline">\(\epsilon\)</span> of <span class="math inline">\(p\)</span>. This region is called the <span class="math inline">\(\epsilon\)</span>-neighbourhood of <span class="math inline">\(p\)</span>.</p></li>
+<li><p>A point <span class="math inline">\(q\)</span> is called <em>directly reachable</em> form an core point <span class="math inline">\(p\)</span> iff<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> <span class="math inline">\(q\)</span> is in the <span class="math inline">\(\epsilon\)</span>-neighbourhood of <span class="math inline">\(p\)</span>.</p></li>
+<li><p>A point <span class="math inline">\(p\)</span> is <em>reachable</em> from <span class="math inline">\(p\)</span> if there exists a sequence of points (path) <span class="math inline">\(p=p_1, p_2,  \ldots, p_n=q\)</span> where each <span class="math inline">\(p_{i+1}\)</span> is directly reachable form <span class="math inline">\(p_i\)</span>. Consequently, all point on the path, except <span class="math inline">\(p\)</span>, need to be core points.</p></li>
+<li><p>A point that is not reachable from any other point is considered an <em>outlier</em> or <em>noise point</em>.</p></li>
+</ol>
+<p>Therefore, we get our definition of a cluster: a point core point <span class="math inline">\(p\)</span> together with all points that are reachable from <span class="math inline">\(p\)</span>. This includes core points (at least one) and none-core points (boundary points) on the boundary as they can not be used to reach more points.</p>
+<p>In contrast to <span class="math inline">\(k\)</span>-means the algorithm we can find none linear clusters. We can illustrate this with the <em>moon data set</em>.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For the plotting function please see <a href="https://github.com/ageron/handson-ml3/blob/main/09_unsupervised_learning.ipynb">GitHub</a>, the accompanying repository to <span class="citation" data-cites="Geron2022-xh">Geron (<a href="../references.html#ref-Geron2022-xh" role="doc-biblioref">2022</a>)</span>, as it forms the basis.</p>
+</div>
+</div>
+<details class="code-fold">
+<summary>Show the code for the figure</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> DBSCAN</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> make_moons</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_dbscan(dbscan, X, size):</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    core_mask <span class="op">=</span> np.zeros_like(dbscan.labels_, dtype<span class="op">=</span><span class="bu">bool</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    core_mask[dbscan.core_sample_indices_] <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    anomalies_mask <span class="op">=</span> dbscan.labels_ <span class="op">==</span> <span class="op">-</span><span class="dv">1</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    non_core_mask <span class="op">=</span> <span class="op">~</span>(core_mask <span class="op">|</span> anomalies_mask)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    cores <span class="op">=</span> dbscan.components_</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    anomalies <span class="op">=</span> X[anomalies_mask]</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    non_cores <span class="op">=</span> X[non_core_mask]</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plotting the clusters</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    plt.scatter(cores[:, <span class="dv">0</span>], cores[:, <span class="dv">1</span>],</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>                c<span class="op">=</span>dbscan.labels_[core_mask],</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>                marker<span class="op">=</span><span class="st">"o"</span>, s<span class="op">=</span>size, cmap<span class="op">=</span><span class="st">"Paired"</span>)</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plotting the core points of the clusters</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    plt.scatter(cores[:, <span class="dv">0</span>], cores[:, <span class="dv">1</span>],</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>                c<span class="op">=</span>dbscan.labels_[core_mask],</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>                marker<span class="op">=</span><span class="st">"*"</span>, s<span class="op">=</span><span class="dv">20</span>,)</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plotting the anomalies</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    plt.scatter(anomalies[:, <span class="dv">0</span>], anomalies[:, <span class="dv">1</span>],</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>                c<span class="op">=</span><span class="st">"r"</span>, marker<span class="op">=</span><span class="st">"x"</span>, s<span class="op">=</span><span class="dv">100</span>)</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plotting the boundary points</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    plt.scatter(non_cores[:, <span class="dv">0</span>], non_cores[:, <span class="dv">1</span>],</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>                c<span class="op">=</span>dbscan.labels_[non_core_mask], marker<span class="op">=</span><span class="st">"."</span>)</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">"$x_1$"</span>)</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">"$x_2$"</span>, rotation<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>    plt.gca().set_aspect(<span class="dv">1</span>)</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">6020</span>)</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>M, M_y <span class="op">=</span> make_moons(n_samples<span class="op">=</span><span class="dv">1000</span>, noise<span class="op">=</span><span class="fl">0.05</span>, random_state<span class="op">=</span><span class="dv">6020</span>)</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>dbscan <span class="op">=</span> DBSCAN(eps<span class="op">=</span><span class="fl">0.05</span>, min_samples<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>dbscan.fit(M)</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>plot_dbscan(dbscan, M, size<span class="op">=</span><span class="dv">100</span>)</span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>dbscan <span class="op">=</span> DBSCAN(eps<span class="op">=</span><span class="fl">0.2</span>, min_samples<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>dbscan.fit(M)</span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>plot_dbscan(dbscan, M, size<span class="op">=</span><span class="dv">600</span>)</span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="fig-clustering-unsupervised_dbscan" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-clustering-unsupervised_dbscan-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-clustering-unsupervised_dbscan" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-clustering-unsupervised_dbscan-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-clustering-unsupervised_dbscan-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="unsupervised_files/figure-html/fig-clustering-unsupervised_dbscan-output-1.svg" class="lightbox" data-gallery="fig-clustering-unsupervised_dbscan" title="Figure&nbsp;1.7&nbsp;(a): Scikit-Learn’s DBSCAN with eps=0.05 and min_samples=5."><img src="unsupervised_files/figure-html/fig-clustering-unsupervised_dbscan-output-1.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-unsupervised_dbscan"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-unsupervised_dbscan-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Scikit-Learn’s DBSCAN with <code>eps=0.05</code> and <code>min_samples=5</code>.
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-clustering-unsupervised_dbscan" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-clustering-unsupervised_dbscan-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-clustering-unsupervised_dbscan-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="unsupervised_files/figure-html/fig-clustering-unsupervised_dbscan-output-2.svg" class="lightbox" data-gallery="fig-clustering-unsupervised_dbscan" title="Figure&nbsp;1.7&nbsp;(b): Scikit-Learn’s DBSCAN with eps=0.2 and min_samples=5."><img src="unsupervised_files/figure-html/fig-clustering-unsupervised_dbscan-output-2.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-unsupervised_dbscan"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-unsupervised_dbscan-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Scikit-Learn’s DBSCAN with <code>eps=0.2</code> and <code>min_samples=5</code>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-unsupervised_dbscan-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.7: DBSCAN illustrated with the moons dataset.
+</figcaption>
+</figure>
+</div>
+<p>The algorithm works best for clusters well separated by low density regions. As all algorithms depending on distance measures it suffers from the curse of dimensionality<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
+<p>As can be seen in <a href="#fig-clustering-unsupervised_dbscan-1" class="quarto-xref">Figure&nbsp;<span>1.7 (a)</span></a> the algorithm produces quite a lot of clusters for a small <span class="math inline">\(\epsilon=0.05\)</span>. In total we get 10 clusters and quite a lot of outliers that are not all easy to retract by the naked eye.</p>
+<p>Nevertheless, if we increase <span class="math inline">\(\epsilon=0.2\)</span> we can see that the two clusters are neatly reproduced, <a href="#fig-clustering-unsupervised_dbscan-2" class="quarto-xref">Figure&nbsp;<span>1.7 (b)</span></a>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The <code>DBSCAN</code> class in Scikit-Learn does not provide a <code>.predict()</code> method like many other such classes. See <span class="citation" data-cites="Geron2022-xh">Geron (<a href="../references.html#ref-Geron2022-xh" role="doc-biblioref">2022</a>)</span> and <a href="https://github.com/ageron/handson-ml3/blob/main/09_unsupervised_learning.ipynb">GitHub</a> for how to train a <span class="math inline">\(k\)</span>-nearest neighbour (kNN) to perform this task.</p>
+</div>
+</div>
+<div class="callout callout-style-simple callout-caution no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exr-dbscan" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 1.2 (Application of DBSCAN)</strong></span> &nbsp;</p>
+<ol type="1">
+<li><p>Apply the DBSCAN algorithm to our toy example used through this section to recover the two clusters as good as possible. Try different <span class="math inline">\(\epsilon\)</span> values as well as different norms (<code>metric</code> parameter).</p></li>
+<li><p>Additionally, for a higher dimensional problem, using DBSCAN split the Iris dataset into its three classes of flowers.</p></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="finite-mixtures-models" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="finite-mixtures-models"><span class="header-section-number">1.4</span> Finite Mixtures Models</h2>
+<p>Finite mixture models assume that the observations <span class="math inline">\(x_i\)</span> are mixtures of <span class="math inline">\(k\)</span> processes which combine in the measurement. Each mixture is defined via a probability model with unknown parameters. The aim of the algorithm is to find the parameters such that the <span class="math inline">\(k\)</span> processes best describe the <span class="math inline">\(x_i\)</span> observations. The basis of the algorithm is the so called <em>expectation-maximization</em> (EM) algorithm of <span class="citation" data-cites="dempster1977maximum">Dempster, Laird, and Rubin (<a href="../references.html#ref-dempster1977maximum" role="doc-biblioref">1977</a>)</span>, that is designed to find the <em>maximum-likelihood</em> parameters of the defined statistical models.</p>
+<p>The most common choice for the probability models is the Gaussian distribution<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> and for this choice, the method is better known as <em>Gaussian mixture models</em> (GMM). This is often quite a sensible choice if nothing more is known about the observations and a Gaussian distribution is than always a save bet. As a result each process can be described by two parameters, <em>mean</em> and <em>variance</em>. Each cluster in turn, will be described by an ellipsoidal shape where size, density, orientation and semi-axis vary.</p>
+<p>Like <span class="math inline">\(k\)</span>-means, in the simplest version, GMM is provided with the number of clusters <span class="math inline">\(k\)</span> and starts from an initial guess of the means and corresponding variances. The parameters are than iteratively updated to find a (local) maximum. There are some problems with this approach, e.g.&nbsp;if you set one of the processes to have zero variance and mean equal to a point. To avoid such problems <em>cross-validation</em> can often help to avoid problems stemming from an initialization with a poor initial guess.</p>
+<p>As mentioned, the main idea of the mixture models is that the observations are a linear combination of probability density functions (PDF) <span class="math display">\[
+f(x_j, \Theta) = \sum_{p=1}^k \alpha_p f_p(x_j, \Theta_p),
+\]</span> where <span class="math inline">\(f\)</span> denotes the observed/measured PDF with parameters <span class="math inline">\(\Theta\)</span>, <span class="math inline">\(f_p\)</span> the PDF of mixture <span class="math inline">\(p\)</span> with parameters <span class="math inline">\(\Theta_p\)</span>, and <span class="math inline">\(k\)</span> denotes the number of mixtures. The weights <span class="math inline">\(\alpha_p\)</span> fulfil <span class="math inline">\(\sum_p \alpha_p = 1\)</span>.</p>
+<p>Overall we therefore can formulate the algorithm as:</p>
+<div class="callout callout-style-simple callout-none no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-ma" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1.2 (Mixture Models Algorithm)</strong></span> Given the observed PDF <span class="math inline">\(f(x_j, \Theta)\)</span>, estimate the mixture weights <span class="math inline">\(\alpha_p\)</span> and the parameters fo the distribution <span class="math inline">\(\Theta_p\)</span>.</p>
+<p><span class="citation" data-cites="Brunton2022">(see <a href="../references.html#ref-Brunton2022" role="doc-biblioref">Brunton and Kutz 2022</a>)</span></p>
+</div>
+</div>
+</div>
+</div>
+<p>Lets follow the derivative for the GMM method in <span class="citation" data-cites="Brunton2022">(<a href="../references.html#ref-Brunton2022" role="doc-biblioref">Brunton and Kutz 2022, sec. 5.5</a>)</span> to bet a better idea what is happening.</p>
+<p>For the GMM <span class="math inline">\(f\)</span> becomes <span class="math display">\[
+f(x_j, \Theta) = \sum_{p=1}^k \alpha_p \mathcal{N}_p(x_j, \mu_p, \sigma_p)
+\]</span> and for a given <span class="math inline">\(k\)</span> we need to find <span class="math inline">\(\alpha_p, \mu_p, \sigma_p\)</span>. We get <span class="math inline">\(\Theta\)</span> from the roots of <span class="math display">\[
+L(\Theta) = \sum_{j=1}^n\log f(x_j | \Theta),
+\]</span> <span class="math inline">\(L\)</span> is called the <em>log-likelihood</em> function and we sum over all observations <span class="math inline">\(x_j\)</span>. We transform it into a optimization problem by setting the derivative to zero <span class="math display">\[
+\frac{\partial L(\Theta)}{\partial \Theta} = 0
+\]</span> and solve it via the EM algorithm. As the name suggests, there are two steps E and M.</p>
+<p>The E step uses the following posterior to establish memberships. Therefore, we start of by assuming an initial guess of the vector <span class="math inline">\(\Theta\)</span> and this leads to the <em>posterior probability of distribution <span class="math inline">\(p\)</span> of <span class="math inline">\(x_j\)</span> </em> <span class="math display">\[
+\tau_p(x_j, \Theta) = \frac{\alpha_p f_p(x_j, \Theta_p)}{f(x_j, \Theta)}.
+\]</span> In other words, we try to figure out if <span class="math inline">\(x_j\)</span> is part of the <span class="math inline">\(p\)</span>th mixture. For the GMM this becomes, in the <span class="math inline">\(l\)</span> iteration: <span class="math display">\[
+\tau_p^{(l)}(x_j) = \frac{\alpha_p^{(l)} \mathcal{N}_p(x_j, \mu_p^{(l)}, \sigma_p^{(l)})}{f(x_j, \Theta^{(l)})}.
+\]</span></p>
+<p>Now the M step starts to update the parameters and mixture weights as <span class="math display">\[
+\begin{align}
+\alpha_p^{(l+1)} &amp;= \frac1n \sum_{j=1}^n \tau_p^{(l)}(x_j), \\
+\mu_p^{(l+1)} &amp;= \frac{\sum_{j=1}^n x_j\tau_p^{(l)}(x_j)}{\sum_{j=1}^n \tau_p^{(l)}(x_j)}, \\
+\Sigma_p^{(l+1)} &amp;= \frac{\sum_{j=1}^n \tau_p^{(l)}(x_j)(x_j - \mu_p^{(l+1)})(x_j - \mu_p^{(l+1)})^\mathrm{T}}{\sum_{j=1}^n \tau_p^{(l)}(x_j)},
+\end{align}
+\]</span> with <span class="math inline">\(\Sigma_p^{(l+1)}\)</span> denotes the covariance matrix. The algorithm now alternates between E and M until convergence is reached.</p>
+<p>Let us try it with the cats and dogs images in wavelet basis from <a href="index.html#sec-clustering-cvd" class="quarto-xref"><span>Section 1.2</span></a> by fitting to the second and forth principal value of the SVD. Note, we directly load the images in wavelet basis and do not recompute them.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The following data set and the basic structure of the code is from <span class="citation" data-cites="Brunton2022">(<a href="../references.html#ref-Brunton2022" role="doc-biblioref">Brunton and Kutz 2022</a>, Code 5.8)</span>. Also see <a href="https://github.com/dynamicslab/databook_python">GitHub</a>.</p>
+</div>
+</div>
+<details class="code-fold">
+<summary>Show the code for the figure</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> io</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.mixture <span class="im">import</span> GaussianMixture</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> multivariate_normal</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://github.com/dynamicslab/databook_python/"</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"raw/refs/heads/master/DATA/catData_w.mat"</span>)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>cats <span class="op">=</span> scipy.io.loadmat(io.BytesIO(response.content))[<span class="st">"cat_wave"</span>]</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://github.com/dynamicslab/databook_python/"</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"raw/refs/heads/master/DATA/dogData_w.mat"</span>)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>dogs <span class="op">=</span> scipy.io.loadmat(io.BytesIO(response.content))[<span class="st">"dog_wave"</span>]</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>CD <span class="op">=</span> np.concatenate((dogs, cats), axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>U,S,VT <span class="op">=</span> np.linalg.svd(CD <span class="op">-</span> np.mean(CD), full_matrices<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>v <span class="op">=</span> VT.T</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>dogcat <span class="op">=</span> v[:,(<span class="dv">1</span>,<span class="dv">3</span>)]</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>GMModel <span class="op">=</span> GaussianMixture(n_components<span class="op">=</span><span class="dv">2</span>, n_init<span class="op">=</span><span class="dv">10</span>).fit(dogcat)</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>plt.scatter(v[:<span class="dv">80</span>,<span class="dv">1</span>], v[:<span class="dv">80</span>,<span class="dv">3</span>], label<span class="op">=</span><span class="st">"dogs"</span>)</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>plt.scatter(v[<span class="dv">80</span>:,<span class="dv">1</span>], v[<span class="dv">80</span>:,<span class="dv">3</span>], label<span class="op">=</span><span class="st">"cats"</span>)</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="vs">r"$PC_1$"</span>)</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="vs">r"$PC_4$"</span>)</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="fl">0.15</span>, <span class="fl">0.25</span>)</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.linspace(<span class="op">-</span><span class="fl">0.25</span>, <span class="fl">0.2</span>)</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>X, Y <span class="op">=</span> np.meshgrid(x, y)</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>XX <span class="op">=</span> np.array([X.ravel(), Y.ravel()]).T</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>Z <span class="op">=</span> np.exp(GMModel.score_samples(XX))</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>Z <span class="op">=</span> Z.reshape(X.shape)</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>CS <span class="op">=</span> plt.contour(X, Y, Z,</span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>                levels<span class="op">=</span>np.arange(<span class="dv">3</span>,<span class="dv">32</span>,<span class="dv">4</span>), colors<span class="op">=</span><span class="st">'k'</span>, linestyles<span class="op">=</span><span class="st">'solid'</span>)</span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>plt.gca().set_aspect(<span class="dv">1</span>)</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> plt.axes(projection<span class="op">=</span><span class="st">'3d'</span>)</span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(GMModel.weights_.shape[<span class="dv">0</span>]):</span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>    rv <span class="op">=</span> multivariate_normal(GMModel.means_[i], GMModel.covariances_[i])</span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>    z <span class="op">=</span> GMModel.weights_[i] <span class="op">*</span> rv.pdf(np.dstack((X, Y)))</span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>    ax.plot_surface(X, Y, z, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>ax.plot_wireframe(X, Y, Z, color<span class="op">=</span><span class="st">'black'</span>, rstride<span class="op">=</span><span class="dv">5</span>, cstride<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>ax.view_init(<span class="dv">30</span>, <span class="op">-</span><span class="dv">80</span>)</span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="vs">r"$PC_1$"</span>)</span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="vs">r"$PC_4$"</span>)</span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a>plt.legend([<span class="vs">r"$\mathcal</span><span class="sc">{N}</span><span class="vs">(\mu_1, \sigma_1)$"</span>,</span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a>            <span class="vs">r"$\mathcal</span><span class="sc">{N}</span><span class="vs">(\mu_2, \sigma_2)$"</span>])</span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="fig-clustering-gmm" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-clustering-gmm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-clustering-gmm" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-clustering-gmm-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-clustering-gmm-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="unsupervised_files/figure-html/fig-clustering-gmm-output-1.svg" class="lightbox" data-gallery="fig-clustering-gmm" title="Figure&nbsp;1.8&nbsp;(a): We can see a nice split along the tow animals via the Gaussian distributions."><img src="unsupervised_files/figure-html/fig-clustering-gmm-output-1.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-gmm"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-gmm-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) We can see a nice split along the tow animals via the Gaussian distributions.
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-clustering-gmm" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-clustering-gmm-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-clustering-gmm-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="unsupervised_files/figure-html/fig-clustering-gmm-output-2.svg" class="lightbox" data-gallery="fig-clustering-gmm" title="Figure&nbsp;1.8&nbsp;(b): The PDFs of the fitted distributions, weighted via the GMM algorithm."><img src="unsupervised_files/figure-html/fig-clustering-gmm-output-2.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-gmm"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-gmm-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) The PDFs of the fitted distributions, weighted via the GMM algorithm.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-gmm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.8: Fitting of the second and fourth principal value of the cats and dogs images in wavelet basis via the GMM method.
+</figcaption>
+</figure>
+</div>
+<p>As can be seen in <a href="#fig-clustering-gmm-1" class="quarto-xref">Figure&nbsp;<span>1.8 (a)</span></a> the two clusters are quite well captured by the GMM algorithm. The contour shows the linear combination of the two Gaussians. We see the two Gaussians on the right in <a href="#fig-clustering-gmm-2" class="quarto-xref">Figure&nbsp;<span>1.8 (b)</span></a> where we use the same colours as for the cats and dogs respectively. Note that the distributions are weight <span class="math inline">\(\alpha_p\)</span> from GMM but other than that there is no unit in the z direction.</p>
+<p>As discussed above the algorithm is prone to problems during the initialization, therefore we use <code>n_init = 10</code> to initialize the algorithm 10 times and only keep the best result.</p>
+<p>We can draw new samples from the resulting object <code>.sample()</code> and we can also fit data to it and we can also perform hard and soft clustering. For hard clustering the model assigns each instance to the most likely cluster (<code>.predict()</code>), where for soft clustering (<code>.predict_proba()</code>) we get the probability of <em>membership</em> for each cluster.</p>
+<p>If the algorithm struggles to recover the clusters, we can halp it by imposing the shape of the cluster via restricting the covariance matrix <span class="math inline">\(\Sigma_p\)</span>. This can be done via the parameter <code>covariance_type</code>, see <a href="https://scikit-learn.org/stable/modules/generated/sklearn.mixture.GaussianMixture.html">docs</a>.</p>
+<div class="callout callout-style-simple callout-caution no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exr-gmm" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 1.3 (Application of GMM)</strong></span> &nbsp;</p>
+<ol type="1">
+<li><p>Apply the GMM algorithm to our toy example used through this section to recover the two clusters as good as possible. This should be straight forward, as we constructed it via Gaussian distributions. Try constraining the algorithm by imposing the different values possible for <code>covariance_type</code>.</p></li>
+<li><p>Additionally, for a higher dimensional problem, using DBSCAN split the Iris dataset into its three classes of flowers.</p></li>
+<li><p>Try to use GMM to get clusters for the two moon dataset used in <a href="#sec-clustering-ul-dbscan" class="quarto-xref"><span>Section 1.3</span></a>. Also try with the <code>BayesianGaussianMixture</code> class, where no amount of clusters needs to be specified.</p></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>GMM can also be used for anomaly detection. Simply assume every observation located in a low density region an anomaly. For this the threshold needs to be defined in accordance to your expected anomalies.</p>
+<p>E.g. to get about <span class="math inline">\(4\%\)</span> anomalies you can use the following snippet togethere with the above code:</p>
+<div id="cell-fig-clustering-gmm-ano" class="cell" data-execution_count="9">
+<details class="code-fold">
+<summary>Show the code for the figure</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>S <span class="op">=</span> GMModel.score_samples(dogcat)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>density_threshold <span class="op">=</span> np.percentile(S, <span class="dv">2</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>anomalies <span class="op">=</span> dogcat[S <span class="op">&lt;</span> density_threshold]</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>plt.scatter(dogcat[:<span class="dv">80</span>,<span class="dv">0</span>], dogcat[:<span class="dv">80</span>,<span class="dv">1</span>], alpha<span class="op">=</span><span class="fl">0.5</span>, label<span class="op">=</span><span class="st">"dogs"</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>plt.scatter(dogcat[<span class="dv">80</span>:,<span class="dv">0</span>], dogcat[<span class="dv">80</span>:,<span class="dv">1</span>], alpha<span class="op">=</span><span class="fl">0.5</span>, label<span class="op">=</span><span class="st">"cats"</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="vs">r"$PC_1$"</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="vs">r"$PC_4$"</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>plt.scatter(anomalies[:, <span class="dv">0</span>], anomalies[:, <span class="dv">1</span>], color<span class="op">=</span><span class="st">"k"</span>, marker<span class="op">=</span><span class="st">"x"</span>,</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>            label<span class="op">=</span><span class="st">"anomaly"</span>)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-clustering-gmm-ano" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-clustering-gmm-ano-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="unsupervised_files/figure-html/fig-clustering-gmm-ano-output-1.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-22" title="Figure&nbsp;1.9: Fitting of the second and fourth principal value of the cats and dogs images in wavelet basis via the GMM method."><img src="unsupervised_files/figure-html/fig-clustering-gmm-ano-output-1.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-gmm-ano-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.9: Fitting of the second and fourth principal value of the cats and dogs images in wavelet basis via the GMM method.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>see <span class="citation" data-cites="Geron2022-xh">Geron (<a href="../references.html#ref-Geron2022-xh" role="doc-biblioref">2022</a>)</span> and the corresponding <a href="https://github.com/ageron/handson-ml3/blob/main/09_unsupervised_learning.ipynb">GitHub repository</a></p>
+</div>
+</div>
+</section>
+<section id="motivational-example" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="motivational-example"><span class="header-section-number">1.5</span> Motivational example</h2>
+<p>Before we make the leap to supervised learning we we introduce a new data set and see how our unsupervised approach works in this case.</p>
+<p>We do this with the (in)famous MNIST data set of hand written digits. Lets start by looking at the data set and establishing some basic properties.</p>
+<p>We load the data set and look at its description</p>
+<div id="c6122a3c" class="cell styled-output" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_openml</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>mnist <span class="op">=</span> fetch_openml(<span class="st">'mnist_784'</span>, as_frame<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mnist.DESCR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>**Author**: Yann LeCun, Corinna Cortes, Christopher J.C. Burges  
+**Source**: [MNIST Website](http://yann.lecun.com/exdb/mnist/) - Date unknown  
+**Please cite**:  
+
+The MNIST database of handwritten digits with 784 features, raw data available at: http://yann.lecun.com/exdb/mnist/. It can be split in a training set of the first 60,000 examples, and a test set of 10,000 examples  
+
+It is a subset of a larger set available from NIST. The digits have been size-normalized and centered in a fixed-size image. It is a good database for people who want to try learning techniques and pattern recognition methods on real-world data while spending minimal efforts on preprocessing and formatting. The original black and white (bilevel) images from NIST were size normalized to fit in a 20x20 pixel box while preserving their aspect ratio. The resulting images contain grey levels as a result of the anti-aliasing technique used by the normalization algorithm. the images were centered in a 28x28 image by computing the center of mass of the pixels, and translating the image so as to position this point at the center of the 28x28 field.  
+
+With some classification methods (particularly template-based methods, such as SVM and K-nearest neighbors), the error rate improves when the digits are centered by bounding box rather than center of mass. If you do this kind of pre-processing, you should report it in your publications. The MNIST database was constructed from NIST's NIST originally designated SD-3 as their training set and SD-1 as their test set. However, SD-3 is much cleaner and easier to recognize than SD-1. The reason for this can be found on the fact that SD-3 was collected among Census Bureau employees, while SD-1 was collected among high-school students. Drawing sensible conclusions from learning experiments requires that the result be independent of the choice of training set and test among the complete set of samples. Therefore it was necessary to build a new database by mixing NIST's datasets.  
+
+The MNIST training set is composed of 30,000 patterns from SD-3 and 30,000 patterns from SD-1. Our test set was composed of 5,000 patterns from SD-3 and 5,000 patterns from SD-1. The 60,000 pattern training set contained examples from approximately 250 writers. We made sure that the sets of writers of the training set and test set were disjoint. SD-1 contains 58,527 digit images written by 500 different writers. In contrast to SD-3, where blocks of data from each writer appeared in sequence, the data in SD-1 is scrambled. Writer identities for SD-1 is available and we used this information to unscramble the writers. We then split SD-1 in two: characters written by the first 250 writers went into our new training set. The remaining 250 writers were placed in our test set. Thus we had two sets with nearly 30,000 examples each. The new training set was completed with enough examples from SD-3, starting at pattern # 0, to make a full set of 60,000 training patterns. Similarly, the new test set was completed with SD-3 examples starting at pattern # 35,000 to make a full set with 60,000 test patterns. Only a subset of 10,000 test images (5,000 from SD-1 and 5,000 from SD-3) is available on this site. The full 60,000 sample training set is available.
+
+Downloaded from openml.org.</code></pre>
+</div>
+</div>
+<p>The images are stored in <code>.data</code> and the label in <code>.target</code>. We can look at the first 100 digits</p>
+<div id="cell-fig-clustering-usl-mnist" class="cell" data-execution_count="11">
+<details class="code-fold">
+<summary>Show the code for the figure</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_openml</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>mnist <span class="op">=</span> fetch_openml(<span class="st">'mnist_784'</span>, as_frame<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>im <span class="op">=</span> np.zeros((<span class="dv">10</span> <span class="op">*</span> <span class="dv">28</span>, <span class="dv">10</span> <span class="op">*</span> <span class="dv">28</span>), <span class="bu">int</span>)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>        im[<span class="dv">28</span><span class="op">*</span>i:<span class="dv">28</span><span class="op">*</span>(i<span class="op">+</span><span class="dv">1</span>), <span class="dv">28</span><span class="op">*</span>j:<span class="dv">28</span><span class="op">*</span>(j<span class="op">+</span><span class="dv">1</span>)] <span class="op">=</span> mnist.data[i<span class="op">*</span><span class="dv">10</span> <span class="op">+</span> j].reshape(<span class="dv">28</span>, <span class="dv">28</span>)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>plt.imshow(im, cmap<span class="op">=</span><span class="st">"binary"</span>)</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-clustering-usl-mnist" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-clustering-usl-mnist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="unsupervised_files/figure-html/fig-clustering-usl-mnist-output-1.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-23" title="Figure&nbsp;1.10: First 100 digits from the MNIST data set."><img src="unsupervised_files/figure-html/fig-clustering-usl-mnist-output-1.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-usl-mnist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.10: First 100 digits from the MNIST data set.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>As can be seen from <a href="#fig-clustering-usl-mnist" class="quarto-xref">Figure&nbsp;<span>1.10</span></a>, most digits are easy to distinguish for us but there are some nasty things included. Especially, there are <span class="math inline">\(1\)</span>s with the english style (just one straight line) of writing (1st row, 7th column), but also as a diagonal line (1st row, 4th column), and finally also the german style (connecting line at base and top) of writing (3rd row, 5th column).</p>
+<p>Also the two digit comes in various forms, with loop (1st row, 6th column) and without (3rd row, 6th column). Finally we all know that a <span class="math inline">\(3\)</span> can hide in an <span class="math inline">\(8\)</span>, same as a <span class="math inline">\(9\)</span>, a <span class="math inline">\(1\)</span> can hide in a <span class="math inline">\(7\)</span> and much more.</p>
+<p>Now, before we go any further in the investigation we split up the data set into a training and a test set, we will not use this here but we should establish some way of working right from the start.</p>
+<div id="8608614e" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>X_train, X_test <span class="op">=</span> mnist.data[:<span class="dv">60000</span>], mnist.data[<span class="dv">60000</span>:]</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>y_train, y_test <span class="op">=</span> mnist.target[:<span class="dv">60000</span>], mnist.target[<span class="dv">60000</span>:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now let us try with <span class="math inline">\(k\)</span>-means to find the ten digits by finding <span class="math inline">\(10\)</span> clusters.</p>
+<div id="cell-fig-clustering-usl-mnist2" class="cell" data-execution_count="13">
+<details class="code-fold">
+<summary>Show the code for the figure</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_openml</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> KMeans</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>kmeans <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>k, n_init<span class="op">=</span><span class="dv">1</span>, random_state<span class="op">=</span><span class="dv">6020</span>).fit(X_train)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>im <span class="op">=</span> np.zeros((<span class="dv">1</span> <span class="op">*</span> <span class="dv">28</span>, <span class="dv">10</span> <span class="op">*</span> <span class="dv">28</span>), <span class="bu">int</span>)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>):</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>        im[<span class="dv">28</span><span class="op">*</span>i:<span class="dv">28</span><span class="op">*</span>(i<span class="op">+</span><span class="dv">1</span>), <span class="dv">28</span><span class="op">*</span>j:<span class="dv">28</span><span class="op">*</span>(j<span class="op">+</span><span class="dv">1</span>)] <span class="op">=</span> <span class="op">\</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>                kmeans.cluster_centers_[i<span class="op">*</span><span class="dv">10</span> <span class="op">+</span> j].reshape(<span class="dv">28</span>, <span class="dv">28</span>)</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>plt.imshow(im, cmap<span class="op">=</span><span class="st">"binary"</span>)</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-clustering-usl-mnist2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-clustering-usl-mnist2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="unsupervised_files/figure-html/fig-clustering-usl-mnist2-output-1.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-24" title="Figure&nbsp;1.11: The cluster means of k-means for 10 clusters."><img src="unsupervised_files/figure-html/fig-clustering-usl-mnist2-output-1.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-usl-mnist2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.11: The cluster means of <span class="math inline">\(k\)</span>-means for 10 clusters.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>As can be seen from <a href="#fig-clustering-usl-mnist2" class="quarto-xref">Figure&nbsp;<span>1.11</span></a>, the cluster centers do not recover our ten digits. In general they are, as expected smudged as the do not represent an actual image. It looks like <span class="math inline">\(0, 1, 2, 3, 6, 8, 9\)</span> are <em>easy</em> to discover but <span class="math inline">\(4, 5, 7\)</span> not. If we look closely, we can see <span class="math inline">\(4, 5, 7\)</span> represented in our clusters but not as separate digits. Obviously this is not a good way to proceed to find our digits. We will discuss methods to perform this task in the next section <a href="supervised.html" class="quarto-xref"><span>Chapter 2</span></a>. Furthermore, keep this part in mind as we will come back to how this can still be helpful in a different aspect as semi supervised learning <span class="quarto-unresolved-ref">?sec-clustering-ssl</span>.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
 <div id="ref-Brunton2022" class="csl-entry" role="listitem">
 Brunton, Steven L., and J. Nathan Kutz. 2022. <em>Data-Driven Science and Engineering - Machine Learning, Dynamical Systems, and Control</em>. 2nd ed. Cambridge: Cambridge University Press.
+</div>
+<div id="ref-dempster1977maximum" class="csl-entry" role="listitem">
+Dempster, Arthur P, Nan M Laird, and Donald B Rubin. 1977. <span>“Maximum Likelihood from Incomplete Data via the EM Algorithm.”</span> <em>Journal of the Royal Statistical Society: Series B (Methodological)</em> 39 (1): 1–22.
+</div>
+<div id="ref-DBSCAN" class="csl-entry" role="listitem">
+Ester, Martin, Hans-Peter Kriegel, Jörg Sander, and Xiaowei Xu. 1996. <span>“A Density-Based Algorithm for Discovering Clusters in Large Spatial Databases with Noise.”</span> In <em>Proceedings of the Second International Conference on Knowledge Discovery and Data Mining</em>, 226–31. KDD’96. Portland, Oregon: AAAI Press.
 </div>
 <div id="ref-Geron2022-xh" class="csl-entry" role="listitem">
 Geron, Aurelien. 2022. <em>Hands-on Machine Learning with Scikit-Learn, Keras, and <span>TensorFlow</span> 3e</em>. 3rd ed. Sebastopol, CA: O’Reilly Media.
@@ -853,7 +1358,10 @@ Lloyd, Stuart P. 1982. <span>“Least Squares Quantization in <span>PCM</span>.�
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p><span class="citation" data-cites="Kandolf_GDM">(see <a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">Kandolf 2025, sec. 1.2</a>)</span> <a href="https://kandolfp.github.io/MECH-M-DUAL-1-DBM/basics/linearalgebra.html#norms">Link</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>see <span class="citation" data-cites="Kandolf_GDM">Kandolf (<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">2025</a>)</span>, Section 1.2 or follow the direct <a href="https://kandolfp.github.io/MECH-M-DUAL-1-DBM/basics/linearalgebra.html#norms">link</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>short for <em>if and only if</em><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Problems occurring for higher dimensional data and distance measures, see <a href="https://en.wikipedia.org/wiki/Curse_of_dimensionality#Distance_functions">WikiPedia</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>see <span class="citation" data-cites="Kandolf_GDM">Kandolf (<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">2025</a>)</span>, Example 14.6 or for a direct <a href="https://kandolfp.github.io/MECH-M-DUAL-1-DBM/statistics/bayesian.html#exm-statistics-normal_dist">Link</a><a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
@@ -1426,8 +1934,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../summary.html" class="pagination-link" aria-label="Summary">
-        <span class="nav-page-text">Summary</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../clustering/supervised.html" class="pagination-link" aria-label="Supervised learning">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Supervised learning</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

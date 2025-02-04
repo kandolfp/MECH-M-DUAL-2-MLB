@@ -180,6 +180,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Unsupervised learning</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../clustering/supervised.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Supervised learning</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item">
@@ -357,7 +363,7 @@ Figure&nbsp;A.5
 </div>
 </div>
 <p>For our purposes only the vertical and horizontal feature are of interest and we combine these two images. In order to make sure the features are highlighted optimal we need to rescale the images before the combination. For this we use a similar function like the MATLAB <a href="https://de.mathworks.com/help/wavelet/ref/wcodemat.html"><code>wcodemat</code></a> function.</p>
-<div id="0df55775" class="cell" data-execution_count="3">
+<div id="1cd1a2f2" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rescale(data, nb):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> np.<span class="bu">abs</span>(data)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> x <span class="op">-</span> np.<span class="bu">min</span>(x)</span>
@@ -406,7 +412,7 @@ Figure&nbsp;A.7: Combination of vertical and horizontal features rescaled.
 </div>
 </div>
 <p>In total this leads to the following function to transform a list of the images, given as row vectors.</p>
-<div id="caaee08a" class="cell" data-execution_count="5">
+<div id="da26ed24" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pywt</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
