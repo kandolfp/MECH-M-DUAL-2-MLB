@@ -598,7 +598,6 @@ v = VT.T
 
 dogcat = v[:,(1,3)]
 GMModel = GaussianMixture(n_components=2, n_init=10).fit(dogcat)
-AIC = GMModel.aic(dogcat)
 
 plt.figure()
 plt.scatter(v[:80,1], v[:80,3], label="dogs")
