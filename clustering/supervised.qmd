@@ -1,0 +1,260 @@
+# Supervised learning {#sec-clustering-sl}
+
+If we recall @Fischer from the Iris data set, we can also find one of the first supervised learning methods in this paper.
+The introduced _linear discriminant analysis_ (LDA) has survived over time and is still one of the standard techniques for classification, even though we use a more generalized and improved method nowadays.
+
+::: {.callout-important}
+The following introduction and illustrational data set, as well as the basic structure of the code is from [@Brunton2022, Code 5.9].
+Also see [GitHub](https://github.com/dynamicslab/databook_python).
+:::
+
+The idea if LDA is to find a linear combination of features that optimally separates two or more classes.
+The crucial part in the algorithm is that it is guided by labelled data.
+At its core, the algorithm aims to solve an optimization problem: find an optimal low-dimensional embedding of the data that shows a clear separation between their point distribution, or maximize the distance between the inter-class data and minimize the intra-class data distance.
+
+::: {.callout-tip}
+For supervised learning, it is always good practice to split up your data set into a _training_ and _testing_ section.
+**It is important to have a test set that the algorithm has never seen!**
+In general a $80:20$ split is common but other rations might be advisable, depending on the data set. 
+
+It is also common practice to use $k$-folds cross-validation for the training set. 
+:::
+
+::: {.callout appearance="simple"}
+:::: {#def-crossvalidation}
+
+## $k$-folds cross-validation
+
+The $k$-folds cross-validation technique is a method to allow better _hyperparameter tuning_, especially for smaller data sets where training and validation data is small.
+The main idea is that you split your iterate over different validation sets by splitting up your training set.
+Lets say we use $5$-fold cross-validation we split the training set into 5 parts.
+Train with 4 parts and validate against the 5th.
+We than rotate and select a different validation fold.
+At the end we average over the 5 iterations to get our final parameters.
+
+This looks something like this:
+
+![Common split with the folds 1 to 4 for training and 5 for validation in the first iteration and folds 2 to 5 for training and 1 for validation in the last. The test set is not touched.](../_assets/clustering/kfoldcrossvalidation){#fig-clustering-sl-5foldcrossvalidation}
+
+It is important that the test set is not included in the folds to make sure you test against observations that the algorithm has never seen!
+::::
+:::
+
+The main idea of LDA is to use projection.
+For a two-class LDA this becomes
+$$
+w = \operatorname{arg\, max}_w \frac{w^\mathrm{T}S_B w}{w^\mathrm{T}S_W w},
+$$ {#eq-grayleigh}
+(the generalized Rayleigh quotient) where $w$ is our thought after projection and the two scatter matrices
+$$
+S_B = (\mu_2 - \mu_1)(\mu_2 - \mu_1)^\mathrm{T}
+$$
+for between-class relation as well as
+$$
+S_W = \sum_{j=1}^2 \sum_{x\in\mathcal{D}_j} (x - \mu_j)(x - \mu_j)^\mathrm{T}
+$$
+for within-class data.
+The set $\mathcal{D}_j$ denotes the subdomain of the data associated with cluster $j$.
+The two matrices measure the variance of the data set as well as the means.
+To solve @eq-grayleigh we need to solve the generalized eigenvalue problem[^GEV]
+$$
+S_B w = \lambda S_w w
+$$
+where the maximal eigenvalue and the corresponding eigenvector are our solution.
+
+We try this with the cats and dogs data set in both basis.
+
+```{python}
+#| label: fig-clustering-sl-lda
+#| fig-cap: "Evaluation of the LDA for the second and fourth principal component on the test set of 40 animals. A bar on the in the top half corresponds to dogs and in the bottom half to cats. The first 20 individuals should be dogs, the second 20 cats. The red dotted line shows the split. True positive can be found in the top-left as well as the bottom-right."
+#| fig-subcap: 
+#|   - "Trained and evaluated against the raw data."
+#|   - "Trained and evaluated against the data in wavelet basis."
+#| code-fold: true
+#| code-summary: "Show the code for the figure"
+import numpy as np
+import scipy
+import requests
+import io
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
+import matplotlib.pyplot as plt
+%config InlineBackend.figure_formats = ["svg"]
+
+def analyse(CD):
+    U, S, VT = np.linalg.svd(CD - np.mean(CD), full_matrices=0)
+    v = VT.T
+    xtrain = np.concatenate((v[:60, [1, 3]], v[80:140, [1, 3]]))
+    label = np.repeat(np.array([1, -1]), 60)
+    test = np.concatenate((v[60:80, [1, 3]], v[140:160, [1, 3]]))
+    lda = LinearDiscriminantAnalysis()
+    lda.fit(xtrain, label)
+    test_class = lda.predict(test)
+    truth = np.repeat(np.array([1, -1]), 20)
+    E = 100 * (1 - np.sum(np.abs(test_class - truth) / 2) / 40)
+    plt.figure()
+    plt.bar(range(40), test_class)
+    plt.plot([-0.5, 39.5], [0, 0], "k")
+    plt.plot([19.5, 19.5], [-1.1, 1.1], "r-.")
+    plt.yticks([-0.5, 0.5], ["cats", "dogs"], rotation=90, va="center")
+    plt.text(10, 1.05, "dogs")
+    plt.text(30, 1.05, "cats")
+    plt.gca().set_aspect(40 / (2 * 3))
+    return (test_class, E, v)
+
+
+response = requests.get(
+    "https://github.com/dynamicslab/databook_python/"
+    "raw/refs/heads/master/DATA/catData.mat")
+cats = scipy.io.loadmat(io.BytesIO(response.content))["cat"]
+
+response = requests.get(
+    "https://github.com/dynamicslab/databook_python/"
+    "raw/refs/heads/master/DATA/dogData.mat")
+dogs = scipy.io.loadmat(io.BytesIO(response.content))["dog"]
+
+test_class, E, v = analyse(np.concatenate((dogs, cats), axis=1))
+
+response = requests.get(
+    "https://github.com/dynamicslab/databook_python/"
+    "raw/refs/heads/master/DATA/catData_w.mat")
+cats_w = scipy.io.loadmat(io.BytesIO(response.content))["cat_wave"]
+
+response = requests.get(
+    "https://github.com/dynamicslab/databook_python/"
+    "raw/refs/heads/master/DATA/dogData_w.mat")
+dogs_w = scipy.io.loadmat(io.BytesIO(response.content))["dog_wave"]
+
+test_class, E_w, v_w = analyse(np.concatenate((dogs_w, cats_w), axis=1))
+plt.show()
+```
+
+If we use our raw data set for the classification we get an overall accuracy of `{python} float(np.round(E, 2))`% with $\tfrac{4}{20}$ wrongly labelled dogs and $\tfrac{9}{20}$ wrongly labelled cats.
+We can increase this to an accuracy of `{python} float(np.round(E_w, 2))`% with $\tfrac{5}{20}$ wrongly labelled dogs and $\tfrac{2}{20}$ wrongly labelled cats.
+
+This could be expected, see @fig-clustering-dvc-wavelet-pca_results_overview for the separation of the principal values for the two basis. 
+
+Of course we only have very limited data with only 80 images for each of the species.
+In this case we should do a cross-validation and we have not shuffled the data.
+
+Let us see how selecting different test and training sets influence the behaviour.
+
+```{python}
+#| label: fig-clustering-sl-lda2
+#| fig-cap: "Cross validation for the data set in wavelet basis, use 100 run with different training and test sets. We always use 120 images for training and 40 for testing."
+#| code-fold: true
+#| code-summary: "Show the code for the figure"
+import numpy as np
+import scipy
+import requests
+import io
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
+import matplotlib.pyplot as plt
+%config InlineBackend.figure_formats = ["svg"]
+np.random.seed(6020)
+
+E = np.zeros(100)
+for j in range(100):
+    r1 = np.random.permutation(80)
+    r2 = np.random.permutation(80) + 60
+    ind1 = r1[:60]
+    ind2 = r2[:60]
+    ind1t = r1[60:80]
+    ind2t = r2[60:80]
+    
+    xtrain = np.concatenate((v_w[ind1, :][:, [1, 3]], v_w[ind2, :][:, [1, 3]]))
+    test = np.concatenate((v_w[ind1t, :][:, [1, 3]], v_w[ind2t, :][:, [1, 3]]))
+    label = np.repeat(np.array([1, -1]), 60)
+
+    lda = LinearDiscriminantAnalysis()
+    test_class = lda.fit(xtrain, label).predict(test)
+
+    truth = np.repeat(np.array([1, -1]),20)
+    E[j] = 100 * (1 - np.sum(np.abs(test_class - truth) / 2) / 40)
+
+plt.figure()
+plt.bar(range(100), E)
+plt.plot([0, 100], [E.mean(), E.mean()], "r-.", label="mean")
+plt.xlim((-1, 100))
+plt.ylim((60, 90))
+plt.gca().set_aspect(100 / (30 * 3))
+plt.ylabel("accuracy")
+plt.xlabel("trial number")
+plt.legend()
+plt.show()
+```
+
+With a maximal accuracy of `{python} float(E.max())`% and a minimal accuracy of `{python} float(E.min())`% our initial result with `{python} float(E_w)`% was quite good and above average (`{python} float(E.mean())`%). 
+
+Instead of a linear discriminants, we can also use quadratic discriminants.
+To show the difference let us look at the classification line of the two methods for our data in wavelet basis
+
+```{python}
+#| label: fig-clustering-sl-lda3
+#| fig-cap: 
+#|    - "Classification line for the LDA together with actual instances."
+#|    - "Classification line for the QDA together with actual instances."
+#| code-fold: true
+#| code-summary: "Show the code for the figure"
+import numpy as np
+import scipy
+import requests
+import io
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
+from sklearn.inspection import DecisionBoundaryDisplay
+import matplotlib.pyplot as plt
+%config InlineBackend.figure_formats = ["svg"]
+np.random.seed(6020)
+
+xtrain = np.concatenate((v_w[:60, [1, 3]], v_w[80:140, [1, 3]]))
+label = np.repeat(np.array([1, -1]), 60)
+test = np.concatenate((v_w[60:80, [1, 3]], v_w[140:160, [1, 3]]))
+
+plt.figure()
+plt.scatter(v_w[:80, 1], v_w[:80, 3], label="dogs")
+plt.scatter(v_w[80:, 1], v_w[80:, 3], label="cats")
+
+lda = LinearDiscriminantAnalysis().fit(xtrain, label)
+K = -lda.intercept_[0]
+L = -lda.coef_[0]
+x = np.arange(-0.12, 0.25, 0.005)
+plt.plot(x, -(L[0] * x + K) / L[1], "k", label="classification line")
+plt.ylim([-0.25, 0.2])
+plt.xlim([-0.15, 0.25])
+plt.xlabel(r"$PC_2$")
+plt.xlabel(r"$PC_4$")
+plt.legend()
+
+plt.figure()
+plt.scatter(v_w[:80, 1], v_w[:80, 3], label="dogs")
+plt.scatter(v_w[80:, 1], v_w[80:, 3], label="cats")
+
+qda = QuadraticDiscriminantAnalysis().fit(xtrain, label)
+DecisionBoundaryDisplay.from_estimator(
+        qda,
+        xtrain,
+        grid_resolution=2000,
+        ax=plt.gca(),
+        response_method="predict",
+        plot_method="contour",
+        alpha=1.0,
+        levels=[0],
+    )
+plt.ylim([-0.25, 0.2])
+plt.xlim([-0.15, 0.25])
+plt.xlabel(r"$PC_2$")
+plt.xlabel(r"$PC_4$")
+plt.legend(["dogs", "cats", "classification line"])
+plt.show()
+```
+
+The quadratic discriminant classification can be quite beneficial in cases, so be aware of its existence. 
+
+::: {.callout-tip}
+Where for the LDA it is possible to get the correct function for the classification line this is tricky for the QDA.
+Luckily the function [`DecisionBoundaryDisplay.from_estimator`](https://scikit-learn.org/1.6/modules/generated/sklearn.inspection.DecisionBoundaryDisplay.html#sklearn.inspection.DecisionBoundaryDisplay.from_estimator) can help in such cases.
+:::
+
+[^GEV]: see [@Kandolf_GDM, Definition 3.5] or the direct link [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/matrixdc/eigen.html#generalized-eigenvalue-problem)

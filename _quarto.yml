@@ -24,6 +24,7 @@ book:
     - part: clustering/index.qmd
       chapters:
         - clustering/unsupervised.qmd
+        - clustering/supervised.qmd
     - summary.qmd
     - references.qmd
   appendices:
