@@ -483,7 +483,7 @@ Try different $\epsilon$ values as well as different norms (`metric` parameter).
 Finite mixture models assume that the observations $x_i$ are mixtures of $k$ processes which combine in the measurement.
 Each mixture is defined via a probability model with unknown parameters.
 The aim of the algorithm is to find the parameters such that the $k$ processes best describe the $x_i$ observations.
-The basis of the algorithm is the so called _expectation-maximization_ (EM) algorithm of \cite{dempster1977maximum}, that is designed to find the _maximum-likelihood_ parameters of the defined statistical models.
+The basis of the algorithm is the so called _expectation-maximization_ (EM) algorithm of @dempster1977maximum, that is designed to find the _maximum-likelihood_ parameters of the defined statistical models.
 
 The most common choice for the probability models is the Gaussian distribution[^gauss] and for this choice, the method is better known as _Gaussian mixture models_ (GMM).
 This is often quite a sensible choice if nothing more is known about the observations and a Gaussian distribution is than always a save bet.
