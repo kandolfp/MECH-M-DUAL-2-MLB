@@ -689,6 +689,97 @@ plt.show()
 see @Geron2022-xh and the corresponding [GitHub repository](https://github.com/ageron/handson-ml3/blob/main/09_unsupervised_learning.ipynb)
 :::
 
+## Motivational example
+
+Before we make the leap to supervised learning we we introduce a new data set and see how our unsupervised approach works in this case.
+
+We do this with the (in)famous MNIST data set of hand written digits. 
+Lets start by looking at the data set and establishing some basic properties.
+
+We load the data set and look at its description
+```{python}
+#| classes: styled-output
+from sklearn.datasets import fetch_openml
+
+mnist = fetch_openml('mnist_784', as_frame=False)
+print(mnist.DESCR)
+```
+
+The images are stored in `.data` and the label in `.target`.
+We can look at the first 100 digits
+
+```{python}
+#| label: fig-clustering-usl-mnist
+#| fig-cap: "First 100 digits from the MNIST data set."
+#| code-fold: true
+#| code-summary: "Show the code for the figure"
+import numpy as np
+from sklearn.datasets import fetch_openml
+import matplotlib.pyplot as plt
+%config InlineBackend.figure_formats = ["svg"]
+
+mnist = fetch_openml('mnist_784', as_frame=False)
+
+im = np.zeros((10 * 28, 10 * 28), int)
+for i in range(10):
+    for j in range(10):
+        im[28*i:28*(i+1), 28*j:28*(j+1)] = mnist.data[i*10 + j].reshape(28, 28)
+plt.figure()
+plt.imshow(im, cmap="binary")
+plt.axis("off")
+
+plt.show()
+```
+
+As can be seen from @fig-clustering-usl-mnist, most digits are easy to distinguish for us but there are some nasty things included. 
+Especially, there are $1$s with the english style (just one straight line) of writing (1st row, 7th column), but also as a diagonal line (1st row, 4th column), and finally also the german style (connecting line at base and top) of writing (3rd row, 5th column). 
+
+Also the two digit comes in various forms, with loop (1st row, 6th column) and without (3rd row, 6th column).
+Finally we all know that a $3$ can hide in an $8$, same as a $9$, a $1$ can hide in a $7$ and much more. 
+
+Now, before we go any further in the investigation we split up the data set into a training and a test set, we will not use this here but we should establish some way of working right from the start. 
+
+```{python}
+X_train, X_test = mnist.data[:60000], mnist.data[60000:]
+y_train, y_test = mnist.target[:60000], mnist.target[60000:]
+```
+
+Now let us try with $k$-means to find the ten digits by finding $10$ clusters.
+
+```{python}
+#| label: fig-clustering-usl-mnist2
+#| fig-cap: "The cluster means of $k$-means for 10 clusters."
+#| code-fold: true
+#| code-summary: "Show the code for the figure"
+import numpy as np
+from sklearn.datasets import fetch_openml
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+%config InlineBackend.figure_formats = ["svg"]
+
+k = 10
+kmeans = KMeans(n_clusters=k, n_init=1, random_state=6020).fit(X_train)
+
+im = np.zeros((1 * 28, 10 * 28), int)
+for i in range(1):
+    for j in range(10):
+        im[28*i:28*(i+1), 28*j:28*(j+1)] = \
+                kmeans.cluster_centers_[i*10 + j].reshape(28, 28)
+plt.figure()
+plt.imshow(im, cmap="binary")
+plt.axis("off")
+
+plt.show()
+```
+
+As can be seen from @fig-clustering-usl-mnist2, the cluster centers do not recover our ten digits.
+In general they are, as expected smudged as the do not represent an actual image.
+It looks like $0, 1, 2, 3, 6, 8, 9$ are _easy_ to discover but $4, 5, 7$ not.
+If we look closely, we can see $4, 5, 7$ represented in our clusters but not as separate digits.
+Obviously this is not a good way to proceed to find our digits.
+We will discuss methods to perform this task in the next section @sec-clustering-sl.
+Furthermore, keep this part in mind as we will come back to how this can still be helpful in a different aspect as semi supervised learning @sec-clustering-ssl.
+
 [^norm]: see @Kandolf_GDM, Section 1.2 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/basics/linearalgebra.html#norms)
 
 [^iff]: short for _if and only if_
