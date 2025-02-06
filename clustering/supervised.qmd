@@ -3,6 +3,7 @@
 If we recall @Fischer from the Iris data set, we can also find one of the first supervised learning methods in this paper.
 The introduced _linear discriminant analysis_ (LDA) has survived over time and is still one of the standard techniques for classification, even though we use a more generalized and improved method nowadays.
 
+## Linear Discriminant Analysis (LDA)
 ::: {.callout-important}
 The following introduction and illustrational data set, as well as the basic structure of the code is from [@Brunton2022, Code 5.9].
 Also see [GitHub](https://github.com/dynamicslab/databook_python).
@@ -94,8 +95,8 @@ def analyse(CD):
     E = 100 * (1 - np.sum(np.abs(test_class - truth) / 2) / 40)
     plt.figure()
     plt.bar(range(40), test_class)
-    plt.plot([-0.5, 39.5], [0, 0], "k")
-    plt.plot([19.5, 19.5], [-1.1, 1.1], "r-.")
+    plt.plot([-0.5, 39.5], [0, 0], "k", linewidth=1.0)
+    plt.plot([19.5, 19.5], [-1.1, 1.1], "r-.", linewidth=3)
     plt.yticks([-0.5, 0.5], ["cats", "dogs"], rotation=90, va="center")
     plt.text(10, 1.05, "dogs")
     plt.text(30, 1.05, "cats")
@@ -134,7 +135,7 @@ We can increase this to an accuracy of `{python} float(np.round(E_w, 2))`% with 
 
 This could be expected, see @fig-clustering-dvc-wavelet-pca_results_overview for the separation of the principal values for the two basis. 
 
-Of course we only have very limited data with only 80 images for each of the species.
+Of course we have very limited data with only 80 images for each of the classes.
 In this case we should do a cross-validation and we have not shuffled the data.
 
 Let us see how selecting different test and training sets influence the behaviour.
@@ -176,16 +177,18 @@ for j in range(100):
 plt.figure()
 plt.bar(range(100), E)
 plt.plot([0, 100], [E.mean(), E.mean()], "r-.", label="mean")
+plt.plot([0, 100], [50, 50], "y-.", label='"coin toss"')
 plt.xlim((-1, 100))
-plt.ylim((60, 90))
-plt.gca().set_aspect(100 / (30 * 3))
+plt.ylim((45, 90))
+plt.gca().set_aspect(100 / (45 * 3))
 plt.ylabel("accuracy")
 plt.xlabel("trial number")
-plt.legend()
+plt.legend(loc="lower right")
 plt.show()
 ```
 
 With a maximal accuracy of `{python} float(E.max())`% and a minimal accuracy of `{python} float(E.min())`% our initial result with `{python} float(E_w)`% was quite good and above average (`{python} float(E.mean())`%). 
+We can also see that training the model is always better than just a simple _coin toss_ or random guessing for cat or dog.
 
 Instead of a linear discriminants, we can also use quadratic discriminants.
 To show the difference let us look at the classification line of the two methods for our data in wavelet basis
@@ -250,11 +253,19 @@ plt.legend(["dogs", "cats", "classification line"])
 plt.show()
 ```
 
-The quadratic discriminant classification can be quite beneficial in cases, so be aware of its existence. 
+As we can see in @fig-clustering-sl-lda3, having a quadratic discriminant classification line can be rather beneficial, like always depending on the observations.
+The QDA arises from LDA when we do not assume that the covariance of each of the classes is the same. 
+
+::: {.callout-note}
+LDA and QDA assume a normal distribution as the basis for each of the clusters.
+This allows us to write it also not in the here presented geometric interpretation as projection but as a update procedure with Bayes[^1] theorem,
+:::
 
 ::: {.callout-tip}
 Where for the LDA it is possible to get the correct function for the classification line this is tricky for the QDA.
-Luckily the function [`DecisionBoundaryDisplay.from_estimator`](https://scikit-learn.org/1.6/modules/generated/sklearn.inspection.DecisionBoundaryDisplay.html#sklearn.inspection.DecisionBoundaryDisplay.from_estimator) can help in such cases.
+Luckily the `scikit-learn` class/function [`DecisionBoundaryDisplay.from_estimator`](https://scikit-learn.org/1.6/modules/generated/sklearn.inspection.DecisionBoundaryDisplay.html#sklearn.inspection.DecisionBoundaryDisplay.from_estimator) can help in such cases.
 :::
 
 [^GEV]: see [@Kandolf_GDM, Definition 3.5] or the direct link [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/matrixdc/eigen.html#generalized-eigenvalue-problem)
+
+[^1]: see [@Kandolf_GDM, Theorem 14.4] or the direct link [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/statistics/bayesian.html#def-statistics-bayesianth)
