@@ -689,7 +689,7 @@ plt.show()
 see @Geron2022-xh and the corresponding [GitHub repository](https://github.com/ageron/handson-ml3/blob/main/09_unsupervised_learning.ipynb)
 :::
 
-## Motivational example
+## Motivational example {#sec-clustering-ul-me}
 
 Before we make the leap to supervised learning we we introduce a new data set and see how our unsupervised approach works in this case.
 
