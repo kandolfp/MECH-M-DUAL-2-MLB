@@ -457,7 +457,7 @@ The $F_1$-score is a combination of the two (the harmonic mean) and in our case 
 
 Depending on the application we might want to have high precision (e.g. medical diagnosis to have no unnecessary treatment) or high recall (e.g. fraud detection where a missed fraudulent transaction can be costly).
 If we increase precision we reduce recall and the other way round so we can hardly have both.
-This dilemma is called _precision/recall trade-off_, see @appendix-pvsr for some more explanation.
+This dilemma is called _precision/recall trade-off_, see @sec-appendix-pvsr for some more explanations.
 
 An alternative way to look at accuracy for binary classifiers is to look at the _receiver operating characteristic_ (ROC).
 It looks at recall (TPR) vs. the _false positive rate_ (FPR).

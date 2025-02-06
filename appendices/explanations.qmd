@@ -3,7 +3,7 @@ lightbox: true
 ---
 # More detailed explanations
 
-## Wavelet decomposition for cats and dogs {#appendix-dvc}
+## Wavelet decomposition for cats and dogs {#sec-appendix-dvc}
 
 In @sec-clustering-cvd we discuss using the wavelet transformation to transform the image into a different basis.
 Here are the details of how this is performed with cat zero as example.
@@ -117,7 +117,7 @@ We can also visualize the transformation steps as follows in @fig-appendices-dvc
 
 ![Workflow to get from the original image to the wavelet transformed version.](../_assets/appendices/catvdogs_workflow){#fig-appendices-dvc-workflow}
 
-## Precision/Recall trade-off {#appendix-pvsr}
+## Precision/Recall trade-off {#sec-appendix-pvsr}
 
 In @sec-clustering-sl-performance we discuss the performance topics and we cam across the precision/recall trade-off.
 

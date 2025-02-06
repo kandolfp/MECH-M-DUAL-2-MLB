@@ -239,7 +239,9 @@ While mode 2 (@fig-clustering-dvc-pca-2) especially features the pointy ears com
 Consequently, will the two different animals have either add or subtract this feature form the mean.
 
 Of course this is not the only possible representation of the initial data.
-As discussed in [@Kandolf_GDM, Section 10] [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/signal/wavelet.html) we can also use the Wavelet transform.
+We can also use the Wavelet transform[^wave].
+
+[^wave]: see @Kandolf_GDM, Section 10 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/signal/wavelet.html)
 
 The multi resolution analysis features of the Wavelet transformation can be used to transform the image in such a way that the resulting principal components yield a better separation of the two classes. 
 
@@ -253,7 +255,7 @@ In short, we combine the vertical and horizontal rescaled feature images, as we 
 
 Note that the image has now only a quarter of pixels as the original image.
 
-For a more detailed explanation see @#appendix-dvc.
+For a more detailed explanation see @sec-appendix-dvc.
 
 ```{python}
 #| code-fold: true
