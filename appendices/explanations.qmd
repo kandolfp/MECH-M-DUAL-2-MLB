@@ -117,3 +117,100 @@ We can also visualize the transformation steps as follows in @fig-appendices-dvc
 
 ![Workflow to get from the original image to the wavelet transformed version.](../_assets/appendices/catvdogs_workflow){#fig-appendices-dvc-workflow}
 
+## Precision/Recall trade-off {#appendix-pvsr}
+
+In @sec-clustering-sl-performance we discuss the performance topics and we cam across the precision/recall trade-off.
+
+Lets remind ourself of the definitions:
+
+Recall or true positive rate (TPR) is the rate of relevant instances that are retrieved, or _true positive_ over _all occurrences_
+$$
+\operatorname{recall} = \frac{TP}{P} = \frac{TP}{TP + FN}.
+$$  
+
+Precision on the other hand is the rate of relevant instances over all retrieved instances, or _true positive_ over the sum of _true positive_ and _false positive_.
+$$
+\operatorname{precision} = \frac{TP}{TP + FP}.
+$$
+
+In order to understand why precision and recall influence each other we need to understand how our classifier works.
+
+Internally each observation given to the classifier is fed into a decision function that returns a score. 
+
+The score is on some scale and in the default setting, everything above zero is counted as a match, if the threshold is set differently this can change.
+See @fig-appendices-sl-pvsr-threshold.
+In the presented example we can have a precision from $71\%$ to $100\%$ and at the same time a recall from $100\%$ to $60\%$.
+
+![Some representatives and their score and three different thresholds and the corresponding results for precision and recall.](../_assets/appendices/threshold){#fig-appendices-sl-pvsr-threshold}
+
+```{python}
+#| code-fold: true
+#| code-summary: "Code that provides the basis for the above figure."
+#| output: false
+import numpy as np
+import pandas as pd
+import sklearn
+from sklearn.datasets import fetch_openml
+from sklearn.linear_model import SGDClassifier
+np.random.seed(6020)
+
+mnist = fetch_openml('mnist_784', as_frame=False)
+
+X_train, X_test = mnist.data[:60000], mnist.data[60000:]
+y_train, y_test = mnist.target[:60000], mnist.target[60000:]
+
+y_train_5 = (y_train == "5")
+y_test_5 = (y_test == "5")
+
+SGD = SGDClassifier(random_state=6020)
+SGD.fit(X_train, y_train_5)
+
+indices = [22698, 2, 73, 132, 244, 50, 48, 11, 0, 26873]
+SGD.decision_function(X_train[indices])
+
+im = np.zeros((1 * 28, 10 * 28), int)
+for i, j in enumerate(indices):
+    im[:28, 28*i: 28*(i+1)] = X_train[j].reshape(28,28)
+
+plt.imshow(im, cmap="binary")
+plt.axis("off")
+```
+
+We can also plot the entire prevision recall curve 
+
+```{python}
+#| label: fig-appendix-clustering-sl-thresholds
+#| fig-cap: 
+#|   - "Precision and recall vs. the score of the decision function."
+#|   - "Precision vs. recall."
+#| code-fold: true
+#| code-summary: "Show the code for the figure"
+from sklearn.metrics import precision_recall_curve
+from sklearn.model_selection import cross_val_predict
+import matplotlib.pyplot as plt
+%config InlineBackend.figure_formats = ["svg"]
+
+y_scores = cross_val_predict(SGD, X_train, y_train_5, cv=5,
+                             method="decision_function")
+precisions, recalls, thresholds = precision_recall_curve(y_train_5, y_scores)
+
+plt.figure()
+plt.plot(thresholds, precisions[:-1], label="Precision")
+plt.plot(thresholds, recalls[:-1], "--", label="Recall")
+plt.xlim([-95000, 22000])
+plt.xlabel("score")
+plt.grid()
+plt.legend()
+plt.gca().set_aspect( 117000 / 3)
+
+plt.figure()
+plt.plot(recalls, precisions)
+plt.xlabel("recall")
+plt.ylabel("precision")
+plt.grid()
+plt.xlim([0, 1])
+plt.ylim([0, 1])
+plt.show()
+```
+
+With the help of the precision vs. recall curve we can select a threshold appropriate for our classification, i.e. level between precision and recall as we see fit and our classification allows.
