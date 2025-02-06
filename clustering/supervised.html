@@ -77,7 +77,7 @@ div.csl-indent {
 }</style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -127,6 +127,9 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -272,8 +275,15 @@ window.Quarto = {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#linear-discriminant-analysis-lda" id="toc-linear-discriminant-analysis-lda" class="nav-link active" data-scroll-target="#linear-discriminant-analysis-lda"><span class="header-section-number">2.1</span> Linear Discriminant Analysis (LDA)</a></li>
+  <li><a href="#sec-clustering-sl-performance" id="toc-sec-clustering-sl-performance" class="nav-link" data-scroll-target="#sec-clustering-sl-performance"><span class="header-section-number">2.2</span> Measuring Performance</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/edit/main/clustering/supervised.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -298,6 +308,8 @@ window.Quarto = {
 
 
 <p>If we recall <span class="citation" data-cites="Fischer">Fisher (<a href="../references.html#ref-Fischer" role="doc-biblioref">1936</a>)</span> from the Iris data set, we can also find one of the first supervised learning methods in this paper. The introduced <em>linear discriminant analysis</em> (LDA) has survived over time and is still one of the standard techniques for classification, even though we use a more generalized and improved method nowadays.</p>
+<section id="linear-discriminant-analysis-lda" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="linear-discriminant-analysis-lda"><span class="header-section-number">2.1</span> Linear Discriminant Analysis (LDA)</h2>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -385,8 +397,8 @@ S_B w = \lambda S_w w
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    E <span class="op">=</span> <span class="dv">100</span> <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> np.<span class="bu">sum</span>(np.<span class="bu">abs</span>(test_class <span class="op">-</span> truth) <span class="op">/</span> <span class="dv">2</span>) <span class="op">/</span> <span class="dv">40</span>)</span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    plt.figure()</span>
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    plt.bar(<span class="bu">range</span>(<span class="dv">40</span>), test_class)</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    plt.plot([<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">39.5</span>], [<span class="dv">0</span>, <span class="dv">0</span>], <span class="st">"k"</span>)</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    plt.plot([<span class="fl">19.5</span>, <span class="fl">19.5</span>], [<span class="op">-</span><span class="fl">1.1</span>, <span class="fl">1.1</span>], <span class="st">"r-."</span>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    plt.plot([<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">39.5</span>], [<span class="dv">0</span>, <span class="dv">0</span>], <span class="st">"k"</span>, linewidth<span class="op">=</span><span class="fl">1.0</span>)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    plt.plot([<span class="fl">19.5</span>, <span class="fl">19.5</span>], [<span class="op">-</span><span class="fl">1.1</span>, <span class="fl">1.1</span>], <span class="st">"r-."</span>, linewidth<span class="op">=</span><span class="dv">3</span>)</span>
 <span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    plt.yticks([<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span>], [<span class="st">"cats"</span>, <span class="st">"dogs"</span>], rotation<span class="op">=</span><span class="dv">90</span>, va<span class="op">=</span><span class="st">"center"</span>)</span>
 <span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    plt.text(<span class="dv">10</span>, <span class="fl">1.05</span>, <span class="st">"dogs"</span>)</span>
 <span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    plt.text(<span class="dv">30</span>, <span class="fl">1.05</span>, <span class="st">"cats"</span>)</span>
@@ -455,7 +467,7 @@ Figure&nbsp;2.2: Evaluation of the LDA for the second and fourth principal compo
 </div>
 <p>If we use our raw data set for the classification we get an overall accuracy of 67.5% with <span class="math inline">\(\tfrac{4}{20}\)</span> wrongly labelled dogs and <span class="math inline">\(\tfrac{9}{20}\)</span> wrongly labelled cats. We can increase this to an accuracy of 82.5% with <span class="math inline">\(\tfrac{5}{20}\)</span> wrongly labelled dogs and <span class="math inline">\(\tfrac{2}{20}\)</span> wrongly labelled cats.</p>
 <p>This could be expected, see <a href="index.html#fig-clustering-dvc-wavelet-pca_results_overview" class="quarto-xref">Figure&nbsp;<span>11</span></a> for the separation of the principal values for the two basis.</p>
-<p>Of course we only have very limited data with only 80 images for each of the species. In this case we should do a cross-validation and we have not shuffled the data.</p>
+<p>Of course we have very limited data with only 80 images for each of the classes. In this case we should do a cross-validation and we have not shuffled the data.</p>
 <p>Let us see how selecting different test and training sets influence the behaviour.</p>
 <div id="cell-fig-clustering-sl-lda2" class="cell" data-execution_count="2">
 <details class="code-fold">
@@ -492,13 +504,14 @@ Figure&nbsp;2.2: Evaluation of the LDA for the second and fourth principal compo
 <span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
 <span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>plt.bar(<span class="bu">range</span>(<span class="dv">100</span>), E)</span>
 <span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>plt.plot([<span class="dv">0</span>, <span class="dv">100</span>], [E.mean(), E.mean()], <span class="st">"r-."</span>, label<span class="op">=</span><span class="st">"mean"</span>)</span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>plt.xlim((<span class="op">-</span><span class="dv">1</span>, <span class="dv">100</span>))</span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>plt.ylim((<span class="dv">60</span>, <span class="dv">90</span>))</span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>plt.gca().set_aspect(<span class="dv">100</span> <span class="op">/</span> (<span class="dv">30</span> <span class="op">*</span> <span class="dv">3</span>))</span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"accuracy"</span>)</span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"trial number"</span>)</span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>plt.plot([<span class="dv">0</span>, <span class="dv">100</span>], [<span class="dv">50</span>, <span class="dv">50</span>], <span class="st">"y-."</span>, label<span class="op">=</span><span class="st">'"coin toss"'</span>)</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>plt.xlim((<span class="op">-</span><span class="dv">1</span>, <span class="dv">100</span>))</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>plt.ylim((<span class="dv">45</span>, <span class="dv">90</span>))</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>plt.gca().set_aspect(<span class="dv">100</span> <span class="op">/</span> (<span class="dv">45</span> <span class="op">*</span> <span class="dv">3</span>))</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"accuracy"</span>)</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"trial number"</span>)</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>plt.legend(loc<span class="op">=</span><span class="st">"lower right"</span>)</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-clustering-sl-lda2" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -513,7 +526,7 @@ Figure&nbsp;2.3: Cross validation for the data set in wavelet basis, use 100 run
 </div>
 </div>
 </div>
-<p>With a maximal accuracy of 90.0% and a minimal accuracy of 65.0% our initial result with 82.5% was quite good and above average (77.1%).</p>
+<p>With a maximal accuracy of 90.0% and a minimal accuracy of 65.0% our initial result with 82.5% was quite good and above average (77.1%). We can also see that training the model is always better than just a simple <em>coin toss</em> or random guessing for cat or dog.</p>
 <p>Instead of a linear discriminants, we can also use quadratic discriminants. To show the difference let us look at the classification line of the two methods for our data in wavelet basis</p>
 <div id="cell-fig-clustering-sl-lda3" class="cell" data-execution_count="3">
 <details class="code-fold">
@@ -595,7 +608,20 @@ Figure&nbsp;2.5: Classification line for the QDA together with actual instances.
 </div>
 </div>
 </div>
-<p>The quadratic discriminant classification can be quite beneficial in cases, so be aware of its existence.</p>
+<p>As we can see in <a href="#fig-clustering-sl-lda3" class="quarto-xref">Figure&nbsp;<span>2.5</span></a>, having a quadratic discriminant classification line can be rather beneficial, like always depending on the observations. The QDA arises from LDA when we do not assume that the covariance of each of the classes is the same.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>LDA and QDA assume a normal distribution as the basis for each of the clusters. This allows us to write it also not in the here presented geometric interpretation as projection but as a update procedure with Bayes<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> theorem,</p>
+</div>
+</div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -606,9 +632,247 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Where for the LDA it is possible to get the correct function for the classification line this is tricky for the QDA. Luckily the function <a href="https://scikit-learn.org/1.6/modules/generated/sklearn.inspection.DecisionBoundaryDisplay.html#sklearn.inspection.DecisionBoundaryDisplay.from_estimator"><code>DecisionBoundaryDisplay.from_estimator</code></a> can help in such cases.</p>
+<p>Where for the LDA it is possible to get the correct function for the classification line this is tricky for the QDA. Luckily the <code>scikit-learn</code> class/function <a href="https://scikit-learn.org/1.6/modules/generated/sklearn.inspection.DecisionBoundaryDisplay.html#sklearn.inspection.DecisionBoundaryDisplay.from_estimator"><code>DecisionBoundaryDisplay.from_estimator</code></a> can help in such cases.</p>
 </div>
 </div>
+</section>
+<section id="sec-clustering-sl-performance" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="sec-clustering-sl-performance"><span class="header-section-number">2.2</span> Measuring Performance</h2>
+<p>As in most applications the question how good an algorithm performs is not easy to establish. In <a href="#fig-clustering-sl-lda2" class="quarto-xref">Figure&nbsp;<span>2.3</span></a> we said we are doing better than a coin toss but we should be able to characterize this more precise.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The following approach and the basic structure of the code is from <span class="citation" data-cites="Geron2022-xh">Geron (<a href="../references.html#ref-Geron2022-xh" role="doc-biblioref">2022</a>)</span>, see <a href="https://github.com/ageron/handson-ml3/blob/main/03_classification.ipynb">GitHub</a>.</p>
+</div>
+</div>
+<p>In order to illustrate basic properties found in machine learning we use the MNIST data set together with a binary classifier based on Stochastic Gradient Descent.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Stochastic Gradient Descent (SGD)<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> is an optimization algorithm. The key idea is to replace the actual gradient by a stochastic approximation in the optimization of the loss function. This allows especially good performance for large-scale learning and sparse machine learning problems.</p>
+<p>We can use this training method for classification to find the optimal parameters for our loss function an in turn, this can be used as a binary classifier.</p>
+<p>As SGD methods are prone to a sensitivity in feature scaling and order we need to make sure to use normalized data and we should shuffle.</p>
+<p>In <code>scikit-learn</code> we can use the class <a href="https://scikit-learn.org/stable/modules/sgd.html"><code>SGDClassifier</code></a>.</p>
+</div>
+</div>
+<p>First we load the MNIST data set again and split it into a training and testing section, see <a href="unsupervised.html#sec-clustering-ul-me" class="quarto-xref"><span>Section 1.5</span></a>.</p>
+<div id="9e65a943" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Show the code for loading and splitting the dataset</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sklearn</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_openml</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> SGDClassifier</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">6020</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>mnist <span class="op">=</span> fetch_openml(<span class="st">'mnist_784'</span>, as_frame<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>X_train, X_test <span class="op">=</span> mnist.data[:<span class="dv">60000</span>], mnist.data[<span class="dv">60000</span>:]</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>y_train, y_test <span class="op">=</span> mnist.target[:<span class="dv">60000</span>], mnist.target[<span class="dv">60000</span>:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Next, as we only want a binary classifier, we select one number, in our case <code>5</code> and relabel our data. With the new labels we can train our classifier.</p>
+<div id="e5900d05" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>y_train_5 <span class="op">=</span> (y_train <span class="op">==</span> <span class="st">"5"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>y_test_5 <span class="op">=</span> (y_test <span class="op">==</span> <span class="st">"5"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>SGD <span class="op">=</span> SGDClassifier(random_state<span class="op">=</span><span class="dv">6020</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>SGD.fit(X_train, y_train_5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In order to cet a score for our method we use <span class="math inline">\(k\)</span>-folds cross-validation <a href="#def-crossvalidation" class="quarto-xref">Definition&nbsp;<span>2.1</span></a> and the corresponding <code>scikit-learn</code> function <code>cross_val_score</code> to perform this task for our model.</p>
+<div id="33bfb045" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> sklearn.model_selection.cross_val_score(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    SGD, X_train, y_train_5, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">"accuracy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="18421cb6" class="cell" data-execution_count="7">
+<div class="cell-output cell-output-display" data-execution_count="7">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">0</th>
+<th data-quarto-table-cell-role="th">1</th>
+<th data-quarto-table-cell-role="th">2</th>
+<th data-quarto-table-cell-role="th">3</th>
+<th data-quarto-table-cell-role="th">4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">accuracy [%]</td>
+<td>97.07</td>
+<td>96.23</td>
+<td>95.46</td>
+<td>96.62</td>
+<td>96.37</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>With results in the high <span class="math inline">\(90\%\)</span> range the results look promession if not great but are they really that good. In order to get a better idea just always guess that we do not see a <code>5</code> that should be the most common class in our case. To simulate this we use the <code>DummyClassifier</code> class.</p>
+<div id="c7766637" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>dummy <span class="op">=</span> sklearn.dummy.DummyClassifier()</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>dummy.fit(X_train, y_train_5)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>scores_dummy <span class="op">=</span> sklearn.model_selection.cross_val_score(</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    dummy, X_train, y_train_5, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">"accuracy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="9cff4436" class="cell" data-execution_count="9">
+<div class="cell-output cell-output-display" data-execution_count="9">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">0</th>
+<th data-quarto-table-cell-role="th">1</th>
+<th data-quarto-table-cell-role="th">2</th>
+<th data-quarto-table-cell-role="th">3</th>
+<th data-quarto-table-cell-role="th">4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">accuracy [%]</td>
+<td>90.96</td>
+<td>90.97</td>
+<td>90.97</td>
+<td>90.97</td>
+<td>90.97</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>As this is pretty much <span class="math inline">\(91\%\)</span> (as expected there are only about <span class="math inline">\(10\%\)</span> of <code>5</code>s in the data set). Just using accuracy is apparently not the gold standard to measure performance, what other possibilities are there?</p>
+<div class="callout callout-style-simple callout-none no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-confusionmatrix" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.2 (Confusion Matrix)</strong></span> The confusion matrix, error matrix or for unsupervised learning sometimes called matching matrix allows an easy way of visualizing the performance of an algorithm.</p>
+<p>The rows represent the true observations in each class, and the columns the predicted observations for each class.</p>
+<p>In our <span class="math inline">\(2\times 2\)</span> case we get</p>
+<div id="fig-clustering-sl-confusionmatrix" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-clustering-sl-confusionmatrix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../_assets/clustering/confusion_matrix.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Figure&nbsp;2.6: Names and abbreviations for a 2\times 2 confusion matrix together with an example form our test case."><img src="../_assets/clustering/confusion_matrix.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-sl-confusionmatrix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.6: Names and abbreviations for a <span class="math inline">\(2\times 2\)</span> confusion matrix together with an example form our test case.
+</figcaption>
+</figure>
+</div>
+<p>but it can be extended for multi-class segmentation.</p>
+</div>
+</div>
+</div>
+</div>
+<p>To compute the confusion matrix we first need predictions. This can be achieved by <code>cross_val_predict</code> instead of <code>cross_val_score</code> and than we use <a href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html"><code>sklearn.metrics.confusion_matrix</code></a>.</p>
+<p>Combined, for our example this reads as:</p>
+<div id="6fc770a8" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>y_train_pred <span class="op">=</span> sklearn.model_selection.cross_val_predict(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                    SGD, X_train, y_train_5, cv<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> sklearn.metrics.confusion_matrix(y_train_5, y_train_pred)                   </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="55e18a0a" class="cell" data-execution_count="11">
+<div class="cell-output cell-output-display" data-execution_count="11">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">PP</th>
+<th data-quarto-table-cell-role="th">PN</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">P</td>
+<td>53617</td>
+<td>962</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">N</td>
+<td>1236</td>
+<td>4185</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>From the values in the confusion matrix a lot of metrics can be computed<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>:</p>
+<ol type="1">
+<li><p><strong>Accuracy</strong>: <span class="math display">\[
+ACC = \frac{TP + TN}{P + N}
+\]</span></p></li>
+<li><p><strong>True positive rate</strong> (TPR) or <strong>recall</strong>: <span class="math display">\[
+TPR = \frac{TP}{P}
+\]</span></p></li>
+<li><p><strong>False negative rate</strong> (FNR): <span class="math display">\[
+FNR = \frac{FN}{P}
+\]</span></p></li>
+<li><p><strong>False positive rate</strong> (FPR): <span class="math display">\[
+FPR = \frac{FP}{N}
+\]</span></p></li>
+<li><p><strong>True negative rate</strong> (TNR): <span class="math display">\[
+TNR = \frac{TN}{N}
+\]</span></p></li>
+<li><p><strong>Positive predictive value</strong> (PPV) or <strong>precission</strong>: <span class="math display">\[
+PPV = \frac{TP}{TP + FP}
+\]</span></p></li>
+<li><p><strong>False discovery rate</strong> (FDR): <span class="math display">\[
+FDR = \frac{FP}{TP + FP}
+\]</span></p></li>
+<li><p><strong>False omission rate</strong> (FOR): <span class="math display">\[
+FOR = \frac{FN}{TN + FN}
+\]</span></p></li>
+<li><p><strong>Negative predictive value</strong> (NPV): <span class="math display">\[
+NPV = \frac{TN}{TN + FN}
+\]</span></p></li>
+<li><p><strong><span class="math inline">\(F_1\)</span> score</strong>: <span class="math display">\[
+F_1 = \frac{2 TP}{2 TP + FP + FN}
+\]</span></p></li>
+</ol>
+<p>In the <a href="https://scikit-learn.org/stable/api/sklearn.metrics.html"><code>sklearn.metrics</code></a> most of these values have a corresponding function. If we look at <em>precission</em>, <em>recall</em>, and the <span class="math inline">\(F_1\)</span> score, for our example we see that our performance is viewed under a different light:</p>
+<div id="a050aa81" class="cell styled-output" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>precision <span class="op">=</span> sklearn.metrics.precision_score(y_train_5, y_train_pred)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>recall <span class="op">=</span> sklearn.metrics.recall_score(y_train_5, y_train_pred)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>f1_score <span class="op">=</span> sklearn.metrics.f1_score(y_train_5, y_train_pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This tells us that our classifier correctly classifies a <code>5</code> 81.31% of the time. On the other hand it only <em>recalls</em> or detects 77.2% of our <code>5</code>s. The <span class="math inline">\(F_1\)</span>-score is a combination of the two (the harmonic mean) and in our case 79.2%.</p>
+<p>Depending on the application we might want to have high precision (e.g.&nbsp;medical diagnosis to have no unnecessary treatment) or high recall (e.g.&nbsp;fraud detection where a missed fraudulent transaction can be costly). If we increase precision we reduce recall and the other way round so we can hardly have both. This dilemma is called <em>precision/recall trade-off</em>, see <span class="citation" data-cites="appendix-pvsr">(<a href="../references.html#ref-appendix-pvsr" role="doc-biblioref"><strong>appendix-pvsr?</strong></a>)</span> for some more explanation.</p>
+<p>An alternative way to look at accuracy for binary classifiers is to look at the <em>receiver operating characteristic</em> (ROC). It looks at recall (TPR) vs.&nbsp;the <em>false positive rate</em> (FPR). Other than that it works similar.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
@@ -618,14 +882,21 @@ Brunton, Steven L., and J. Nathan Kutz. 2022. <em>Data-Driven Science and Engine
 <div id="ref-Fischer" class="csl-entry" role="listitem">
 Fisher, R. A. 1936. <span>“The Use of Multiple Measurements in Taxonomic Problems.”</span> <em>Annals of Eugenics</em> 7 (2): 179–88. <a href="https://doi.org/10.1111/j.1469-1809.1936.tb02137.x">https://doi.org/10.1111/j.1469-1809.1936.tb02137.x</a>.
 </div>
+<div id="ref-Geron2022-xh" class="csl-entry" role="listitem">
+Geron, Aurelien. 2022. <em>Hands-on Machine Learning with Scikit-Learn, Keras, and <span>TensorFlow</span> 3e</em>. 3rd ed. Sebastopol, CA: O’Reilly Media.
+</div>
 <div id="ref-Kandolf_GDM" class="csl-entry" role="listitem">
 Kandolf, Peter. 2025. <span>“MECH-m-DUAL-1-DBM - Grundlagen Datenbasierter Methoden.”</span> <em>Management Center Innsbruck, Course Material</em>. <a href="https://doi.org/10.5281/zenodo.14671708">https://doi.org/10.5281/zenodo.14671708</a>.
 </div>
 </div>
+</section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
 <li id="fn1"><p>see <span class="citation" data-cites="Kandolf_GDM">(<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">Kandolf 2025</a>, Definition 3.5)</span> or the direct link <a href="https://kandolfp.github.io/MECH-M-DUAL-1-DBM/matrixdc/eigen.html#generalized-eigenvalue-problem">Link</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>see <span class="citation" data-cites="Kandolf_GDM">(<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">Kandolf 2025</a>, Theorem 14.4)</span> or the direct link <a href="https://kandolfp.github.io/MECH-M-DUAL-1-DBM/statistics/bayesian.html#def-statistics-bayesianth">Link</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>see <span class="citation" data-cites="Kandolf_GDM">(<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">Kandolf 2025, sec. 6.2</a>)</span> or the direct link <a href="https://kandolfp.github.io/MECH-M-DUAL-1-DBM/regression/nonlinear.html#stochastic-gradient-descent">Link</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>see Wikipedia overview <a href="https://en.wikipedia.org/wiki/Confusion_matrix">Link</a><a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
@@ -1211,7 +1482,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
 <p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> Peter Kandolf</p>
-<div class="toc-actions"><ul><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/edit/main/clustering/supervised.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/edit/main/clustering/supervised.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was built with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>

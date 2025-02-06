@@ -107,6 +107,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -228,6 +257,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#appendix-dvc" id="toc-appendix-dvc" class="nav-link active" data-scroll-target="#appendix-dvc"><span class="header-section-number">A.1</span> Wavelet decomposition for cats and dogs</a></li>
+  <li><a href="#appendix-pvsr" id="toc-appendix-pvsr" class="nav-link" data-scroll-target="#appendix-pvsr"><span class="header-section-number">A.2</span> Precision/Recall trade-off</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/edit/main/appendices/explanations.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -308,7 +338,7 @@ Figure&nbsp;A.1: The original cat.
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>plt.imshow(cD1, cmap<span class="op">=</span>plt.get_cmap(<span class="st">"gray"</span>))</span>
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div id="cell-fig-appendix-clustering-cat-2-wavelet2" class="cell quarto-layout-panel" data-layout-ncol="2" data-execution_count="2">
+<div id="cell-fig-appendix-clustering-cat-2-wavelet2" class="cell quarto-layout-panel" data-execution_count="2" data-layout-ncol="2">
 <div class="quarto-layout-row">
 <div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div id="fig-appendix-clustering-cat-2-wavelet2" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -363,7 +393,7 @@ Figure&nbsp;A.5
 </div>
 </div>
 <p>For our purposes only the vertical and horizontal feature are of interest and we combine these two images. In order to make sure the features are highlighted optimal we need to rescale the images before the combination. For this we use a similar function like the MATLAB <a href="https://de.mathworks.com/help/wavelet/ref/wcodemat.html"><code>wcodemat</code></a> function.</p>
-<div id="1cd1a2f2" class="cell" data-execution_count="3">
+<div id="10544210" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rescale(data, nb):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> np.<span class="bu">abs</span>(data)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> x <span class="op">-</span> np.<span class="bu">min</span>(x)</span>
@@ -383,7 +413,7 @@ Figure&nbsp;A.5
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>plt.imshow(rescale(cH1, <span class="dv">256</span>) <span class="op">+</span> rescale(cV1, <span class="dv">256</span>), cmap<span class="op">=</span>plt.get_cmap(<span class="st">"gray"</span>))</span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div id="cell-fig-appendix-clustering-cat-2-wavelet3" class="cell quarto-layout-panel" data-layout-ncol="2" data-execution_count="4">
+<div id="cell-fig-appendix-clustering-cat-2-wavelet3" class="cell quarto-layout-panel" data-execution_count="4" data-layout-ncol="2">
 <div class="quarto-layout-row">
 <div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div id="fig-appendix-clustering-cat-2-wavelet3" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -412,7 +442,7 @@ Figure&nbsp;A.7: Combination of vertical and horizontal features rescaled.
 </div>
 </div>
 <p>In total this leads to the following function to transform a list of the images, given as row vectors.</p>
-<div id="da26ed24" class="cell" data-execution_count="5">
+<div id="d7deaad7" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pywt</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -436,6 +466,119 @@ Figure&nbsp;A.8: Workflow to get from the original image to the wavelet transfor
 </figcaption>
 </figure>
 </div>
+</section>
+<section id="appendix-pvsr" class="level2" data-number="A.2">
+<h2 data-number="A.2" class="anchored" data-anchor-id="appendix-pvsr"><span class="header-section-number">A.2</span> Precision/Recall trade-off</h2>
+<p>In <a href="../clustering/supervised.html#sec-clustering-sl-performance" class="quarto-xref"><span>Section 2.2</span></a> we discuss the performance topics and we cam across the precision/recall trade-off.</p>
+<p>Lets remind ourself of the definitions:</p>
+<p>Recall or true positive rate (TPR) is the rate of relevant instances that are retrieved, or <em>true positive</em> over <em>all occurrences</em> <span class="math display">\[
+\operatorname{recall} = \frac{TP}{P} = \frac{TP}{TP + FN}.
+\]</span></p>
+<p>Precision on the other hand is the rate of relevant instances over all retrieved instances, or <em>true positive</em> over the sum of <em>true positive</em> and <em>false positive</em>. <span class="math display">\[
+\operatorname{precision} = \frac{TP}{TP + FP}.
+\]</span></p>
+<p>In order to understand why precision and recall influence each other we need to understand how our classifier works.</p>
+<p>Internally each observation given to the classifier is fed into a decision function that returns a score.</p>
+<p>The score is on some scale and in the default setting, everything above zero is counted as a match, if the threshold is set differently this can change. See <a href="#fig-appendices-sl-pvsr-threshold" class="quarto-xref">Figure&nbsp;<span>A.9</span></a>. In the presented example we can have a precision from <span class="math inline">\(71\%\)</span> to <span class="math inline">\(100\%\)</span> and at the same time a recall from <span class="math inline">\(100\%\)</span> to <span class="math inline">\(60\%\)</span>.</p>
+<div id="fig-appendices-sl-pvsr-threshold" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-appendices-sl-pvsr-threshold-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../_assets/appendices/threshold.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-9" title="Figure&nbsp;A.9: Some representatives and their score and three different thresholds and the corresponding results for precision and recall."><img src="../_assets/appendices/threshold.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-appendices-sl-pvsr-threshold-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.9: Some representatives and their score and three different thresholds and the corresponding results for precision and recall.
+</figcaption>
+</figure>
+</div>
+<div id="a2a7383a" class="cell" data-execution_count="6">
+<details class="code-fold">
+<summary>Code that provides the basis for the above figure.</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sklearn</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_openml</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> SGDClassifier</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">6020</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>mnist <span class="op">=</span> fetch_openml(<span class="st">'mnist_784'</span>, as_frame<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>X_train, X_test <span class="op">=</span> mnist.data[:<span class="dv">60000</span>], mnist.data[<span class="dv">60000</span>:]</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>y_train, y_test <span class="op">=</span> mnist.target[:<span class="dv">60000</span>], mnist.target[<span class="dv">60000</span>:]</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>y_train_5 <span class="op">=</span> (y_train <span class="op">==</span> <span class="st">"5"</span>)</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>y_test_5 <span class="op">=</span> (y_test <span class="op">==</span> <span class="st">"5"</span>)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>SGD <span class="op">=</span> SGDClassifier(random_state<span class="op">=</span><span class="dv">6020</span>)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>SGD.fit(X_train, y_train_5)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>indices <span class="op">=</span> [<span class="dv">22698</span>, <span class="dv">2</span>, <span class="dv">73</span>, <span class="dv">132</span>, <span class="dv">244</span>, <span class="dv">50</span>, <span class="dv">48</span>, <span class="dv">11</span>, <span class="dv">0</span>, <span class="dv">26873</span>]</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>SGD.decision_function(X_train[indices])</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>im <span class="op">=</span> np.zeros((<span class="dv">1</span> <span class="op">*</span> <span class="dv">28</span>, <span class="dv">10</span> <span class="op">*</span> <span class="dv">28</span>), <span class="bu">int</span>)</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, j <span class="kw">in</span> <span class="bu">enumerate</span>(indices):</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    im[:<span class="dv">28</span>, <span class="dv">28</span><span class="op">*</span>i: <span class="dv">28</span><span class="op">*</span>(i<span class="op">+</span><span class="dv">1</span>)] <span class="op">=</span> X_train[j].reshape(<span class="dv">28</span>,<span class="dv">28</span>)</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>plt.imshow(im, cmap<span class="op">=</span><span class="st">"binary"</span>)</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>We can also plot the entire prevision recall curve</p>
+<div id="cell-fig-appendix-clustering-sl-thresholds" class="cell" data-execution_count="7">
+<details class="code-fold">
+<summary>Show the code for the figure</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> precision_recall_curve</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_val_predict</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>y_scores <span class="op">=</span> cross_val_predict(SGD, X_train, y_train_5, cv<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>                             method<span class="op">=</span><span class="st">"decision_function"</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>precisions, recalls, thresholds <span class="op">=</span> precision_recall_curve(y_train_5, y_scores)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>plt.plot(thresholds, precisions[:<span class="op">-</span><span class="dv">1</span>], label<span class="op">=</span><span class="st">"Precision"</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>plt.plot(thresholds, recalls[:<span class="op">-</span><span class="dv">1</span>], <span class="st">"--"</span>, label<span class="op">=</span><span class="st">"Recall"</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>plt.xlim([<span class="op">-</span><span class="dv">95000</span>, <span class="dv">22000</span>])</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"score"</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>plt.grid()</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>plt.gca().set_aspect( <span class="dv">117000</span> <span class="op">/</span> <span class="dv">3</span>)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>plt.plot(recalls, precisions)</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"recall"</span>)</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"precision"</span>)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>plt.grid()</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>plt.xlim([<span class="dv">0</span>, <span class="dv">1</span>])</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>plt.ylim([<span class="dv">0</span>, <span class="dv">1</span>])</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-appendix-clustering-sl-thresholds" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-appendix-clustering-sl-thresholds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="explanations_files/figure-html/fig-appendix-clustering-sl-thresholds-output-1.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-10" title="Figure&nbsp;A.10: Precision and recall vs.&nbsp;the score of the decision function."><img src="explanations_files/figure-html/fig-appendix-clustering-sl-thresholds-output-1.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-appendix-clustering-sl-thresholds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.10: Precision and recall vs.&nbsp;the score of the decision function.
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-appendix-clustering-sl-thresholds" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-appendix-clustering-sl-thresholds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="explanations_files/figure-html/fig-appendix-clustering-sl-thresholds-output-2.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-11" title="Figure&nbsp;A.11: Precision vs.&nbsp;recall."><img src="explanations_files/figure-html/fig-appendix-clustering-sl-thresholds-output-2.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-appendix-clustering-sl-thresholds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.11: Precision vs.&nbsp;recall.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>With the help of the precision vs.&nbsp;recall curve we can select a threshold appropriate for our classification, i.e.&nbsp;level between precision and recall as we see fit and our classification allows.</p>
 
 
 </section>

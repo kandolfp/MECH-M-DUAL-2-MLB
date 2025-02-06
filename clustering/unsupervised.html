@@ -284,7 +284,7 @@ window.Quarto = {
   <li><a href="#unsupervised-hierarchical-clustering---dendrogram" id="toc-unsupervised-hierarchical-clustering---dendrogram" class="nav-link" data-scroll-target="#unsupervised-hierarchical-clustering---dendrogram"><span class="header-section-number">1.2</span> Unsupervised hierarchical clustering - Dendrogram</a></li>
   <li><a href="#sec-clustering-ul-dbscan" id="toc-sec-clustering-ul-dbscan" class="nav-link" data-scroll-target="#sec-clustering-ul-dbscan"><span class="header-section-number">1.3</span> Density-based spatial clustering of applications with noise (DBSCAN)</a></li>
   <li><a href="#finite-mixtures-models" id="toc-finite-mixtures-models" class="nav-link" data-scroll-target="#finite-mixtures-models"><span class="header-section-number">1.4</span> Finite Mixtures Models</a></li>
-  <li><a href="#motivational-example" id="toc-motivational-example" class="nav-link" data-scroll-target="#motivational-example"><span class="header-section-number">1.5</span> Motivational example</a></li>
+  <li><a href="#sec-clustering-ul-me" id="toc-sec-clustering-ul-me" class="nav-link" data-scroll-target="#sec-clustering-ul-me"><span class="header-section-number">1.5</span> Motivational example</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/edit/main/clustering/unsupervised.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -333,7 +333,7 @@ window.Quarto = {
 <li>Repeat until the cluster centers stay stable up to some tolerance.</li>
 </ol>
 <p>This algorithm was first introduced in <span class="citation" data-cites="DBLP:journals/tit/Lloyd82">Lloyd (<a href="../references.html#ref-DBLP:journals/tit/Lloyd82" role="doc-biblioref">1982</a>)</span> and is therefore often called Lloyd algorithm.</p>
-<div id="4c1b5543" class="cell" data-execution_count="1">
+<div id="0ebed061" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code for Lloyd algorithm</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lloyd(data, centers, steps):</span>
@@ -1227,12 +1227,12 @@ Figure&nbsp;1.9: Fitting of the second and fourth principal value of the cats an
 </div>
 </div>
 </section>
-<section id="motivational-example" class="level2" data-number="1.5">
-<h2 data-number="1.5" class="anchored" data-anchor-id="motivational-example"><span class="header-section-number">1.5</span> Motivational example</h2>
+<section id="sec-clustering-ul-me" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="sec-clustering-ul-me"><span class="header-section-number">1.5</span> Motivational example</h2>
 <p>Before we make the leap to supervised learning we we introduce a new data set and see how our unsupervised approach works in this case.</p>
 <p>We do this with the (in)famous MNIST data set of hand written digits. Lets start by looking at the data set and establishing some basic properties.</p>
 <p>We load the data set and look at its description</p>
-<div id="c6122a3c" class="cell styled-output" data-execution_count="10">
+<div id="48ac8b43" class="cell styled-output" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_openml</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>mnist <span class="op">=</span> fetch_openml(<span class="st">'mnist_784'</span>, as_frame<span class="op">=</span><span class="va">False</span>)</span>
@@ -1290,7 +1290,7 @@ Figure&nbsp;1.10: First 100 digits from the MNIST data set.
 <p>As can be seen from <a href="#fig-clustering-usl-mnist" class="quarto-xref">Figure&nbsp;<span>1.10</span></a>, most digits are easy to distinguish for us but there are some nasty things included. Especially, there are <span class="math inline">\(1\)</span>s with the english style (just one straight line) of writing (1st row, 7th column), but also as a diagonal line (1st row, 4th column), and finally also the german style (connecting line at base and top) of writing (3rd row, 5th column).</p>
 <p>Also the two digit comes in various forms, with loop (1st row, 6th column) and without (3rd row, 6th column). Finally we all know that a <span class="math inline">\(3\)</span> can hide in an <span class="math inline">\(8\)</span>, same as a <span class="math inline">\(9\)</span>, a <span class="math inline">\(1\)</span> can hide in a <span class="math inline">\(7\)</span> and much more.</p>
 <p>Now, before we go any further in the investigation we split up the data set into a training and a test set, we will not use this here but we should establish some way of working right from the start.</p>
-<div id="8608614e" class="cell" data-execution_count="12">
+<div id="58ec95b3" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>X_train, X_test <span class="op">=</span> mnist.data[:<span class="dv">60000</span>], mnist.data[<span class="dv">60000</span>:]</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>y_train, y_test <span class="op">=</span> mnist.target[:<span class="dv">60000</span>], mnist.target[<span class="dv">60000</span>:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
