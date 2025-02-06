@@ -187,7 +187,7 @@ plt.legend(loc="lower right")
 plt.show()
 ```
 
-With a maximal accuracy of `{python} float(E.max())`% and a minimal accuracy of `{python} float(E.min())`% our initial result with `{python} float(E_w)`% was quite good and above average (`{python} float(E.mean())`%). 
+With a maximal accuracy of `{python} float(E.max())`% and a minimal accuracy of `{python} float(E.min())`% our initial result with `{python} float(E_w)`% was quite good and above average (`{python} float(E.mean())`%).
 We can also see that training the model is always better than just a simple _coin toss_ or random guessing for cat or dog.
 
 Instead of a linear discriminants, we can also use quadratic discriminants.
@@ -269,3 +269,200 @@ Luckily the `scikit-learn` class/function [`DecisionBoundaryDisplay.from_estimat
 [^GEV]: see [@Kandolf_GDM, Definition 3.5] or the direct link [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/matrixdc/eigen.html#generalized-eigenvalue-problem)
 
 [^1]: see [@Kandolf_GDM, Theorem 14.4] or the direct link [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/statistics/bayesian.html#def-statistics-bayesianth)
+
+## Measuring Performance {#sec-clustering-sl-performance}
+
+As in most applications the question how good an algorithm performs is not easy to establish.
+In @fig-clustering-sl-lda2 we said we are doing better than a coin toss but we should be able to characterize this more precise.
+
+::: {.callout-important}
+The following approach and the basic structure of the code is from @Geron2022-xh, see [GitHub](https://github.com/ageron/handson-ml3/blob/main/03_classification.ipynb).
+:::
+
+In order to illustrate basic properties found in machine learning we use the MNIST data set together with a binary classifier based on Stochastic Gradient Descent. 
+
+::: {.callout-note}
+Stochastic Gradient Descent (SGD)[^SGD] is an optimization algorithm.
+The key idea is to replace the actual gradient by a stochastic approximation in the optimization of the loss function.
+This allows especially good performance for large-scale learning and sparse machine learning problems.
+
+We can use this training method for classification to find the optimal parameters for our loss function an in turn, this can be used as a binary classifier.
+
+As SGD methods are prone to a sensitivity in feature scaling and order we need to make sure to use normalized data and we should shuffle.
+
+In `scikit-learn` we can use the class [`SGDClassifier`](https://scikit-learn.org/stable/modules/sgd.html).
+:::
+
+First we load the MNIST data set again and split it into a training and testing section, see @sec-clustering-ul-me.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code for loading and splitting the dataset"
+import numpy as np
+import pandas as pd
+import sklearn
+from sklearn.datasets import fetch_openml
+from sklearn.linear_model import SGDClassifier
+np.random.seed(6020)
+
+mnist = fetch_openml('mnist_784', as_frame=False)
+
+X_train, X_test = mnist.data[:60000], mnist.data[60000:]
+y_train, y_test = mnist.target[:60000], mnist.target[60000:]
+```
+
+Next, as we only want a binary classifier, we select one number, in our case `5` and relabel our data. 
+With the new labels we can train our classifier.
+
+```{python}
+#| output: false
+y_train_5 = (y_train == "5")
+y_test_5 = (y_test == "5")
+
+SGD = SGDClassifier(random_state=6020)
+SGD.fit(X_train, y_train_5)
+```
+
+In order to cet a score for our method we use $k$-folds cross-validation @def-crossvalidation and the corresponding `scikit-learn` function `cross_val_score` to perform this task for our model.
+
+```{python}
+#| output: false
+scores = sklearn.model_selection.cross_val_score(
+    SGD, X_train, y_train_5, cv=5, scoring="accuracy")
+```
+```{python}
+#| echo: false
+pd.DataFrame({"accuracy [%]": np.round(scores * 100, 2)}).T
+```
+
+With results in the high $90\%$ range the results look promession if not great but are they really that good.
+In order to get a better idea just always guess that we do not see a `5` that should be the most common class in our case.
+To simulate this we use the `DummyClassifier` class.
+
+```{python}
+#| output: false
+dummy = sklearn.dummy.DummyClassifier()
+dummy.fit(X_train, y_train_5)
+scores_dummy = sklearn.model_selection.cross_val_score(
+    dummy, X_train, y_train_5, cv=5, scoring="accuracy")
+```
+```{python}
+#| echo: false
+pd.DataFrame({"accuracy [%]": np.round(scores_dummy * 100, 2)}).T
+```
+
+As this is pretty much $91\%$ (as expected there are only about $10\%$ of `5`s in the data set).
+Just using accuracy is apparently not the gold standard to measure performance, what other possibilities are there?
+
+::: {.callout appearance="simple"}
+:::: {#def-confusionmatrix}
+
+## Confusion Matrix
+The confusion matrix, error matrix or for unsupervised learning sometimes called matching matrix allows an easy way of visualizing the performance of an algorithm.
+
+The rows represent the true observations in each class, and the columns the predicted observations for each class.
+
+In our $2\times 2$ case we get
+
+![Names and abbreviations for a $2\times 2$ confusion matrix together with an example form our test case.](../_assets/clustering/confusion_matrix){#fig-clustering-sl-confusionmatrix}
+
+but it can be extended for multi-class segmentation.
+
+::::
+:::
+
+To compute the confusion matrix we first need predictions.
+This can be achieved by `cross_val_predict` instead of `cross_val_score` and than we use [`sklearn.metrics.confusion_matrix`](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html). 
+
+Combined, for our example this reads as:
+```{python}
+#| output: false
+y_train_pred = sklearn.model_selection.cross_val_predict(
+                    SGD, X_train, y_train_5, cv=3)
+cm = sklearn.metrics.confusion_matrix(y_train_5, y_train_pred)                   
+```
+```{python}
+#| echo: false
+df = pd.DataFrame(cm)
+df.columns = ["PP", "PN"]
+df["AC"] = ["P", "N"]
+df.set_index("AC").rename_axis(None)
+```
+
+From the values in the confusion matrix a lot of metrics can be computed[^wikicm]:
+
+1. **Accuracy**:
+$$
+ACC = \frac{TP + TN}{P + N}
+$$
+
+1. **True positive rate** (TPR) or **recall**:
+$$
+TPR = \frac{TP}{P}
+$$
+
+1. **False negative rate** (FNR):
+$$
+FNR = \frac{FN}{P}
+$$
+
+1. **False positive rate** (FPR):
+$$
+FPR = \frac{FP}{N}
+$$
+
+1. **True negative rate** (TNR):
+$$
+TNR = \frac{TN}{N}
+$$
+
+1. **Positive predictive value** (PPV) or **precission**:
+$$
+PPV = \frac{TP}{TP + FP}
+$$
+
+1. **False discovery rate** (FDR):
+$$
+FDR = \frac{FP}{TP + FP}
+$$
+
+1. **False omission rate** (FOR):
+$$
+FOR = \frac{FN}{TN + FN}
+$$
+
+1. **Negative predictive value** (NPV):
+$$
+NPV = \frac{TN}{TN + FN}
+$$
+
+1. **$F_1$ score**:
+$$
+F_1 = \frac{2 TP}{2 TP + FP + FN}
+$$
+
+In the [`sklearn.metrics`](https://scikit-learn.org/stable/api/sklearn.metrics.html) most of these values have a corresponding function. 
+If we look at _precission_, _recall_, and the $F_1$ score, for our example we see that our performance is viewed under a different light:
+
+```{python}
+#| classes: styled-output
+precision = sklearn.metrics.precision_score(y_train_5, y_train_pred)
+recall = sklearn.metrics.recall_score(y_train_5, y_train_pred)
+f1_score = sklearn.metrics.f1_score(y_train_5, y_train_pred)
+```
+
+This tells us that our classifier correctly classifies a `5` `{python} float(np.round(precision * 100, 2))`% of the time.
+On the other hand it only _recalls_ or detects `{python} float(np.round(recall * 100, 2))`% of our `5`s.
+The $F_1$-score is a combination of the two (the harmonic mean) and in our case `{python} float(np.round(f1_score * 100, 2))`%.
+
+Depending on the application we might want to have high precision (e.g. medical diagnosis to have no unnecessary treatment) or high recall (e.g. fraud detection where a missed fraudulent transaction can be costly).
+If we increase precision we reduce recall and the other way round so we can hardly have both.
+This dilemma is called _precision/recall trade-off_, see @appendix-pvsr for some more explanation.
+
+An alternative way to look at accuracy for binary classifiers is to look at the _receiver operating characteristic_ (ROC).
+It looks at recall (TPR) vs. the _false positive rate_ (FPR).
+Other than that it works similar.
+
+[^SGD]: see [@Kandolf_GDM, Section 6.2] or the direct link [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/regression/nonlinear.html#stochastic-gradient-descent)
+
+[^wikicm]: see Wikipedia overview [Link](https://en.wikipedia.org/wiki/Confusion_matrix)
