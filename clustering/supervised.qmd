@@ -503,7 +503,7 @@ Therefore, the classifier depends on the position of the observation and is not 
 ::: {.callout-caution appearance="simple" icon=false}
 :::: {#exr-linear-SVM}
 
-## Linear SVN
+## Linear SVM
 
 1. Compute the vector $w$ in the two cases of @fig-clustering-sl-svm.
 The vector $w$ is normal to the line. 
