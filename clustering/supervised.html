@@ -95,8 +95,8 @@ div.csl-indent {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-691ee51105b2b265a9f2acf218356880.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-0097a2870c33279526b75b7966edca43.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-27b4a279de94591399be0375ebb537c1.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-10b99b35e94314204bf5fc7da7d8ff6b.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
@@ -282,6 +282,12 @@ window.Quarto = {
   <ul>
   <li><a href="#linear-discriminant-analysis-lda" id="toc-linear-discriminant-analysis-lda" class="nav-link active" data-scroll-target="#linear-discriminant-analysis-lda"><span class="header-section-number">2.1</span> Linear Discriminant Analysis (LDA)</a></li>
   <li><a href="#sec-clustering-sl-performance" id="toc-sec-clustering-sl-performance" class="nav-link" data-scroll-target="#sec-clustering-sl-performance"><span class="header-section-number">2.2</span> Measuring Performance</a></li>
+  <li><a href="#sec-clustering-sv-svm" id="toc-sec-clustering-sv-svm" class="nav-link" data-scroll-target="#sec-clustering-sv-svm"><span class="header-section-number">2.3</span> Support Vector Machines (SVM)</a>
+  <ul class="collapse">
+  <li><a href="#linear-svm" id="toc-linear-svm" class="nav-link" data-scroll-target="#linear-svm"><span class="header-section-number">2.3.1</span> Linear SVM</a></li>
+  <li><a href="#nonlinear-svm" id="toc-nonlinear-svm" class="nav-link" data-scroll-target="#nonlinear-svm"><span class="header-section-number">2.3.2</span> Nonlinear SVM</a></li>
+  <li><a href="#kernel-methods-for-svm" id="toc-kernel-methods-for-svm" class="nav-link" data-scroll-target="#kernel-methods-for-svm"><span class="header-section-number">2.3.3</span> Kernel Methods for SVM</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/edit/main/clustering/supervised.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -558,7 +564,7 @@ Figure&nbsp;2.3: Cross validation for the data set in wavelet basis, use 100 run
 <span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>plt.ylim([<span class="op">-</span><span class="fl">0.25</span>, <span class="fl">0.2</span>])</span>
 <span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>plt.xlim([<span class="op">-</span><span class="fl">0.15</span>, <span class="fl">0.25</span>])</span>
 <span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="vs">r"$PC_2$"</span>)</span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="vs">r"$PC_4$"</span>)</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="vs">r"$PC_4$"</span>)</span>
 <span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
 <span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
@@ -579,7 +585,7 @@ Figure&nbsp;2.3: Cross validation for the data set in wavelet basis, use 100 run
 <span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>plt.ylim([<span class="op">-</span><span class="fl">0.25</span>, <span class="fl">0.2</span>])</span>
 <span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>plt.xlim([<span class="op">-</span><span class="fl">0.15</span>, <span class="fl">0.25</span>])</span>
 <span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="vs">r"$PC_2$"</span>)</span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="vs">r"$PC_4$"</span>)</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="vs">r"$PC_4$"</span>)</span>
 <span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>plt.legend([<span class="st">"dogs"</span>, <span class="st">"cats"</span>, <span class="st">"classification line"</span>])</span>
 <span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
@@ -670,7 +676,7 @@ Note
 </div>
 </div>
 <p>First we load the MNIST data set again and split it into a training and testing section, see <a href="unsupervised.html#sec-clustering-ul-me" class="quarto-xref"><span>Section 1.5</span></a>.</p>
-<div id="9e65a943" class="cell" data-execution_count="4">
+<div id="389ab4d0" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Show the code for loading and splitting the dataset</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -687,7 +693,7 @@ Note
 </details>
 </div>
 <p>Next, as we only want a binary classifier, we select one number, in our case <code>5</code> and relabel our data. With the new labels we can train our classifier.</p>
-<div id="e5900d05" class="cell" data-execution_count="5">
+<div id="bc3e3316" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>y_train_5 <span class="op">=</span> (y_train <span class="op">==</span> <span class="st">"5"</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>y_test_5 <span class="op">=</span> (y_test <span class="op">==</span> <span class="st">"5"</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -695,11 +701,11 @@ Note
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>SGD.fit(X_train, y_train_5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In order to cet a score for our method we use <span class="math inline">\(k\)</span>-folds cross-validation <a href="#def-crossvalidation" class="quarto-xref">Definition&nbsp;<span>2.1</span></a> and the corresponding <code>scikit-learn</code> function <code>cross_val_score</code> to perform this task for our model.</p>
-<div id="33bfb045" class="cell" data-execution_count="6">
+<div id="954535a4" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> sklearn.model_selection.cross_val_score(</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    SGD, X_train, y_train_5, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">"accuracy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="18421cb6" class="cell" data-execution_count="7">
+<div id="75e80490" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display" data-execution_count="7">
 <div>
 
@@ -731,13 +737,13 @@ Note
 </div>
 </div>
 <p>With results in the high <span class="math inline">\(90\%\)</span> range the results look promession if not great but are they really that good. In order to get a better idea just always guess that we do not see a <code>5</code> that should be the most common class in our case. To simulate this we use the <code>DummyClassifier</code> class.</p>
-<div id="c7766637" class="cell" data-execution_count="8">
+<div id="cfb3308e" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>dummy <span class="op">=</span> sklearn.dummy.DummyClassifier()</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>dummy.fit(X_train, y_train_5)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>scores_dummy <span class="op">=</span> sklearn.model_selection.cross_val_score(</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    dummy, X_train, y_train_5, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">"accuracy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="9cff4436" class="cell" data-execution_count="9">
+<div id="9c539dc6" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-display" data-execution_count="9">
 <div>
 
@@ -796,12 +802,12 @@ Figure&nbsp;2.6: Names and abbreviations for a <span class="math inline">\(2\tim
 </div>
 <p>To compute the confusion matrix we first need predictions. This can be achieved by <code>cross_val_predict</code> instead of <code>cross_val_score</code> and than we use <a href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html"><code>sklearn.metrics.confusion_matrix</code></a>.</p>
 <p>Combined, for our example this reads as:</p>
-<div id="6fc770a8" class="cell" data-execution_count="10">
+<div id="4fdf499f" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>y_train_pred <span class="op">=</span> sklearn.model_selection.cross_val_predict(</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                    SGD, X_train, y_train_5, cv<span class="op">=</span><span class="dv">3</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> sklearn.metrics.confusion_matrix(y_train_5, y_train_pred)                   </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="55e18a0a" class="cell" data-execution_count="11">
+<div id="5279feba" class="cell" data-execution_count="11">
 <div class="cell-output cell-output-display" data-execution_count="11">
 <div>
 
@@ -865,14 +871,499 @@ F_1 = \frac{2 TP}{2 TP + FP + FN}
 \]</span></p></li>
 </ol>
 <p>In the <a href="https://scikit-learn.org/stable/api/sklearn.metrics.html"><code>sklearn.metrics</code></a> most of these values have a corresponding function. If we look at <em>precission</em>, <em>recall</em>, and the <span class="math inline">\(F_1\)</span> score, for our example we see that our performance is viewed under a different light:</p>
-<div id="a050aa81" class="cell styled-output" data-execution_count="12">
+<div id="92d44db3" class="cell styled-output" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>precision <span class="op">=</span> sklearn.metrics.precision_score(y_train_5, y_train_pred)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>recall <span class="op">=</span> sklearn.metrics.recall_score(y_train_5, y_train_pred)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>f1_score <span class="op">=</span> sklearn.metrics.f1_score(y_train_5, y_train_pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This tells us that our classifier correctly classifies a <code>5</code> 81.31% of the time. On the other hand it only <em>recalls</em> or detects 77.2% of our <code>5</code>s. The <span class="math inline">\(F_1\)</span>-score is a combination of the two (the harmonic mean) and in our case 79.2%.</p>
-<p>Depending on the application we might want to have high precision (e.g.&nbsp;medical diagnosis to have no unnecessary treatment) or high recall (e.g.&nbsp;fraud detection where a missed fraudulent transaction can be costly). If we increase precision we reduce recall and the other way round so we can hardly have both. This dilemma is called <em>precision/recall trade-off</em>, see <span class="citation" data-cites="appendix-pvsr">(<a href="../references.html#ref-appendix-pvsr" role="doc-biblioref"><strong>appendix-pvsr?</strong></a>)</span> for some more explanation.</p>
+<p>Depending on the application we might want to have high precision (e.g.&nbsp;medical diagnosis to have no unnecessary treatment) or high recall (e.g.&nbsp;fraud detection where a missed fraudulent transaction can be costly). If we increase precision we reduce recall and the other way round so we can hardly have both. This dilemma is called <em>precision/recall trade-off</em>, see <a href="../appendices/explanations.html#sec-appendix-pvsr" class="quarto-xref"><span>Section A.2</span></a> for some more explanations.</p>
 <p>An alternative way to look at accuracy for binary classifiers is to look at the <em>receiver operating characteristic</em> (ROC). It looks at recall (TPR) vs.&nbsp;the <em>false positive rate</em> (FPR). Other than that it works similar.</p>
+</section>
+<section id="sec-clustering-sv-svm" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="sec-clustering-sv-svm"><span class="header-section-number">2.3</span> Support Vector Machines (SVM)</h2>
+<p>The basic idea of Support Vector Machines (SVM) is to split observations into distinct clusters via hyperplanes. The have a long history in data science and come in different forms and fashions. Over the years they became more flexible and are still one of the most used tools in industry and science.</p>
+<section id="linear-svm" class="level3" data-number="2.3.1">
+<h3 data-number="2.3.1" class="anchored" data-anchor-id="linear-svm"><span class="header-section-number">2.3.1</span> Linear SVM</h3>
+<p>We start of with the linear SVM where we construct a hyperplane <span class="math display">\[
+\langle w, x\rangle + b = 0
+\]</span> with a vector <span class="math inline">\(w\)</span> and a constant <span class="math inline">\(b\)</span>. There is a natural degree of freedom in this selection of the hyperplane, see <a href="#fig-clustering-sl-svm" class="quarto-xref">Figure&nbsp;<span>2.7</span></a> for two different choices.</p>
+<div id="fig-clustering-sl-svm" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-clustering-sl-svm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div id="fig-clustering-sl-svm-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-clustering-sl-svm-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../_assets/clustering/SVM_hyperplain1.svg" class="lightbox" data-gallery="fig-clustering-sl-svm" title="Figure&nbsp;2.7&nbsp;(a): Hyperplane with small margin."><img src="../_assets/clustering/SVM_hyperplain1.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-sl-svm"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-sl-svm-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Hyperplane with small margin.
+</figcaption>
+</figure>
+</div>
+<div id="fig-clustering-sl-svm-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-clustering-sl-svm-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../_assets/clustering/SVM_hyperplain2.svg" class="lightbox" data-gallery="fig-clustering-sl-svm" title="Figure&nbsp;2.7&nbsp;(b): Hyperplane with large margin."><img src="../_assets/clustering/SVM_hyperplain2.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-sl-svm"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-sl-svm-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Hyperplane with large margin.
+</figcaption>
+</figure>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-sl-svm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.7: We see the hyperplane for the SVM classification scheme. The margin is much larger in the second choice.
+</figcaption>
+</figure>
+</div>
+<p>The optimization inside the SVM aims to find the line that separates the classes best (fewest wrong classifications) and also keeps the largest margin between the observations (the yellow region). The vectors touching the edge of the yellow regions are called <em>support vectors</em> giving the name to the algorithm.</p>
+<p>With the hyperplane it is easy to classify an observation by simply computing the sign of the projection, i.e. <span class="math display">\[
+y_j (\langle w, x_j \rangle + b) = \operatorname{sign}(\langle w, x_j \rangle + b) = \begin{cases} +1\\-1\end{cases},
+\]</span> where <span class="math inline">\(1\)</span> corresponds to the versicolor (orange) and <span class="math inline">\(-1\)</span> setosa (blue) observations in <a href="#fig-clustering-sl-svm" class="quarto-xref">Figure&nbsp;<span>2.7</span></a>. Therefore, the classifier depends on the position of the observation and is not invariant under scaling.</p>
+<div class="callout callout-style-simple callout-caution no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exr-linear-SVM" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 2.1 (Linear SVM)</strong></span> &nbsp;</p>
+<ol type="1">
+<li><p>Compute the vector <span class="math inline">\(w\)</span> in the two cases of <a href="#fig-clustering-sl-svm" class="quarto-xref">Figure&nbsp;<span>2.7</span></a>. The vector <span class="math inline">\(w\)</span> is normal to the line. For <a href="#fig-clustering-sl-svm-1" class="quarto-xref">Figure&nbsp;<span>2.7 (a)</span></a> two points on the line are <span class="math inline">\(v_1 = [1.25, 4.1]^\mathrm{T}\)</span>, <span class="math inline">\(v_2 = [5, 7.4]^\mathrm{T}\)</span>. For <a href="#fig-clustering-sl-svm-2" class="quarto-xref">Figure&nbsp;<span>2.7 (b)</span></a> two points on the line are <span class="math inline">\(z_1 = [2.6, 4.25]^\mathrm{T}\)</span>, <span class="math inline">\(z_2 = [2, 7]^\mathrm{T}\)</span>.</p></li>
+<li><p>Classify the two points <span class="math display">\[
+a = [1.4, 5.1]^\mathrm{T},
+\]</span> <span class="math display">\[
+b = [4.7, 7.0]^\mathrm{T}.
+\]</span></p></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<p>Stating the optimization function such that it is smooth for a linear SVM is a bit tricky. This on the other hand is needed to allow for most optimization algorithm to work, as they require a gradient to some sort.</p>
+<p>Therefore, the following formulation is quite common. <span class="math display">\[
+\underset{w, b}{\operatorname{argmin}} \sum_j H(y_j, \overline{y}_j) + \frac12\|w\|^2 \quad \text{subject to}\quad \min_j|\langle x_j, w\rangle| = 1,
+\]</span> with <span class="math inline">\(H(y_j, \overline{y}_j) = \max(0, 1 - \langle y_j, \overline{y}_j\rangle)\)</span>, the so called <em>Hinge loss</em> function for counting the number of errors. Furthermore, <span class="math inline">\(\overline{y}_j = \operatorname{sign}(\langle w, x_j\rangle + b)\)</span>.</p>
+</section>
+<section id="nonlinear-svm" class="level3" data-number="2.3.2">
+<h3 data-number="2.3.2" class="anchored" data-anchor-id="nonlinear-svm"><span class="header-section-number">2.3.2</span> Nonlinear SVM</h3>
+<p>In order to extend the SVM to more complex classification curves the feature space of the SVM can be extended. In order to do so, SVM introduces nonlinear features and computes the hyperplane on these features via a mapping <span class="math inline">\(x \to \Phi(x)\)</span> and the hyperplane function becomes <span class="math display">\[
+f(x) = \langle w, \Phi(x)\rangle + b
+\]</span> and accordingly we classify along <span class="math display">\[
+\operatorname{sign}(\langle w, \Phi(x_j)\rangle + b) = \operatorname{sign}(f(x_j)).
+\]</span></p>
+<p>Essentially, we change the feature space such that a separation is (hopefully) easier. To illustrate this we use a simple one dimensional example as illustrated in <a href="#fig-clustering-sl-svm-nl-1" class="quarto-xref">Figure&nbsp;<span>2.8 (a)</span></a>. Clearly there is no <em>linear</em> separation possible. On the other hand, if we use <span class="math display">\[
+\Phi(x_j) = (x_j, x_j^2)
+\]</span> as our transformation function we move to 2D space and the problem can easily be solved by a line at <span class="math inline">\(y=0.25\)</span>.</p>
+<div class="cell" data-execution_count="13">
+<details class="code-fold">
+<summary>Show the code for the figure</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.svm <span class="im">import</span> LinearSVC</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">6020</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">11</span>, endpoint<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>x2 <span class="op">=</span> np.zeros_like(x)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.zeros_like(x)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>y[np.<span class="bu">abs</span>(x) <span class="op">&lt;</span> <span class="fl">0.5</span>] <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>plt.scatter(x[y<span class="op">==</span><span class="dv">0</span>], x2[y<span class="op">==</span><span class="dv">0</span>], label<span class="op">=</span><span class="st">"class 1"</span>)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>plt.scatter(x[y<span class="op">==</span><span class="dv">1</span>], x2[y<span class="op">==</span><span class="dv">1</span>], label<span class="op">=</span><span class="st">"class 2"</span>)</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>plt.ylim([<span class="op">-</span><span class="fl">0.1</span>, <span class="dv">1</span>])</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>plt.xlim([<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>])</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>plt.gca().set_aspect(<span class="dv">2</span><span class="op">/</span><span class="fl">3.3</span>)</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>x2 <span class="op">=</span> np.power(x, <span class="dv">2</span>)</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> np.stack([x.flatten(), x2.flatten()]).T</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>svm <span class="op">=</span> LinearSVC(random_state<span class="op">=</span><span class="dv">6020</span>).fit(data, y.flatten())</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>plt.scatter(x[y<span class="op">==</span><span class="dv">0</span>], x2[y<span class="op">==</span><span class="dv">0</span>], label<span class="op">=</span><span class="st">"class 1"</span>)</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>plt.scatter(x[y<span class="op">==</span><span class="dv">1</span>], x2[y<span class="op">==</span><span class="dv">1</span>], label<span class="op">=</span><span class="st">"class 2"</span>)</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>plt.ylim([<span class="op">-</span><span class="fl">0.1</span>, <span class="dv">1</span>])</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>plt.xlim([<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>])</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> svm.coef_[<span class="dv">0</span>]</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> svm.intercept_[<span class="dv">0</span>]</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>line <span class="op">=</span> <span class="kw">lambda</span> x: <span class="op">-</span>w[<span class="dv">0</span>] <span class="op">/</span> w[<span class="dv">1</span>] <span class="op">*</span> x <span class="op">-</span> d <span class="op">/</span> w[<span class="dv">1</span>]</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>plt.plot([<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>], [line(<span class="op">-</span><span class="dv">1</span>), line(<span class="dv">1</span>)], <span class="st">"k"</span>, label<span class="op">=</span><span class="st">"classification line"</span>)</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>plt.plot([<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>], [<span class="fl">0.25</span>, <span class="fl">0.25</span>], <span class="st">"k:"</span>, label<span class="op">=</span><span class="st">"actual boundary line"</span>)</span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>plt.gca().set_aspect(<span class="dv">2</span><span class="op">/</span><span class="fl">3.3</span>)</span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="fig-clustering-sl-svm-nl" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="13">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-clustering-sl-svm-nl-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display">
+<div id="fig-clustering-sl-svm-nl-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-clustering-sl-svm-nl-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="supervised_files/figure-html/fig-clustering-sl-svm-nl-output-1.svg" class="lightbox" data-gallery="fig-clustering-sl-svm-nl" title="Figure&nbsp;2.8&nbsp;(a): Observations that can not be separated linearly."><img src="supervised_files/figure-html/fig-clustering-sl-svm-nl-output-1.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-sl-svm-nl"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-sl-svm-nl-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Observations that can not be separated linearly.
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-clustering-sl-svm-nl-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-clustering-sl-svm-nl-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="supervised_files/figure-html/fig-clustering-sl-svm-nl-output-2.svg" class="lightbox" data-gallery="fig-clustering-sl-svm-nl" title="Figure&nbsp;2.8&nbsp;(b): Enriched feature set with Φ(x)=(x, x^2)."><img src="supervised_files/figure-html/fig-clustering-sl-svm-nl-output-2.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-sl-svm-nl"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-sl-svm-nl-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Enriched feature set with Φ(x)=(x, x^2).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-sl-svm-nl-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.8: Nonlinear classification with SVM.
+</figcaption>
+</figure>
+</div>
+</div>
+<p>As can be seen in <a href="#fig-clustering-sl-svm-nl-2" class="quarto-xref">Figure&nbsp;<span>2.8 (b)</span></a> the SVM does a great job in finding a split for the two classes, even though not select the <em>optimal</em> line, which is not surprising for the given amount of observations.</p>
+<p>As mentioned before, SVMs are sensitive to scaling. Let us use this example to illustrate the difference together with the concept of <em>pipelines</em> often used in data science context.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Pipeline
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The main idea of a pipeline is to create a composite as a ordered chain of transformations and estimators, see <a href="https://scikit-learn.org/stable/modules/compose.html">docs</a> for insights.</p>
+</div>
+</div>
+<p>We can use the pipeline to - create the polynomial observations - apply a scaler to our observations - apply the Linear SVM</p>
+<div id="7e089ddc" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>composit_svm <span class="op">=</span> sklearn.pipeline.make_pipeline(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    sklearn.preprocessing.PolynomialFeatures(<span class="dv">2</span>),</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    sklearn.preprocessing.StandardScaler(),</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    LinearSVC(random_state<span class="op">=</span><span class="dv">6020</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="15">
+<details class="code-fold">
+<summary>Show the code for the figure</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.svm <span class="im">import</span> LinearSVC</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">6020</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">11</span>, endpoint<span class="op">=</span><span class="va">True</span>).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.zeros_like(x).flatten()</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>y[np.<span class="bu">abs</span>(x.flatten()) <span class="op">&lt;</span> <span class="fl">0.5</span>] <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>composit_svm.fit(x, y)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>xx <span class="op">=</span> composit_svm[:<span class="dv">2</span>].fit_transform(x)</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>plt.scatter(xx[y<span class="op">==</span><span class="dv">0</span>, <span class="dv">1</span>], xx[y<span class="op">==</span><span class="dv">0</span>, <span class="dv">2</span>], label<span class="op">=</span><span class="st">"class 1"</span>)</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>plt.scatter(xx[y<span class="op">==</span><span class="dv">1</span>, <span class="dv">1</span>], xx[y<span class="op">==</span><span class="dv">1</span>, <span class="dv">2</span>], label<span class="op">=</span><span class="st">"class 2"</span>)</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> composit_svm[<span class="st">'linearsvc'</span>].coef_[<span class="dv">0</span>][<span class="dv">1</span>:]</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> composit_svm[<span class="st">'linearsvc'</span>].intercept_[<span class="dv">0</span>]</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>plt.plot([<span class="op">-</span><span class="fl">1.6</span>, <span class="fl">1.6</span>], [line(<span class="op">-</span><span class="fl">1.5</span>), line(<span class="fl">1.5</span>)],</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>         <span class="st">"k"</span>, label<span class="op">=</span><span class="st">"scaled classification line"</span>)</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>plt.ylim([<span class="op">-</span><span class="fl">1.25</span>, <span class="fl">1.75</span>])</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>plt.xlim([<span class="op">-</span><span class="fl">1.6</span>, <span class="fl">1.6</span>])</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>plt.gca().set_aspect(<span class="dv">3</span><span class="op">/</span><span class="dv">9</span>)</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>xx <span class="op">=</span> composit_svm[:<span class="dv">1</span>].fit_transform(x)</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>plt.scatter(xx[y<span class="op">==</span><span class="dv">0</span>, <span class="dv">1</span>], xx[y<span class="op">==</span><span class="dv">0</span>, <span class="dv">2</span>], label<span class="op">=</span><span class="st">"class 1"</span>)</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>plt.scatter(xx[y<span class="op">==</span><span class="dv">1</span>, <span class="dv">1</span>], xx[y<span class="op">==</span><span class="dv">1</span>, <span class="dv">2</span>], label<span class="op">=</span><span class="st">"class 2"</span>)</span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> composit_svm[<span class="st">'linearsvc'</span>].coef_[<span class="dv">0</span>][<span class="dv">1</span>:]</span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> composit_svm[<span class="st">'linearsvc'</span>].intercept_[<span class="dv">0</span>]</span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> composit_svm[<span class="st">"standardscaler"</span>].inverse_transform(</span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>    [np.array([<span class="dv">0</span>, <span class="op">-</span><span class="fl">1.6</span>, line(<span class="op">-</span><span class="fl">1.6</span>)])])[<span class="dv">0</span>]</span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> composit_svm[<span class="st">"standardscaler"</span>].inverse_transform(</span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>    [np.array([<span class="dv">0</span>, <span class="fl">1.6</span>, line(<span class="fl">1.6</span>)])])[<span class="dv">0</span>]</span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>plt.plot([a[<span class="dv">1</span>], b[<span class="dv">1</span>]], [a[<span class="dv">2</span>], b[<span class="dv">2</span>]], </span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a>         <span class="st">"k"</span>, label<span class="op">=</span><span class="st">"scaled classification line"</span>)</span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> svm.coef_[<span class="dv">0</span>]</span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> svm.intercept_[<span class="dv">0</span>]</span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a>plt.plot([<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>], [line(<span class="op">-</span><span class="dv">1</span>), line(<span class="dv">1</span>)], </span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a>            <span class="st">"k:"</span>, label<span class="op">=</span><span class="st">"unscaled classification line"</span>)</span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a>plt.ylim([<span class="op">-</span><span class="fl">0.1</span>, <span class="dv">1</span>])</span>
+<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a>plt.xlim([<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>])</span>
+<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a>plt.gca().set_aspect(<span class="dv">2</span><span class="op">/</span><span class="fl">3.3</span>)</span>
+<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="fig-clustering-sl-svm-nl-3" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="15">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-clustering-sl-svm-nl-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display">
+<div id="fig-clustering-sl-svm-nl-3-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-clustering-sl-svm-nl-3-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="supervised_files/figure-html/fig-clustering-sl-svm-nl-3-output-1.svg" class="lightbox" data-gallery="fig-clustering-sl-svm-nl-3" title="Figure&nbsp;2.9&nbsp;(a): Classification in the enriched Φ(x)=(x^0, x^1, x^2) and scaled space. Note the first dimension is ignored."><img src="supervised_files/figure-html/fig-clustering-sl-svm-nl-3-output-1.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-sl-svm-nl-3"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-sl-svm-nl-3-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Classification in the enriched Φ(x)=(x^0, x^1, x^2) and scaled space. Note the first dimension is ignored.
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-clustering-sl-svm-nl-3-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-clustering-sl-svm-nl-3-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="supervised_files/figure-html/fig-clustering-sl-svm-nl-3-output-2.svg" class="lightbox" data-gallery="fig-clustering-sl-svm-nl-3" title="Figure&nbsp;2.9&nbsp;(b): Difference between the classification lines when transformed back into the original space."><img src="supervised_files/figure-html/fig-clustering-sl-svm-nl-3-output-2.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-sl-svm-nl-3"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-sl-svm-nl-3-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Difference between the classification lines when transformed back into the original space.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-sl-svm-nl-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.9: Classification with autoscaler vs.&nbsp;no scaler.
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="callout callout-style-simple callout-caution no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exr-nonlinear-SVM" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 2.2 (Nonlinear SVM)</strong></span> &nbsp;</p>
+<ol type="1">
+<li>Extend the above findings to an example in 2D with a circular classification line. Create tests data of your classification by changing to <code>np.linspace(-1, 1, 12)</code>.</li>
+</ol>
+<div id="cell-fig-clustering-sl-svm-nl-exr" class="cell" data-execution_count="16">
+<details class="code-fold">
+<summary>Show the code for the figure</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.svm <span class="im">import</span> LinearSVC</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sklearn</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">6020</span>)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">11</span>, endpoint<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>x2 <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">11</span>, endpoint<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>XX, XX2 <span class="op">=</span> np.meshgrid(x, x2)</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>ZZ <span class="op">=</span> np.<span class="bu">pow</span>(XX, <span class="dv">2</span>) <span class="op">+</span> np.<span class="bu">pow</span>(XX2, <span class="dv">2</span>)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.zeros_like(XX)</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>i <span class="op">=</span> np.sqrt(ZZ) <span class="op">&lt;</span> <span class="fl">0.5</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>y[i] <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>plt.scatter(XX[y <span class="op">==</span> <span class="dv">0</span>], XX2[y <span class="op">==</span> <span class="dv">0</span>], label<span class="op">=</span><span class="st">"class 1"</span>)</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>plt.scatter(XX[y <span class="op">==</span> <span class="dv">1</span>], XX2[y <span class="op">==</span> <span class="dv">1</span>], label<span class="op">=</span><span class="st">"class 2"</span>)</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> np.stack([XX.flatten(), XX2.flatten(), ZZ.flatten()]).T</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>label <span class="op">=</span> y.flatten()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-clustering-sl-svm-nl-exr" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-clustering-sl-svm-nl-exr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="supervised_files/figure-html/fig-clustering-sl-svm-nl-exr-output-1.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-14" title="Figure&nbsp;2.10: Data set in 2D"><img src="supervised_files/figure-html/fig-clustering-sl-svm-nl-exr-output-1.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-sl-svm-nl-exr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.10: Data set in 2D
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<ol start="2" type="1">
+<li>Recall the moons example from <a href="unsupervised.html#sec-clustering-ul-dbscan" class="quarto-xref"><span>Section 1.3</span></a> and use a degree <span class="math inline">\(3\)</span> <code>PolynomialFeatures</code> for classification.</li>
+</ol>
+<p>In both cases, plot the classification line in a projection onto the original 2D space.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="kernel-methods-for-svm" class="level3" data-number="2.3.3">
+<h3 data-number="2.3.3" class="anchored" data-anchor-id="kernel-methods-for-svm"><span class="header-section-number">2.3.3</span> Kernel Methods for SVM</h3>
+<p>While enriching the feature space is, without doubt, extremal helpful the curse of dimensionality is quickly starting to influence the performance. The computation of <span class="math inline">\(w\)</span> is getting harder. The so called <em>kernel trick</em> is solving this problem. We express <span class="math inline">\(w\)</span> in a different basis and solve for the parameters of the basis, i.e. <span class="math display">\[
+w = \sum_{j=1}^m \alpha_j \Phi(x_j)
+\]</span> where <span class="math inline">\(\alpha_j\)</span> are called the weights of the different nonlinear observable functions <span class="math inline">\(\Phi(x_j)\)</span>. Our <span class="math inline">\(f\)</span> becomes <span class="math display">\[
+f(x) = \sum_{j=1}^m \alpha_j \langle \Phi(x_j), \Phi(x) \rangle + b.
+\]</span> The so called <em>kernel function</em> is defined as the inner product involved, i.e. <span class="math display">\[
+K(x_j, x) = \langle \Phi(x_j), \Phi(x) \rangle.
+\]</span> The optimization problem for <span class="math inline">\(w\)</span> no reads as <span class="math display">\[
+\underset{\alpha, b}{\operatorname{argmin}} \sum_j H(y_j, \overline{y}_j) + \frac12\left\|\sum_{j=1} \alpha_j \Phi(x_j)\right\|^2 \quad \text{subject to}\quad \min_j|\langle x_j, w\rangle| = 1,
+\]</span> with <span class="math inline">\(\alpha\)</span> representing the vector of all the <span class="math inline">\(\alpha_j\)</span>. The important part here is that we now minimize of <span class="math inline">\(\alpha\)</span>, which is easier.</p>
+<p>The kernel function allow almost arbitrary number of observables as it, for example, can represent a Taylor series expansion. Furthermore, it allows an implicit computation in higher dimensions by simply computing the inner product of differences between observations.</p>
+<p>One of these functions are so called <em>radial basis functions</em> (RBF) with the simplest being a Gaussian kernel <span class="math display">\[
+K(x_j, x) = \exp\left(-\gamma\|x_j - x\|^2\right).
+\]</span></p>
+<p>In <code>scikit-learn</code> this is supported via the <a href="https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC"><code>SVC</code></a> class.</p>
+<p>Let us test this implementation with the help of our dogs and cats example.</p>
+<div id="cell-fig-clustering-sl-svm-rbf" class="cell" data-execution_count="17">
+<details class="code-fold">
+<summary>Show the code for the figure</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> io</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> svm</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://github.com/dynamicslab/databook_python/"</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"raw/refs/heads/master/DATA/catData_w.mat"</span>)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>cats_w <span class="op">=</span> scipy.io.loadmat(io.BytesIO(response.content))[<span class="st">"cat_wave"</span>]</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://github.com/dynamicslab/databook_python/"</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"raw/refs/heads/master/DATA/dogData_w.mat"</span>)</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>dogs_w <span class="op">=</span> scipy.io.loadmat(io.BytesIO(response.content))[<span class="st">"dog_wave"</span>]</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>CD <span class="op">=</span> np.concatenate((dogs_w, cats_w), axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>U, S, VT <span class="op">=</span> np.linalg.svd(CD <span class="op">-</span> np.mean(CD), full_matrices<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>v <span class="op">=</span> VT.T</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>features <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="dv">21</span>)</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>xtrain <span class="op">=</span> np.concatenate((v[:<span class="dv">60</span>, features], v[<span class="dv">80</span>:<span class="dv">140</span>, features]))</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>label <span class="op">=</span> np.repeat(np.array([<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>]), <span class="dv">60</span>)</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>xtest <span class="op">=</span> np.concatenate((v[<span class="dv">60</span>:<span class="dv">80</span>, features], v[<span class="dv">140</span>:<span class="dv">160</span>, features]))</span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>truth <span class="op">=</span> np.repeat(np.array([<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>]), <span class="dv">20</span>)</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>svc <span class="op">=</span> svm.SVC(kernel<span class="op">=</span><span class="st">"rbf"</span>, gamma<span class="op">=</span><span class="st">"auto"</span>).fit(xtrain, label)</span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>test_label <span class="op">=</span> svc.predict(xtest)</span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>train_label <span class="op">=</span> svc.predict(xtrain)</span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> sklearn.metrics.confusion_matrix(test_label, truth)</span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>plt.scatter(xtrain[train_label <span class="op">==</span> <span class="dv">1</span>, <span class="dv">1</span>], xtrain[train_label <span class="op">==</span> <span class="dv">1</span>, <span class="dv">3</span>],</span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>            alpha<span class="op">=</span><span class="fl">0.5</span>, color<span class="op">=</span><span class="st">"C0"</span>, label<span class="op">=</span><span class="st">"train_dogs"</span>)</span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>plt.scatter(xtrain[train_label <span class="op">==</span> <span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>], xtrain[train_label <span class="op">==</span> <span class="op">-</span><span class="dv">1</span>, <span class="dv">3</span>],</span>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>            alpha<span class="op">=</span><span class="fl">0.5</span>, color<span class="op">=</span><span class="st">"C1"</span>, label<span class="op">=</span><span class="st">"train_cats"</span>)</span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a>plt.scatter(xtest[test_label <span class="op">==</span> <span class="dv">1</span>, <span class="dv">1</span>], xtest[test_label <span class="op">==</span> <span class="dv">1</span>, <span class="dv">3</span>],</span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a>            color<span class="op">=</span><span class="st">"C0"</span>, label<span class="op">=</span><span class="st">"test_dogs"</span>)</span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a>plt.scatter(xtest[test_label <span class="op">==</span> <span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>], xtest[test_label <span class="op">==</span> <span class="op">-</span><span class="dv">1</span>, <span class="dv">3</span>],</span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a>            color<span class="op">=</span><span class="st">"C1"</span>, label<span class="op">=</span><span class="st">"test_cats"</span>)</span>
+<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a>error <span class="op">=</span> np.vstack((xtrain[label <span class="op">!=</span> train_label, :][:, [<span class="dv">1</span>,<span class="dv">3</span>]],</span>
+<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a>                   xtest[truth <span class="op">!=</span> test_label, :][:, [<span class="dv">1</span>, <span class="dv">3</span>]]))</span>
+<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a>plt.scatter(error[:, <span class="dv">0</span>], error[:, <span class="dv">1</span>],</span>
+<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a>            color<span class="op">=</span><span class="st">"k"</span>, marker<span class="op">=</span><span class="st">"x"</span>, label<span class="op">=</span><span class="st">"wrong classification"</span>)</span>
+<span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a>plt.ylim([<span class="op">-</span><span class="fl">0.25</span>, <span class="fl">0.2</span>])</span>
+<span id="cb14-48"><a href="#cb14-48" aria-hidden="true" tabindex="-1"></a>plt.xlim([<span class="op">-</span><span class="fl">0.15</span>, <span class="fl">0.25</span>])</span>
+<span id="cb14-49"><a href="#cb14-49" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="vs">r"$PC_2$"</span>)</span>
+<span id="cb14-50"><a href="#cb14-50" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="vs">r"$PC_4$"</span>)</span>
+<span id="cb14-51"><a href="#cb14-51" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-clustering-sl-svm-rbf" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-clustering-sl-svm-rbf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="supervised_files/figure-html/fig-clustering-sl-svm-rbf-output-1.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-15" title="Figure&nbsp;2.11: Training a SVM with an RBF kernel for the singular vectors 2 to 22. The picture shows the classification results projected for the principal components 2 and 4."><img src="supervised_files/figure-html/fig-clustering-sl-svm-rbf-output-1.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-sl-svm-rbf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.11: Training a SVM with an RBF kernel for the singular vectors 2 to 22. The picture shows the classification results projected for the principal components 2 and 4.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>We get a confusion matrix for our test set as</p>
+<div id="b32d5363" class="cell" data-execution_count="18">
+<div class="cell-output cell-output-display" data-execution_count="18">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">PP</th>
+<th data-quarto-table-cell-role="th">PN</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">P</td>
+<td>18</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">N</td>
+<td>2</td>
+<td>17</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>In <a href="#fig-clustering-sl-svm-rbf" class="quarto-xref">Figure&nbsp;<span>2.11</span></a> we can see the results of the classification for the entire set of observations, shaded for the training set, and crosses marking the wrongly classified data. With 8 wrongly classified images we have quite a good result, compared to LDA or QDA <a href="#fig-clustering-sl-lda3" class="quarto-xref">Figure&nbsp;<span>2.5</span></a>. Note, the classification is hard to recognise for the two classes in the simple projection. With the parameters <code>C</code> and <code>gamma</code> we can influence the classification.</p>
+<div class="callout callout-style-simple callout-caution no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exr-nonlinear-SVM-rbf" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 2.3 (Nonlinear SVM with RBF)</strong></span> Recall the moons example from <a href="unsupervised.html#sec-clustering-ul-dbscan" class="quarto-xref"><span>Section 1.3</span></a> and use a <code>SVC</code> classification to distinguish the clusters. Look at four different results for <span class="math inline">\(\gamma \in \{0.1, 5\}\)</span> and <span class="math inline">\(C \in \{0.001, 1000\}\)</span>, compare <span class="citation" data-cites="Geron2022-xh">Geron (<a href="../references.html#ref-Geron2022-xh" role="doc-biblioref">2022</a>)</span>.</p>
+<p>In all of the four images plot the classification line in a projection onto the original 2D space.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-caution no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exr-nonlinear-SVM-regression" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 2.4 (Nonlinear SVM for regression)</strong></span> We can use SVM for regression. Have a look at <a href="https://scikit-learn.org/stable/auto_examples/svm/plot_svm_regression.html#sphx-glr-auto-examples-svm-plot-svm-regression-py">docs</a> and use the findings to fit the following observations with various degrees and kernel functions.</p>
+<div id="527a0f0a" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">6020</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> <span class="dv">6</span> <span class="op">*</span> np.random.rand(m) <span class="op">-</span> <span class="dv">3</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> <span class="dv">1</span><span class="op">/</span><span class="dv">2</span> <span class="op">*</span> x <span class="op">**</span> <span class="dv">2</span> <span class="op">+</span> x <span class="op">+</span> <span class="dv">2</span> <span class="op">+</span> np.random.randn(m)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure()</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>plt.scatter(x, y, label<span class="op">=</span><span class="st">"observations"</span>)</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><a href="supervised_files/figure-html/cell-20-output-1.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-16"><img src="supervised_files/figure-html/cell-20-output-1.svg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Compare <span class="citation" data-cites="Kandolf_GDM">(<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">Kandolf 2025</a>, Example 5.2)</span> <a href="https://kandolfp.github.io/MECH-M-DUAL-1-DBM/regression/linear.html#exm-regression-linear-poly">Link</a>.</p>
+</div>
+</div>
+</div>
+</div>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
@@ -889,6 +1380,7 @@ Geron, Aurelien. 2022. <em>Hands-on Machine Learning with Scikit-Learn, Keras, a
 Kandolf, Peter. 2025. <span>“MECH-m-DUAL-1-DBM - Grundlagen Datenbasierter Methoden.”</span> <em>Management Center Innsbruck, Course Material</em>. <a href="https://doi.org/10.5281/zenodo.14671708">https://doi.org/10.5281/zenodo.14671708</a>.
 </div>
 </div>
+</section>
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
