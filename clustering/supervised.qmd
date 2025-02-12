@@ -227,7 +227,7 @@ plt.plot(x, -(L[0] * x + K) / L[1], "k", label="classification line")
 plt.ylim([-0.25, 0.2])
 plt.xlim([-0.15, 0.25])
 plt.xlabel(r"$PC_2$")
-plt.xlabel(r"$PC_4$")
+plt.ylabel(r"$PC_4$")
 plt.legend()
 
 plt.figure()
@@ -248,7 +248,7 @@ DecisionBoundaryDisplay.from_estimator(
 plt.ylim([-0.25, 0.2])
 plt.xlim([-0.15, 0.25])
 plt.xlabel(r"$PC_2$")
-plt.xlabel(r"$PC_4$")
+plt.ylabel(r"$PC_4$")
 plt.legend(["dogs", "cats", "classification line"])
 plt.show()
 ```
@@ -589,8 +589,8 @@ plt.xlim([-1, 1])
 w = svm.coef_[0]
 d = svm.intercept_[0]
 line = lambda x: -w[0] / w[1] * x - d / w[1]
-plt.plot([-1, 1], [line(-1), line(1)], label="classification line")
-plt.plot([-1, 1], [0.25, 0.25], ":", label="actual boundary line")
+plt.plot([-1, 1], [line(-1), line(1)], "k", label="classification line")
+plt.plot([-1, 1], [0.25, 0.25], "k:", label="actual boundary line")
 plt.gca().set_aspect(2/3.3)
 plt.legend()
 
@@ -649,7 +649,7 @@ plt.scatter(xx[y==1, 1], xx[y==1, 2], label="class 2")
 w = composit_svm['linearsvc'].coef_[0][1:]
 d = composit_svm['linearsvc'].intercept_[0]
 plt.plot([-1.6, 1.6], [line(-1.5), line(1.5)],
-         label="scaled classification line")
+         "k", label="scaled classification line")
 
 plt.ylim([-1.25, 1.75])
 plt.xlim([-1.6, 1.6])
@@ -667,12 +667,13 @@ a = composit_svm["standardscaler"].inverse_transform(
     [np.array([0, -1.6, line(-1.6)])])[0]
 b = composit_svm["standardscaler"].inverse_transform(
     [np.array([0, 1.6, line(1.6)])])[0]
-plt.plot([a[1], b[1]], [a[2], b[2]], label="scaled classification line")
+plt.plot([a[1], b[1]], [a[2], b[2]], 
+         "k", label="scaled classification line")
 
 w = svm.coef_[0]
 d = svm.intercept_[0]
 plt.plot([-1, 1], [line(-1), line(1)], 
-            ":", label="unscaled classification line")
+            "k:", label="unscaled classification line")
 
 plt.ylim([-0.1, 1])
 plt.xlim([-1, 1])
