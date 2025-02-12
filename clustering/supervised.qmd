@@ -476,7 +476,7 @@ Over the years they became more flexible and are still one of the most used tool
 ### Linear SVM
 We start of with the linear SVM where we construct a hyperplane
 $$
-w \cdot x + b = 0
+\langle w, x\rangle + b = 0
 $$
 with a vector $w$ and a constant $b$.
 There is a natural degree of freedom in this selection of the hyperplane, see @fig-clustering-sl-svm for two different choices.
@@ -495,7 +495,7 @@ The vectors touching the edge of the yellow regions are called _support vectors_
 
 With the hyperplane it is easy to classify an observation by simply computing the sign of the projection, i.e.
 $$
-y_j (w \cdot x_j + b) = \operatorname{sign}(w \cdot x_j + b) = \begin{cases} +1\\-1\end{cases},
+y_j (\langle w, x_j \rangle + b) = \operatorname{sign}(\langle w, x_j \rangle + b) = \begin{cases} +1\\-1\end{cases},
 $$
 where $1$ corresponds to the versicolor (orange) and $-1$ setosa (blue) observations in @fig-clustering-sl-svm.
 Therefore, the classifier depends on the position of the observation and is not invariant under scaling.
@@ -524,21 +524,21 @@ This on the other hand is needed to allow for most optimization algorithm to wor
 
 Therefore, the following formulation is quite common.
 $$
-\underset{w, b}{\operatorname{argmin}} \sum_j H(y_j, \overline{y}_j) + \frac12\|w\|^2 \quad \text{subject to}\quad \min_j|x_j \cdot w| = 1,
+\underset{w, b}{\operatorname{argmin}} \sum_j H(y_j, \overline{y}_j) + \frac12\|w\|^2 \quad \text{subject to}\quad \min_j|\langle x_j, w\rangle| = 1,
 $$
-with $H(y_j, \overline{y}_j) = \max(0, 1-y_j \cdot \overline{y}_j)$, the so called _Hinge loss_ function for counting the number of errors. 
-Furthermore, $\overline{y}_j = \operatorname{sign}(w\cdot x_j + b)$.
+with $H(y_j, \overline{y}_j) = \max(0, 1 - \langle y_j, \overline{y}_j\rangle)$, the so called _Hinge loss_ function for counting the number of errors. 
+Furthermore, $\overline{y}_j = \operatorname{sign}(\langle w, x_j\rangle + b)$.
 
 ### Nonlinear SVM
 
 In order to extend the SVM to more complex classification curves the feature space of the SVM can be extended.
 In order to do so, SVM introduces nonlinear features and computes the hyperplane on these features via a mapping $x \to \Phi(x)$ and the hyperplane function becomes
 $$
-w \cdot \Phi(x) + b
+f(x) = \langle w, \Phi(x)\rangle + b
 $$
 and accordingly we classify along
 $$
-\operatorname{sign}(w \cdot \Phi(x_j) + b).
+\operatorname{sign}(\langle w, \Phi(x_j)\rangle + b) = \operatorname{sign}(f(x_j)).
 $$
 
 Essentially, we change the feature space such that a separation is (hopefully) easier.
