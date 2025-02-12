@@ -529,3 +529,194 @@ $$
 with $H(y_j, \overline{y}_j) = \max(0, 1-y_j \cdot \overline{y}_j)$, the so called _Hinge loss_ function for counting the number of errors. 
 Furthermore, $\overline{y}_j = \operatorname{sign}(w\cdot x_j + b)$.
 
+### Nonlinear SVM
+
+In order to extend the SVM to more complex classification curves the feature space of the SVM can be extended.
+In order to do so, SVM introduces nonlinear features and computes the hyperplane on these features via a mapping $x \to \Phi(x)$ and the hyperplane function becomes
+$$
+w \cdot \Phi(x) + b
+$$
+and accordingly we classify along
+$$
+\operatorname{sign}(w \cdot \Phi(x_j) + b).
+$$
+
+Essentially, we change the feature space such that a separation is (hopefully) easier.
+To illustrate this we use a simple one dimensional example as illustrated in @fig-clustering-sl-svm-nl-1.
+Clearly there is no _linear_ separation possible.
+On the other hand, if we use 
+$$
+\Phi(x_j) = (x_j, x_j^2) 
+$$
+as our transformation function we move to 2D space and the problem can easily be solved by a line at $y=0.25$.
+
+```{python}
+#| label: fig-clustering-sl-svm-nl
+#| fig-cap: "Nonlinear classification with SVM."
+#| fig-subcap: 
+#|   - "Observations that can not be separated linearly."
+#|   - "Enriched feature set with Φ(x)=(x, x^2)."
+#| code-fold: true
+#| code-summary: "Show the code for the figure"
+import numpy as np
+from sklearn.svm import LinearSVC
+import matplotlib.pyplot as plt
+%config InlineBackend.figure_formats = ["svg"]
+np.random.seed(6020)
+
+x = np.linspace(-1, 1, 11, endpoint=True)
+x2 = np.zeros_like(x)
+y = np.zeros_like(x)
+y[np.abs(x) < 0.5] = 1
+
+plt.figure()
+plt.scatter(x[y==0], x2[y==0], label="class 1")
+plt.scatter(x[y==1], x2[y==1], label="class 2")
+plt.ylim([-0.1, 1])
+plt.xlim([-1, 1])
+plt.gca().set_aspect(2/3.3)
+plt.legend()
+
+x2 = np.power(x, 2)
+
+plt.figure()
+data = np.stack([x.flatten(), x2.flatten()]).T
+svm = LinearSVC(random_state=6020).fit(data, y.flatten())
+plt.scatter(x[y==0], x2[y==0], label="class 1")
+plt.scatter(x[y==1], x2[y==1], label="class 2")
+plt.ylim([-0.1, 1])
+plt.xlim([-1, 1])
+w = svm.coef_[0]
+d = svm.intercept_[0]
+line = lambda x: -w[0] / w[1] * x - d / w[1]
+plt.plot([-1, 1], [line(-1), line(1)], label="classification line")
+plt.plot([-1, 1], [0.25, 0.25], ":", label="actual boundary line")
+plt.gca().set_aspect(2/3.3)
+plt.legend()
+
+plt.show()
+```
+
+As can be seen in @fig-clustering-sl-svm-nl-2 the SVM does a great job in finding a split for the two classes, even though not select the _optimal_ line, which is not surprising for the given amount of observations. 
+
+As mentioned before, SVMs are sensitive to scaling.
+Let us use this example to illustrate the difference together with the concept of _pipelines_ often used in data science context.
+
+::: {.callout-note}
+## Pipeline
+The main idea of a pipeline is to create a composite as a ordered chain of transformations and estimators, see [docs](https://scikit-learn.org/stable/modules/compose.html) for insights.
+:::
+
+We can use the pipeline to
+- create the polynomial observations
+- apply a scaler to our observations
+- apply the Linear SVM
+
+```{python}
+composit_svm = sklearn.pipeline.make_pipeline(
+    sklearn.preprocessing.PolynomialFeatures(2),
+    sklearn.preprocessing.StandardScaler(),
+    LinearSVC(random_state=6020)
+)
+```
+
+```{python}
+#| label: fig-clustering-sl-svm-nl-3
+#| fig-cap: "Classification with autoscaler vs. no scaler."
+#| fig-subcap: 
+#|   - "Classification in the enriched Φ(x)=(x^0, x^1, x^2) and scaled space. Note the first dimension is ignored."
+#|   - "Difference between the classification lines when transformed back into the original space."
+#| code-fold: true
+#| code-summary: "Show the code for the figure"
+import numpy as np
+from sklearn.svm import LinearSVC
+import matplotlib.pyplot as plt
+%config InlineBackend.figure_formats = ["svg"]
+np.random.seed(6020)
+
+x = np.linspace(-1, 1, 11, endpoint=True).reshape(-1, 1)
+y = np.zeros_like(x).flatten()
+y[np.abs(x.flatten()) < 0.5] = 1
+
+composit_svm.fit(x, y)
+
+xx = composit_svm[:2].fit_transform(x)
+
+plt.figure()
+plt.scatter(xx[y==0, 1], xx[y==0, 2], label="class 1")
+plt.scatter(xx[y==1, 1], xx[y==1, 2], label="class 2")
+
+w = composit_svm['linearsvc'].coef_[0][1:]
+d = composit_svm['linearsvc'].intercept_[0]
+plt.plot([-1.6, 1.6], [line(-1.5), line(1.5)],
+         label="scaled classification line")
+
+plt.ylim([-1.25, 1.75])
+plt.xlim([-1.6, 1.6])
+plt.gca().set_aspect(3/9)
+plt.legend()
+
+xx = composit_svm[:1].fit_transform(x)
+plt.figure()
+plt.scatter(xx[y==0, 1], xx[y==0, 2], label="class 1")
+plt.scatter(xx[y==1, 1], xx[y==1, 2], label="class 2")
+
+w = composit_svm['linearsvc'].coef_[0][1:]
+d = composit_svm['linearsvc'].intercept_[0]
+a = composit_svm["standardscaler"].inverse_transform(
+    [np.array([0, -1.6, line(-1.6)])])[0]
+b = composit_svm["standardscaler"].inverse_transform(
+    [np.array([0, 1.6, line(1.6)])])[0]
+plt.plot([a[1], b[1]], [a[2], b[2]], label="scaled classification line")
+
+w = svm.coef_[0]
+d = svm.intercept_[0]
+plt.plot([-1, 1], [line(-1), line(1)], 
+            ":", label="unscaled classification line")
+
+plt.ylim([-0.1, 1])
+plt.xlim([-1, 1])
+plt.gca().set_aspect(2/3.3)
+plt.legend()
+plt.show()
+```
+
+::: {.callout-caution appearance="simple" icon=false}
+:::: {#exr-nonlinear-SVM}
+
+## Nonlinear SVM
+
+1. Extend the above findings to an example in 2D with a circular classification line.
+Create tests data of your classification by changing to `np.linspace(-1, 1, 12)`.
+```{python}
+#| label: fig-clustering-sl-svm-nl-exr
+#| fig-cap: "Data set in 2D"
+#| code-fold: true
+#| code-summary: "Show the code for the figure"
+import numpy as np
+from sklearn.svm import LinearSVC
+import sklearn
+import matplotlib.pyplot as plt
+%config InlineBackend.figure_formats = ["svg"]
+
+np.random.seed(6020)
+x = np.linspace(-1, 1, 11, endpoint=True)
+x2 = np.linspace(-1, 1, 11, endpoint=True)
+XX, XX2 = np.meshgrid(x, x2)
+ZZ = np.pow(XX, 2) + np.pow(XX2, 2)
+y = np.zeros_like(XX)
+
+i = np.sqrt(ZZ) < 0.5
+y[i] = 1
+plt.scatter(XX[y == 0], XX2[y == 0], label="class 1")
+plt.scatter(XX[y == 1], XX2[y == 1], label="class 2")
+
+data = np.stack([XX.flatten(), XX2.flatten(), ZZ.flatten()]).T
+label = y.flatten()
+```
+
+2. Recall the moons example from @sec-clustering-ul-dbscan and use a degree $3$ `PolynomialFeatures` for classification.
+
+In both cases, plot the classification line in a projection onto the original 2D space.
+::::
+:::
