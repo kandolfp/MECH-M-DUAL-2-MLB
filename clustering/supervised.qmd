@@ -721,3 +721,148 @@ label = y.flatten()
 In both cases, plot the classification line in a projection onto the original 2D space.
 ::::
 :::
+
+### Kernel Methods for SVM
+
+While enriching the feature space is, without doubt, extremal helpful the curse of dimensionality is quickly starting to influence the performance.
+The computation of $w$ is getting harder.
+The so called _kernel trick_ is solving this problem.
+We express $w$ in a different basis and solve for the parameters of the basis, i.e.
+$$
+w = \sum_{j=1}^m \alpha_j \Phi(x_j)
+$$
+where $\alpha_j$ are called the weights of the different nonlinear observable functions $\Phi(x_j)$.
+Our $f$ becomes
+$$
+f(x) = \sum_{j=1}^m \alpha_j \langle \Phi(x_j), \Phi(x) \rangle + b.
+$$
+The so called _kernel function_ is defined as the inner product involved, i.e.
+$$
+K(x_j, x) = \langle \Phi(x_j), \Phi(x) \rangle.
+$$
+The optimization problem for $w$ no reads as
+$$
+\underset{\alpha, b}{\operatorname{argmin}} \sum_j H(y_j, \overline{y}_j) + \frac12\left\|\sum_{j=1} \alpha_j \Phi(x_j)\right\|^2 \quad \text{subject to}\quad \min_j|\langle x_j, w\rangle| = 1,
+$$
+with $\alpha$ representing the vector of all the $\alpha_j$. 
+The important part here is that we now minimize of $\alpha$, which is easier.
+
+The kernel function allow almost arbitrary number of observables as it, for example, can represent a Taylor series expansion.
+Furthermore, it allows an implicit computation in higher dimensions by simply computing the inner product of differences between observations. 
+
+One of these functions are so called _radial basis functions_ (RBF) with the simplest being a Gaussian kernel
+$$
+K(x_j, x) = \exp\left(-\gamma\|x_j - x\|^2\right).
+$$
+
+In `scikit-learn` this is supported via the [`SVC`](https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC) class.
+
+Let us test this implementation with the help of our dogs and cats example.
+
+```{python}
+#| label: fig-clustering-sl-svm-rbf
+#| fig-cap: "Training a SVM with an RBF kernel for the singular vectors 2 to 22. The picture shows the classification results projected for the principal components 2 and 4."
+#| code-fold: true
+#| code-summary: "Show the code for the figure"
+import numpy as np
+import scipy
+import requests
+import io
+from sklearn import svm
+import matplotlib.pyplot as plt
+%config InlineBackend.figure_formats = ["svg"]
+
+response = requests.get(
+    "https://github.com/dynamicslab/databook_python/"
+    "raw/refs/heads/master/DATA/catData_w.mat")
+cats_w = scipy.io.loadmat(io.BytesIO(response.content))["cat_wave"]
+
+response = requests.get(
+    "https://github.com/dynamicslab/databook_python/"
+    "raw/refs/heads/master/DATA/dogData_w.mat")
+dogs_w = scipy.io.loadmat(io.BytesIO(response.content))["dog_wave"]
+
+CD = np.concatenate((dogs_w, cats_w), axis=1)
+U, S, VT = np.linalg.svd(CD - np.mean(CD), full_matrices=0)
+v = VT.T
+
+features = np.arange(1, 21)
+xtrain = np.concatenate((v[:60, features], v[80:140, features]))
+label = np.repeat(np.array([1, -1]), 60)
+xtest = np.concatenate((v[60:80, features], v[140:160, features]))
+truth = np.repeat(np.array([1, -1]), 20)
+
+svc = svm.SVC(kernel="rbf", gamma="auto").fit(xtrain, label)
+test_label = svc.predict(xtest)
+train_label = svc.predict(xtrain)
+cm = sklearn.metrics.confusion_matrix(test_label, truth)
+plt.figure()
+plt.scatter(xtrain[train_label == 1, 1], xtrain[train_label == 1, 3],
+            alpha=0.5, color="C0", label="train_dogs")
+plt.scatter(xtrain[train_label == -1, 1], xtrain[train_label == -1, 3],
+            alpha=0.5, color="C1", label="train_cats")
+plt.scatter(xtest[test_label == 1, 1], xtest[test_label == 1, 3],
+            color="C0", label="test_dogs")
+plt.scatter(xtest[test_label == -1, 1], xtest[test_label == -1, 3],
+            color="C1", label="test_cats")
+error = np.vstack((xtrain[label != train_label, :][:, [1,3]],
+                   xtest[truth != test_label, :][:, [1, 3]]))
+plt.scatter(error[:, 0], error[:, 1],
+            color="k", marker="x", label="wrong classification")
+plt.legend()
+plt.ylim([-0.25, 0.2])
+plt.xlim([-0.15, 0.25])
+plt.xlabel(r"$PC_2$")
+plt.ylabel(r"$PC_4$")
+plt.show()
+```
+We get a confusion matrix for our test set as
+```{python}
+#| echo: false
+df = pd.DataFrame(cm)
+df.columns = ["PP", "PN"]
+df["AC"] = ["P", "N"]
+df.set_index("AC").rename_axis(None)
+```
+In @fig-clustering-sl-svm-rbf we can see the results of the classification for the entire set of observations, shaded for the training set, and crosses marking the wrongly classified data.
+With `{python} error.shape[0]` wrongly classified images we have quite a good result, compared to LDA or QDA @fig-clustering-sl-lda3.
+Note, the classification is hard to recognise for the two classes in the simple projection.
+With the parameters `C` and `gamma` we can influence the classification.
+
+::: {.callout-caution appearance="simple" icon=false}
+:::: {#exr-nonlinear-SVM-rbf}
+
+## Nonlinear SVM with RBF
+
+Recall the moons example from @sec-clustering-ul-dbscan and use a `SVC` classification to distinguish the clusters.
+Look at four different results for $\gamma \in \{0.1, 5\}$ and $C \in \{0.001, 1000\}$, compare @Geron2022-xh.
+
+In all of the four images plot the classification line in a projection onto the original 2D space.
+::::
+:::
+
+::: {.callout-caution appearance="simple" icon=false}
+:::: {#exr-nonlinear-SVM-regression}
+
+## Nonlinear SVM for regression
+
+We can use SVM for regression.
+Have a look at [docs](https://scikit-learn.org/stable/auto_examples/svm/plot_svm_regression.html#sphx-glr-auto-examples-svm-plot-svm-regression-py) and use the findings to fit the following observations with various degrees and kernel functions.
+
+```{python}
+import matplotlib.pyplot as plt
+import numpy as np
+%config InlineBackend.figure_formats = ["svg"]
+np.random.seed(6020)
+
+m = 100
+x = 6 * np.random.rand(m) - 3
+y = 1/2 * x ** 2 + x + 2 + np.random.randn(m)
+fig = plt.figure()
+plt.scatter(x, y, label="observations")
+plt.show()
+```
+
+Compare [@Kandolf_GDM, Example 5.2] [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/regression/linear.html#exm-regression-linear-poly).
+::::
+:::
