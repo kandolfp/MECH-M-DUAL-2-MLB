@@ -1066,3 +1066,14 @@ Recall the moons example from @sec-clustering-ul-dbscan and use a `DecisionTreeC
 Play around with the parameters, e.g. `min_samples_leaf = 5` and see how this influences the score for a test set.
 ::::
 :::
+
+::: {.callout-caution appearance="simple" icon=false}
+:::: {#exr-nonlinear-tree-regression}
+
+## Tree regression
+
+We can use a decision tree for regression.
+Have a look at [docs](https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeRegressor.html) and use the findings to fit the observations of @exr-nonlinear-SVM-regression with various `max_depth` values and no value here but limiting `min_samples_leaf=10`.
+
+::::
+:::
