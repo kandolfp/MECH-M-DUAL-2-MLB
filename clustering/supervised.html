@@ -288,6 +288,7 @@ window.Quarto = {
   <li><a href="#nonlinear-svm" id="toc-nonlinear-svm" class="nav-link" data-scroll-target="#nonlinear-svm"><span class="header-section-number">2.3.2</span> Nonlinear SVM</a></li>
   <li><a href="#kernel-methods-for-svm" id="toc-kernel-methods-for-svm" class="nav-link" data-scroll-target="#kernel-methods-for-svm"><span class="header-section-number">2.3.3</span> Kernel Methods for SVM</a></li>
   </ul></li>
+  <li><a href="#decision-trees" id="toc-decision-trees" class="nav-link" data-scroll-target="#decision-trees"><span class="header-section-number">2.4</span> Decision trees</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/edit/main/clustering/supervised.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -676,7 +677,7 @@ Note
 </div>
 </div>
 <p>First we load the MNIST data set again and split it into a training and testing section, see <a href="unsupervised.html#sec-clustering-ul-me" class="quarto-xref"><span>Section 1.5</span></a>.</p>
-<div id="389ab4d0" class="cell" data-execution_count="4">
+<div id="5fe2cd00" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Show the code for loading and splitting the dataset</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -693,7 +694,7 @@ Note
 </details>
 </div>
 <p>Next, as we only want a binary classifier, we select one number, in our case <code>5</code> and relabel our data. With the new labels we can train our classifier.</p>
-<div id="bc3e3316" class="cell" data-execution_count="5">
+<div id="d3b2229c" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>y_train_5 <span class="op">=</span> (y_train <span class="op">==</span> <span class="st">"5"</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>y_test_5 <span class="op">=</span> (y_test <span class="op">==</span> <span class="st">"5"</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -701,11 +702,11 @@ Note
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>SGD.fit(X_train, y_train_5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In order to cet a score for our method we use <span class="math inline">\(k\)</span>-folds cross-validation <a href="#def-crossvalidation" class="quarto-xref">Definition&nbsp;<span>2.1</span></a> and the corresponding <code>scikit-learn</code> function <code>cross_val_score</code> to perform this task for our model.</p>
-<div id="954535a4" class="cell" data-execution_count="6">
+<div id="8bc4076a" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> sklearn.model_selection.cross_val_score(</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    SGD, X_train, y_train_5, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">"accuracy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="75e80490" class="cell" data-execution_count="7">
+<div id="d7ffd5a0" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display" data-execution_count="7">
 <div>
 
@@ -737,13 +738,13 @@ Note
 </div>
 </div>
 <p>With results in the high <span class="math inline">\(90\%\)</span> range the results look promession if not great but are they really that good. In order to get a better idea just always guess that we do not see a <code>5</code> that should be the most common class in our case. To simulate this we use the <code>DummyClassifier</code> class.</p>
-<div id="cfb3308e" class="cell" data-execution_count="8">
+<div id="704de9eb" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>dummy <span class="op">=</span> sklearn.dummy.DummyClassifier()</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>dummy.fit(X_train, y_train_5)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>scores_dummy <span class="op">=</span> sklearn.model_selection.cross_val_score(</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    dummy, X_train, y_train_5, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">"accuracy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="9c539dc6" class="cell" data-execution_count="9">
+<div id="87fdc40e" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-display" data-execution_count="9">
 <div>
 
@@ -802,12 +803,12 @@ Figure&nbsp;2.6: Names and abbreviations for a <span class="math inline">\(2\tim
 </div>
 <p>To compute the confusion matrix we first need predictions. This can be achieved by <code>cross_val_predict</code> instead of <code>cross_val_score</code> and than we use <a href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html"><code>sklearn.metrics.confusion_matrix</code></a>.</p>
 <p>Combined, for our example this reads as:</p>
-<div id="4fdf499f" class="cell" data-execution_count="10">
+<div id="a2568152" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>y_train_pred <span class="op">=</span> sklearn.model_selection.cross_val_predict(</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                    SGD, X_train, y_train_5, cv<span class="op">=</span><span class="dv">3</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> sklearn.metrics.confusion_matrix(y_train_5, y_train_pred)                   </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="5279feba" class="cell" data-execution_count="11">
+<div id="78a97305" class="cell" data-execution_count="11">
 <div class="cell-output cell-output-display" data-execution_count="11">
 <div>
 
@@ -871,7 +872,7 @@ F_1 = \frac{2 TP}{2 TP + FP + FN}
 \]</span></p></li>
 </ol>
 <p>In the <a href="https://scikit-learn.org/stable/api/sklearn.metrics.html"><code>sklearn.metrics</code></a> most of these values have a corresponding function. If we look at <em>precission</em>, <em>recall</em>, and the <span class="math inline">\(F_1\)</span> score, for our example we see that our performance is viewed under a different light:</p>
-<div id="92d44db3" class="cell styled-output" data-execution_count="12">
+<div id="d7a9c86e" class="cell styled-output" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>precision <span class="op">=</span> sklearn.metrics.precision_score(y_train_5, y_train_pred)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>recall <span class="op">=</span> sklearn.metrics.recall_score(y_train_5, y_train_pred)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>f1_score <span class="op">=</span> sklearn.metrics.f1_score(y_train_5, y_train_pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1047,7 +1048,7 @@ Pipeline
 </div>
 </div>
 <p>We can use the pipeline to - create the polynomial observations - apply a scaler to our observations - apply the Linear SVM</p>
-<div id="7e089ddc" class="cell" data-execution_count="14">
+<div id="8cf2654b" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>composit_svm <span class="op">=</span> sklearn.pipeline.make_pipeline(</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    sklearn.preprocessing.PolynomialFeatures(<span class="dv">2</span>),</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    sklearn.preprocessing.StandardScaler(),</span>
@@ -1287,7 +1288,7 @@ Figure&nbsp;2.11: Training a SVM with an RBF kernel for the singular vectors 2 t
 </div>
 </div>
 <p>We get a confusion matrix for our test set as</p>
-<div id="b32d5363" class="cell" data-execution_count="18">
+<div id="a8b0125f" class="cell" data-execution_count="18">
 <div class="cell-output cell-output-display" data-execution_count="18">
 <div>
 
@@ -1339,7 +1340,7 @@ Figure&nbsp;2.11: Training a SVM with an RBF kernel for the singular vectors 2 t
 <div class="callout-body-container">
 <div id="exr-nonlinear-SVM-regression" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise 2.4 (Nonlinear SVM for regression)</strong></span> We can use SVM for regression. Have a look at <a href="https://scikit-learn.org/stable/auto_examples/svm/plot_svm_regression.html#sphx-glr-auto-examples-svm-plot-svm-regression-py">docs</a> and use the findings to fit the following observations with various degrees and kernel functions.</p>
-<div id="527a0f0a" class="cell" data-execution_count="19">
+<div id="fd921f70" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
@@ -1364,6 +1365,426 @@ Figure&nbsp;2.11: Training a SVM with an RBF kernel for the singular vectors 2 t
 </div>
 </div>
 </div>
+</section>
+</section>
+<section id="decision-trees" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="decision-trees"><span class="header-section-number">2.4</span> Decision trees</h2>
+<p>Decision trees are widely used in data science for classification and regression. The are a powerful class of algorithms that can fit not only numerical data. Furthermore, the form the basis of <em>random forests</em>, one of the most powerful machine learning algorithms available to date.</p>
+<p>The where not invented for machine learning but have been a staple in business for centuries. The basic idea is that they establish an algorithmic flow chart for making decisions. The criteria that creates the splits in each branch is related to a desired outcome and are therefore <em>important</em>. Often experts are called upon creating such a decision tree.</p>
+<p>The decision tree learning follows the same principals to create a predictive classification model based on the provided observations and labels. Similar to DBSCAN they form a hierarchical structure that tries to split in an optimal way. In this regard they are the counterpart to DBSCAN but they move from top to bottom and of course use the labels to guide the process.</p>
+<p>The following key feature make them wildly use:</p>
+<ol type="1">
+<li>The usually produce interpretable results (we can draw the graph)</li>
+<li>The algorithm mimics human decision making, which helps for the interpretation</li>
+<li>The can handle numerical and categorical data</li>
+<li>They perform well with large sets of data</li>
+<li>The reliability of the classification can be assessed with statistical validation</li>
+</ol>
+<p>While there are a lot of different optimizations the base algorithm follows these steps:</p>
+<ol type="1">
+<li>Look through all components (features) of an observation <span class="math inline">\(x_j\)</span> that gives the best labeling prediction <span class="math inline">\(y_j\)</span></li>
+<li>Compare the prediction accuracy over all observations, the best result is used</li>
+<li>Proceed with the two new branches in the same fashion</li>
+</ol>
+<p>Let us apply it to the Fischer Iris data set to better understand what is happening.</p>
+<div id="0cf9a23d" class="cell" data-execution_count="20">
+<details class="code-fold">
+<summary>Show the code for the figure</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sklearn</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_iris</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.tree <span class="im">import</span> DecisionTreeClassifier</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> six <span class="im">import</span> StringIO</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>iris <span class="op">=</span> load_iris(as_frame<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>X_iris <span class="op">=</span> iris.data.values</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>y_iris <span class="op">=</span> iris.target</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>decision_tree <span class="op">=</span> DecisionTreeClassifier(max_depth<span class="op">=</span><span class="dv">2</span>, random_state<span class="op">=</span><span class="dv">6020</span>)</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>decision_tree.fit(X_iris, y_iris)</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>dot_data <span class="op">=</span> <span class="st">"fischer_tree.dot"</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>sklearn.tree.export_graphviz(decision_tree, out_file<span class="op">=</span>dot_data,  </span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>                filled<span class="op">=</span><span class="va">True</span>, rounded<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>                feature_names<span class="op">=</span>iris.feature_names,</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>                class_names<span class="op">=</span>iris.target_names,</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>                special_characters<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell" data-file="fischer_tree.dot" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-clustering-sl-tree-iris" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-clustering-sl-tree-iris-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<svg width="672" height="480" viewbox="0.00 0.00 356.91 339.20" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 335.2)">
+<title>Tree</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-335.2 352.91,-335.2 352.91,4 -4,4"></polygon>
+<!-- 0 -->
+<g id="node1" class="node">
+<title>0</title>
+<path fill="#ffffff" stroke="black" d="M210.42,-331.2C210.42,-331.2 67.49,-331.2 67.49,-331.2 61.49,-331.2 55.49,-325.2 55.49,-319.2 55.49,-319.2 55.49,-251.2 55.49,-251.2 55.49,-245.2 61.49,-239.2 67.49,-239.2 67.49,-239.2 210.42,-239.2 210.42,-239.2 216.42,-239.2 222.42,-245.2 222.42,-251.2 222.42,-251.2 222.42,-319.2 222.42,-319.2 222.42,-325.2 216.42,-331.2 210.42,-331.2"></path>
+<text text-anchor="start" x="63.47" y="-314.6" font-family="Helvetica,sans-Serif" font-size="14.00">petal length (cm) ≤ 2.45</text>
+<text text-anchor="start" x="102.56" y="-297.8" font-family="Helvetica,sans-Serif" font-size="14.00">gini = 0.667</text>
+<text text-anchor="start" x="93.23" y="-281" font-family="Helvetica,sans-Serif" font-size="14.00">samples = 150</text>
+<text text-anchor="start" x="79.21" y="-264.2" font-family="Helvetica,sans-Serif" font-size="14.00">value = [50, 50, 50]</text>
+<text text-anchor="start" x="94.4" y="-247.4" font-family="Helvetica,sans-Serif" font-size="14.00">class = setosa</text>
+</g>
+<!-- 1 -->
+<g id="node2" class="node">
+<title>1</title>
+<path fill="#e58139" stroke="black" d="M107.86,-194.9C107.86,-194.9 12.05,-194.9 12.05,-194.9 6.05,-194.9 0.05,-188.9 0.05,-182.9 0.05,-182.9 0.05,-131.5 0.05,-131.5 0.05,-125.5 6.05,-119.5 12.05,-119.5 12.05,-119.5 107.86,-119.5 107.86,-119.5 113.86,-119.5 119.86,-125.5 119.86,-131.5 119.86,-131.5 119.86,-182.9 119.86,-182.9 119.86,-188.9 113.86,-194.9 107.86,-194.9"></path>
+<text text-anchor="start" x="31.35" y="-178.2" font-family="Helvetica,sans-Serif" font-size="14.00">gini = 0.0</text>
+<text text-anchor="start" x="18.12" y="-161.4" font-family="Helvetica,sans-Serif" font-size="14.00">samples = 50</text>
+<text text-anchor="start" x="8" y="-144.6" font-family="Helvetica,sans-Serif" font-size="14.00">value = [50, 0, 0]</text>
+<text text-anchor="start" x="15.4" y="-127.8" font-family="Helvetica,sans-Serif" font-size="14.00">class = setosa</text>
+</g>
+<!-- 0&#45;&gt;1 -->
+<g id="edge1" class="edge">
+<title>0-&gt;1</title>
+<path fill="none" stroke="black" d="M110.66,-239.07C103.46,-227.59 95.72,-215.25 88.51,-203.75"></path>
+<polygon fill="black" stroke="black" points="91.39,-201.76 83.12,-195.14 85.46,-205.48 91.39,-201.76"></polygon>
+<text text-anchor="middle" x="77.53" y="-215.31" font-family="Helvetica,sans-Serif" font-size="14.00">True</text>
+</g>
+<!-- 2 -->
+<g id="node3" class="node">
+<title>2</title>
+<path fill="#ffffff" stroke="black" d="M287.46,-203.2C287.46,-203.2 150.45,-203.2 150.45,-203.2 144.45,-203.2 138.45,-197.2 138.45,-191.2 138.45,-191.2 138.45,-123.2 138.45,-123.2 138.45,-117.2 144.45,-111.2 150.45,-111.2 150.45,-111.2 287.46,-111.2 287.46,-111.2 293.46,-111.2 299.46,-117.2 299.46,-123.2 299.46,-123.2 299.46,-191.2 299.46,-191.2 299.46,-197.2 293.46,-203.2 287.46,-203.2"></path>
+<text text-anchor="start" x="146.2" y="-186.6" font-family="Helvetica,sans-Serif" font-size="14.00">petal width (cm) ≤ 1.75</text>
+<text text-anchor="start" x="190.35" y="-169.8" font-family="Helvetica,sans-Serif" font-size="14.00">gini = 0.5</text>
+<text text-anchor="start" x="173.23" y="-153" font-family="Helvetica,sans-Serif" font-size="14.00">samples = 100</text>
+<text text-anchor="start" x="163.11" y="-136.2" font-family="Helvetica,sans-Serif" font-size="14.00">value = [0, 50, 50]</text>
+<text text-anchor="start" x="165.08" y="-119.4" font-family="Helvetica,sans-Serif" font-size="14.00">class = versicolor</text>
+</g>
+<!-- 0&#45;&gt;2 -->
+<g id="edge2" class="edge">
+<title>0-&gt;2</title>
+<path fill="none" stroke="black" d="M167.61,-239.07C173.18,-230.29 179.07,-221.01 184.8,-211.99"></path>
+<polygon fill="black" stroke="black" points="187.82,-213.76 190.23,-203.44 181.91,-210.01 187.82,-213.76"></polygon>
+<text text-anchor="middle" x="195.68" y="-223.64" font-family="Helvetica,sans-Serif" font-size="14.00">False</text>
+</g>
+<!-- 3 -->
+<g id="node4" class="node">
+<title>3</title>
+<path fill="#4de88e" stroke="black" d="M198.71,-75.3C198.71,-75.3 99.2,-75.3 99.2,-75.3 93.2,-75.3 87.2,-69.3 87.2,-63.3 87.2,-63.3 87.2,-11.9 87.2,-11.9 87.2,-5.9 93.2,0.1 99.2,0.1 99.2,0.1 198.71,0.1 198.71,0.1 204.71,0.1 210.71,-5.9 210.71,-11.9 210.71,-11.9 210.71,-63.3 210.71,-63.3 210.71,-69.3 204.71,-75.3 198.71,-75.3"></path>
+<text text-anchor="start" x="112.56" y="-58.6" font-family="Helvetica,sans-Serif" font-size="14.00">gini = 0.168</text>
+<text text-anchor="start" x="107.12" y="-41.8" font-family="Helvetica,sans-Serif" font-size="14.00">samples = 54</text>
+<text text-anchor="start" x="97" y="-25" font-family="Helvetica,sans-Serif" font-size="14.00">value = [0, 49, 5]</text>
+<text text-anchor="start" x="95.08" y="-8.2" font-family="Helvetica,sans-Serif" font-size="14.00">class = versicolor</text>
+</g>
+<!-- 2&#45;&gt;3 -->
+<g id="edge3" class="edge">
+<title>2-&gt;3</title>
+<path fill="none" stroke="black" d="M192.09,-111.07C186.83,-102.23 181.3,-92.95 176.03,-84.1"></path>
+<polygon fill="black" stroke="black" points="178.99,-82.22 170.87,-75.42 172.97,-85.8 178.99,-82.22"></polygon>
+</g>
+<!-- 4 -->
+<g id="node5" class="node">
+<title>4</title>
+<path fill="#843de6" stroke="black" d="M336.86,-75.3C336.86,-75.3 241.05,-75.3 241.05,-75.3 235.05,-75.3 229.05,-69.3 229.05,-63.3 229.05,-63.3 229.05,-11.9 229.05,-11.9 229.05,-5.9 235.05,0.1 241.05,0.1 241.05,0.1 336.86,0.1 336.86,0.1 342.86,0.1 348.86,-5.9 348.86,-11.9 348.86,-11.9 348.86,-63.3 348.86,-63.3 348.86,-69.3 342.86,-75.3 336.86,-75.3"></path>
+<text text-anchor="start" x="252.56" y="-58.6" font-family="Helvetica,sans-Serif" font-size="14.00">gini = 0.043</text>
+<text text-anchor="start" x="247.12" y="-41.8" font-family="Helvetica,sans-Serif" font-size="14.00">samples = 46</text>
+<text text-anchor="start" x="237" y="-25" font-family="Helvetica,sans-Serif" font-size="14.00">value = [0, 1, 45]</text>
+<text text-anchor="start" x="239.35" y="-8.2" font-family="Helvetica,sans-Serif" font-size="14.00">class = virginica</text>
+</g>
+<!-- 2&#45;&gt;4 -->
+<g id="edge4" class="edge">
+<title>2-&gt;4</title>
+<path fill="none" stroke="black" d="M245.82,-111.07C251.08,-102.23 256.6,-92.95 261.87,-84.1"></path>
+<polygon fill="black" stroke="black" points="264.93,-85.8 267.04,-75.42 258.92,-82.22 264.93,-85.8"></polygon>
+</g>
+</g>
+</svg>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-sl-tree-iris-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.12: Decision tree for the Fischer iris data set and depth 2.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Displaying <code>dot</code> files
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In the code for <a href="#fig-clustering-sl-tree-iris" class="quarto-xref">Figure&nbsp;<span>2.12</span></a> we generate a <code>dot</code> file, that is interpreted with quarto to show the graph for a better integration. In order to do this offline you need to install <a href="https://www.graphviz.org/download/"><code>graphviz</code></a> for the installation of <code>dot</code> and also install the python package <code>pydotplus</code>.</p>
+<p>Than you should be able to use:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pydotplus</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> six <span class="im">import</span> StringIO</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>dot_data <span class="op">=</span> StringIO()</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>graph <span class="op">=</span> pydotplus.graph_from_dot_data(dot_data.getvalue())  </span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>graph.create_png()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p>As we can see, for our tree with depth <span class="math inline">\(2\)</span> we only need to split along <code>petal length (cm)</code> and <code>petal width (cm)</code>, leaving the two other features untouched, compare <a href="index.html#fig-clustering-iris" class="quarto-xref">Figure&nbsp;<span>2</span></a>.</p>
+<p>As we only have the splits happening in these two variables we can also visualize them easy.</p>
+<div id="cell-fig-clustering-sl-tree-iris-split" class="cell" data-execution_count="21">
+<details class="code-fold">
+<summary>Show the code for the figure</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>iris.frame[<span class="st">"target"</span>] <span class="op">=</span> iris.target_names[iris.target]</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> iris.frame</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name <span class="kw">in</span> iris.target_names:</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    index <span class="op">=</span> df[<span class="st">"target"</span>] <span class="op">==</span> name</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    plt.scatter(df.iloc[:, <span class="dv">2</span>][index], df.iloc[:, <span class="dv">3</span>][index], label<span class="op">=</span>name)</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>plt.xlim([<span class="fl">0.5</span>, <span class="fl">7.5</span>])</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>plt.ylim([<span class="dv">0</span>, <span class="fl">2.6</span>])</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>th <span class="op">=</span> decision_tree.tree_.threshold[[<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>]]</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>plt.plot([th[<span class="dv">0</span>], th[<span class="dv">0</span>]], plt.gca().get_ylim(), <span class="st">'C1-.'</span>,</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>          linewidth<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">"split 1"</span>)</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>plt.plot([th[<span class="dv">0</span>], plt.gca().get_xlim()[<span class="dv">1</span>]], [th[<span class="dv">1</span>], th[<span class="dv">1</span>]], <span class="st">'C2:'</span>,</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>          linewidth<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">"split 2"</span>)</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>plt.plot([<span class="fl">4.95</span>, <span class="fl">4.95</span>], [<span class="dv">0</span>, th[<span class="dv">1</span>]], <span class="st">'C3--'</span>,</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>          linewidth<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">"(split 3)"</span>)</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>plt.xlabel(iris.feature_names[<span class="dv">2</span>])</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>plt.ylabel(iris.feature_names[<span class="dv">3</span>])</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-clustering-sl-tree-iris-split" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-clustering-sl-tree-iris-split-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="supervised_files/figure-html/fig-clustering-sl-tree-iris-split-output-1.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-17" title="Figure&nbsp;2.13: Splits for the Fischer Iris data set with the first two split form the above tree and the third split would be the next step for a larger tree."><img src="supervised_files/figure-html/fig-clustering-sl-tree-iris-split-output-1.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-sl-tree-iris-split-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.13: Splits for the Fischer Iris data set with the first two split form the above tree and the third split would be the next step for a larger tree.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>In <a href="#fig-clustering-sl-tree-iris-split" class="quarto-xref">Figure&nbsp;<span>2.13</span></a> we can see the the first two splits and the next split if we would increase the tree. With the first split, we immediately separate <em>setosa</em> with <span class="math inline">\(100\%\)</span> accuracy. The two other classes are a bit tricky and we can not classify everything correct right away. In total <span class="math inline">\(6\)</span> out of <span class="math inline">\(150\)</span> observations are wrongly classified with this simple tree.</p>
+<p>Let us also apply the tree classification to our cats and dogs example.</p>
+<div id="13b8015c" class="cell" data-execution_count="22">
+<details class="code-fold">
+<summary>Show the code for the figure</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> io</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_val_score</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.tree <span class="im">import</span> DecisionTreeClassifier</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> six <span class="im">import</span> StringIO</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://github.com/dynamicslab/databook_python/"</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"raw/refs/heads/master/DATA/catData_w.mat"</span>)</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>cats_w <span class="op">=</span> scipy.io.loadmat(io.BytesIO(response.content))[<span class="st">"cat_wave"</span>]</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://github.com/dynamicslab/databook_python/"</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"raw/refs/heads/master/DATA/dogData_w.mat"</span>)</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>dogs_w <span class="op">=</span> scipy.io.loadmat(io.BytesIO(response.content))[<span class="st">"dog_wave"</span>]</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>CD <span class="op">=</span> np.concatenate((dogs_w, cats_w), axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>U, S, VT <span class="op">=</span> np.linalg.svd(CD <span class="op">-</span> np.mean(CD), full_matrices<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>v <span class="op">=</span> VT.T</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>features <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="dv">21</span>)</span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>xtrain <span class="op">=</span> np.concatenate((v[:<span class="dv">60</span>, features], v[<span class="dv">80</span>:<span class="dv">140</span>, features]))</span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>label <span class="op">=</span> np.repeat(np.array([<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>]), <span class="dv">60</span>)</span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>xtest <span class="op">=</span> np.concatenate((v[<span class="dv">60</span>:<span class="dv">80</span>, features], v[<span class="dv">140</span>:<span class="dv">160</span>, features]))</span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>truth <span class="op">=</span> np.repeat(np.array([<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>]), <span class="dv">20</span>)</span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a>decision_tree_cvd <span class="op">=</span> DecisionTreeClassifier(max_depth<span class="op">=</span><span class="dv">2</span>).fit(xtrain, label)</span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a>test_label <span class="op">=</span> decision_tree_cvd.predict(xtest)</span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> sklearn.metrics.confusion_matrix(test_label, truth)</span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a>test_label <span class="op">=</span> svc.predict(xtest)</span>
+<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a>train_label <span class="op">=</span> svc.predict(xtrain)</span>
+<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> sklearn.metrics.confusion_matrix(test_label, truth)</span>
+<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a>dot_data <span class="op">=</span> <span class="st">"cvsd_tree.dot"</span></span>
+<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-41"><a href="#cb19-41" aria-hidden="true" tabindex="-1"></a>sklearn.tree.export_graphviz(decision_tree_cvd,</span>
+<span id="cb19-42"><a href="#cb19-42" aria-hidden="true" tabindex="-1"></a>                out_file<span class="op">=</span>dot_data,  </span>
+<span id="cb19-43"><a href="#cb19-43" aria-hidden="true" tabindex="-1"></a>                filled<span class="op">=</span><span class="va">True</span>, rounded<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb19-44"><a href="#cb19-44" aria-hidden="true" tabindex="-1"></a>                class_names<span class="op">=</span>[<span class="st">"dog"</span>, <span class="st">"cat"</span>],</span>
+<span id="cb19-45"><a href="#cb19-45" aria-hidden="true" tabindex="-1"></a>                special_characters<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell" data-file="cvsd_tree.dot" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-clustering-sl-tree-cvsd" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-clustering-sl-tree-cvsd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<svg width="672" height="480" viewbox="0.00 0.00 472.45 311.20" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 307.2)">
+<title>Tree</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-307.2 468.45,-307.2 468.45,4 -4,4"></polygon>
+<!-- 0 -->
+<g id="node1" class="node">
+<title>0</title>
+<path fill="#ffffff" stroke="black" d="M280.3,-303.2C280.3,-303.2 192.04,-303.2 192.04,-303.2 186.04,-303.2 180.04,-297.2 180.04,-291.2 180.04,-291.2 180.04,-237.2 180.04,-237.2 180.04,-231.2 186.04,-225.2 192.04,-225.2 192.04,-225.2 280.3,-225.2 280.3,-225.2 286.3,-225.2 292.3,-231.2 292.3,-237.2 292.3,-237.2 292.3,-291.2 292.3,-291.2 292.3,-297.2 286.3,-303.2 280.3,-303.2"></path>
+<text text-anchor="start" x="201.54" y="-287.6" font-family="Helvetica,sans-Serif" font-size="14.00">x</text>
+<text text-anchor="start" x="208.54" y="-287.6" font-family="Helvetica,sans-Serif" baseline-shift="sub" font-size="14.00">0</text>
+<text text-anchor="start" x="216.32" y="-287.6" font-family="Helvetica,sans-Serif" font-size="14.00"> ≤ 0.049</text>
+<text text-anchor="start" x="207.57" y="-273.6" font-family="Helvetica,sans-Serif" font-size="14.00">gini = 0.5</text>
+<text text-anchor="start" x="190.45" y="-259.6" font-family="Helvetica,sans-Serif" font-size="14.00">samples = 120</text>
+<text text-anchor="start" x="188.11" y="-245.6" font-family="Helvetica,sans-Serif" font-size="14.00">value = [60, 60]</text>
+<text text-anchor="start" x="200.57" y="-231.6" font-family="Helvetica,sans-Serif" font-size="14.00">class = dog</text>
+</g>
+<!-- 1 -->
+<g id="node2" class="node">
+<title>1</title>
+<path fill="#72b9ec" stroke="black" d="M217.3,-189.2C217.3,-189.2 129.04,-189.2 129.04,-189.2 123.04,-189.2 117.04,-183.2 117.04,-177.2 117.04,-177.2 117.04,-123.2 117.04,-123.2 117.04,-117.2 123.04,-111.2 129.04,-111.2 129.04,-111.2 217.3,-111.2 217.3,-111.2 223.3,-111.2 229.3,-117.2 229.3,-123.2 229.3,-123.2 229.3,-177.2 229.3,-177.2 229.3,-183.2 223.3,-189.2 217.3,-189.2"></path>
+<text text-anchor="start" x="138.54" y="-173.6" font-family="Helvetica,sans-Serif" font-size="14.00">x</text>
+<text text-anchor="start" x="145.54" y="-173.6" font-family="Helvetica,sans-Serif" baseline-shift="sub" font-size="14.00">2</text>
+<text text-anchor="start" x="153.32" y="-173.6" font-family="Helvetica,sans-Serif" font-size="14.00"> ≤ 0.019</text>
+<text text-anchor="start" x="136.78" y="-159.6" font-family="Helvetica,sans-Serif" font-size="14.00">gini = 0.346</text>
+<text text-anchor="start" x="131.34" y="-145.6" font-family="Helvetica,sans-Serif" font-size="14.00">samples = 72</text>
+<text text-anchor="start" x="125.11" y="-131.6" font-family="Helvetica,sans-Serif" font-size="14.00">value = [16, 56]</text>
+<text text-anchor="start" x="139.91" y="-117.6" font-family="Helvetica,sans-Serif" font-size="14.00">class = cat</text>
+</g>
+<!-- 0&#45;&gt;1 -->
+<g id="edge1" class="edge">
+<title>0-&gt;1</title>
+<path fill="none" stroke="black" d="M214.67,-224.97C209.8,-216.32 204.58,-207.04 199.54,-198.08"></path>
+<polygon fill="black" stroke="black" points="202.53,-196.26 194.58,-189.26 196.43,-199.69 202.53,-196.26"></polygon>
+<text text-anchor="middle" x="187.84" y="-209.13" font-family="Helvetica,sans-Serif" font-size="14.00">True</text>
+</g>
+<!-- 4 -->
+<g id="node5" class="node">
+<title>4</title>
+<path fill="#e78c4b" stroke="black" d="M339.51,-189.2C339.51,-189.2 258.83,-189.2 258.83,-189.2 252.83,-189.2 246.83,-183.2 246.83,-177.2 246.83,-177.2 246.83,-123.2 246.83,-123.2 246.83,-117.2 252.83,-111.2 258.83,-111.2 258.83,-111.2 339.51,-111.2 339.51,-111.2 345.51,-111.2 351.51,-117.2 351.51,-123.2 351.51,-123.2 351.51,-177.2 351.51,-177.2 351.51,-183.2 345.51,-189.2 339.51,-189.2"></path>
+<text text-anchor="start" x="264.54" y="-173.6" font-family="Helvetica,sans-Serif" font-size="14.00">x</text>
+<text text-anchor="start" x="271.54" y="-173.6" font-family="Helvetica,sans-Serif" baseline-shift="sub" font-size="14.00">3</text>
+<text text-anchor="start" x="279.32" y="-173.6" font-family="Helvetica,sans-Serif" font-size="14.00"> ≤ 0.133</text>
+<text text-anchor="start" x="262.78" y="-159.6" font-family="Helvetica,sans-Serif" font-size="14.00">gini = 0.153</text>
+<text text-anchor="start" x="257.34" y="-145.6" font-family="Helvetica,sans-Serif" font-size="14.00">samples = 48</text>
+<text text-anchor="start" x="255" y="-131.6" font-family="Helvetica,sans-Serif" font-size="14.00">value = [44, 4]</text>
+<text text-anchor="start" x="263.57" y="-117.6" font-family="Helvetica,sans-Serif" font-size="14.00">class = dog</text>
+</g>
+<!-- 0&#45;&gt;4 -->
+<g id="edge4" class="edge">
+<title>0-&gt;4</title>
+<path fill="none" stroke="black" d="M257.68,-224.97C262.54,-216.32 267.76,-207.04 272.8,-198.08"></path>
+<polygon fill="black" stroke="black" points="275.91,-199.69 277.76,-189.26 269.81,-196.26 275.91,-199.69"></polygon>
+<text text-anchor="middle" x="284.5" y="-209.13" font-family="Helvetica,sans-Serif" font-size="14.00">False</text>
+</g>
+<!-- 2 -->
+<g id="node3" class="node">
+<title>2</title>
+<path fill="#399de5" stroke="black" d="M92.51,-75.3C92.51,-75.3 11.83,-75.3 11.83,-75.3 5.83,-75.3 -0.17,-69.3 -0.17,-63.3 -0.17,-63.3 -0.17,-11.9 -0.17,-11.9 -0.17,-5.9 5.83,0.1 11.83,0.1 11.83,0.1 92.51,0.1 92.51,0.1 98.51,0.1 104.51,-5.9 104.51,-11.9 104.51,-11.9 104.51,-63.3 104.51,-63.3 104.51,-69.3 98.51,-75.3 92.51,-75.3"></path>
+<text text-anchor="start" x="23.57" y="-58.6" font-family="Helvetica,sans-Serif" font-size="14.00">gini = 0.0</text>
+<text text-anchor="start" x="10.34" y="-41.8" font-family="Helvetica,sans-Serif" font-size="14.00">samples = 47</text>
+<text text-anchor="start" x="8" y="-25" font-family="Helvetica,sans-Serif" font-size="14.00">value = [0, 47]</text>
+<text text-anchor="start" x="18.91" y="-8.2" font-family="Helvetica,sans-Serif" font-size="14.00">class = cat</text>
+</g>
+<!-- 1&#45;&gt;2 -->
+<g id="edge2" class="edge">
+<title>1-&gt;2</title>
+<path fill="none" stroke="black" d="M131.53,-111.14C121.3,-101.79 110.27,-91.7 99.78,-82.11"></path>
+<polygon fill="black" stroke="black" points="102,-79.4 92.25,-75.24 97.27,-84.57 102,-79.4"></polygon>
+</g>
+<!-- 3 -->
+<g id="node4" class="node">
+<title>3</title>
+<path fill="#f4c8a8" stroke="black" d="M214.51,-75.3C214.51,-75.3 133.83,-75.3 133.83,-75.3 127.83,-75.3 121.83,-69.3 121.83,-63.3 121.83,-63.3 121.83,-11.9 121.83,-11.9 121.83,-5.9 127.83,0.1 133.83,0.1 133.83,0.1 214.51,0.1 214.51,0.1 220.51,0.1 226.51,-5.9 226.51,-11.9 226.51,-11.9 226.51,-63.3 226.51,-63.3 226.51,-69.3 220.51,-75.3 214.51,-75.3"></path>
+<text text-anchor="start" x="137.78" y="-58.6" font-family="Helvetica,sans-Serif" font-size="14.00">gini = 0.461</text>
+<text text-anchor="start" x="132.34" y="-41.8" font-family="Helvetica,sans-Serif" font-size="14.00">samples = 25</text>
+<text text-anchor="start" x="130" y="-25" font-family="Helvetica,sans-Serif" font-size="14.00">value = [16, 9]</text>
+<text text-anchor="start" x="138.57" y="-8.2" font-family="Helvetica,sans-Serif" font-size="14.00">class = dog</text>
+</g>
+<!-- 1&#45;&gt;3 -->
+<g id="edge3" class="edge">
+<title>1-&gt;3</title>
+<path fill="none" stroke="black" d="M173.51,-111.14C173.59,-102.88 173.67,-94.04 173.75,-85.48"></path>
+<polygon fill="black" stroke="black" points="177.25,-85.27 173.84,-75.24 170.25,-85.21 177.25,-85.27"></polygon>
+</g>
+<!-- 5 -->
+<g id="node6" class="node">
+<title>5</title>
+<path fill="#e6843d" stroke="black" d="M338.51,-75.3C338.51,-75.3 257.83,-75.3 257.83,-75.3 251.83,-75.3 245.83,-69.3 245.83,-63.3 245.83,-63.3 245.83,-11.9 245.83,-11.9 245.83,-5.9 251.83,0.1 257.83,0.1 257.83,0.1 338.51,0.1 338.51,0.1 344.51,0.1 350.51,-5.9 350.51,-11.9 350.51,-11.9 350.51,-63.3 350.51,-63.3 350.51,-69.3 344.51,-75.3 338.51,-75.3"></path>
+<text text-anchor="start" x="261.78" y="-58.6" font-family="Helvetica,sans-Serif" font-size="14.00">gini = 0.043</text>
+<text text-anchor="start" x="256.34" y="-41.8" font-family="Helvetica,sans-Serif" font-size="14.00">samples = 45</text>
+<text text-anchor="start" x="254" y="-25" font-family="Helvetica,sans-Serif" font-size="14.00">value = [44, 1]</text>
+<text text-anchor="start" x="262.57" y="-8.2" font-family="Helvetica,sans-Serif" font-size="14.00">class = dog</text>
+</g>
+<!-- 4&#45;&gt;5 -->
+<g id="edge5" class="edge">
+<title>4-&gt;5</title>
+<path fill="none" stroke="black" d="M298.83,-111.14C298.75,-102.88 298.67,-94.04 298.59,-85.48"></path>
+<polygon fill="black" stroke="black" points="302.09,-85.21 298.5,-75.24 295.09,-85.27 302.09,-85.21"></polygon>
+</g>
+<!-- 6 -->
+<g id="node7" class="node">
+<title>6</title>
+<path fill="#399de5" stroke="black" d="M452.23,-75.3C452.23,-75.3 380.11,-75.3 380.11,-75.3 374.11,-75.3 368.11,-69.3 368.11,-63.3 368.11,-63.3 368.11,-11.9 368.11,-11.9 368.11,-5.9 374.11,0.1 380.11,0.1 380.11,0.1 452.23,0.1 452.23,0.1 458.23,0.1 464.23,-5.9 464.23,-11.9 464.23,-11.9 464.23,-63.3 464.23,-63.3 464.23,-69.3 458.23,-75.3 452.23,-75.3"></path>
+<text text-anchor="start" x="387.57" y="-58.6" font-family="Helvetica,sans-Serif" font-size="14.00">gini = 0.0</text>
+<text text-anchor="start" x="378.23" y="-41.8" font-family="Helvetica,sans-Serif" font-size="14.00">samples = 3</text>
+<text text-anchor="start" x="375.89" y="-25" font-family="Helvetica,sans-Serif" font-size="14.00">value = [0, 3]</text>
+<text text-anchor="start" x="382.91" y="-8.2" font-family="Helvetica,sans-Serif" font-size="14.00">class = cat</text>
+</g>
+<!-- 4&#45;&gt;6 -->
+<g id="edge6" class="edge">
+<title>4-&gt;6</title>
+<path fill="none" stroke="black" d="M339.44,-111.14C349.33,-101.79 360,-91.7 370.14,-82.11"></path>
+<polygon fill="black" stroke="black" points="372.55,-84.65 377.41,-75.24 367.74,-79.56 372.55,-84.65"></polygon>
+</g>
+</g>
+</svg>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-sl-tree-cvsd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.14: Decision tree for the Fischer iris data set and depth 2.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div id="32988b18" class="cell" data-execution_count="23">
+<div class="cell-output cell-output-display" data-execution_count="23">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">PP</th>
+<th data-quarto-table-cell-role="th">PN</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">P</td>
+<td>18</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">N</td>
+<td>2</td>
+<td>17</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>If we compare our confusion matrix for the test cases to the one of SVM we get comparable results. In general, we can see that the first split is along <span class="math inline">\(PC_2\)</span> (note that we do not use the <span class="math inline">\(PC_1\)</span> in the code and therefore <span class="math inline">\(x_0=PC_2\)</span>) and our second split is along <span class="math inline">\(PC_4\)</span>. We used these components before for our classification. The third split is along <span class="math inline">\(PC_5\)</span> which we did not consider before hand.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
@@ -1380,7 +1801,6 @@ Geron, Aurelien. 2022. <em>Hands-on Machine Learning with Scikit-Learn, Keras, a
 Kandolf, Peter. 2025. <span>“MECH-m-DUAL-1-DBM - Grundlagen Datenbasierter Methoden.”</span> <em>Management Center Innsbruck, Course Material</em>. <a href="https://doi.org/10.5281/zenodo.14671708">https://doi.org/10.5281/zenodo.14671708</a>.
 </div>
 </div>
-</section>
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
