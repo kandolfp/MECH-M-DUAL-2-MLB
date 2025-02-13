@@ -1026,7 +1026,6 @@ test_label = decision_tree_cvd.predict(xtest)
 cm = sklearn.metrics.confusion_matrix(test_label, truth)
 
 test_label = svc.predict(xtest)
-train_label = svc.predict(xtrain)
 cm = sklearn.metrics.confusion_matrix(test_label, truth)
 
 dot_data = "cvsd_tree.dot"
@@ -1037,6 +1036,7 @@ sklearn.tree.export_graphviz(decision_tree_cvd,
                 class_names=["dog", "cat"],
                 special_characters=True)
 
+score = decision_tree_cvd.score(xtest, truth)
 ```
 ```{dot}
 //| label: fig-clustering-sl-tree-cvsd
@@ -1054,3 +1054,5 @@ If we compare our confusion matrix for the test cases to the one of SVM we get c
 In general, we can see that the first split is along $PC_2$ (note that we do not use the $PC_1$ in the code and therefore $x_0=PC_2$) and our second split is along $PC_4$.
 We used these components before for our classification.
 The third split is along $PC_5$ which we did not consider before hand. 
+Overall the mean accuracy for out test set is `{python} float(np.round(score * 100, 2))`%.
+
