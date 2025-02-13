@@ -1077,3 +1077,79 @@ Have a look at [docs](https://scikit-learn.org/stable/modules/generated/sklearn.
 
 ::::
 :::
+
+::: {.callout-note}
+## Sensitivity to rotation and initial state
+
+Due to the nature of decision trees and the way they split observations by lines, they become sensitive to rotation.
+Furthermore, the tree construction is based on a random process as the feature for the split is chosen at random.
+
+To illustrate this we use a slight adaptation of the [@Geron2022-xh, Figure 6-7].
+
+```{python}
+#| label: fig-clustering-sl-tree-rot
+#| fig-cap: "Illustration of the sensitivity to rotation of decision trees. Note both trees split perfectly."
+#| fig-subcap: 
+#|   - "Clear split along the middle for a vertical split."
+#|   - "More complicated structure for the rotated observation."
+#|   - "Different initial random state for the rotated observations."
+#|   - "Correction of the rotated observations via PCA and scaling, resulting in an easy split."
+#| layout-ncol: 2
+#| code-fold: true
+#| code-summary: "Show the code for the figure"
+import numpy as np
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.inspection import DecisionBoundaryDisplay
+from sklearn.decomposition import PCA
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
+%config InlineBackend.figure_formats = ["svg"]
+np.random.seed(6020)
+
+def plot_tree_bound(tree, X, y):
+    plt.figure()
+    plt.scatter(X[y==0, 0], X[y==0, 1])
+    plt.scatter(X[y==1, 0], X[y==1, 1])
+    DecisionBoundaryDisplay.from_estimator(
+            tree,
+            X,
+            grid_resolution=2000,
+            ax=plt.gca(),
+            response_method="predict",
+            plot_method="contour",
+            alpha=1.0,
+            levels=[0],
+        )
+    l = np.round(np.abs(X).max() + 0.1, 2)
+    plt.xlim([-l, l])
+    plt.ylim([-l, l])
+
+
+X = np.random.rand(100, 2) - 0.5
+y = (X[:, 0] > 0).astype(np.int32)
+
+angle = np.pi / 4
+rotation_matrix = np.array([[np.cos(angle), -np.sin(angle)],
+                            [np.sin(angle), np.cos(angle)]])
+X_rot = X @ rotation_matrix
+
+tree_square = DecisionTreeClassifier(random_state=42).fit(X, y)
+tree_square_rot = DecisionTreeClassifier(random_state=42).fit(X_rot, y)
+tree_square_rot2 = DecisionTreeClassifier(random_state=6020).fit(X_rot, y)
+
+pipeline = make_pipeline(StandardScaler(), PCA())
+X_pca = pipeline.fit_transform(X_rot)
+tree_square_pca = DecisionTreeClassifier(random_state=6020).fit(X_pca, y)
+
+plot_tree_bound(tree_square, X, y)
+plot_tree_bound(tree_square_rot, X_rot, y)
+plot_tree_bound(tree_square_rot2, X_rot, y)
+plot_tree_bound(tree_square_pca, X_pca, y)
+plt.show()
+```
+:::
+
+As we could see, trees are very sensitive to the observations and the state.
+In order to counteract this phenomenon we can compute multiple trees and average the results.
+This combinations of trees is called _ensemble_ and leads to the next topic.
