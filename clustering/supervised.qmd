@@ -866,3 +866,191 @@ plt.show()
 Compare [@Kandolf_GDM, Example 5.2] [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/regression/linear.html#exm-regression-linear-poly).
 ::::
 :::
+
+## Decision trees
+
+Decision trees are widely used in data science for classification and regression.
+The are a powerful class of algorithms that can fit not only numerical data.
+Furthermore, the form the basis of _random forests_, one of the most powerful machine learning algorithms available to date.
+
+The where not invented for machine learning but have been a staple in business for centuries.
+The basic idea is that they establish an algorithmic flow chart for making decisions.
+The criteria that creates the splits in each branch is related to a desired outcome and are therefore _important_.
+Often experts are called upon creating such a decision tree.
+
+The decision tree learning follows the same principals to create a predictive classification model based on the provided observations and labels.
+Similar to DBSCAN they form a hierarchical structure that tries to split in an optimal way.
+In this regard they are the counterpart to DBSCAN but they move from top to bottom and of course use the labels to guide the process. 
+
+The following key feature make them wildly use:
+
+1. The usually produce interpretable results (we can draw the graph)
+1. The algorithm mimics human decision making, which helps for the interpretation
+1. The can handle numerical and categorical data
+1. They perform well with large sets of data
+1. The reliability of the classification can be assessed with statistical validation
+
+While there are a lot of different optimizations the base algorithm follows these steps:
+
+1. Look through all components (features) of an observation $x_j$ that gives the best labeling prediction $y_j$
+1. Compare the prediction accuracy over all observations, the best result is used
+1. Proceed with the two new branches in the same fashion
+
+Let us apply it to the Fischer Iris data set to better understand what is happening.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code for the figure"
+import numpy as np
+import scipy
+import sklearn
+from sklearn.datasets import load_iris
+from sklearn.tree import DecisionTreeClassifier
+from six import StringIO
+import matplotlib.pyplot as plt
+%config InlineBackend.figure_formats = ["svg"]
+
+iris = load_iris(as_frame=True)
+X_iris = iris.data.values
+y_iris = iris.target
+
+decision_tree = DecisionTreeClassifier(max_depth=2, random_state=6020)
+decision_tree.fit(X_iris, y_iris)
+
+dot_data = "fischer_tree.dot"
+
+sklearn.tree.export_graphviz(decision_tree, out_file=dot_data,  
+                filled=True, rounded=True,
+                feature_names=iris.feature_names,
+                class_names=iris.target_names,
+                special_characters=True)
+```
+```{dot}
+//| label: fig-clustering-sl-tree-iris
+//| fig-cap: "Decision tree for the Fischer iris data set and depth 2."
+//|file: fischer_tree.dot
+```
+::: {.callout-important}
+
+## Displaying `dot` files
+
+In the code for @fig-clustering-sl-tree-iris we generate a `dot` file, that is interpreted with quarto to show the graph for a better integration.
+In order to do this offline you need to install [`graphviz`](https://www.graphviz.org/download/) for the installation of `dot` and also install the python package `pydotplus`.
+
+Than you should be able to use:
+```{.python}
+import pydotplus
+from six import StringIO
+
+dot_data = StringIO()
+graph = pydotplus.graph_from_dot_data(dot_data.getvalue())  
+graph.create_png()
+```
+:::
+
+As we can see, for our tree with depth $2$ we only need to split along `petal length (cm)` and `petal width (cm)`, leaving the two other features untouched, compare @fig-clustering-iris. 
+
+As we only have the splits happening in these two variables we can also visualize them easy.
+
+```{python}
+#| label: fig-clustering-sl-tree-iris-split
+#| fig-cap: "Splits for the Fischer Iris data set with the first two split form the above tree and the third split would be the next step for a larger tree."
+#| code-fold: true
+#| code-summary: "Show the code for the figure"
+import matplotlib.pyplot as plt
+%config InlineBackend.figure_formats = ["svg"]
+
+iris.frame["target"] = iris.target_names[iris.target]
+df = iris.frame
+plt.figure()
+for name in iris.target_names:
+    index = df["target"] == name
+    plt.scatter(df.iloc[:, 2][index], df.iloc[:, 3][index], label=name)
+
+plt.xlim([0.5, 7.5])
+plt.ylim([0, 2.6])
+th = decision_tree.tree_.threshold[[0, 2, 3, 4]]
+plt.plot([th[0], th[0]], plt.gca().get_ylim(), 'C1-.',
+          linewidth=2, label="split 1")
+plt.plot([th[0], plt.gca().get_xlim()[1]], [th[1], th[1]], 'C2:',
+          linewidth=2, label="split 2")
+plt.plot([4.95, 4.95], [0, th[1]], 'C3--',
+          linewidth=2, label="(split 3)")
+plt.xlabel(iris.feature_names[2])
+plt.ylabel(iris.feature_names[3])
+plt.legend()
+plt.show()
+```
+In @fig-clustering-sl-tree-iris-split we can see the the first two splits and the next split if we would increase the tree.
+With the first split, we immediately separate _setosa_ with $100\%$ accuracy.
+The two other classes are a bit tricky and we can not classify everything correct right away.
+In total $6$ out of $150$ observations are wrongly classified with this simple tree.
+
+Let us also apply the tree classification to our cats and dogs example.
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code for the figure"
+import numpy as np
+import scipy
+import requests
+import io
+from sklearn.model_selection import cross_val_score
+from sklearn.tree import DecisionTreeClassifier
+from six import StringIO
+import matplotlib.pyplot as plt
+%config InlineBackend.figure_formats = ["svg"]
+
+response = requests.get(
+    "https://github.com/dynamicslab/databook_python/"
+    "raw/refs/heads/master/DATA/catData_w.mat")
+cats_w = scipy.io.loadmat(io.BytesIO(response.content))["cat_wave"]
+
+response = requests.get(
+    "https://github.com/dynamicslab/databook_python/"
+    "raw/refs/heads/master/DATA/dogData_w.mat")
+dogs_w = scipy.io.loadmat(io.BytesIO(response.content))["dog_wave"]
+
+CD = np.concatenate((dogs_w, cats_w), axis=1)
+U, S, VT = np.linalg.svd(CD - np.mean(CD), full_matrices=0)
+v = VT.T
+
+features = np.arange(1, 21)
+xtrain = np.concatenate((v[:60, features], v[80:140, features]))
+label = np.repeat(np.array([1, -1]), 60)
+xtest = np.concatenate((v[60:80, features], v[140:160, features]))
+truth = np.repeat(np.array([1, -1]), 20)
+
+decision_tree_cvd = DecisionTreeClassifier(max_depth=2).fit(xtrain, label)
+test_label = decision_tree_cvd.predict(xtest)
+cm = sklearn.metrics.confusion_matrix(test_label, truth)
+
+test_label = svc.predict(xtest)
+train_label = svc.predict(xtrain)
+cm = sklearn.metrics.confusion_matrix(test_label, truth)
+
+dot_data = "cvsd_tree.dot"
+
+sklearn.tree.export_graphviz(decision_tree_cvd,
+                out_file=dot_data,  
+                filled=True, rounded=True,
+                class_names=["dog", "cat"],
+                special_characters=True)
+
+```
+```{dot}
+//| label: fig-clustering-sl-tree-cvsd
+//| fig-cap: "Decision tree for the Fischer iris data set and depth 2."
+//| file: cvsd_tree.dot
+```
+```{python}
+#| echo: false
+df = pd.DataFrame(cm)
+df.columns = ["PP", "PN"]
+df["AC"] = ["P", "N"]
+df.set_index("AC").rename_axis(None)
+```
+If we compare our confusion matrix for the test cases to the one of SVM we get comparable results.
+In general, we can see that the first split is along $PC_2$ (note that we do not use the $PC_1$ in the code and therefore $x_0=PC_2$) and our second split is along $PC_4$.
+We used these components before for our classification.
+The third split is along $PC_5$ which we did not consider before hand. 
