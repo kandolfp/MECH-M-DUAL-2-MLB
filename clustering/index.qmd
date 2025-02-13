@@ -48,7 +48,7 @@ We use the possibilities of [`sklearn`](https://scikit-learn.org/stable/) [^1] t
 
 ```{python}
 #| label: fig-clustering-iris
-#| fig-cap: "Iris dataset with 150 samples from three distinct species, _Setosa_, _Versicolor_, and _Virginica_, as a scatter 3D plot along the features sepal length, sepal width, and petal width, the forth feature petal width is not shown."
+#| fig-cap: "Iris data set with 150 samples from three distinct species, _Setosa_, _Versicolor_, and _Virginica_, as a scatter 3D plot along the features sepal length, sepal width, and petal width, the forth feature petal width is not shown."
 #| code-fold: true
 #| code-summary: "Show the code for the figure"
 import plotly.express as px
