@@ -1056,3 +1056,13 @@ We used these components before for our classification.
 The third split is along $PC_5$ which we did not consider before hand. 
 Overall the mean accuracy for out test set is `{python} float(np.round(score * 100, 2))`%.
 
+::: {.callout-caution appearance="simple" icon=false}
+:::: {#exr-nonlinear-tree-moons}
+
+## A tree on the moon
+
+Recall the moons example from @sec-clustering-ul-dbscan and use a `DecisionTreeClassifier` classification to distinguish the clusters and plot the decision splits. 
+
+Play around with the parameters, e.g. `min_samples_leaf = 5` and see how this influences the score for a test set.
+::::
+:::
