@@ -183,3 +183,5 @@ cython_debug/
 
 Course_*
 literatur
+# Tree result files
+*.dot
