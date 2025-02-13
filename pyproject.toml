@@ -23,6 +23,8 @@ dependencies = [
     "python-sensors>=0.3.5",
     "yq>=3.4.3",
     "seaborn>=0.13.2",
+    "pydotplus>=2.0.2",
+    "graphviz>=0.20.3",
 ]
 requires-python = "==3.12.*"
 readme = "README.md"
