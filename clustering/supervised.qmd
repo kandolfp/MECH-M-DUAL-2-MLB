@@ -1153,3 +1153,156 @@ plt.show()
 As we could see, trees are very sensitive to the observations and the state.
 In order to counteract this phenomenon we can compute multiple trees and average the results.
 This combinations of trees is called _ensemble_ and leads to the next topic.
+
+## Ensemble learning and random forests
+
+The notion of _wisdom of the crowd_ suggests, that the decision of multiple people averaged, results in a _better_ decision/judgment than the decisions of a single person.
+Of course there is a lot of statistics going in, if we want to compute exactly how the result is influenced, or if we should use the same weights for each classification, or e.g. the notion of _experts_, and much more. 
+
+Nevertheless, we can use this concept in our context to create so called _ensemble methods_, the process itself is called _ensemble learning_.
+With this concept we can combine already good classification methods and get a better result than the best classification method included.
+
+If we train a multitude of decision trees on various (random) subsets of our observations we can combine the predictions of the individual trees to an ensemble prediction. 
+The resulting method is called a _random forest_.
+This very simple process allows us to generate very powerful classification methods. 
+
+There are some different approaches for the combination of such methods, we only discuss them briefly, see [@Geron2022-xh, Chapter 7] for a more detailed discussion.
+
+::: {.callout-important}
+All of the below discussed methods and approaches can be found in the [`sklearn.ensemble`](https://scikit-learn.org/stable/api/sklearn.ensemble.html) module.
+:::
+
+::: {.callout appearance="simple"}
+:::: {#def-ensemble-voting}
+
+## Voting classifiers
+
+If we have a set of classifiers $C=\{c_1, \ldots, c_n\}$ of various kinds (even another ensemble classifier like a random forest is welcome), we can simple make a prediction with each resulting in $r_1, \ldots, r_n$.
+Now we select the class witch occurs most often, i.e. the _mode_ of the predictions, we get a new classifier.
+This is called _hard voting_.
+
+If all our classifiers can not only produce a prediction but a probability for our prediction we can also create a _soft voting_ classifier. 
+All we need to do is, average the probability of the predictions $p_1, \ldots, p_n$, and this will give us new probabilities for our ensemble classifier.
+
+![Illustration of the difference between hard and soft voting for a ensemble method. For the three shown classifiers the class 0 is the most common. When moving to probabilities, the mean also predicts 0, where _more convinced_ classifiers get a higher weight.](../_assets/clustering/ensemble_voting){#fig-clustering-el-voting}
+
+In `scikit-learn` this is can be found in the [`sklearn.ensemble.VotingClassifier`](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.VotingClassifier.html#sklearn.ensemble.VotingClassifier) class.
+::::
+:::
+
+::: {.callout appearance="simple"}
+:::: {#def-ensemble-baggingpasting}
+
+## Bagging and Pasting
+
+For _bagging_ and _pasting_ the idea is different.
+Instead of influencing the output theses approaches influence how to manipulate the training of a set of (potentially equal) classifiers to achieve overall better results. 
+
+_Bagging_ (bootstrap aggregating) uses sampling with replacement, i.e. the same observation can end up multiple times in the training set of the same classifier.
+_Pasting_ uses sampling without replacement and therefore an observation can be in multiple classifiers but not more than once per classifier.
+
+To predict, we can use hard or soft voting from above.
+
+![Illustration of the random sampling for bagging and pasting in ensemble classifiers.](../_assets/clustering/ensemble_sampling){#fig-clustering-el-sampling}
+
+With these sampling methods it is possible to use the _out-of-bag_ observations (everything that is not used for a particular training) for evaluation of the trained classifier.
+This is called _out-of-bag evaluation_.
+
+In `scikit-learn` this is can be found in the [`sklearn.ensemble.BaggingClassifier`](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.BaggingClassifier.html#sklearn.ensemble.BaggingClassifier) class.
+::::
+:::
+
+::: {.callout appearance="simple"}
+:::: {#def-ensemble-randompatches}
+
+## Random Patches and Random Subspaces
+
+For bagging and pasting it is also possible to sample features and not only observations, i.e. what to look at.
+This results in a random subset of input features for training for each classifier.
+This is especially useful, for high dimensional data inputs such as images, as it can speed up the learning process.
+
+We call such methods _random patches_ method if we sample both, training observations and training features. 
+
+On the other hand, if we keep the training observations fix and only sample the training features the resulting method is called a _random subspace_ method.
+
+In `scikit-learn` this is can be found in the achieved by manipulating the hyperparameter `max_features`, `bootstrap_features`, and `max_samples` in the `BagginClassifier` class.
+::::
+:::
+
+::: {.callout appearance="simple"}
+:::: {#def-ensemble-randomforest}
+
+## Random Forest
+
+An ensemble of decision tress, (usually) trained via bagging is called a _random forest_.
+
+With a random forest it is quite easy to find out what features are important for the overall result.
+In `scikit-learn` this is automatically computed for the [`sklearn.ensemble.RandomForestClassifier`](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier) class.
+::::
+:::
+
+::: {.callout appearance="simple"}
+:::: {#def-ensemble-boosting}
+
+## Boosting
+
+_Boosting_ or sometimes _hypothesis boosting_ is the process of using ensemble methods to use slow learners to create a fast learner. 
+
+The general idea is to train a sequence where the output of one is the input of the next classifier.
+This _corrects_ the previous result and therefore helps to achieve overall better results.
+
+The most common methods are called _AdaBoost_ (adaptive boosting) and _gradient boosting_.
+
+In `scikit-learn` we can find this functionality in the classes [`sklearn.ensemble.AdaBoostClassifier`](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.AdaBoostClassifier.html#sklearn.ensemble.AdaBoostClassifier) and [`sklearn.ensemble.GradientBoostingClassifier`](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier).
+
+::::
+:::
+
+::: {.callout appearance="simple"}
+:::: {#def-ensemble-stacking}
+
+## Stacking
+
+The general idea of _stacking_ is, to use a _blender_ for combining the results of our ensemble methods.
+The blender is not just a linear combination like for soft/hard voting but another classifier/model to perform a hopefully better combination.
+Of course we can stack this approach and produce multiple layers before we combine them into a single result. 
+
+![Illustration of an $m$ layer stacking with various classifiers in each layer.](../_assets/clustering/ensemble_voting){#fig-clustering-el-stacking}
+
+In `scikit-learn` this is can be found in the [`sklearn.ensemble.StackingClassifier`](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.StackingClassifier.html#sklearn.ensemble.StackingClassifier) class.
+::::
+:::
+
+::: {.callout-caution appearance="simple" icon=false}
+:::: {#exr-nonlinear-ensemble}
+
+## Ensemble methods
+
+We follow the example of [@Geron2022-xh, Chapter 7] to explore the various possibilities for ensemble methods. 
+
+For our data set we use the moons example:
+```{.python}
+from sklearn.datasets import make_moons
+from sklearn.model_selection import train_test_split
+
+X, y = make_moons(n_samples=500, noise=0.30, random_state=6020)
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=6020)
+```
+
+1. Use the `VotingClassifier` class with an _LDA_, a _SVM_, and a _tree_ for classification (make sure to keep set `random_state` for each to have reproducible results.). Get the overall score for the test set, as well as the individual scores for the included classifiers. 
+   ```{.python}
+   for name, clf in voting.named_estimators_.items():
+       print(f"{name}, =, {clf.score(X_test, y_test)}")
+   ```
+
+1. Switch to _soft voting_ for your ensemble classifier and see how this influences the results.
+
+1. Create a `BaggingClassifier` with 500 trees and and an appropriate `max_samples` value. Report the score for this new classifier, also report the out-of-bag score via `.oob_score_`.
+
+1. Create directly a `RandomForestClassifier` with 500 trees and appropriate value for `max_leaf_nodes`.
+
+1. Create a `StackingClassifier` with an _LDA_, a _SVM_, and a _tree_ for classification and a _random forest_ as the final blending step and report the score of this method.
+
+1. Train a random forest for the iris data set and check `.feature_importances_` to get an insight on the importance of each feature.
+::::
+:::
