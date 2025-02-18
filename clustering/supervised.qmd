@@ -14,7 +14,7 @@ The crucial part in the algorithm is that it is guided by labelled data.
 At its core, the algorithm aims to solve an optimization problem: find an optimal low-dimensional embedding of the data that shows a clear separation between their point distribution, or maximize the distance between the inter-class data and minimize the intra-class data distance.
 
 ::: {.callout-tip}
-For supervised learning, it is always good practice to split up your data set into a _training_ and _testing_ section.
+For supervised learning, it is always good practice to split up our data set into a _training_ and _testing_ section.
 **It is important to have a test set that the algorithm has never seen!**
 In general a $80:20$ split is common but other rations might be advisable, depending on the data set. 
 
@@ -27,7 +27,7 @@ It is also common practice to use $k$-folds cross-validation for the training se
 ## $k$-folds cross-validation
 
 The $k$-folds cross-validation technique is a method to allow better _hyperparameter tuning_, especially for smaller data sets where training and validation data is small.
-The main idea is that you split your iterate over different validation sets by splitting up your training set.
+The main idea is that we split our iterate over different validation sets by splitting up our training set.
 Lets say we use $5$-fold cross-validation we split the training set into 5 parts.
 Train with 4 parts and validate against the 5th.
 We than rotate and select a different validation fold.
@@ -37,7 +37,7 @@ This looks something like this:
 
 ![Common split with the folds 1 to 4 for training and 5 for validation in the first iteration and folds 2 to 5 for training and 1 for validation in the last. The test set is not touched.](../_assets/clustering/kfoldcrossvalidation){#fig-clustering-sl-5foldcrossvalidation}
 
-It is important that the test set is not included in the folds to make sure you test against observations that the algorithm has never seen!
+It is important that the test set is not included in the folds to make sure we test against observations that the algorithm has never seen!
 ::::
 :::
 
