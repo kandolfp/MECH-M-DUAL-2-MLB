@@ -236,6 +236,12 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Supervised learning</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../clustering/semisupervised.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Semi-Supervised learning</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item">
@@ -333,7 +339,7 @@ window.Quarto = {
 <li>Repeat until the cluster centers stay stable up to some tolerance.</li>
 </ol>
 <p>This algorithm was first introduced in <span class="citation" data-cites="DBLP:journals/tit/Lloyd82">Lloyd (<a href="../references.html#ref-DBLP:journals/tit/Lloyd82" role="doc-biblioref">1982</a>)</span> and is therefore often called Lloyd algorithm.</p>
-<div id="5f0cf5f2" class="cell" data-execution_count="1">
+<div id="f42399e7" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code for Lloyd algorithm</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lloyd(data, centers, steps):</span>
@@ -1232,7 +1238,7 @@ Figure&nbsp;1.9: Fitting of the second and fourth principal value of the cats an
 <p>Before we make the leap to supervised learning we we introduce a new data set and see how our unsupervised approach works in this case.</p>
 <p>We do this with the (in)famous MNIST data set of hand written digits. Lets start by looking at the data set and establishing some basic properties.</p>
 <p>We load the data set and look at its description</p>
-<div id="fa0d4afc" class="cell styled-output" data-execution_count="10">
+<div id="4300ee7e" class="cell styled-output" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_openml</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>mnist <span class="op">=</span> fetch_openml(<span class="st">'mnist_784'</span>, as_frame<span class="op">=</span><span class="va">False</span>)</span>
@@ -1290,7 +1296,7 @@ Figure&nbsp;1.10: First 100 digits from the MNIST data set.
 <p>As can be seen from <a href="#fig-clustering-usl-mnist" class="quarto-xref">Figure&nbsp;<span>1.10</span></a>, most digits are easy to distinguish for us but there are some nasty things included. Especially, there are <span class="math inline">\(1\)</span>s with the english style (just one straight line) of writing (1st row, 7th column), but also as a diagonal line (1st row, 4th column), and finally also the german style (connecting line at base and top) of writing (3rd row, 5th column).</p>
 <p>Also the two digit comes in various forms, with loop (1st row, 6th column) and without (3rd row, 6th column). Finally we all know that a <span class="math inline">\(3\)</span> can hide in an <span class="math inline">\(8\)</span>, same as a <span class="math inline">\(9\)</span>, a <span class="math inline">\(1\)</span> can hide in a <span class="math inline">\(7\)</span> and much more.</p>
 <p>Now, before we go any further in the investigation we split up the data set into a training and a test set, we will not use this here but we should establish some way of working right from the start.</p>
-<div id="0415214e" class="cell" data-execution_count="12">
+<div id="baca81ea" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>X_train, X_test <span class="op">=</span> mnist.data[:<span class="dv">60000</span>], mnist.data[<span class="dv">60000</span>:]</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>y_train, y_test <span class="op">=</span> mnist.target[:<span class="dv">60000</span>], mnist.target[<span class="dv">60000</span>:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -1331,7 +1337,7 @@ Figure&nbsp;1.11: The cluster means of <span class="math inline">\(k\)</span>-me
 </div>
 </div>
 </div>
-<p>As can be seen from <a href="#fig-clustering-usl-mnist2" class="quarto-xref">Figure&nbsp;<span>1.11</span></a>, the cluster centers do not recover our ten digits. In general they are, as expected smudged as the do not represent an actual image. It looks like <span class="math inline">\(0, 1, 2, 3, 6, 8, 9\)</span> are <em>easy</em> to discover but <span class="math inline">\(4, 5, 7\)</span> not. If we look closely, we can see <span class="math inline">\(4, 5, 7\)</span> represented in our clusters but not as separate digits. Obviously this is not a good way to proceed to find our digits. We will discuss methods to perform this task in the next section <a href="supervised.html" class="quarto-xref"><span>Chapter 2</span></a>. Furthermore, keep this part in mind as we will come back to how this can still be helpful in a different aspect as semi supervised learning <span class="quarto-unresolved-ref">?sec-clustering-ssl</span>.</p>
+<p>As can be seen from <a href="#fig-clustering-usl-mnist2" class="quarto-xref">Figure&nbsp;<span>1.11</span></a>, the cluster centers do not recover our ten digits. In general they are, as expected smudged as the do not represent an actual image. It looks like <span class="math inline">\(0, 1, 2, 3, 6, 8, 9\)</span> are <em>easy</em> to discover but <span class="math inline">\(4, 5, 7\)</span> not. If we look closely, we can see <span class="math inline">\(4, 5, 7\)</span> represented in our clusters but not as separate digits. Obviously this is not a good way to proceed to find our digits. We will discuss methods to perform this task in the next section <a href="supervised.html" class="quarto-xref"><span>Chapter 2</span></a>. Furthermore, keep this part in mind as we will come back to how this can still be helpful in a different aspect as semi supervised learning <a href="semisupervised.html" class="quarto-xref"><span>Chapter 3</span></a>.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">

@@ -84,7 +84,7 @@ div.csl-indent {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../summary.html" rel="next">
+<link href="../clustering/semisupervised.html" rel="next">
 <link href="../clustering/unsupervised.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -239,6 +239,12 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Supervised learning</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../clustering/semisupervised.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Semi-Supervised learning</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item">
@@ -282,13 +288,15 @@ window.Quarto = {
   <ul>
   <li><a href="#linear-discriminant-analysis-lda" id="toc-linear-discriminant-analysis-lda" class="nav-link active" data-scroll-target="#linear-discriminant-analysis-lda"><span class="header-section-number">2.1</span> Linear Discriminant Analysis (LDA)</a></li>
   <li><a href="#sec-clustering-sl-performance" id="toc-sec-clustering-sl-performance" class="nav-link" data-scroll-target="#sec-clustering-sl-performance"><span class="header-section-number">2.2</span> Measuring Performance</a></li>
-  <li><a href="#sec-clustering-sv-svm" id="toc-sec-clustering-sv-svm" class="nav-link" data-scroll-target="#sec-clustering-sv-svm"><span class="header-section-number">2.3</span> Support Vector Machines (SVM)</a>
+  <li><a href="#sec-clustering-sv-svm" id="toc-sec-clustering-sv-svm" class="nav-link" data-scroll-target="#sec-clustering-sv-svm"><span class="header-section-number">2.3</span> Support Vector Machine (SVM)</a>
   <ul class="collapse">
   <li><a href="#linear-svm" id="toc-linear-svm" class="nav-link" data-scroll-target="#linear-svm"><span class="header-section-number">2.3.1</span> Linear SVM</a></li>
   <li><a href="#nonlinear-svm" id="toc-nonlinear-svm" class="nav-link" data-scroll-target="#nonlinear-svm"><span class="header-section-number">2.3.2</span> Nonlinear SVM</a></li>
   <li><a href="#kernel-methods-for-svm" id="toc-kernel-methods-for-svm" class="nav-link" data-scroll-target="#kernel-methods-for-svm"><span class="header-section-number">2.3.3</span> Kernel Methods for SVM</a></li>
   </ul></li>
   <li><a href="#decision-trees" id="toc-decision-trees" class="nav-link" data-scroll-target="#decision-trees"><span class="header-section-number">2.4</span> Decision trees</a></li>
+  <li><a href="#ensemble-learning-and-random-forests" id="toc-ensemble-learning-and-random-forests" class="nav-link" data-scroll-target="#ensemble-learning-and-random-forests"><span class="header-section-number">2.5</span> Ensemble learning and random forests</a></li>
+  <li><a href="#multiclass-classification" id="toc-multiclass-classification" class="nav-link" data-scroll-target="#multiclass-classification"><span class="header-section-number">2.6</span> Multiclass Classification</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/edit/main/clustering/supervised.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -341,7 +349,7 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>For supervised learning, it is always good practice to split up your data set into a <em>training</em> and <em>testing</em> section. <strong>It is important to have a test set that the algorithm has never seen!</strong> In general a <span class="math inline">\(80:20\)</span> split is common but other rations might be advisable, depending on the data set.</p>
+<p>For supervised learning, it is always good practice to split up our data set into a <em>training</em> and <em>testing</em> section. <strong>It is important to have a test set that the algorithm has never seen!</strong> In general a <span class="math inline">\(80:20\)</span> split is common but other rations might be advisable, depending on the data set.</p>
 <p>It is also common practice to use <span class="math inline">\(k\)</span>-folds cross-validation for the training set.</p>
 </div>
 </div>
@@ -352,7 +360,7 @@ Tip
 </div>
 <div class="callout-body-container">
 <div id="def-crossvalidation" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 2.1 (<span class="math inline">\(k\)</span>-folds cross-validation)</strong></span> The <span class="math inline">\(k\)</span>-folds cross-validation technique is a method to allow better <em>hyperparameter tuning</em>, especially for smaller data sets where training and validation data is small. The main idea is that you split your iterate over different validation sets by splitting up your training set. Lets say we use <span class="math inline">\(5\)</span>-fold cross-validation we split the training set into 5 parts. Train with 4 parts and validate against the 5th. We than rotate and select a different validation fold. At the end we average over the 5 iterations to get our final parameters.</p>
+<p><span class="theorem-title"><strong>Definition 2.1 (<span class="math inline">\(k\)</span>-folds cross-validation)</strong></span> The <span class="math inline">\(k\)</span>-folds cross-validation technique is a method to allow better <em>hyperparameter tuning</em>, especially for smaller data sets where training and validation data is small. The main idea is that we split our iterate over different validation sets by splitting up our training set. Lets say we use <span class="math inline">\(5\)</span>-fold cross-validation we split the training set into 5 parts. Train with 4 parts and validate against the 5th. We than rotate and select a different validation fold. At the end we average over the 5 iterations to get our final parameters.</p>
 <p>This looks something like this:</p>
 <div id="fig-clustering-sl-5foldcrossvalidation" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -364,7 +372,7 @@ Figure&nbsp;2.1: Common split with the folds 1 to 4 for training and 5 for valid
 </figcaption>
 </figure>
 </div>
-<p>It is important that the test set is not included in the folds to make sure you test against observations that the algorithm has never seen!</p>
+<p>It is important that the test set is not included in the folds to make sure we test against observations that the algorithm has never seen!</p>
 </div>
 </div>
 </div>
@@ -659,7 +667,7 @@ Important
 <p>The following approach and the basic structure of the code is from <span class="citation" data-cites="Geron2022-xh">Geron (<a href="../references.html#ref-Geron2022-xh" role="doc-biblioref">2022</a>)</span>, see <a href="https://github.com/ageron/handson-ml3/blob/main/03_classification.ipynb">GitHub</a>.</p>
 </div>
 </div>
-<p>In order to illustrate basic properties found in machine learning we use the MNIST data set together with a binary classifier based on Stochastic Gradient Descent.</p>
+<p>In order to illustrate basic properties found in machine learning we use the MNIST data set together with a binary classifier based on Stochastic Gradient Descent, see <a href="semisupervised.html" class="quarto-xref"><span>Chapter 3</span></a> for more on the MNIST data set.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -677,7 +685,7 @@ Note
 </div>
 </div>
 <p>First we load the MNIST data set again and split it into a training and testing section, see <a href="unsupervised.html#sec-clustering-ul-me" class="quarto-xref"><span>Section 1.5</span></a>.</p>
-<div id="bd0234c4" class="cell" data-execution_count="4">
+<div id="649b5a30" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Show the code for loading and splitting the dataset</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -694,7 +702,7 @@ Note
 </details>
 </div>
 <p>Next, as we only want a binary classifier, we select one number, in our case <code>5</code> and relabel our data. With the new labels we can train our classifier.</p>
-<div id="6111c935" class="cell" data-execution_count="5">
+<div id="0ab79875" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>y_train_5 <span class="op">=</span> (y_train <span class="op">==</span> <span class="st">"5"</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>y_test_5 <span class="op">=</span> (y_test <span class="op">==</span> <span class="st">"5"</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -702,11 +710,11 @@ Note
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>SGD.fit(X_train, y_train_5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In order to cet a score for our method we use <span class="math inline">\(k\)</span>-folds cross-validation <a href="#def-crossvalidation" class="quarto-xref">Definition&nbsp;<span>2.1</span></a> and the corresponding <code>scikit-learn</code> function <code>cross_val_score</code> to perform this task for our model.</p>
-<div id="cfa464fd" class="cell" data-execution_count="6">
+<div id="81a138ed" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> sklearn.model_selection.cross_val_score(</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    SGD, X_train, y_train_5, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">"accuracy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="fa9cb69a" class="cell" data-execution_count="7">
+<div id="ec976c1a" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display" data-execution_count="7">
 <div>
 
@@ -738,13 +746,13 @@ Note
 </div>
 </div>
 <p>With results in the high <span class="math inline">\(90\%\)</span> range the results look promession if not great but are they really that good. In order to get a better idea just always guess that we do not see a <code>5</code> that should be the most common class in our case. To simulate this we use the <code>DummyClassifier</code> class.</p>
-<div id="ecea0f43" class="cell" data-execution_count="8">
+<div id="c8c8be92" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>dummy <span class="op">=</span> sklearn.dummy.DummyClassifier()</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>dummy.fit(X_train, y_train_5)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>scores_dummy <span class="op">=</span> sklearn.model_selection.cross_val_score(</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    dummy, X_train, y_train_5, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">"accuracy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="65f35012" class="cell" data-execution_count="9">
+<div id="7db627d0" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-display" data-execution_count="9">
 <div>
 
@@ -803,12 +811,12 @@ Figure&nbsp;2.6: Names and abbreviations for a <span class="math inline">\(2\tim
 </div>
 <p>To compute the confusion matrix we first need predictions. This can be achieved by <code>cross_val_predict</code> instead of <code>cross_val_score</code> and than we use <a href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html"><code>sklearn.metrics.confusion_matrix</code></a>.</p>
 <p>Combined, for our example this reads as:</p>
-<div id="d228cbfb" class="cell" data-execution_count="10">
+<div id="084244dc" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>y_train_pred <span class="op">=</span> sklearn.model_selection.cross_val_predict(</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                    SGD, X_train, y_train_5, cv<span class="op">=</span><span class="dv">3</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> sklearn.metrics.confusion_matrix(y_train_5, y_train_pred)                   </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="f2b290f7" class="cell" data-execution_count="11">
+<div id="9dd567d3" class="cell" data-execution_count="11">
 <div class="cell-output cell-output-display" data-execution_count="11">
 <div>
 
@@ -872,7 +880,7 @@ F_1 = \frac{2 TP}{2 TP + FP + FN}
 \]</span></p></li>
 </ol>
 <p>In the <a href="https://scikit-learn.org/stable/api/sklearn.metrics.html"><code>sklearn.metrics</code></a> most of these values have a corresponding function. If we look at <em>precission</em>, <em>recall</em>, and the <span class="math inline">\(F_1\)</span> score, for our example we see that our performance is viewed under a different light:</p>
-<div id="6a65b29c" class="cell styled-output" data-execution_count="12">
+<div id="c6061ca2" class="cell styled-output" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>precision <span class="op">=</span> sklearn.metrics.precision_score(y_train_5, y_train_pred)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>recall <span class="op">=</span> sklearn.metrics.recall_score(y_train_5, y_train_pred)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>f1_score <span class="op">=</span> sklearn.metrics.f1_score(y_train_5, y_train_pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -882,8 +890,8 @@ F_1 = \frac{2 TP}{2 TP + FP + FN}
 <p>An alternative way to look at accuracy for binary classifiers is to look at the <em>receiver operating characteristic</em> (ROC). It looks at recall (TPR) vs.&nbsp;the <em>false positive rate</em> (FPR). Other than that it works similar.</p>
 </section>
 <section id="sec-clustering-sv-svm" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="sec-clustering-sv-svm"><span class="header-section-number">2.3</span> Support Vector Machines (SVM)</h2>
-<p>The basic idea of Support Vector Machines (SVM) is to split observations into distinct clusters via hyperplanes. The have a long history in data science and come in different forms and fashions. Over the years they became more flexible and are still one of the most used tools in industry and science.</p>
+<h2 data-number="2.3" class="anchored" data-anchor-id="sec-clustering-sv-svm"><span class="header-section-number">2.3</span> Support Vector Machine (SVM)</h2>
+<p>The basic idea of Support Vector Machines (SVMs) is to split observations into distinct clusters via hyperplanes. The have a long history in data science and come in different forms and fashions. Over the years they became more flexible and are still one of the most used tools in industry and science.</p>
 <section id="linear-svm" class="level3" data-number="2.3.1">
 <h3 data-number="2.3.1" class="anchored" data-anchor-id="linear-svm"><span class="header-section-number">2.3.1</span> Linear SVM</h3>
 <p>We start of with the linear SVM where we construct a hyperplane <span class="math display">\[
@@ -1048,7 +1056,7 @@ Pipeline
 </div>
 </div>
 <p>We can use the pipeline to - create the polynomial observations - apply a scaler to our observations - apply the Linear SVM</p>
-<div id="bb6e68e2" class="cell" data-execution_count="14">
+<div id="4b990c38" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>composit_svm <span class="op">=</span> sklearn.pipeline.make_pipeline(</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    sklearn.preprocessing.PolynomialFeatures(<span class="dv">2</span>),</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    sklearn.preprocessing.StandardScaler(),</span>
@@ -1288,7 +1296,7 @@ Figure&nbsp;2.11: Training a SVM with an RBF kernel for the singular vectors 2 t
 </div>
 </div>
 <p>We get a confusion matrix for our test set as</p>
-<div id="392db7e5" class="cell" data-execution_count="18">
+<div id="8bf96870" class="cell" data-execution_count="18">
 <div class="cell-output cell-output-display" data-execution_count="18">
 <div>
 
@@ -1340,7 +1348,7 @@ Figure&nbsp;2.11: Training a SVM with an RBF kernel for the singular vectors 2 t
 <div class="callout-body-container">
 <div id="exr-nonlinear-SVM-regression" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise 2.4 (Nonlinear SVM for regression)</strong></span> We can use SVM for regression. Have a look at <a href="https://scikit-learn.org/stable/auto_examples/svm/plot_svm_regression.html#sphx-glr-auto-examples-svm-plot-svm-regression-py">docs</a> and use the findings to fit the following observations with various degrees and kernel functions.</p>
-<div id="529feabd" class="cell" data-execution_count="19">
+<div id="9e32cbd4" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
@@ -1387,7 +1395,7 @@ Figure&nbsp;2.11: Training a SVM with an RBF kernel for the singular vectors 2 t
 <li>Proceed with the two new branches in the same fashion</li>
 </ol>
 <p>Let us apply it to the Fischer Iris data set to better understand what is happening.</p>
-<div id="3ddee128" class="cell" data-execution_count="20">
+<div id="00c7a6e7" class="cell" data-execution_count="20">
 <details class="code-fold">
 <summary>Show the code for the figure</summary>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -1573,7 +1581,7 @@ Figure&nbsp;2.13: Splits for the Fischer Iris data set with the first two split 
 </div>
 <p>In <a href="#fig-clustering-sl-tree-iris-split" class="quarto-xref">Figure&nbsp;<span>2.13</span></a> we can see the the first two splits and the next split if we would increase the tree. With the first split, we immediately separate <em>setosa</em> with <span class="math inline">\(100\%\)</span> accuracy. The two other classes are a bit tricky and we can not classify everything correct right away. In total <span class="math inline">\(6\)</span> out of <span class="math inline">\(150\)</span> observations are wrongly classified with this simple tree.</p>
 <p>Let us also apply the tree classification to our cats and dogs example.</p>
-<div id="5972ced0" class="cell" data-execution_count="22">
+<div id="d77dd09c" class="cell" data-execution_count="22">
 <details class="code-fold">
 <summary>Show the code for the figure</summary>
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -1755,7 +1763,7 @@ Figure&nbsp;2.14: Decision tree for the Fischer iris data set and depth 2.
 </div>
 </div>
 </div>
-<div id="2708ad3d" class="cell" data-execution_count="23">
+<div id="ba81be41" class="cell" data-execution_count="23">
 <div class="cell-output cell-output-display" data-execution_count="23">
 <div>
 
@@ -1940,6 +1948,227 @@ Figure&nbsp;2.15: Illustration of the sensitivity to rotation of decision trees.
 </div>
 </div>
 <p>As we could see, trees are very sensitive to the observations and the state. In order to counteract this phenomenon we can compute multiple trees and average the results. This combinations of trees is called <em>ensemble</em> and leads to the next topic.</p>
+</section>
+<section id="ensemble-learning-and-random-forests" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="ensemble-learning-and-random-forests"><span class="header-section-number">2.5</span> Ensemble learning and random forests</h2>
+<p>The notion of <em>wisdom of the crowd</em> suggests, that the decision of multiple people averaged, results in a <em>better</em> decision/judgment than the decisions of a single person. Of course there is a lot of statistics going in, if we want to compute exactly how the result is influenced, or if we should use the same weights for each classification, or e.g.&nbsp;the notion of <em>experts</em>, and much more.</p>
+<p>Nevertheless, we can use this concept in our context to create so called <em>ensemble methods</em>, the process itself is called <em>ensemble learning</em>. With this concept we can combine already good classification methods and get a better result than the best classification method included.</p>
+<p>If we train a multitude of decision trees on various (random) subsets of our observations we can combine the predictions of the individual trees to an ensemble prediction. The resulting method is called a <em>random forest</em>. This very simple process allows us to generate very powerful classification methods.</p>
+<p>There are some different approaches for the combination of such methods, we only discuss them briefly, see <span class="citation" data-cites="Geron2022-xh">(<a href="../references.html#ref-Geron2022-xh" role="doc-biblioref">Geron 2022, chap. 7</a>)</span> for a more detailed discussion.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>All of the below discussed methods and approaches can be found in the <a href="https://scikit-learn.org/stable/api/sklearn.ensemble.html"><code>sklearn.ensemble</code></a> module.</p>
+</div>
+</div>
+<div class="callout callout-style-simple callout-none no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-ensemble-voting" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.3 (Voting classifiers)</strong></span> If we have a set of classifiers <span class="math inline">\(C=\{c_1, \ldots, c_n\}\)</span> of various kinds (even another ensemble classifier like a random forest is welcome), we can simple make a prediction with each resulting in <span class="math inline">\(r_1, \ldots, r_n\)</span>. Now we select the class witch occurs most often, i.e.&nbsp;the <em>mode</em> of the predictions, we get a new classifier. This is called <em>hard voting</em>.</p>
+<p>If all our classifiers can not only produce a prediction but a probability for our prediction we can also create a <em>soft voting</em> classifier. All we need to do is, average the probability of the predictions <span class="math inline">\(p_1, \ldots, p_n\)</span>, and this will give us new probabilities for our ensemble classifier.</p>
+<div id="fig-clustering-el-voting" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-clustering-el-voting-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../_assets/clustering/ensemble_voting.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-22" title="Figure&nbsp;2.16: Illustration of the difference between hard and soft voting for a ensemble method. For the three shown classifiers the class 0 is the most common. When moving to probabilities, the mean also predicts 0, where more convinced classifiers get a higher weight."><img src="../_assets/clustering/ensemble_voting.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-el-voting-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.16: Illustration of the difference between hard and soft voting for a ensemble method. For the three shown classifiers the class 0 is the most common. When moving to probabilities, the mean also predicts 0, where <em>more convinced</em> classifiers get a higher weight.
+</figcaption>
+</figure>
+</div>
+<p>In <code>scikit-learn</code> this is can be found in the <a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.VotingClassifier.html#sklearn.ensemble.VotingClassifier"><code>sklearn.ensemble.VotingClassifier</code></a> class.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-none no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-ensemble-baggingpasting" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.4 (Bagging and Pasting)</strong></span> For <em>bagging</em> and <em>pasting</em> the idea is different. Instead of influencing the output theses approaches influence how to manipulate the training of a set of (potentially equal) classifiers to achieve overall better results.</p>
+<p><em>Bagging</em> (bootstrap aggregating) uses sampling with replacement, i.e.&nbsp;the same observation can end up multiple times in the training set of the same classifier. <em>Pasting</em> uses sampling without replacement and therefore an observation can be in multiple classifiers but not more than once per classifier.</p>
+<p>To predict, we can use hard or soft voting from above.</p>
+<div id="fig-clustering-el-sampling" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-clustering-el-sampling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../_assets/clustering/ensemble_sampling.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-23" title="Figure&nbsp;2.17: Illustration of the random sampling for bagging and pasting in ensemble classifiers."><img src="../_assets/clustering/ensemble_sampling.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-el-sampling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.17: Illustration of the random sampling for bagging and pasting in ensemble classifiers.
+</figcaption>
+</figure>
+</div>
+<p>With these sampling methods it is possible to use the <em>out-of-bag</em> observations (everything that is not used for a particular training) for evaluation of the trained classifier. This is called <em>out-of-bag evaluation</em>.</p>
+<p>In <code>scikit-learn</code> this is can be found in the <a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.BaggingClassifier.html#sklearn.ensemble.BaggingClassifier"><code>sklearn.ensemble.BaggingClassifier</code></a> class.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-none no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-ensemble-randompatches" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.5 (Random Patches and Random Subspaces)</strong></span> For bagging and pasting it is also possible to sample features and not only observations, i.e.&nbsp;what to look at. This results in a random subset of input features for training for each classifier. This is especially useful, for high dimensional data inputs such as images, as it can speed up the learning process.</p>
+<p>We call such methods <em>random patches</em> method if we sample both, training observations and training features.</p>
+<p>On the other hand, if we keep the training observations fix and only sample the training features the resulting method is called a <em>random subspace</em> method.</p>
+<p>In <code>scikit-learn</code> this is can be found in the achieved by manipulating the hyperparameter <code>max_features</code>, <code>bootstrap_features</code>, and <code>max_samples</code> in the <code>BagginClassifier</code> class.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-none no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-ensemble-randomforest" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.6 (Random Forest)</strong></span> An ensemble of decision tress, (usually) trained via bagging is called a <em>random forest</em>.</p>
+<p>With a random forest it is quite easy to find out what features are important for the overall result. In <code>scikit-learn</code> this is automatically computed for the <a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier"><code>sklearn.ensemble.RandomForestClassifier</code></a> class.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-none no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-ensemble-boosting" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.7 (Boosting)</strong></span> <em>Boosting</em> or sometimes <em>hypothesis boosting</em> is the process of using ensemble methods to use slow learners to create a fast learner.</p>
+<p>The general idea is to train a sequence where the output of one is the input of the next classifier. This <em>corrects</em> the previous result and therefore helps to achieve overall better results.</p>
+<p>The most common methods are called <em>AdaBoost</em> (adaptive boosting) and <em>gradient boosting</em>.</p>
+<p>In <code>scikit-learn</code> we can find this functionality in the classes <a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.AdaBoostClassifier.html#sklearn.ensemble.AdaBoostClassifier"><code>sklearn.ensemble.AdaBoostClassifier</code></a> and <a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier"><code>sklearn.ensemble.GradientBoostingClassifier</code></a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-none no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-ensemble-stacking" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.8 (Stacking)</strong></span> The general idea of <em>stacking</em> is, to use a <em>blender</em> for combining the results of our ensemble methods. The blender is not just a linear combination like for soft/hard voting but another classifier/model to perform a hopefully better combination. Of course we can stack this approach and produce multiple layers before we combine them into a single result.</p>
+<div id="fig-clustering-el-stacking" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-clustering-el-stacking-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../_assets/clustering/ensemble_voting.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-24" title="Figure&nbsp;2.18: Illustration of an m layer stacking with various classifiers in each layer."><img src="../_assets/clustering/ensemble_voting.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-el-stacking-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.18: Illustration of an <span class="math inline">\(m\)</span> layer stacking with various classifiers in each layer.
+</figcaption>
+</figure>
+</div>
+<p>In <code>scikit-learn</code> this is can be found in the <a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.StackingClassifier.html#sklearn.ensemble.StackingClassifier"><code>sklearn.ensemble.StackingClassifier</code></a> class.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-caution no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exr-nonlinear-ensemble" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 2.7 (Ensemble methods)</strong></span> We follow the example of <span class="citation" data-cites="Geron2022-xh">(<a href="../references.html#ref-Geron2022-xh" role="doc-biblioref">Geron 2022, chap. 7</a>)</span> to explore the various possibilities for ensemble methods.</p>
+<p>For our data set we use the moons example:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> make_moons</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> make_moons(n_samples<span class="op">=</span><span class="dv">500</span>, noise<span class="op">=</span><span class="fl">0.30</span>, random_state<span class="op">=</span><span class="dv">6020</span>)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, random_state<span class="op">=</span><span class="dv">6020</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="1">
+<li><p>Use the <code>VotingClassifier</code> class with an <em>LDA</em>, a <em>SVM</em>, and a <em>tree</em> for classification (make sure to keep set <code>random_state</code> for each to have reproducible results.). Get the overall score for the test set, as well as the individual scores for the included classifiers.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, clf <span class="kw">in</span> voting.named_estimators_.items():</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">, =, </span><span class="sc">{</span>clf<span class="sc">.</span>score(X_test, y_test)<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Switch to <em>soft voting</em> for your ensemble classifier and see how this influences the results.</p></li>
+<li><p>Create a <code>BaggingClassifier</code> with 500 trees and and an appropriate <code>max_samples</code> value. Report the score for this new classifier, also report the out-of-bag score via <code>.oob_score_</code>.</p></li>
+<li><p>Create directly a <code>RandomForestClassifier</code> with 500 trees and appropriate value for <code>max_leaf_nodes</code>.</p></li>
+<li><p>Create a <code>StackingClassifier</code> with an <em>LDA</em>, a <em>SVM</em>, and a <em>tree</em> for classification and a <em>random forest</em> as the final blending step and report the score of this method.</p></li>
+<li><p>Train a random forest for the iris data set and check <code>.feature_importances_</code> to get an insight on the importance of each feature.</p></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="multiclass-classification" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="multiclass-classification"><span class="header-section-number">2.6</span> Multiclass Classification</h2>
+<p>We mainly focused on the classification of two classes in the last sections but obviously not all problems only consist of two classes. Some of the methods discussed like random forests support multiple classes right away. For others there are several approaches to create a multiclass classifier out of a binary classifier.</p>
+<div class="callout callout-style-simple callout-none no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-multiclass-ovr" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.9 (One vs.&nbsp;the Rest (OvR) or One vs.&nbsp;All (OvA))</strong></span> The <em>one versus the rest</em> (OvR) or <em>one versus all</em> (OvA) strategy is to train a binary classifier for each class and always interpret all other classes as the others or the <em>rest class</em>. To classify an observation you get the scores for each classifier and select the one with the highest score.</p>
+<p>For the Fischer Iris data set this would result in three classifiers (one for each iris), for the MNIST data set in ten (one for each number).</p>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-none no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-multiclass-ovo" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 2.10 (One vs.&nbsp;One (OvO))</strong></span> The <em>one versus one</em> (OvO) strategy is to train a binary classifier for always two classes and build up a set of classifiers, for <span class="math inline">\(n\)</span> classes we get <span class="math inline">\(\tfrac{n (n-1)}{2}\)</span> classifiers. To classify an observation you get the result for each classifier and select the one class with the most duels won.</p>
+<p>For the Fischer Iris data set this would result in three classifiers, for the MNIST data set in 45.</p>
+<p>The advantage of OvO over OvR is that each only needs to be trained on the subset and not with the entire data set. This is especially useful for algorithms that do not scale well, like SVMs.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In <code>scikit-learn</code> the framework automatically realizes that we train a binary classifier for multiple classes and it will select OvR or OvO automatically, depending on the algorithm.</p>
+<p>Nevertheless, there exist dedicated classes for the task as well <a href="https://scikit-learn.org/stable/modules/generated/sklearn.multiclass.OneVsOneClassifier.html"><code>sklearn.multiclass.OneVsOneClassifier</code></a> and <a href="https://scikit-learn.org/stable/modules/generated/sklearn.multiclass.OneVsRestClassifier.html#sklearn.multiclass.OneVsRestClassifier"><code>sklearn.multiclass.OneVsRestClassifier</code></a>.</p>
+</div>
+</div>
+<div class="callout callout-style-simple callout-caution no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exr-nonlinear-multi" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 2.8 (Multiclass classification)</strong></span> Use SVM for the Fischer Iris data set and test it.</p>
+</div>
+</div>
+</div>
+</div>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
@@ -2536,8 +2765,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../summary.html" class="pagination-link" aria-label="Summary">
-        <span class="nav-page-text">Summary</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../clustering/semisupervised.html" class="pagination-link" aria-label="Semi-Supervised learning">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Semi-Supervised learning</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
