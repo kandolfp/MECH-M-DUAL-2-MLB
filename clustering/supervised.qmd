@@ -1306,3 +1306,52 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=6020)
 1. Train a random forest for the iris data set and check `.feature_importances_` to get an insight on the importance of each feature.
 ::::
 :::
+
+## Multiclass Classification
+
+We mainly focused on the classification of two classes in the last sections but obviously not all problems only consist of two classes. 
+Some of the methods discussed like random forests support multiple classes right away.
+For others there are several approaches to create a multiclass classifier out of a binary classifier.
+
+::: {.callout appearance="simple"}
+:::: {#def-multiclass-ovr}
+
+## One vs. the Rest (OvR) or One vs. All (OvA)
+
+The _one versus the rest_ (OvR) or _one versus all_ (OvA) strategy is to train a binary classifier for each class and always interpret all other classes as the others or the _rest class_.
+To classify an observation you get the scores for each classifier and select the one with the highest score.
+
+For the Fischer Iris data set this would result in three classifiers (one for each iris), for the MNIST data set in ten (one for each number).
+
+::::
+:::
+
+::: {.callout appearance="simple"}
+:::: {#def-multiclass-ovo}
+
+## One vs. One (OvO)
+
+The _one versus one_ (OvO) strategy is to train a binary classifier for always two classes and build up a set of classifiers, for $n$ classes we get $\tfrac{n (n-1)}{2}$ classifiers. 
+To classify an observation you get the result for each classifier and select the one class with the most duels won.
+
+For the Fischer Iris data set this would result in three classifiers, for the MNIST data set in 45.
+
+The advantage of OvO over OvR is that each only needs to be trained on the subset and not with the entire data set. 
+This is especially useful for algorithms that do not scale well, like SVMs.
+::::
+:::
+
+::: {.callout-tip}
+In `scikit-learn` the framework automatically realizes that we train a binary classifier for multiple classes and it will select OvR or OvO automatically, depending on the algorithm.
+
+Nevertheless, there exist dedicated classes for the task as well [`sklearn.multiclass.OneVsOneClassifier`](https://scikit-learn.org/stable/modules/generated/sklearn.multiclass.OneVsOneClassifier.html) and [`sklearn.multiclass.OneVsRestClassifier`](https://scikit-learn.org/stable/modules/generated/sklearn.multiclass.OneVsRestClassifier.html#sklearn.multiclass.OneVsRestClassifier).
+:::
+
+::: {.callout-caution appearance="simple" icon=false}
+:::: {#exr-nonlinear-multi}
+
+## Multiclass classification
+
+Use SVM for the Fischer Iris data set and test it.
+::::
+:::
