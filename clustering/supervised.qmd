@@ -279,7 +279,7 @@ In @fig-clustering-sl-lda2 we said we are doing better than a coin toss but we s
 The following approach and the basic structure of the code is from @Geron2022-xh, see [GitHub](https://github.com/ageron/handson-ml3/blob/main/03_classification.ipynb).
 :::
 
-In order to illustrate basic properties found in machine learning we use the MNIST data set together with a binary classifier based on Stochastic Gradient Descent. 
+In order to illustrate basic properties found in machine learning we use the MNIST data set together with a binary classifier based on Stochastic Gradient Descent, see @sec-clustering-ssl for more on the MNIST data set. 
 
 ::: {.callout-note}
 Stochastic Gradient Descent (SGD)[^SGD] is an optimization algorithm.
