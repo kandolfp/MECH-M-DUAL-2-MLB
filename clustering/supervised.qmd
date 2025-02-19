@@ -467,9 +467,9 @@ Other than that it works similar.
 
 [^wikicm]: see Wikipedia overview [Link](https://en.wikipedia.org/wiki/Confusion_matrix)
 
-## Support Vector Machines (SVM) {#sec-clustering-sv-svm}
+## Support Vector Machine (SVM) {#sec-clustering-sv-svm}
 
-The basic idea of Support Vector Machines (SVM) is to split observations into distinct clusters via hyperplanes.
+The basic idea of Support Vector Machines (SVMs) is to split observations into distinct clusters via hyperplanes.
 The have a long history in data science and come in different forms and fashions.
 Over the years they became more flexible and are still one of the most used tools in industry and science. 
 
