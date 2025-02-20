@@ -223,11 +223,15 @@ There are several ways we can improve our results.
 
 1. Try to optimize the parameters of the random forest, for number of trees and leaves. 
 
+1. Optimize the clustering for the first step.
+
 1. We can use other methods we have seen in @sec-clustering-sl and combine them to an ensemble learning. 
 
 1. By starting to additionally label observations where our classifier is the least sure about. 
 
 1. We can again work with clusters to smartly label additional observations.
+
+Note: if we use all the 60000 samples we get about 84% with the presented steps.
 ::::
 :::
 
