@@ -339,7 +339,7 @@ window.Quarto = {
 <li>Repeat until the cluster centers stay stable up to some tolerance.</li>
 </ol>
 <p>This algorithm was first introduced in <span class="citation" data-cites="DBLP:journals/tit/Lloyd82">Lloyd (<a href="../references.html#ref-DBLP:journals/tit/Lloyd82" role="doc-biblioref">1982</a>)</span> and is therefore often called Lloyd algorithm.</p>
-<div id="f42399e7" class="cell" data-execution_count="1">
+<div id="9b3c3344" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code for Lloyd algorithm</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lloyd(data, centers, steps):</span>
@@ -536,19 +536,6 @@ Figure&nbsp;1.2: KMeans algorithm in action for a generic set of two datasets ge
 </figure>
 </div>
 <p>As can be seen in <a href="#fig-clustering-unsupervised_lloyd2-1" class="quarto-xref">Figure&nbsp;<span>1.2 (a)</span></a> the algorithm comes up with the same split between the two sets. If we try for three clusters <a href="#fig-clustering-unsupervised_lloyd2-2" class="quarto-xref">Figure&nbsp;<span>1.2 (b)</span></a> the result is sensible as well.</p>
-<div class="callout callout-style-simple callout-caution no-icon">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-body-container">
-<div id="exr-kmean" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 1.1 (Apply the <span class="math inline">\(k\)</span>-means algorithm to the Iris dataset)</strong></span> As an exercise to get some practice for using <span class="math inline">\(k\)</span>-means apply the algorithm to the Iris data set to find a potential split for the three classes of flowers.</p>
-<p>Try with only two dimensional data and with all four dimensions.</p>
-</div>
-</div>
-</div>
-</div>
 <p>The major success, of this algorithm in general use, is based on the fast convergence, that requires no supervision. We can also see that it is not very accurate, compare <a href="#fig-clustering-unsupervised_lloyd-1" class="quarto-xref">Figure&nbsp;<span>1.1 (a)</span></a> and <a href="#fig-clustering-unsupervised_lloyd-4" class="quarto-xref">Figure&nbsp;<span>1.1 (d)</span></a>. This is no surprise, as the algorithm has not <em>all information</em> available.</p>
 <p>How can we determine how <em>accurate</em> the algorithm is? If we have no labels this is of course not easy to do but cross-validation is a good tool.</p>
 <p>In our case we can produce the labels and we can also split the data beforehand into a training set and a test set. Usually a so called <span class="math inline">\(80:20\)</span> split is used, i.e.&nbsp;<span class="math inline">\(80\%\)</span> training data and <span class="math inline">\(20\%\)</span> test data.</p>
@@ -604,6 +591,23 @@ Figure&nbsp;1.3: Validation against a test set.
 </div>
 <p>The result of this can be seen in <a href="#fig-clustering-unsupervised_lloyd3" class="quarto-xref">Figure&nbsp;<span>1.3</span></a> where we have two points wrongly classified to the opposite cluster.</p>
 <p>There exist several extensions of the basic <span class="math inline">\(k\)</span>-means algorithm to improve the results and overall performance. Two such versions are the <em>accelerated <span class="math inline">\(k\)</span>-means</em>, as well as <em>mini-batch <span class="math inline">\(k\)</span>-means</em>. Both can be found in <span class="citation" data-cites="Geron2022-xh">Geron (<a href="../references.html#ref-Geron2022-xh" role="doc-biblioref">2022</a>)</span>.</p>
+<div class="callout callout-style-simple callout-caution no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exr-kmean" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 1.1 (Apply the <span class="math inline">\(k\)</span>-means algorithm to other data sets)</strong></span> As an exercise to get some practice for using <span class="math inline">\(k\)</span>-means apply the algorithm to some other datasets to see how it performs.</p>
+<ol type="1">
+<li><p>We already looked at the Fischer Iris data set in <a href="index.html#sec-fischer-iris-data-set" class="quarto-xref"><span>Section 1.1</span></a> and discussed some basic features. Try with only two dimensional data, as well as four dimensional data to find the three clusters.</p></li>
+<li><p>For <a href="#fig-clustering-unsupervised_dbscan" class="quarto-xref">Figure&nbsp;<span>1.7</span></a> we will look at the moons data set. Try working out the clusters in this case.</p></li>
+<li><p>Apply the algorithm to the cats and dogs (in wavelet basis, see <a href="index.html#sec-clustering-cvd" class="quarto-xref"><span>Section 1.2</span></a>) for various principal components and find the two clusters.</p></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
 <section id="applications-of-k-means" class="level3" data-number="1.1.1">
 <h3 data-number="1.1.1" class="anchored" data-anchor-id="applications-of-k-means"><span class="header-section-number">1.1.1</span> Applications of <span class="math inline">\(k\)</span>-means</h3>
 <p>In addition to the image segmentation illustrated above, the <span class="math inline">\(k\)</span>-means algorithm is used in a multitude of applications, we list some here:</p>
@@ -871,6 +875,36 @@ Note
 <p>The function <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html#scipy.cluster.hierarchy.linkage"><code>scipy.cluste.hierarchy.linkage</code></a> allows to specify the method of computing the distance between two clusters. The used <code>average</code> corresponds to unweighted pair group method with arithmetic mean <a href="https://en.wikipedia.org/wiki/UPGMA">UPGMA</a> algorithm.</p>
 </div>
 </div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In In <code>scikit-learn</code> this is supported via the <a href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.AgglomerativeClustering.html#sklearn.cluster.AgglomerativeClustering"><code>sklearn.cluster.AgglomerativeClustering</code></a> class.</p>
+</div>
+</div>
+<div class="callout callout-style-simple callout-caution no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exr-dendrogram" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 1.2 (Apply the agglomerative clustering to the Fischer Iris data set)</strong></span> &nbsp;</p>
+<ol type="1">
+<li><p>Work out how to use the <code>scikit-learn</code> alternative.</p></li>
+<li><p>We already looked at the Fischer Iris data set in <a href="index.html#sec-fischer-iris-data-set" class="quarto-xref"><span>Section 1.1</span></a> and discussed some basic features. Try with only two dimensional data, as well as four dimensional data to find the three clusters.</p></li>
+<li><p>For <a href="#fig-clustering-unsupervised_dbscan" class="quarto-xref">Figure&nbsp;<span>1.7</span></a> we will look at the moons data set. Try working out the clusters in this case, look at the different possibilities with the <code>linkage</code> option as <code>{"ward", "complete", "average", "single"}</code>.</p></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
 </section>
 <section id="sec-clustering-ul-dbscan" class="level2" data-number="1.3">
 <h2 data-number="1.3" class="anchored" data-anchor-id="sec-clustering-ul-dbscan"><span class="header-section-number">1.3</span> Density-based spatial clustering of applications with noise (DBSCAN)</h2>
@@ -1005,10 +1039,10 @@ Note
 </div>
 <div class="callout-body-container">
 <div id="exr-dbscan" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 1.2 (Application of DBSCAN)</strong></span> &nbsp;</p>
+<p><span class="theorem-title"><strong>Exercise 1.3 (Application of DBSCAN)</strong></span> &nbsp;</p>
 <ol type="1">
 <li><p>Apply the DBSCAN algorithm to our toy example used through this section to recover the two clusters as good as possible. Try different <span class="math inline">\(\epsilon\)</span> values as well as different norms (<code>metric</code> parameter).</p></li>
-<li><p>Additionally, for a higher dimensional problem, using DBSCAN split the Iris dataset into its three classes of flowers.</p></li>
+<li><p>Additionally, for a higher dimensional problem, using DBSCAN split the Iris data set (@<a href="index.html#sec-fischer-iris-data-set" class="quarto-xref"><span>Section 1.1</span></a>) into its three classes of flowers.</p></li>
 </ol>
 </div>
 </div>
@@ -1178,7 +1212,7 @@ Figure&nbsp;1.8: Fitting of the second and fourth principal value of the cats an
 </div>
 <div class="callout-body-container">
 <div id="exr-gmm" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 1.3 (Application of GMM)</strong></span> &nbsp;</p>
+<p><span class="theorem-title"><strong>Exercise 1.4 (Application of GMM)</strong></span> &nbsp;</p>
 <ol type="1">
 <li><p>Apply the GMM algorithm to our toy example used through this section to recover the two clusters as good as possible. This should be straight forward, as we constructed it via Gaussian distributions. Try constraining the algorithm by imposing the different values possible for <code>covariance_type</code>.</p></li>
 <li><p>Additionally, for a higher dimensional problem, using DBSCAN split the Iris dataset into its three classes of flowers.</p></li>
@@ -1238,7 +1272,7 @@ Figure&nbsp;1.9: Fitting of the second and fourth principal value of the cats an
 <p>Before we make the leap to supervised learning we we introduce a new data set and see how our unsupervised approach works in this case.</p>
 <p>We do this with the (in)famous MNIST data set of hand written digits. Lets start by looking at the data set and establishing some basic properties.</p>
 <p>We load the data set and look at its description</p>
-<div id="4300ee7e" class="cell styled-output" data-execution_count="10">
+<div id="f23aed55" class="cell styled-output" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_openml</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>mnist <span class="op">=</span> fetch_openml(<span class="st">'mnist_784'</span>, as_frame<span class="op">=</span><span class="va">False</span>)</span>
@@ -1296,7 +1330,7 @@ Figure&nbsp;1.10: First 100 digits from the MNIST data set.
 <p>As can be seen from <a href="#fig-clustering-usl-mnist" class="quarto-xref">Figure&nbsp;<span>1.10</span></a>, most digits are easy to distinguish for us but there are some nasty things included. Especially, there are <span class="math inline">\(1\)</span>s with the english style (just one straight line) of writing (1st row, 7th column), but also as a diagonal line (1st row, 4th column), and finally also the german style (connecting line at base and top) of writing (3rd row, 5th column).</p>
 <p>Also the two digit comes in various forms, with loop (1st row, 6th column) and without (3rd row, 6th column). Finally we all know that a <span class="math inline">\(3\)</span> can hide in an <span class="math inline">\(8\)</span>, same as a <span class="math inline">\(9\)</span>, a <span class="math inline">\(1\)</span> can hide in a <span class="math inline">\(7\)</span> and much more.</p>
 <p>Now, before we go any further in the investigation we split up the data set into a training and a test set, we will not use this here but we should establish some way of working right from the start.</p>
-<div id="baca81ea" class="cell" data-execution_count="12">
+<div id="06788ae8" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>X_train, X_test <span class="op">=</span> mnist.data[:<span class="dv">60000</span>], mnist.data[<span class="dv">60000</span>:]</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>y_train, y_test <span class="op">=</span> mnist.target[:<span class="dv">60000</span>], mnist.target[<span class="dv">60000</span>:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
