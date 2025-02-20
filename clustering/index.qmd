@@ -28,7 +28,7 @@ The main idea behind machine learning is to construct or exploit the intrinsic l
 Before we go into specific algorithms lets have a general look at what we are going to talk about.
 We will follow [@Brunton2022, Section 5.1] for this introduction.
 
-### Fischer Iris data set 
+### Fischer Iris data set {#sec-fischer-iris-data-set}
 First we look into one of the standard data sets well known in the community, the so called Fischer Iris data set @Fischer.
 
 ::: {.callout-note}

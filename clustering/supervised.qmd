@@ -266,6 +266,18 @@ Where for the LDA it is possible to get the correct function for the classificat
 Luckily the `scikit-learn` class/function [`DecisionBoundaryDisplay.from_estimator`](https://scikit-learn.org/1.6/modules/generated/sklearn.inspection.DecisionBoundaryDisplay.html#sklearn.inspection.DecisionBoundaryDisplay.from_estimator) can help in such cases.
 :::
 
+
+::: {.callout-caution appearance="simple" icon=false}
+:::: {#exr-lda}
+
+## Application of LDA
+
+1. Apply the LDA algorithm to the toy example (see @fig-clustering-unsupervised_lloyd) to recover the two clusters as good as possible.
+
+1. Additionally, for a higher dimensional problem, using LDA split the Iris data set (@@sec-fischer-iris-data-set) into two clusters. Try for the harder split between `versicolor` and `virginica` classes of flowers.
+::::
+:::
+
 [^GEV]: see [@Kandolf_GDM, Definition 3.5] or the direct link [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/matrixdc/eigen.html#generalized-eigenvalue-problem)
 
 [^1]: see [@Kandolf_GDM, Theorem 14.4] or the direct link [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/statistics/bayesian.html#def-statistics-bayesianth)
@@ -1352,6 +1364,8 @@ Nevertheless, there exist dedicated classes for the task as well [`sklearn.multi
 
 ## Multiclass classification
 
-Use SVM for the Fischer Iris data set and test it.
+1. Use SVM for the Fischer Iris data set and test it.
+1. Compare with a random forest.
+1. Create a convolution matrix for more than two classes with your results in interpret the results.
 ::::
 :::

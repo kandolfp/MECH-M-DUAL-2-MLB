@@ -141,17 +141,6 @@ plt.show()
 As can be seen in @fig-clustering-unsupervised_lloyd2-1 the algorithm comes up with the same split between the two sets.
 If we try for three clusters @fig-clustering-unsupervised_lloyd2-2 the result is sensible as well.
 
-::: {.callout-caution appearance="simple" icon=false}
-:::: {#exr-kmean}
-
-## Apply the $k$-means algorithm to the Iris dataset
-
-As an exercise to get some practice for using $k$-means apply the algorithm to the Iris data set to find a potential split for the three classes of flowers.
-
-Try with only two dimensional data and with all four dimensions.
-::::
-:::
-
 The major success, of this algorithm in general use, is based on the fast convergence, that requires no supervision.
 We can also see that it is not very accurate, compare @fig-clustering-unsupervised_lloyd-1 and @fig-clustering-unsupervised_lloyd-4.
 This is no surprise, as the algorithm has not _all information_ available.
@@ -207,6 +196,22 @@ The result of this can be seen in @fig-clustering-unsupervised_lloyd3 where we h
 There exist several extensions of the basic $k$-means algorithm to improve the results and overall performance.
 Two such versions are the _accelerated $k$-means_, as well as _mini-batch $k$-means_.
 Both can be found in @Geron2022-xh.
+
+::: {.callout-caution appearance="simple" icon=false}
+:::: {#exr-kmean}
+
+## Apply the $k$-means algorithm to other data sets
+
+As an exercise to get some practice for using $k$-means apply the algorithm to some other datasets to see how it performs.
+
+1. We already looked at the Fischer Iris data set in @sec-fischer-iris-data-set and discussed some basic features. Try with only two dimensional data, as well as four dimensional data to find the three clusters.
+
+1. For @fig-clustering-unsupervised_dbscan we will look at the moons data set.
+Try working out the clusters in this case.
+
+1. Apply the algorithm to the cats and dogs (in wavelet basis, see @sec-clustering-cvd) for various principal components and find the two clusters.
+::::
+:::
 
 ### Applications of $k$-means
 
@@ -364,6 +369,25 @@ The function [`scipy.cluste.hierarchy.linkage`](https://docs.scipy.org/doc/scipy
 The used `average` corresponds to unweighted pair group method with arithmetic mean [UPGMA](https://en.wikipedia.org/wiki/UPGMA) algorithm.
 :::
 
+::: {.callout-note}
+In In `scikit-learn` this is supported via the [`sklearn.cluster.AgglomerativeClustering`](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.AgglomerativeClustering.html#sklearn.cluster.AgglomerativeClustering) class.
+:::
+
+::: {.callout-caution appearance="simple" icon=false}
+:::: {#exr-dendrogram}
+
+## Apply the agglomerative clustering to the Fischer Iris data set
+
+1. Work out how to use the `scikit-learn` alternative.
+
+1. We already looked at the Fischer Iris data set in @sec-fischer-iris-data-set and discussed some basic features. Try with only two dimensional data, as well as four dimensional data to find the three clusters.
+
+1. For @fig-clustering-unsupervised_dbscan we will look at the moons data set.
+Try working out the clusters in this case, look at the different possibilities with the `linkage` option as `{"ward", "complete", "average", "single"}`.
+
+::::
+:::
+
 ## Density-based spatial clustering of applications with noise (DBSCAN) {#sec-clustering-ul-dbscan}
 
 The algorithm was introduced in @DBSCAN and is an algorithm that finds areas of high density.
@@ -474,7 +498,7 @@ See @Geron2022-xh and  [GitHub](https://github.com/ageron/handson-ml3/blob/main/
 1. Apply the DBSCAN algorithm to our toy example used through this section to recover the two clusters as good as possible.
 Try different $\epsilon$ values as well as different norms (`metric` parameter).
 
-1. Additionally, for a higher dimensional problem, using DBSCAN split the Iris dataset into its three classes of flowers.
+1. Additionally, for a higher dimensional problem, using DBSCAN split the Iris data set (@@sec-fischer-iris-data-set) into its three classes of flowers.
 ::::
 :::
 
