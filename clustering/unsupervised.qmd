@@ -1,13 +1,13 @@
 # Unsupervised learning {#sec-clustering-usl}
 
 We start with unsupervised learning.
-The goal of unsupervised learning is to discover clusters in the data that has no labels.
+The goal of unsupervised learning is to discover clusters in the data of observations that have no labels, i.e. we have nothing to look at as reference.
 There are several algorithms to perform this task, the most prominent is the $k$-means clustering algorithm.
 
 ## $k$-Means Clustering {#sec-clustering-usl-kmeans}
 
-The $k$-means algorithm tries to partition a set of $m$ (vector-valued) data observations into $k$ clusters.
-Where in general the dimension of the data and the amount of observations is known, the number of clusters is often not known a priori.
+The $k$-means algorithm tries to partition a set of $m$ (vector-valued) _data observations_ into $k$ clusters.
+Where in general, the dimension of the data and the amount of observations is known, the number of clusters is often not known a priori.
 
 The general idea is, to label each observation as belonging to a cluster with the nearest mean (the _representative_ of the cluster).
 The resulting clusters are called Voronoi cells, see [Wikipedia - Voronoi diagram](https://en.wikipedia.org/wiki/Voronoi_diagram).
@@ -23,12 +23,12 @@ $$
 $$
 where $\mu_i$ denotes the mean of $S_i$.
 
-The algorithm itself is recursive for a given $k$
+The algorithm itself is recursive, for a given $k$
 
-1. Randomly initialize $k$ points $\mu_1, \mu_2, \ldots, \mu_k$, as the cluster centers.
+1. Randomly initialize $k$ points $\mu_1, \mu_2, \ldots, \mu_k$, as the cluster centers,
 1. Label each observation $x_i$ by the nearest cluster center $\mu_j$, all points with the same label form the set $S_j$.
 1. Compute the mean of each cluster $S_j$ and replace the current $\mu_j$ by it.
-1. Repeat until the cluster centers stay stable up to some tolerance.
+1. Repeat, starting from step 2, until the cluster centers stay stable up to some tolerance.
 
 This algorithm was first introduced in @DBLP:journals/tit/Lloyd82 and is therefore often called Lloyd algorithm.
 
@@ -55,7 +55,7 @@ In general @def-kmeans is NP-hard and therefore computationally not viable.
 Nevertheless, a number of heuristic algorithms exist to provide a good performance, despite having no guarantee for global convergence.
 :::
 
-To illustrate the proceedings with the help of some artificial data and its clustering.
+We illustrate the proceedings with the help of some artificial observations in two dimensional space, and show how the clustering takes place.
 
 ::: {.callout-important}
 The following data set and the basic structure of the code is from [@Brunton2022, Code 5.5 - 5.6].
@@ -69,7 +69,7 @@ Also see [GitHub](https://github.com/dynamicslab/databook_python).
 #|   - "The original two classes and the initial guesses for the centers."
 #|   - "Point association to the clusters in the first step."
 #|   - "Point association to the clusters in the third step."
-#|   - "Point association to the clusters in the sixth step."
+#|   - "Point association to the clusters in the eighth step."
 #| code-fold: true
 #| layout-ncol: 2
 #| code-summary: "Show the code for the figure"
@@ -104,18 +104,18 @@ classes = np.concatenate((np.ones(X2.shape[0]), np.zeros(X.shape[0])))
 plot_lloyd(data, centers, classes)
 
 # Compute and plot consecutive steps of lloyds algorithm
-for i in [1, 2, 3]:
+for i in [1, 2, 5]:
     classes, centers_ = lloyd(data, centers, i)
     plot_lloyd(data, centers, classes)
     centers = centers_
 plt.show()
 ```
 
-In @fig-clustering-unsupervised_lloyd-1 we see the two _distinct_ clusters and the initial guesses for th centers.
-In the successive plots we see how the centers move and converge to the _final_ position as seen in @fig-clustering-unsupervised_lloyd-4.
+In @fig-clustering-unsupervised_lloyd-1 we see the two _distinct_ clusters and the initial guesses for the centers.
+In the successive plots, we see how the centers move and converge to the _final_ position, as seen in @fig-clustering-unsupervised_lloyd-4.
 In this case the algorithm converges after the sixth step.
 
-Of course the algorithm is sensitive to the initial guess and therefore modern versions provide strategies to determine the initial guess as well as the number of clusters.
+Of course the algorithm is sensitive to the initial guess and therefore modern versions provide strategies to determine the initial guess, as well as the number of clusters.
 
 We can see this in action in the [`sklearn.cluster.KMeans`](https://scikit-learn.org/1.5/modules/generated/sklearn.cluster.KMeans.html) version.
 
@@ -138,7 +138,7 @@ plot_lloyd(data, kmeans.cluster_centers_, kmeans.labels_)
 plt.show()
 ```
 
-As can be seen in @fig-clustering-unsupervised_lloyd2-1 the algorithm comes up with the same split between the two sets.
+As can be seen in @fig-clustering-unsupervised_lloyd2-1 the algorithm comes up with (almost) the same split between the two sets as our crude implementation.
 If we try for three clusters @fig-clustering-unsupervised_lloyd2-2 the result is sensible as well.
 
 The major success, of this algorithm in general use, is based on the fast convergence, that requires no supervision.
@@ -202,7 +202,7 @@ Both can be found in @Geron2022-xh.
 
 ## Apply the $k$-means algorithm to other data sets
 
-As an exercise to get some practice for using $k$-means apply the algorithm to some other datasets to see how it performs.
+As an exercise, to get some practice for using $k$-means, apply the algorithm to some other datasets to see how it performs.
 
 1. We already looked at the Fischer Iris data set in @sec-fischer-iris-data-set and discussed some basic features. Try with only two dimensional data, as well as four dimensional data to find the three clusters.
 
@@ -215,9 +215,9 @@ Try working out the clusters in this case.
 
 ### Applications of $k$-means
 
-In addition to the image segmentation illustrated above, the $k$-means algorithm is used in a multitude of applications, we list some here:
+The $k$-means algorithm is used in a multitude of applications, we list some here:
 
-1. **Image segmentation**: To decompose an image into different regions we can use $k$-means. Applications range from robotics to surveillance where, where one or more objects are separated from the rest of the image.
+1. **Image segmentation**: To decompose an image into different regions we can use $k$-means. Applications range from robotics to surveillance, where one or more objects are separated from the rest of the image.
 
 1. **Customer segmentation/social network analysis**: To segment customers along e.g. their purchase history/behaviour, preferences, demographic data, amount spent, search queries, social media interactions, etc. $k$-means is used in marketing, retail, and advertising to personalize the experience.
 
@@ -225,15 +225,15 @@ In addition to the image segmentation illustrated above, the $k$-means algorithm
 
 1. **Fraud detection**: $k$-means is a crude tool for fraud detection in finance and banking.
 Transactions are clustered according to similarities and anomalies are detected.
-There exist more sophisticated methods in finance.
+There exist more sophisticated methods in finance, but $k$-means is an easy to understand start.
 
 1. **Anomaly detection**: In medical (image) data $k$-means is often used to detect anomalies by finding points that _fall outside of clusters_. The same works for cybersecurity and e.g. network traffic.
 
-1. **Recommendation systems**: By grouping users together it is easier to recommend them new songs, items for shopping and more. 
+1. **Recommendation systems**: By grouping users together it is easier to recommend them new songs, items for shopping, and more. 
 
-1. **Quality control**: By grouping similar products you can detect quality issues and defects in production processes. If an issue is found the part can be checked and the process adjusted.
+1. **Quality control**: By grouping similar products we can detect quality issues and defects in production processes. If an issue is found the part can be checked and the process adjusted.
 
-1. **Traffic Analysis**: In transport and logistics you can analyze traffic patterns and use the information for optimization and similar trips, routes and vehicles.
+1. **Traffic Analysis**: In transport and logistics we can analyze traffic patterns and use the information for optimization and similar trips, routes, and vehicles.
 
 We want to highlight _image segmentation_ as an application of $k$-means. 
 The example found here is first shown in @Geron2022-xh.
@@ -289,12 +289,13 @@ plt.show()
 
 ## Unsupervised hierarchical clustering - Dendrogram
 
-Similar to $k$-means a simple hierarchical algorithm is used to create a dendrogram.
-The resulting tree allows you to easily see if data is clustered without the need of labeling or supervision.
+Similar to $k$-means, a simple hierarchical algorithm is used to create a dendrogram.
+The resulting tree allows us to easily see if data is clustered without the need of labeling or supervision.
 
 We follow the example and discussion given in [@Brunton2022, Section 5.4]. 
 
-There are two main approaches in creating the desired hierarchy, bottom-up often called _agglomerative_ and top-down often called _divisive_.
+There are two main approaches in creating the desired hierarchy: bottom-up often called _agglomerative_,
+top-down often called _divisive_.
 
 - For the agglomerative approach each observation $x_i$ is initially its own cluster and in each step points are combined according to their distance. Eventually everything ends up in a single cluster and the algorithm stops. 
 
@@ -308,10 +309,11 @@ To illustrate the agglomerative approach and the difference in norms we use four
 
 ![Use two norm or euclidean norm to compute the distance - $\| \cdot \|_2$](../_assets/clustering/dendrogram_euclidean){#fig-clustering-unsupervised-dendrogram-explained-1}
 
-![Use two one or cityblock norm to compute the distance - $\| \cdot \|_1$](../_assets/clustering/dendrogram_city){#fig-clustering-unsupervised-dendrogram-explained-2}
+![Use one or cityblock norm to compute the distance - $\| \cdot \|_1$](../_assets/clustering/dendrogram_city){#fig-clustering-unsupervised-dendrogram-explained-2}
 
 We always combine the two nearest points and replace them with the point in the middle. This iteration continues until only one point is left.
 The Dendrogram is build according to the order of points chosen.
+It can also include the distance.
 :::
 
 On a larger scale, with always the first 25 points of the two clusters above we get the results shown in @fig-clustering-unsupervised_dengrogram
@@ -354,15 +356,14 @@ for metric in ["euclidean", "cityblock"]:
 plt.show()
 ```
 
-The two dendrograms (@fig-clustering-unsupervised_dengrogram-1 @fig-clustering-unsupervised_dengrogram-3) show the hierarchical structure derived from the data set.
+The two dendrograms (@fig-clustering-unsupervised_dengrogram-1 and @fig-clustering-unsupervised_dengrogram-3) show the hierarchical structure derived from the data set.
 The number of clusters can be influenced by the `thresh` parameter and it is also used to label the observation accordingly.
 It is quite similar to the number of clusters $k$ in the $k$-means algorithm.
 
-The two bar graphs on the right (@fig-clustering-unsupervised_dengrogram-2 @fig-clustering-unsupervised_dengrogram-4) shows how the data is clustered in the dendrogram. 
+The two bar graphs on the right (@fig-clustering-unsupervised_dengrogram-2 and @fig-clustering-unsupervised_dengrogram-4) show how the observations is clustered in the dendrogram. 
 The bars correspond to the distance metric produced by the algorithm.
 The red lines indicate the region of a perfect split for the separation if the algorithm works perfectly and places every point in the original cluster.
-If we recall, that the first 25 points are from set 1 and the next 25 from set 2 we can see that the euclidean distance generates the perfect split.
-On the other hand, the _cityblock_ norm is placing one point in the wrong cluster.
+If we recall, that the first 25 points are from set 1 and the next 25 from set 2 we can see that the euclidean distance and the _cityblock_ norm place one point in the wrong cluster.
 
 ::: {.callout-note}
 The function [`scipy.cluste.hierarchy.linkage`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html#scipy.cluster.hierarchy.linkage) allows to specify the method of computing the distance between two clusters. 
@@ -380,7 +381,7 @@ In In `scikit-learn` this is supported via the [`sklearn.cluster.AgglomerativeCl
 
 1. Work out how to use the `scikit-learn` alternative.
 
-1. We already looked at the Fischer Iris data set in @sec-fischer-iris-data-set and discussed some basic features. Try with only two dimensional data, as well as four dimensional data to find the three clusters.
+1. We already looked at the Fischer Iris data set in @sec-fischer-iris-data-set and discussed some basic features. Try with only two dimensional data, as well as four dimensional data, to find the three clusters.
 
 1. For @fig-clustering-unsupervised_dbscan we will look at the moons data set.
 Try working out the clusters in this case, look at the different possibilities with the `linkage` option as `{"ward", "complete", "average", "single"}`.
@@ -400,17 +401,17 @@ With these parameters we perform the following steps:
 1. A point $p$ is called a _core point_ if at least $minPts$ (including $p$) are within distance $\epsilon$ of $p$.
 This region is called the $\epsilon$-neighbourhood of $p$.
 
-1. A point $q$ is called _directly reachable_ form an core point $p$ iff[^iff] $q$ is in the $\epsilon$-neighbourhood of $p$.
+1. A point $q$ is called _directly reachable_ from a core point $p$ iff[^iff] $q$ is in the $\epsilon$-neighbourhood of $p$.
 
-1. A point $p$ is _reachable_ from $p$ if there exists a sequence of points (path) $p=p_1, p_2,  \ldots, p_n=q$ where each $p_{i+1}$ is directly reachable form $p_i$.
+1. A point $p$ is _reachable_ from $p$, if there exists a sequence of points (path) $p=p_1, p_2,  \ldots, p_n=q$ where each $p_{i+1}$ is directly reachable form $p_i$.
 Consequently, all point on the path, except $p$, need to be core points.
 
 1. A point that is not reachable from any other point is considered an _outlier_ or _noise point_. 
 
-Therefore, we get our definition of a cluster: a point core point $p$ together with all points that are reachable from $p$. This includes core points (at least one) and none-core points (boundary points) on the boundary as they can not be used to reach more points.
+Therefore, we get our definition of a cluster: a core point $p$ together with all points that are reachable from $p$. This includes core points (at least one) and none-core points (boundary points) on the boundary as they can not be used to reach more points.
 
-In contrast to $k$-means the algorithm we can find none linear clusters.
-We can illustrate this with the _moon data set_. 
+In contrast to $k$-means the algorithm we can find _non-linear_ (i.e. curved) clusters.
+We illustrate this with the _moon data set_. 
 
 ::: {.callout-important}
 For the plotting function please see [GitHub](https://github.com/ageron/handson-ml3/blob/main/09_unsupervised_learning.ipynb), the accompanying repository to @Geron2022-xh, as it forms the basis.
@@ -476,7 +477,7 @@ plt.show()
 ```
 
 The algorithm works best for clusters well separated by low density regions.
-As all algorithms depending on distance measures it suffers from the curse of dimensionality[^1].
+As all algorithms depending on distance measures, it suffers from the curse of dimensionality[^1].
 
 As can be seen in @fig-clustering-unsupervised_dbscan-1 the algorithm produces quite a lot of clusters for a small $\epsilon=0.05$.
 In total we get 10 clusters and quite a lot of outliers that are not all easy to retract by the naked eye.
@@ -495,28 +496,28 @@ See @Geron2022-xh and  [GitHub](https://github.com/ageron/handson-ml3/blob/main/
 
 ## Application of DBSCAN
 
-1. Apply the DBSCAN algorithm to our toy example used through this section to recover the two clusters as good as possible.
+1. Apply the DBSCAN algorithm to our toy example used through this section, to recover the two clusters as good as possible.
 Try different $\epsilon$ values as well as different norms (`metric` parameter).
 
-1. Additionally, for a higher dimensional problem, using DBSCAN split the Iris data set (@@sec-fischer-iris-data-set) into its three classes of flowers.
+1. Additionally, for a higher dimensional problem, using DBSCAN to split the Fischer Iris data set (@sec-fischer-iris-data-set) into its three clusters of flowers.
 ::::
 :::
 
 ## Finite Mixtures Models
 
-Finite mixture models assume that the observations $x_i$ are mixtures of $k$ processes which combine in the measurement.
+Finite mixture models assume that the observations $x_i$ are mixtures of $k$ processes, which combine in the measurement.
 Each mixture is defined via a probability model with unknown parameters.
 The aim of the algorithm is to find the parameters such that the $k$ processes best describe the $x_i$ observations.
 The basis of the algorithm is the so called _expectation-maximization_ (EM) algorithm of @dempster1977maximum, that is designed to find the _maximum-likelihood_ parameters of the defined statistical models.
 
 The most common choice for the probability models is the Gaussian distribution[^gauss] and for this choice, the method is better known as _Gaussian mixture models_ (GMM).
-This is often quite a sensible choice if nothing more is known about the observations and a Gaussian distribution is than always a save bet.
+This is often quite a sensible choice, if nothing more is known about the observations, and a Gaussian distribution is therefore a save bet.
 As a result each process can be described by two parameters, _mean_ and _variance_.
-Each cluster in turn, will be described by an ellipsoidal shape where size, density, orientation and semi-axis vary. 
+Each cluster in turn, will be described by an ellipsoidal shape where size, density, orientation, and semi-axis vary. 
 
 Like $k$-means, in the simplest version, GMM is provided with the number of clusters $k$ and starts from an initial guess of the means and corresponding variances.
 The parameters are than iteratively updated to find a (local) maximum.
-There are some problems with this approach, e.g. if you set one of the processes to have zero variance and mean equal to a point.
+There are some problems with this approach, e.g. if we set one of the processes to have zero variance and mean equal to a point.
 To avoid such problems _cross-validation_ can often help to avoid problems stemming from an initialization with a poor initial guess.
 
 As mentioned, the main idea of the mixture models is that the observations are a linear combination of probability density functions (PDF)
@@ -538,42 +539,43 @@ Given the observed PDF $f(x_j, \Theta)$, estimate the mixture weights $\alpha_p$
 ::::
 :::
 
-Lets follow the derivative for the GMM method in [@Brunton2022, Section 5.5] to bet a better idea what is happening. 
+Lets follow the derivative for the GMM method in [@Brunton2022, Section 5.5] to get a better idea what is happening. 
 
-For the GMM $f$ becomes
+For GMM, $f$ reads as
 $$
-f(x_j, \Theta) = \sum_{p=1}^k \alpha_p \mathcal{N}_p(x_j, \mu_p, \sigma_p)
+f(x_j, \Theta) = \sum_{p=1}^k \alpha_p \mathcal{N}_p(x_j, \mu_p, \sigma_p),
 $$
-and for a given $k$ we need to find $\alpha_p, \mu_p, \sigma_p$.
+and for a given $k$, we need to find $\alpha_p, \mu_p, \sigma_p$.
 We get $\Theta$ from the roots of 
 $$
-L(\Theta) = \sum_{j=1}^n\log f(x_j | \Theta),
+L(\Theta) = \sum_{j=1}^n\log f(x_j | \Theta).
 $$
 $L$ is called the _log-likelihood_ function and we sum over all observations $x_j$.
-We transform it into a optimization problem by setting the derivative to zero
+We transform it into an optimization problem by setting the derivative to zero
 $$
-\frac{\partial L(\Theta)}{\partial \Theta} = 0
+\frac{\partial L(\Theta)}{\partial \Theta} = 0,
 $$
 and solve it via the EM algorithm.
 As the name suggests, there are two steps E and M.
 
 The E step uses the following posterior to establish memberships. 
-Therefore, we start of by assuming an initial guess of the vector $\Theta$ and this leads to the _posterior probability of distribution $p$ of $x_j$ _
+Therefore, we start of by assuming an initial guess of the vector $\Theta$ and this leads to the _posterior probability of distribution $p$ of $x_j$
 $$
 \tau_p(x_j, \Theta) = \frac{\alpha_p f_p(x_j, \Theta_p)}{f(x_j, \Theta)}.
 $$
 In other words, we try to figure out if $x_j$ is part of the $p$th mixture.
-For the GMM this becomes, in the $l$ iteration:
+For GMM this becomes,
 $$
-\tau_p^{(l)}(x_j) = \frac{\alpha_p^{(l)} \mathcal{N}_p(x_j, \mu_p^{(l)}, \sigma_p^{(l)})}{f(x_j, \Theta^{(l)})}.
+\tau_p^{(l)}(x_j) = \frac{\alpha_p^{(l)} \mathcal{N}_p(x_j, \mu_p^{(l)}, \sigma_p^{(l)})}{f(x_j, \Theta^{(l)})},
 $$
+in the $l$ iteration.
 
 Now the M step starts to update the parameters and mixture weights as
 $$
 \begin{align}
 \alpha_p^{(l+1)} &= \frac1n \sum_{j=1}^n \tau_p^{(l)}(x_j), \\
 \mu_p^{(l+1)} &= \frac{\sum_{j=1}^n x_j\tau_p^{(l)}(x_j)}{\sum_{j=1}^n \tau_p^{(l)}(x_j)}, \\
-\Sigma_p^{(l+1)} &= \frac{\sum_{j=1}^n \tau_p^{(l)}(x_j)(x_j - \mu_p^{(l+1)})(x_j - \mu_p^{(l+1)})^\mathrm{T}}{\sum_{j=1}^n \tau_p^{(l)}(x_j)},
+\Sigma_p^{(l+1)} &= \frac{\sum_{j=1}^n \tau_p^{(l)}(x_j)[(x_j - \mu_p^{(l+1)})(x_j - \mu_p^{(l+1)})^\mathrm{T}]}{\sum_{j=1}^n \tau_p^{(l)}(x_j)},
 \end{align}
 $$
 with $\Sigma_p^{(l+1)}$ denotes the covariance matrix.
@@ -656,17 +658,18 @@ plt.legend([r"$\mathcal{N}(\mu_1, \sigma_1)$",
             r"$\mathcal{N}(\mu_2, \sigma_2)$"])
 plt.show()
 ```
+
 As can be seen in @fig-clustering-gmm-1 the two clusters are quite well captured by the GMM algorithm.
 The contour shows the linear combination of the two Gaussians.
 We see the two Gaussians on the right in @fig-clustering-gmm-2 where we use the same colours as for the cats and dogs respectively.
 Note that the distributions are weight $\alpha_p$ from GMM but other than that there is no unit in the z direction.
 
-As discussed above the algorithm is prone to problems during the initialization, therefore we use `n_init = 10` to initialize the algorithm 10 times and only keep the best result.
+As discussed above, the algorithm is prone to problems during the initialization, therefore we use `n_init = 10` to initialize the algorithm 10 times and only keep the best result.
 
 We can draw new samples from the resulting object `.sample()` and we can also fit data to it and we can also perform hard and soft clustering. 
 For hard clustering the model assigns each instance to the most likely cluster (`.predict()`), where for soft clustering (`.predict_proba()`) we get the probability of _membership_ for each cluster. 
 
-If the algorithm struggles to recover the clusters, we can halp it by imposing the shape of the cluster via restricting the covariance matrix $\Sigma_p$.
+If the algorithm struggles to recover the clusters, we can help it by imposing the shape of the cluster via restricting the covariance matrix $\Sigma_p$.
 This can be done via the parameter `covariance_type`, see [docs](https://scikit-learn.org/stable/modules/generated/sklearn.mixture.GaussianMixture.html).
 
 ::: {.callout-caution appearance="simple" icon=false}
@@ -678,9 +681,9 @@ This can be done via the parameter `covariance_type`, see [docs](https://scikit-
 This should be straight forward, as we constructed it via Gaussian distributions.
 Try constraining the algorithm by imposing the different values possible for `covariance_type`. 
 
-1. Additionally, for a higher dimensional problem, using DBSCAN split the Iris dataset into its three classes of flowers.
+1. Additionally, for a higher dimensional problem, split the Fischer Iris data set into its three clusters of flowers.
 
-1. Try to use GMM to get clusters for the two moon dataset used in @sec-clustering-ul-dbscan.
+1. Try to use GMM to get clusters for the moon data set used in @sec-clustering-ul-dbscan.
 Also try with the `BayesianGaussianMixture` class, where no amount of clusters needs to be specified.
 ::::
 :::
@@ -688,9 +691,9 @@ Also try with the `BayesianGaussianMixture` class, where no amount of clusters n
 ::: {.callout-tip}
 GMM can also be used for anomaly detection. 
 Simply assume every observation located in a low density region an anomaly.
-For this the threshold needs to be defined in accordance to your expected anomalies. 
+For this the threshold needs to be defined in accordance to our expected anomalies. 
 
-E.g. to get about $4\%$ anomalies you can use the following snippet togethere with the above code:
+E.g. to get about $4\%$ anomalies we can use the following snippet together with the above code:
 ```{python}
 #| label: fig-clustering-gmm-ano
 #| fig-cap: "Fitting of the second and fourth principal value of the cats and dogs images in wavelet basis via the GMM method. "
@@ -710,12 +713,12 @@ plt.legend()
 plt.show()
 ```
 
-see @Geron2022-xh and the corresponding [GitHub repository](https://github.com/ageron/handson-ml3/blob/main/09_unsupervised_learning.ipynb)
+See @Geron2022-xh and the corresponding [GitHub repository](https://github.com/ageron/handson-ml3/blob/main/09_unsupervised_learning.ipynb).
 :::
 
 ## Motivational example {#sec-clustering-ul-me}
 
-Before we make the leap to supervised learning we we introduce a new data set and see how our unsupervised approach works in this case.
+Before we make the leap to supervised learning, we we introduce a new data set and see how our unsupervised approach works in this case.
 
 We do this with the (in)famous MNIST data set of hand written digits. 
 Lets start by looking at the data set and establishing some basic properties.
@@ -755,11 +758,11 @@ plt.axis("off")
 plt.show()
 ```
 
-As can be seen from @fig-clustering-usl-mnist, most digits are easy to distinguish for us but there are some nasty things included. 
-Especially, there are $1$s with the english style (just one straight line) of writing (1st row, 7th column), but also as a diagonal line (1st row, 4th column), and finally also the german style (connecting line at base and top) of writing (3rd row, 5th column). 
+As can be seen from @fig-clustering-usl-mnist, most digits are easy to distinguish for us, but there are some nasty things included. 
+Especially, there are `1`s with the english style (just one straight line) of writing (1st row, 7th column), but also as a diagonal line (1st row, 4th column), and finally also the german style (connecting line at base and top) of writing (3rd row, 5th column). 
 
-Also the two digit comes in various forms, with loop (1st row, 6th column) and without (3rd row, 6th column).
-Finally we all know that a $3$ can hide in an $8$, same as a $9$, a $1$ can hide in a $7$ and much more. 
+Also the `2` digit comes in various forms, with loop (1st row, 6th column) and without (3rd row, 6th column).
+Finally we all know that a `3` can hide in an `8`, same as a `7` and `1` can hide in a `9` and much more. 
 
 Now, before we go any further in the investigation we split up the data set into a training and a test set, we will not use this here but we should establish some way of working right from the start. 
 
@@ -797,12 +800,12 @@ plt.show()
 ```
 
 As can be seen from @fig-clustering-usl-mnist2, the cluster centers do not recover our ten digits.
-In general they are, as expected smudged as the do not represent an actual image.
+In general, they are, as expected, smudged as they do not represent an actual image.
 It looks like $0, 1, 2, 3, 6, 8, 9$ are _easy_ to discover but $4, 5, 7$ not.
 If we look closely, we can see $4, 5, 7$ represented in our clusters but not as separate digits.
-Obviously this is not a good way to proceed to find our digits.
+Obviously this is not a good way to proceed and to find our digits.
 We will discuss methods to perform this task in the next section @sec-clustering-sl.
-Furthermore, keep this part in mind as we will come back to how this can still be helpful in a different aspect as semi supervised learning @sec-clustering-ssl.
+Furthermore, keep this part in mind, as we will come back to how this can still be helpful in a different aspect as semi-supervised learning @sec-clustering-ssl.
 
 [^norm]: see @Kandolf_GDM, Section 1.2 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/basics/linearalgebra.html#norms)
 

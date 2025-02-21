@@ -3,7 +3,7 @@
 If we recall @Fischer from the Iris data set, we can also find one of the first supervised learning methods in this paper.
 The introduced _linear discriminant analysis_ (LDA) has survived over time and is still one of the standard techniques for classification, even though we use a more generalized and improved method nowadays.
 
-## Linear Discriminant Analysis (LDA)
+## Linear Discriminant Analysis (LDA) {#sec-clustering-sl-lda}
 ::: {.callout-important}
 The following introduction and illustrational data set, as well as the basic structure of the code is from [@Brunton2022, Code 5.9].
 Also see [GitHub](https://github.com/dynamicslab/databook_python).
