@@ -1,26 +1,26 @@
 # Clustering and Classification {.unnumbered}
 
-One aspect if machine learning is binning data into meaningful and distinct categories that can be used for decision making.
-This is often called clustering and classification. 
+One aspect of machine learning is binning data into meaningful and distinct categories that can be used for decision-making, amongst other things.
+This process is referred to as clustering and classification. 
 To achieve this task the main modus of operation is to find a _low-rank feature space_ that is informative and interpretable.
 
-One way is to extract the dominate features in a data set are for example the singular value decomposition (SVD) or principal component analysis, see [@Kandolf_GDM].
-The idea is to not work in the heigh dimensional measurement space, but instead in the low rank feature space.
-This allows us to significantly reduce the cost by performing the our analysis in this low dimensional space. 
+One such way is to extract the dominate features in a data set is for example the singular value decomposition (SVD) or principal component analysis, see [@Kandolf_GDM].
+The main idea is to not work in the heigh dimensional measurement space, but instead in the low rank feature space.
+This allows us to significantly reduce the cost (of computation or learning) by performing our clustering in this low dimensional space. 
 
 In order to find the feature space there are two main paths for machine learning:
 
 - unsupervised learning
 - supervised learning
 
-As the names suggest in _unsupervised learning_ no labels are given to the algorithm and it must find patterns in the data to generate clusters and labels such that predictions can be made.
-This is often used to discover previously unknown patterns in the (low-rank) subspace of the data and leads to _feature engineering_ or _feature extraction_. 
-These features can than be used for building a model.
+As the names suggest, in _unsupervised learning_, no labels are given to the algorithm and it must find patterns in the data to generate clusters and labels such that predictions can be made.
+This is often used to _discover_ previously unknown patterns in the (low-rank) subspace of the data and leads to _feature engineering_ or _feature extraction_. 
+These features can than be used for building a model, e.g. a classifier.
 
 Supervised learning, on the other hand, uses labelled data sets.
-The training data is labelled for _cross-validated_ by a teacher or expert.
+The training data is labelled for _cross-validation_ by a teacher or expert.
 I.e. the input and output for a model is explicitly provided and regression methods are used to find the _best model_ for the given labelled data.
-There are several different form of supervised learning like _reinforcement learning_, _semi-supervised learning_, or _active learning_. 
+There are several different forms of supervised learning like _reinforcement learning_, _semi-supervised learning_, or _active learning_. 
 
 The main idea behind machine learning is to construct or exploit the intrinsic low-rank feature space of a given data set, how to find these is determined by the algorithm.
 
@@ -46,6 +46,8 @@ We use the possibilities of [`sklearn`](https://scikit-learn.org/stable/) [^1] t
 
 [^1]: To add it to `pdm` us `pdm add scikit-learn`.
 
+Let us start right away by loading and visualizing the data in a 3D scatter plot (there are 4 features present so one is not shown).
+
 ```{python}
 #| label: fig-clustering-iris
 #| fig-cap: "Iris data set with 150 samples from three distinct species, _Setosa_, _Versicolor_, and _Virginica_, as a scatter 3D plot along the features sepal length, sepal width, and petal width, the forth feature petal width is not shown."
@@ -70,8 +72,8 @@ fig.show()
 
 As can be seen in @fig-clustering-iris the three features are enough to easily separate _Sentosa_ and to a very good degree _Versicolor_ from _Virginica_, where the last two have a small overlap in the samples provided. 
 
-The petal length seems to be the best feature for the classification and no highly sophisticated machine learning algorithms are required.
-We can see the this even better if we use a so called Pair plot from the [`seaborn`](https://seaborn.pydata.org/) package as seen in @fig-clustering-iris2.
+The _petal width_ seems to be the best feature for the classification and no highly sophisticated machine learning algorithms are required.
+We can see this even better if we use a so called Pair plot from the [`seaborn`](https://seaborn.pydata.org/) package as seen in @fig-clustering-iris2.
 
 ```{python}
 #| label: fig-clustering-iris2
@@ -85,10 +87,13 @@ from sklearn.datasets import load_iris
 _ = sns.pairplot(iris.frame, hue="target", height=1.45)
 ```
 Here a grid with plots is created where each (numeric) feature is shared across a row and a column.
-Therefore, we can see the combination of two and in the diagonal we see the univariate distribution of the values.
-After a close inspection we can see that _petal width_ provides us with the best distinction feature and _sepal width_ with the worst.
+Therefore, in a single plot we can see the combination of two, and in the diagonal we see the univariate distribution of the values.
+After a close inspection, we can also see here that _petal width_ provides us with the best distinction feature and _sepal width_ with the worst.
 
-Even though we already have enough to give a good classification for this dataset it is worth to investigate a bit further in order to illustrate how, for example the principal component analysis (PCA) [see @Kandolf_GDM, Section 4.2] [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/matrixdc/svd.html#sec-matrixdc-pca) can be applied here.
+Even though we already have enough to give a good classification for this dataset, it is worth to investigate a bit further.
+We illustrate how the principal component analysis (PCA)[^pca] can be applied here.
+
+[^pca]: see @Kandolf_GDM, Section 4.2 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/matrixdc/svd.html#sec-matrixdc-pca)
 
 
 ```{python}
@@ -117,7 +122,8 @@ plt.xlabel(r"$PC_1$")
 plt.ylabel(r"$PC_2$")
 plt.show()
 ```
-As can be seen in the @fig-clustering-iris-pca the first two components cover about `{python} float(np.round(q*100, 2))`% of the total variation in the samples and in accordance with this result a very good separation of the three species.
+
+As can be seen in the @fig-clustering-iris-pca the first two components cover about `{python} float(np.round(q*100, 2))`% of the total variation in the samples and in accordance with these results a very good separation of the three species is possible with them
 
 ::: {.callout-note}
 :::: {#def-expvariance}
@@ -129,7 +135,8 @@ $$
 \rho_i = \frac{\sigma_i^2}{\|\Sigma\|^2}.
 $$
 
-The explained variance can be used to select the amount of principal values you use for a classification.
+The explained variance can be helpful to select the amount of principal values you use for a classification.
+But be aware, as we will see later, the largest principal value might not be the best to use.
 ::::
 :::
 
@@ -137,29 +144,32 @@ The explained variance can be used to select the amount of principal values you 
 
 ## Dimensionality Reduction
 
-As we can see with the Iris data set we often have a problem of _dimensionality_ if we try to visualize something.
+As we can see with the Fischer Iris data set, we often have a problem of _dimensionality_, if we try to visualize something.
 The data has four dimensions but it is very hard for us to perceive, let alone visualize, four dimensions (if the forth dimension is not time).
 
 Therefore, **dimensional reduction** techniques are often applied.
-One of these is PCA others are
+One of these is PCA others are:
 
 - Multidimensional scaling (MDS) - preserve the distance between observations while doing the reduction.
 - Isomap - create a graph by connecting each observation to its neighbors and reduce the dimensions by keeping the geodesic distances, i.e. the number of nodes on the graph between observations
 - $t$-distributed stochastic neighbor embedding ($t$-SNE) - try to reduce dimensions while keeping _similar_ observations close and _dissimilar_ observations apart.
-- Linear discriminant analysis (LDA) - projects data onto a hyperplane where the hyperplane is chosen that is _most discriminative_ for the observations.
+- Linear discriminant analysis (LDA) - projects data onto a hyperplane where the hyperplane is chosen in such a way that it is _most discriminative_ for the observations see @sec-clustering-sl-lda.
 :::
 
 Now let us take a look at a more complicated example from @Brunton2022.
 
 ### Dogs and Cats {#sec-clustering-cvd}
 
-In this data set we explore how distinguish between dogs and cats.
+In this data set we explore how to distinguish between images dogs and cats, more particular the head only.
 The data set contains $80$ images of dogs and $80$ images of cats, each with $64 \times 64$ pixels and therefore a total of $4096$ feature measurements per image. 
 
 ::: {.callout-important}
 The following data set and the basic structure of the code is from [@Brunton2022, Code 5.2 - 5.4].
 Also see [GitHub](https://github.com/dynamicslab/databook_python).
 :::
+
+As before, a general inspection of the data set is always a good idea.
+With image we usually look at some to get an overview.
 
 ```{python}
 #| label: fig-clustering-dvc-overview
@@ -204,7 +214,9 @@ plt.figure()
 plt.imshow(createImage(dogs, 4, 4), cmap=plt.get_cmap("gray"))
 plt.axis("off")
 ```
+
 Again, we use PCA to reduce the feature space of our data.
+
 ```{python}
 #| label: fig-clustering-dvc-pca
 #| fig-cap: "First four modes of the PCA of the 160 images."
@@ -235,8 +247,8 @@ plt.show()
 ```
 
 In @fig-clustering-dvc-pca we can see the first four modes of the PCA.
-While mode 2 (@fig-clustering-dvc-pca-2) especially features the pointy ears common in cats, mode 3 (@fig-clustering-dvc-pca-3) is more dog like.
-Consequently, will the two different animals have either add or subtract this feature form the mean.
+While mode 2 (@fig-clustering-dvc-pca-2) highlights the pointy ears common in cats, mode 3 (@fig-clustering-dvc-pca-3) is recovers more dog like features.
+Consequently, these two features make a good choice for classification.
 
 Of course this is not the only possible representation of the initial data.
 We can also use the Wavelet transform[^wave].
@@ -253,7 +265,7 @@ We use the following workflow to get from the original image $A_0$ to the $\tild
 
 In short, we combine the vertical and horizontal rescaled feature images, as we are most interested in edge detection for this example.
 
-Note that the image has now only a quarter of pixels as the original image.
+Note that the image has now only a quarter of the pixels of the original image.
 
 For a more detailed explanation see @sec-appendix-dvc.
 
@@ -311,7 +323,7 @@ plt.show()
 Right away we can see that the ears and eyes of the cats show up more pronounced in the second mode @fig-clustering-dvc-wavelet-pca_wavelet-2.
 
 Now how does this influence our classification problem?
-For this let us first see how easy it is to distinguish the two classes in a scatter plot for the first three modes. 
+For this let us first see how easy it is to distinguish the two classes in a scatter plot for the first four modes. 
 
 ```{python}
 #| label: fig-clustering-dvc-wavelet-pca_results_overview
@@ -357,7 +369,7 @@ fig = px.scatter_3d(df_w, x="PV2", y="PV3", z="PV4", color="target")
 fig.show()
 ```
 
-Now that we have an idea what we are dealing with we can start looking into the two previously described paths in machine learning.
+Now that we have an idea what we are dealing with, we can start looking into the two previously described paths in machine learning.
 The difference between supervised and unsupervised learning can be summarized by the following two images.
 
 ```{python}
