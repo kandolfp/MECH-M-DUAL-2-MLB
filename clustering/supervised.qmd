@@ -1160,6 +1160,14 @@ plot_tree_bound(tree_square_rot2, X_rot, y)
 plot_tree_bound(tree_square_pca, X_pca, y)
 plt.show()
 ```
+
+In @fig-clustering-sl-tree-rot-1 we see the split for the original data set - random numbers in $[-0.5, 0.5]^2$ and the classes separation for $x_1 > 0$.
+A simple line, i.e. one split is enough to make the separation.
+If we rotate the data set by by 45° we can see a way more complicated separation line in @fig-clustering-sl-tree-rot-2.
+Furthermore, @fig-clustering-sl-tree-rot-3 shows that the `random_state` has an influence as well.
+Finally, if we apply scaling and PCA to the data we more or less end up at our original sample again @fig-clustering-sl-tree-rot-4, showcasing the power of these feature extraction techniques once more.
+
+We note, all the trees make a perfect classification, just the structure is not as easy to recognize as it _could_ be. 
 :::
 
 As we could see, trees are very sensitive to the observations and the state.
