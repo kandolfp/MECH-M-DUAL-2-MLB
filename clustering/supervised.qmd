@@ -10,13 +10,13 @@ Also see [GitHub](https://github.com/dynamicslab/databook_python).
 :::
 
 The idea if LDA is to find a linear combination of features that optimally separates two or more classes.
-The crucial part in the algorithm is that it is guided by labelled data.
+The crucial part in the algorithm is that it is guided by labelled observations.
 At its core, the algorithm aims to solve an optimization problem: find an optimal low-dimensional embedding of the data that shows a clear separation between their point distribution, or maximize the distance between the inter-class data and minimize the intra-class data distance.
 
 ::: {.callout-tip}
 For supervised learning, it is always good practice to split up our data set into a _training_ and _testing_ section.
 **It is important to have a test set that the algorithm has never seen!**
-In general a $80:20$ split is common but other rations might be advisable, depending on the data set. 
+In general a $80:20$ split is common but other ratios might be advisable, depending on the data set. 
 
 It is also common practice to use $k$-folds cross-validation for the training set. 
 :::
@@ -46,13 +46,14 @@ For a two-class LDA this becomes
 $$
 w = \operatorname{arg\, max}_w \frac{w^\mathrm{T}S_B w}{w^\mathrm{T}S_W w},
 $$ {#eq-grayleigh}
-(the generalized Rayleigh quotient) where $w$ is our thought after projection and the two scatter matrices
+(the generalized Rayleigh quotient) where $w$ is our thought after projection.
+The two included scatter matrices are
 $$
-S_B = (\mu_2 - \mu_1)(\mu_2 - \mu_1)^\mathrm{T}
+S_B = (\mu_2 - \mu_1)(\mu_2 - \mu_1)^\mathrm{T},
 $$
 for between-class relation as well as
 $$
-S_W = \sum_{j=1}^2 \sum_{x\in\mathcal{D}_j} (x - \mu_j)(x - \mu_j)^\mathrm{T}
+S_W = \sum_{j=1}^2 \sum_{x\in\mathcal{D}_j} (x - \mu_j)(x - \mu_j)^\mathrm{T},
 $$
 for within-class data.
 The set $\mathcal{D}_j$ denotes the subdomain of the data associated with cluster $j$.
@@ -67,7 +68,7 @@ We try this with the cats and dogs data set in both basis.
 
 ```{python}
 #| label: fig-clustering-sl-lda
-#| fig-cap: "Evaluation of the LDA for the second and fourth principal component on the test set of 40 animals. A bar on the in the top half corresponds to dogs and in the bottom half to cats. The first 20 individuals should be dogs, the second 20 cats. The red dotted line shows the split. True positive can be found in the top-left as well as the bottom-right."
+#| fig-cap: "Evaluation of the LDA for the second and fourth principal component on the test set of 40 animals. A bar going up corresponds to dogs and one going down to cats. The first 20 individuals should be dogs, the second 20 cats. The red dotted line shows the split. True positive can be found in the top-left as well as the bottom-right."
 #| fig-subcap: 
 #|   - "Trained and evaluated against the raw data."
 #|   - "Trained and evaluated against the data in wavelet basis."
@@ -258,7 +259,7 @@ The QDA arises from LDA when we do not assume that the covariance of each of the
 
 ::: {.callout-note}
 LDA and QDA assume a normal distribution as the basis for each of the clusters.
-This allows us to write it also not in the here presented geometric interpretation as projection but as a update procedure with Bayes[^1] theorem,
+This allows us to write it also as an update procedure with Bayes[^1] theorem.
 :::
 
 ::: {.callout-tip}
@@ -274,7 +275,7 @@ Luckily the `scikit-learn` class/function [`DecisionBoundaryDisplay.from_estimat
 
 1. Apply the LDA algorithm to the toy example (see @fig-clustering-unsupervised_lloyd) to recover the two clusters as good as possible.
 
-1. Additionally, for a higher dimensional problem, using LDA split the Iris data set (@@sec-fischer-iris-data-set) into two clusters. Try for the harder split between `versicolor` and `virginica` classes of flowers.
+1. Additionally, for a higher dimensional problem, using LDA split the Fischer Iris data set (@sec-fischer-iris-data-set) into two clusters. Try for the harder split between `versicolor` and `virginica` types of flowers.
 ::::
 :::
 
@@ -284,21 +285,21 @@ Luckily the `scikit-learn` class/function [`DecisionBoundaryDisplay.from_estimat
 
 ## Measuring Performance {#sec-clustering-sl-performance}
 
-As in most applications the question how good an algorithm performs is not easy to establish.
-In @fig-clustering-sl-lda2 we said we are doing better than a coin toss but we should be able to characterize this more precise.
+As in most applications, the question how good an algorithm performs is not easy to establish.
+In @fig-clustering-sl-lda2, we implied we are doing better than a coin toss but we should be able to characterize this more precise.
 
 ::: {.callout-important}
 The following approach and the basic structure of the code is from @Geron2022-xh, see [GitHub](https://github.com/ageron/handson-ml3/blob/main/03_classification.ipynb).
 :::
 
-In order to illustrate basic properties found in machine learning we use the MNIST data set together with a binary classifier based on Stochastic Gradient Descent, see @sec-clustering-ssl for more on the MNIST data set. 
+In order to illustrate basic properties found in machine learning we use the MNIST data set together with a binary classifier based on Stochastic Gradient Descent, see @sec-clustering-ul-me for more on the MNIST data set. 
 
 ::: {.callout-note}
 Stochastic Gradient Descent (SGD)[^SGD] is an optimization algorithm.
 The key idea is to replace the actual gradient by a stochastic approximation in the optimization of the loss function.
 This allows especially good performance for large-scale learning and sparse machine learning problems.
 
-We can use this training method for classification to find the optimal parameters for our loss function an in turn, this can be used as a binary classifier.
+We can use this training method for classification to find the optimal parameters for our loss function and in turn, this can be used as a binary classifier.
 
 As SGD methods are prone to a sensitivity in feature scaling and order we need to make sure to use normalized data and we should shuffle.
 
@@ -324,7 +325,7 @@ y_train, y_test = mnist.target[:60000], mnist.target[60000:]
 ```
 
 Next, as we only want a binary classifier, we select one number, in our case `5` and relabel our data. 
-With the new labels we can train our classifier.
+With the new labels we can train our classifier, compare @def-multiclass-ovr.
 
 ```{python}
 #| output: false
@@ -335,7 +336,7 @@ SGD = SGDClassifier(random_state=6020)
 SGD.fit(X_train, y_train_5)
 ```
 
-In order to cet a score for our method we use $k$-folds cross-validation @def-crossvalidation and the corresponding `scikit-learn` function `cross_val_score` to perform this task for our model.
+In order to get a score for our method, we use $k$-folds cross-validation @def-crossvalidation and the corresponding `scikit-learn` function [`cross_val_score`](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_score.html) to perform this task for our model.
 
 ```{python}
 #| output: false
@@ -347,7 +348,7 @@ scores = sklearn.model_selection.cross_val_score(
 pd.DataFrame({"accuracy [%]": np.round(scores * 100, 2)}).T
 ```
 
-With results in the high $90\%$ range the results look promession if not great but are they really that good.
+With scores in the high $90\%$ range the results look promession if not great, but are they really that good?
 In order to get a better idea just always guess that we do not see a `5` that should be the most common class in our case.
 To simulate this we use the `DummyClassifier` class.
 
@@ -384,9 +385,9 @@ but it can be extended for multi-class segmentation.
 :::
 
 To compute the confusion matrix we first need predictions.
-This can be achieved by `cross_val_predict` instead of `cross_val_score` and than we use [`sklearn.metrics.confusion_matrix`](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html). 
+This can be achieved by [`cross_val_predict`](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_predict.html) instead of `cross_val_score` and than we use [`sklearn.metrics.confusion_matrix`](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html). 
 
-Combined, for our example this reads as:
+Combined, for our example, this reads as:
 ```{python}
 #| output: false
 y_train_pred = sklearn.model_selection.cross_val_predict(
@@ -532,7 +533,7 @@ $$
 :::
 
 Stating the optimization function such that it is smooth for a linear SVM is a bit tricky.
-This on the other hand is needed to allow for most optimization algorithm to work, as they require a gradient to some sort. 
+On the other hand, this is needed to allow for most optimization algorithm to work, as they require a gradient to some sort. 
 
 Therefore, the following formulation is quite common.
 $$
@@ -543,10 +544,10 @@ Furthermore, $\overline{y}_j = \operatorname{sign}(\langle w, x_j\rangle + b)$.
 
 ### Nonlinear SVM
 
-In order to extend the SVM to more complex classification curves the feature space of the SVM can be extended.
+In order to extend the SVM to more complex classification curves, the feature space can be extended.
 In order to do so, SVM introduces nonlinear features and computes the hyperplane on these features via a mapping $x \to \Phi(x)$ and the hyperplane function becomes
 $$
-f(x) = \langle w, \Phi(x)\rangle + b
+f(x) = \langle w, \Phi(x)\rangle + b,
 $$
 and accordingly we classify along
 $$
@@ -554,7 +555,7 @@ $$
 $$
 
 Essentially, we change the feature space such that a separation is (hopefully) easier.
-To illustrate this we use a simple one dimensional example as illustrated in @fig-clustering-sl-svm-nl-1.
+To illustrate this we use a simple one dimensional example as shown in @fig-clustering-sl-svm-nl-1.
 Clearly there is no _linear_ separation possible.
 On the other hand, if we use 
 $$
@@ -609,17 +610,18 @@ plt.legend()
 plt.show()
 ```
 
-As can be seen in @fig-clustering-sl-svm-nl-2 the SVM does a great job in finding a split for the two classes, even though not select the _optimal_ line, which is not surprising for the given amount of observations. 
+As can be seen in @fig-clustering-sl-svm-nl-2 the SVM does a great job in finding a split for the two classes, even though not selecting the _optimal_ line, which is not surprising for the given amount of observations. 
 
 As mentioned before, SVMs are sensitive to scaling.
 Let us use this example to illustrate the difference together with the concept of _pipelines_ often used in data science context.
 
 ::: {.callout-note}
 ## Pipeline
-The main idea of a pipeline is to create a composite as a ordered chain of transformations and estimators, see [docs](https://scikit-learn.org/stable/modules/compose.html) for insights.
+The main idea of a pipeline is to create a composite as a ordered chain of transformations and estimators, see [docs](https://scikit-learn.org/stable/modules/compose.html) for some more insights.
 :::
 
 We can use the pipeline to
+
 - create the polynomial observations
 - apply a scaler to our observations
 - apply the Linear SVM
@@ -752,7 +754,7 @@ The so called _kernel function_ is defined as the inner product involved, i.e.
 $$
 K(x_j, x) = \langle \Phi(x_j), \Phi(x) \rangle.
 $$
-The optimization problem for $w$ no reads as
+The optimization problem for $w$ now reads
 $$
 \underset{\alpha, b}{\operatorname{argmin}} \sum_j H(y_j, \overline{y}_j) + \frac12\left\|\sum_{j=1} \alpha_j \Phi(x_j)\right\|^2 \quad \text{subject to}\quad \min_j|\langle x_j, w\rangle| = 1,
 $$
@@ -881,32 +883,32 @@ Compare [@Kandolf_GDM, Example 5.2] [Link](https://kandolfp.github.io/MECH-M-DUA
 
 ## Decision trees
 
-Decision trees are widely used in data science for classification and regression.
-The are a powerful class of algorithms that can fit not only numerical data.
-Furthermore, the form the basis of _random forests_, one of the most powerful machine learning algorithms available to date.
+Decision trees are a common tool in data science, for classification and regression.
+They are a powerful class of algorithms, that can fit not only numerical data.
+Furthermore, they form the basis of _random forests_, one of the most powerful machine learning algorithms available to date.
 
-The where not invented for machine learning but have been a staple in business for centuries.
-The basic idea is that they establish an algorithmic flow chart for making decisions.
+They where not invented for machine learning but have been a staple in business for centuries.
+Their basic idea is to establish an algorithmic flow chart for making decisions.
 The criteria that creates the splits in each branch is related to a desired outcome and are therefore _important_.
 Often experts are called upon creating such a decision tree.
 
 The decision tree learning follows the same principals to create a predictive classification model based on the provided observations and labels.
-Similar to DBSCAN they form a hierarchical structure that tries to split in an optimal way.
-In this regard they are the counterpart to DBSCAN but they move from top to bottom and of course use the labels to guide the process. 
+Similar to DBSCAN, they form a hierarchical structure that tries to split _in an optimal way_.
+In this regard, they are the counterpart to DBSCAN, as they move from top to bottom and of course use the labels to guide the process. 
 
 The following key feature make them wildly use:
 
-1. The usually produce interpretable results (we can draw the graph)
-1. The algorithm mimics human decision making, which helps for the interpretation
-1. The can handle numerical and categorical data
-1. They perform well with large sets of data
-1. The reliability of the classification can be assessed with statistical validation
+1. The usually produce interpretable results (we can draw the graph).
+1. The algorithm mimics human decision making, which helps for the interpretation.
+1. The can handle numerical and categorical data.
+1. They perform well with large sets of data.
+1. The reliability of the classification can be assessed with statistical validation.
 
 While there are a lot of different optimizations the base algorithm follows these steps:
 
-1. Look through all components (features) of an observation $x_j$ that gives the best labeling prediction $y_j$
-1. Compare the prediction accuracy over all observations, the best result is used
-1. Proceed with the two new branches in the same fashion
+1. Look through all components (features) of an observation $x_j$ that gives the best labeling prediction $y_j$.
+1. Compare the prediction accuracy over all observations, the best result is used.
+1. Proceed with the two new branches in the same fashion.
 
 Let us apply it to the Fischer Iris data set to better understand what is happening.
 
@@ -946,8 +948,9 @@ sklearn.tree.export_graphviz(decision_tree, out_file=dot_data,
 
 ## Displaying `dot` files
 
-In the code for @fig-clustering-sl-tree-iris we generate a `dot` file, that is interpreted with quarto to show the graph for a better integration.
-In order to do this offline you need to install [`graphviz`](https://www.graphviz.org/download/) for the installation of `dot` and also install the python package `pydotplus`.
+In the code for @fig-clustering-sl-tree-iris we generate a `dot` file, that is interpreted with quarto.
+This allows a better visual integration.
+In order to do the same offline you need to install [`graphviz`](https://www.graphviz.org/download/) for the installation of `dot` and also install the python package `pydotplus`.
 
 Than you should be able to use:
 ```{.python}
@@ -960,9 +963,9 @@ graph.create_png()
 ```
 :::
 
-As we can see, for our tree with depth $2$ we only need to split along `petal length (cm)` and `petal width (cm)`, leaving the two other features untouched, compare @fig-clustering-iris. 
+As we can see, for our tree with depth $2$, we only need to split along `petal length (cm)` and `petal width (cm)`, leaving the two other features untouched, compare @fig-clustering-iris. 
 
-As we only have the splits happening in these two variables we can also visualize them easy.
+As we only have the splits happening in these two variables we can also visualize them easily.
 
 ```{python}
 #| label: fig-clustering-sl-tree-iris-split
@@ -1064,8 +1067,8 @@ df.set_index("AC").rename_axis(None)
 ```
 If we compare our confusion matrix for the test cases to the one of SVM we get comparable results.
 In general, we can see that the first split is along $PC_2$ (note that we do not use the $PC_1$ in the code and therefore $x_0=PC_2$) and our second split is along $PC_4$.
-We used these components before for our classification.
-The third split is along $PC_5$ which we did not consider before hand. 
+We used the same components before.
+The third split is along $PC_5$, which we did not consider before hand.
 Overall the mean accuracy for out test set is `{python} float(np.round(score * 100, 2))`%.
 
 ::: {.callout-caution appearance="simple" icon=false}
@@ -1182,7 +1185,7 @@ Of course there is a lot of statistics going in, if we want to compute exactly h
 Nevertheless, we can use this concept in our context to create so called _ensemble methods_, the process itself is called _ensemble learning_.
 With this concept we can combine already good classification methods and get a better result than the best classification method included.
 
-If we train a multitude of decision trees on various (random) subsets of our observations we can combine the predictions of the individual trees to an ensemble prediction. 
+If we train a multitude of decision trees on various (random) subsets of our observations, we can combine the predictions of the individual trees to an ensemble prediction. 
 The resulting method is called a _random forest_.
 This very simple process allows us to generate very powerful classification methods. 
 
@@ -1201,8 +1204,8 @@ If we have a set of classifiers $C=\{c_1, \ldots, c_n\}$ of various kinds (even 
 Now we select the class witch occurs most often, i.e. the _mode_ of the predictions, we get a new classifier.
 This is called _hard voting_.
 
-If all our classifiers can not only produce a prediction but a probability for our prediction we can also create a _soft voting_ classifier. 
-All we need to do is, average the probability of the predictions $p_1, \ldots, p_n$, and this will give us new probabilities for our ensemble classifier.
+If all our classifiers can not only produce a prediction but a probability for our prediction, we can also create a _soft voting_ classifier. 
+All we need to do, average the probability of the predictions $p_1, \ldots, p_n$, and this will give us new probabilities for our ensemble classifier.
 
 ![Illustration of the difference between hard and soft voting for a ensemble method. For the three shown classifiers the class 0 is the most common. When moving to probabilities, the mean also predicts 0, where _more convinced_ classifiers get a higher weight.](../_assets/clustering/ensemble_voting){#fig-clustering-el-voting}
 
@@ -1216,7 +1219,7 @@ In `scikit-learn` this is can be found in the [`sklearn.ensemble.VotingClassifie
 ## Bagging and Pasting
 
 For _bagging_ and _pasting_ the idea is different.
-Instead of influencing the output theses approaches influence how to manipulate the training of a set of (potentially equal) classifiers to achieve overall better results. 
+Instead of influencing the output, theses approaches influence how to manipulate the training of a set of (potentially equal) classifiers, to achieve overall better results. 
 
 _Bagging_ (bootstrap aggregating) uses sampling with replacement, i.e. the same observation can end up multiple times in the training set of the same classifier.
 _Pasting_ uses sampling without replacement and therefore an observation can be in multiple classifiers but not more than once per classifier.
@@ -1245,7 +1248,7 @@ We call such methods _random patches_ method if we sample both, training observa
 
 On the other hand, if we keep the training observations fix and only sample the training features the resulting method is called a _random subspace_ method.
 
-In `scikit-learn` this is can be found in the achieved by manipulating the hyperparameter `max_features`, `bootstrap_features`, and `max_samples` in the `BagginClassifier` class.
+In `scikit-learn` this is can be achieved by manipulating the arguments `max_features`, `bootstrap_features`, and `max_samples` in the `BagginClassifier` class.
 ::::
 :::
 
@@ -1287,7 +1290,7 @@ The general idea of _stacking_ is, to use a _blender_ for combining the results 
 The blender is not just a linear combination like for soft/hard voting but another classifier/model to perform a hopefully better combination.
 Of course we can stack this approach and produce multiple layers before we combine them into a single result. 
 
-![Illustration of an $m$ layer stacking with various classifiers in each layer.](../_assets/clustering/ensemble_voting){#fig-clustering-el-stacking}
+![Illustration of an $m$ layer stacking with various classifiers in each layer.](../_assets/clustering/ensemble_stacking){#fig-clustering-el-stacking}
 
 In `scikit-learn` this is can be found in the [`sklearn.ensemble.StackingClassifier`](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.StackingClassifier.html#sklearn.ensemble.StackingClassifier) class.
 ::::
@@ -1309,7 +1312,7 @@ X, y = make_moons(n_samples=500, noise=0.30, random_state=6020)
 X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=6020)
 ```
 
-1. Use the `VotingClassifier` class with an _LDA_, a _SVM_, and a _tree_ for classification (make sure to keep set `random_state` for each to have reproducible results.). Get the overall score for the test set, as well as the individual scores for the included classifiers. 
+1. Use the `VotingClassifier` class with an _LDA_, a _SVM_, and a _tree_ for classification. Make sure to set `random_state` for each, to have reproducible results. Get the overall score for the test set, as well as the individual scores for the included classifiers. 
    ```{.python}
    for name, clf in voting.named_estimators_.items():
        print(f"{name}, =, {clf.score(X_test, y_test)}")
@@ -1323,15 +1326,17 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=6020)
 
 1. Create a `StackingClassifier` with an _LDA_, a _SVM_, and a _tree_ for classification and a _random forest_ as the final blending step and report the score of this method.
 
-1. Train a random forest for the iris data set and check `.feature_importances_` to get an insight on the importance of each feature.
+1. Train a random forest for the Fischer Iris data set and check `.feature_importances_` to get an insight on the importance of each feature.
+
+1. Train a random forest for our dogs and cats data set in raw and wavelet form and check `.feature_importances_` to get an insight on the importance of each feature of the PCA.
 ::::
 :::
 
 ## Multiclass Classification
 
-We mainly focused on the classification of two classes in the last sections but obviously not all problems only consist of two classes. 
-Some of the methods discussed like random forests support multiple classes right away.
-For others there are several approaches to create a multiclass classifier out of a binary classifier.
+We mainly focused on the classification of two classes in the last sections, but obviously not all problems only consist of two classes. 
+Some of the methods discussed, like random forests, support multiclass classification out of the box.
+For others, there are several approaches to create a multiclass classifier out of a binary classifier.
 
 ::: {.callout appearance="simple"}
 :::: {#def-multiclass-ovr}
@@ -1354,9 +1359,9 @@ For the Fischer Iris data set this would result in three classifiers (one for ea
 The _one versus one_ (OvO) strategy is to train a binary classifier for always two classes and build up a set of classifiers, for $n$ classes we get $\tfrac{n (n-1)}{2}$ classifiers. 
 To classify an observation you get the result for each classifier and select the one class with the most duels won.
 
-For the Fischer Iris data set this would result in three classifiers, for the MNIST data set in 45.
+For the Fischer Iris data set this would result in three classifiers, for the MNIST data set 45.
 
-The advantage of OvO over OvR is that each only needs to be trained on the subset and not with the entire data set. 
+The advantage of OvO over OvR is that each classifier only needs to be trained on a subset and not with the entire data set. 
 This is especially useful for algorithms that do not scale well, like SVMs.
 ::::
 :::
@@ -1374,6 +1379,6 @@ Nevertheless, there exist dedicated classes for the task as well [`sklearn.multi
 
 1. Use SVM for the Fischer Iris data set and test it.
 1. Compare with a random forest.
-1. Create a convolution matrix for more than two classes with your results in interpret the results.
+1. Create a convolution matrix for more than two classes with your results and interpret the results.
 ::::
 :::
