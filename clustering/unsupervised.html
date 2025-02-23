@@ -316,10 +316,10 @@ window.Quarto = {
 </header>
 
 
-<p>We start with unsupervised learning. The goal of unsupervised learning is to discover clusters in the data that has no labels. There are several algorithms to perform this task, the most prominent is the <span class="math inline">\(k\)</span>-means clustering algorithm.</p>
+<p>We start with unsupervised learning. The goal of unsupervised learning is to discover clusters in the data of observations that have no labels, i.e.&nbsp;we have nothing to look at as reference. There are several algorithms to perform this task, the most prominent is the <span class="math inline">\(k\)</span>-means clustering algorithm.</p>
 <section id="sec-clustering-usl-kmeans" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="sec-clustering-usl-kmeans"><span class="header-section-number">1.1</span> <span class="math inline">\(k\)</span>-Means Clustering</h2>
-<p>The <span class="math inline">\(k\)</span>-means algorithm tries to partition a set of <span class="math inline">\(m\)</span> (vector-valued) data observations into <span class="math inline">\(k\)</span> clusters. Where in general the dimension of the data and the amount of observations is known, the number of clusters is often not known a priori.</p>
+<p>The <span class="math inline">\(k\)</span>-means algorithm tries to partition a set of <span class="math inline">\(m\)</span> (vector-valued) <em>data observations</em> into <span class="math inline">\(k\)</span> clusters. Where in general, the dimension of the data and the amount of observations is known, the number of clusters is often not known a priori.</p>
 <p>The general idea is, to label each observation as belonging to a cluster with the nearest mean (the <em>representative</em> of the cluster). The resulting clusters are called Voronoi cells, see <a href="https://en.wikipedia.org/wiki/Voronoi_diagram">Wikipedia - Voronoi diagram</a>.</p>
 <div class="callout callout-style-simple callout-none no-icon">
 <div class="callout-body d-flex">
@@ -331,15 +331,15 @@ window.Quarto = {
 <p><span class="theorem-title"><strong>Definition 1.1 (<span class="math inline">\(k\)</span>-Means Algorithm)</strong></span> For a given set of <span class="math inline">\(m\)</span> observations <span class="math inline">\((x_1, x_2, \ldots, x_m)\)</span>, with <span class="math inline">\(x_i\in \mathrm{R}^n\)</span> the algorithm strives to find <span class="math inline">\(k\)</span> sets <span class="math inline">\((S_1, S_2, \ldots, S_k)\)</span> such that the variance inside the cluster is minimized, i.e. <span class="math display">\[
 \underset{S}{\operatorname{argmin}} \sum_{i=1}^k \sum_{x\in S_i}\| x - \mu_i \|^2,
 \]</span> where <span class="math inline">\(\mu_i\)</span> denotes the mean of <span class="math inline">\(S_i\)</span>.</p>
-<p>The algorithm itself is recursive for a given <span class="math inline">\(k\)</span></p>
+<p>The algorithm itself is recursive, for a given <span class="math inline">\(k\)</span></p>
 <ol type="1">
-<li>Randomly initialize <span class="math inline">\(k\)</span> points <span class="math inline">\(\mu_1, \mu_2, \ldots, \mu_k\)</span>, as the cluster centers.</li>
+<li>Randomly initialize <span class="math inline">\(k\)</span> points <span class="math inline">\(\mu_1, \mu_2, \ldots, \mu_k\)</span>, as the cluster centers,</li>
 <li>Label each observation <span class="math inline">\(x_i\)</span> by the nearest cluster center <span class="math inline">\(\mu_j\)</span>, all points with the same label form the set <span class="math inline">\(S_j\)</span>.</li>
 <li>Compute the mean of each cluster <span class="math inline">\(S_j\)</span> and replace the current <span class="math inline">\(\mu_j\)</span> by it.</li>
-<li>Repeat until the cluster centers stay stable up to some tolerance.</li>
+<li>Repeat, starting from step 2, until the cluster centers stay stable up to some tolerance.</li>
 </ol>
 <p>This algorithm was first introduced in <span class="citation" data-cites="DBLP:journals/tit/Lloyd82">Lloyd (<a href="../references.html#ref-DBLP:journals/tit/Lloyd82" role="doc-biblioref">1982</a>)</span> and is therefore often called Lloyd algorithm.</p>
-<div id="9b3c3344" class="cell" data-execution_count="1">
+<div id="065bc6fe" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code for Lloyd algorithm</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lloyd(data, centers, steps):</span>
@@ -372,7 +372,7 @@ Note
 <p>In general <a href="#def-kmeans" class="quarto-xref">Definition&nbsp;<span>1.1</span></a> is NP-hard and therefore computationally not viable. Nevertheless, a number of heuristic algorithms exist to provide a good performance, despite having no guarantee for global convergence.</p>
 </div>
 </div>
-<p>To illustrate the proceedings with the help of some artificial data and its clustering.</p>
+<p>We illustrate the proceedings with the help of some artificial observations in two dimensional space, and show how the clustering takes place.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -419,7 +419,7 @@ Important
 <span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>plot_lloyd(data, centers, classes)</span>
 <span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute and plot consecutive steps of lloyds algorithm</span></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]:</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">5</span>]:</span>
 <span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    classes, centers_ <span class="op">=</span> lloyd(data, centers, i)</span>
 <span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    plot_lloyd(data, centers, classes)</span>
 <span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    centers <span class="op">=</span> centers_</span>
@@ -471,10 +471,10 @@ Important
 <div id="fig-clustering-unsupervised_lloyd-4" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-clustering-unsupervised_lloyd-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="unsupervised_files/figure-html/fig-clustering-unsupervised_lloyd-output-4.svg" class="lightbox" data-gallery="fig-clustering-unsupervised_lloyd" title="Figure&nbsp;1.1&nbsp;(d): Point association to the clusters in the sixth step."><img src="unsupervised_files/figure-html/fig-clustering-unsupervised_lloyd-output-4.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-unsupervised_lloyd"></a>
+<a href="unsupervised_files/figure-html/fig-clustering-unsupervised_lloyd-output-4.svg" class="lightbox" data-gallery="fig-clustering-unsupervised_lloyd" title="Figure&nbsp;1.1&nbsp;(d): Point association to the clusters in the eighth step."><img src="unsupervised_files/figure-html/fig-clustering-unsupervised_lloyd-output-4.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-unsupervised_lloyd"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-unsupervised_lloyd-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(d) Point association to the clusters in the sixth step.
+(d) Point association to the clusters in the eighth step.
 </figcaption>
 </figure>
 </div>
@@ -486,8 +486,8 @@ Figure&nbsp;1.1: Lloyds algorithm in action for a generic set of two datasets ge
 </figcaption>
 </figure>
 </div>
-<p>In <a href="#fig-clustering-unsupervised_lloyd-1" class="quarto-xref">Figure&nbsp;<span>1.1 (a)</span></a> we see the two <em>distinct</em> clusters and the initial guesses for th centers. In the successive plots we see how the centers move and converge to the <em>final</em> position as seen in <a href="#fig-clustering-unsupervised_lloyd-4" class="quarto-xref">Figure&nbsp;<span>1.1 (d)</span></a>. In this case the algorithm converges after the sixth step.</p>
-<p>Of course the algorithm is sensitive to the initial guess and therefore modern versions provide strategies to determine the initial guess as well as the number of clusters.</p>
+<p>In <a href="#fig-clustering-unsupervised_lloyd-1" class="quarto-xref">Figure&nbsp;<span>1.1 (a)</span></a> we see the two <em>distinct</em> clusters and the initial guesses for the centers. In the successive plots, we see how the centers move and converge to the <em>final</em> position, as seen in <a href="#fig-clustering-unsupervised_lloyd-4" class="quarto-xref">Figure&nbsp;<span>1.1 (d)</span></a>. In this case the algorithm converges after the sixth step.</p>
+<p>Of course the algorithm is sensitive to the initial guess and therefore modern versions provide strategies to determine the initial guess, as well as the number of clusters.</p>
 <p>We can see this in action in the <a href="https://scikit-learn.org/1.5/modules/generated/sklearn.cluster.KMeans.html"><code>sklearn.cluster.KMeans</code></a> version.</p>
 <details class="code-fold">
 <summary>Show the code for the figure</summary>
@@ -535,7 +535,7 @@ Figure&nbsp;1.2: KMeans algorithm in action for a generic set of two datasets ge
 </figcaption>
 </figure>
 </div>
-<p>As can be seen in <a href="#fig-clustering-unsupervised_lloyd2-1" class="quarto-xref">Figure&nbsp;<span>1.2 (a)</span></a> the algorithm comes up with the same split between the two sets. If we try for three clusters <a href="#fig-clustering-unsupervised_lloyd2-2" class="quarto-xref">Figure&nbsp;<span>1.2 (b)</span></a> the result is sensible as well.</p>
+<p>As can be seen in <a href="#fig-clustering-unsupervised_lloyd2-1" class="quarto-xref">Figure&nbsp;<span>1.2 (a)</span></a> the algorithm comes up with (almost) the same split between the two sets as our crude implementation. If we try for three clusters <a href="#fig-clustering-unsupervised_lloyd2-2" class="quarto-xref">Figure&nbsp;<span>1.2 (b)</span></a> the result is sensible as well.</p>
 <p>The major success, of this algorithm in general use, is based on the fast convergence, that requires no supervision. We can also see that it is not very accurate, compare <a href="#fig-clustering-unsupervised_lloyd-1" class="quarto-xref">Figure&nbsp;<span>1.1 (a)</span></a> and <a href="#fig-clustering-unsupervised_lloyd-4" class="quarto-xref">Figure&nbsp;<span>1.1 (d)</span></a>. This is no surprise, as the algorithm has not <em>all information</em> available.</p>
 <p>How can we determine how <em>accurate</em> the algorithm is? If we have no labels this is of course not easy to do but cross-validation is a good tool.</p>
 <p>In our case we can produce the labels and we can also split the data beforehand into a training set and a test set. Usually a so called <span class="math inline">\(80:20\)</span> split is used, i.e.&nbsp;<span class="math inline">\(80\%\)</span> training data and <span class="math inline">\(20\%\)</span> test data.</p>
@@ -598,7 +598,7 @@ Figure&nbsp;1.3: Validation against a test set.
 </div>
 <div class="callout-body-container">
 <div id="exr-kmean" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 1.1 (Apply the <span class="math inline">\(k\)</span>-means algorithm to other data sets)</strong></span> As an exercise to get some practice for using <span class="math inline">\(k\)</span>-means apply the algorithm to some other datasets to see how it performs.</p>
+<p><span class="theorem-title"><strong>Exercise 1.1 (Apply the <span class="math inline">\(k\)</span>-means algorithm to other data sets)</strong></span> As an exercise, to get some practice for using <span class="math inline">\(k\)</span>-means, apply the algorithm to some other datasets to see how it performs.</p>
 <ol type="1">
 <li><p>We already looked at the Fischer Iris data set in <a href="index.html#sec-fischer-iris-data-set" class="quarto-xref"><span>Section 1.1</span></a> and discussed some basic features. Try with only two dimensional data, as well as four dimensional data to find the three clusters.</p></li>
 <li><p>For <a href="#fig-clustering-unsupervised_dbscan" class="quarto-xref">Figure&nbsp;<span>1.7</span></a> we will look at the moons data set. Try working out the clusters in this case.</p></li>
@@ -610,16 +610,16 @@ Figure&nbsp;1.3: Validation against a test set.
 </div>
 <section id="applications-of-k-means" class="level3" data-number="1.1.1">
 <h3 data-number="1.1.1" class="anchored" data-anchor-id="applications-of-k-means"><span class="header-section-number">1.1.1</span> Applications of <span class="math inline">\(k\)</span>-means</h3>
-<p>In addition to the image segmentation illustrated above, the <span class="math inline">\(k\)</span>-means algorithm is used in a multitude of applications, we list some here:</p>
+<p>The <span class="math inline">\(k\)</span>-means algorithm is used in a multitude of applications, we list some here:</p>
 <ol type="1">
-<li><p><strong>Image segmentation</strong>: To decompose an image into different regions we can use <span class="math inline">\(k\)</span>-means. Applications range from robotics to surveillance where, where one or more objects are separated from the rest of the image.</p></li>
+<li><p><strong>Image segmentation</strong>: To decompose an image into different regions we can use <span class="math inline">\(k\)</span>-means. Applications range from robotics to surveillance, where one or more objects are separated from the rest of the image.</p></li>
 <li><p><strong>Customer segmentation/social network analysis</strong>: To segment customers along e.g.&nbsp;their purchase history/behaviour, preferences, demographic data, amount spent, search queries, social media interactions, etc. <span class="math inline">\(k\)</span>-means is used in marketing, retail, and advertising to personalize the experience.</p></li>
 <li><p><strong>Text clustering</strong>: In natural language processing (NLP) <span class="math inline">\(k\)</span>-means is often used to cluster similar documents or text to make analysing large volumes of text data feasible.</p></li>
-<li><p><strong>Fraud detection</strong>: <span class="math inline">\(k\)</span>-means is a crude tool for fraud detection in finance and banking. Transactions are clustered according to similarities and anomalies are detected. There exist more sophisticated methods in finance.</p></li>
+<li><p><strong>Fraud detection</strong>: <span class="math inline">\(k\)</span>-means is a crude tool for fraud detection in finance and banking. Transactions are clustered according to similarities and anomalies are detected. There exist more sophisticated methods in finance, but <span class="math inline">\(k\)</span>-means is an easy to understand start.</p></li>
 <li><p><strong>Anomaly detection</strong>: In medical (image) data <span class="math inline">\(k\)</span>-means is often used to detect anomalies by finding points that <em>fall outside of clusters</em>. The same works for cybersecurity and e.g.&nbsp;network traffic.</p></li>
-<li><p><strong>Recommendation systems</strong>: By grouping users together it is easier to recommend them new songs, items for shopping and more.</p></li>
-<li><p><strong>Quality control</strong>: By grouping similar products you can detect quality issues and defects in production processes. If an issue is found the part can be checked and the process adjusted.</p></li>
-<li><p><strong>Traffic Analysis</strong>: In transport and logistics you can analyze traffic patterns and use the information for optimization and similar trips, routes and vehicles.</p></li>
+<li><p><strong>Recommendation systems</strong>: By grouping users together it is easier to recommend them new songs, items for shopping, and more.</p></li>
+<li><p><strong>Quality control</strong>: By grouping similar products we can detect quality issues and defects in production processes. If an issue is found the part can be checked and the process adjusted.</p></li>
+<li><p><strong>Traffic Analysis</strong>: In transport and logistics we can analyze traffic patterns and use the information for optimization and similar trips, routes, and vehicles.</p></li>
 </ol>
 <p>We want to highlight <em>image segmentation</em> as an application of <span class="math inline">\(k\)</span>-means. The example found here is first shown in <span class="citation" data-cites="Geron2022-xh">Geron (<a href="../references.html#ref-Geron2022-xh" role="doc-biblioref">2022</a>)</span>.</p>
 <p>The idea of image segmentation is to decompose an image into different segments. The following variants exist:</p>
@@ -731,9 +731,9 @@ Figure&nbsp;1.4: Colour segmentation for the image of a lady bug.
 </section>
 <section id="unsupervised-hierarchical-clustering---dendrogram" class="level2" data-number="1.2">
 <h2 data-number="1.2" class="anchored" data-anchor-id="unsupervised-hierarchical-clustering---dendrogram"><span class="header-section-number">1.2</span> Unsupervised hierarchical clustering - Dendrogram</h2>
-<p>Similar to <span class="math inline">\(k\)</span>-means a simple hierarchical algorithm is used to create a dendrogram. The resulting tree allows you to easily see if data is clustered without the need of labeling or supervision.</p>
+<p>Similar to <span class="math inline">\(k\)</span>-means, a simple hierarchical algorithm is used to create a dendrogram. The resulting tree allows us to easily see if data is clustered without the need of labeling or supervision.</p>
 <p>We follow the example and discussion given in <span class="citation" data-cites="Brunton2022">(<a href="../references.html#ref-Brunton2022" role="doc-biblioref">Brunton and Kutz 2022, sec. 5.4</a>)</span>.</p>
-<p>There are two main approaches in creating the desired hierarchy, bottom-up often called <em>agglomerative</em> and top-down often called <em>divisive</em>.</p>
+<p>There are two main approaches in creating the desired hierarchy: bottom-up often called <em>agglomerative</em>, top-down often called <em>divisive</em>.</p>
 <ul>
 <li><p>For the agglomerative approach each observation <span class="math inline">\(x_i\)</span> is initially its own cluster and in each step points are combined according to their distance. Eventually everything ends up in a single cluster and the algorithm stops.</p></li>
 <li><p>For the divisive approach we go the opposite direction and start with the super cluster containing all observations §x_i$ and we gradually split up into smaller and smaller clusters. The algorithm stops, when each observation is its own leave.</p></li>
@@ -756,16 +756,16 @@ Figure&nbsp;1.4: Colour segmentation for the image of a lady bug.
 <div id="fig-clustering-unsupervised-dendrogram-explained-2" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-clustering-unsupervised-dendrogram-explained-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../_assets/clustering/dendrogram_city.svg" class="lightbox" data-gallery="fig-clustering-unsupervised-dendrogram-explained" title="Figure&nbsp;1.5&nbsp;(b): Use two one or cityblock norm to compute the distance - \| \cdot \|_1"><img src="../_assets/clustering/dendrogram_city.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-unsupervised-dendrogram-explained"></a>
+<a href="../_assets/clustering/dendrogram_city.svg" class="lightbox" data-gallery="fig-clustering-unsupervised-dendrogram-explained" title="Figure&nbsp;1.5&nbsp;(b): Use one or cityblock norm to compute the distance - \| \cdot \|_1"><img src="../_assets/clustering/dendrogram_city.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-unsupervised-dendrogram-explained"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-unsupervised-dendrogram-explained-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(b) Use two one or cityblock norm to compute the distance - <span class="math inline">\(\| \cdot \|_1\)</span>
+(b) Use one or cityblock norm to compute the distance - <span class="math inline">\(\| \cdot \|_1\)</span>
 </figcaption>
 </figure>
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-unsupervised-dendrogram-explained-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1.5: We always combine the two nearest points and replace them with the point in the middle. This iteration continues until only one point is left. The Dendrogram is build according to the order of points chosen.
+Figure&nbsp;1.5: We always combine the two nearest points and replace them with the point in the middle. This iteration continues until only one point is left. The Dendrogram is build according to the order of points chosen. It can also include the distance.
 </figcaption>
 </figure>
 </div>
@@ -860,8 +860,8 @@ Figure&nbsp;1.6: Construction a agglomerative hierarchy for our data set.
 </figcaption>
 </figure>
 </div>
-<p>The two dendrograms (<a href="#fig-clustering-unsupervised_dengrogram-1" class="quarto-xref">Figure&nbsp;<span>1.6 (a)</span></a> <a href="#fig-clustering-unsupervised_dengrogram-3" class="quarto-xref">Figure&nbsp;<span>1.6 (c)</span></a>) show the hierarchical structure derived from the data set. The number of clusters can be influenced by the <code>thresh</code> parameter and it is also used to label the observation accordingly. It is quite similar to the number of clusters <span class="math inline">\(k\)</span> in the <span class="math inline">\(k\)</span>-means algorithm.</p>
-<p>The two bar graphs on the right (<a href="#fig-clustering-unsupervised_dengrogram-2" class="quarto-xref">Figure&nbsp;<span>1.6 (b)</span></a> <a href="#fig-clustering-unsupervised_dengrogram-4" class="quarto-xref">Figure&nbsp;<span>1.6 (d)</span></a>) shows how the data is clustered in the dendrogram. The bars correspond to the distance metric produced by the algorithm. The red lines indicate the region of a perfect split for the separation if the algorithm works perfectly and places every point in the original cluster. If we recall, that the first 25 points are from set 1 and the next 25 from set 2 we can see that the euclidean distance generates the perfect split. On the other hand, the <em>cityblock</em> norm is placing one point in the wrong cluster.</p>
+<p>The two dendrograms (<a href="#fig-clustering-unsupervised_dengrogram-1" class="quarto-xref">Figure&nbsp;<span>1.6 (a)</span></a> and <a href="#fig-clustering-unsupervised_dengrogram-3" class="quarto-xref">Figure&nbsp;<span>1.6 (c)</span></a>) show the hierarchical structure derived from the data set. The number of clusters can be influenced by the <code>thresh</code> parameter and it is also used to label the observation accordingly. It is quite similar to the number of clusters <span class="math inline">\(k\)</span> in the <span class="math inline">\(k\)</span>-means algorithm.</p>
+<p>The two bar graphs on the right (<a href="#fig-clustering-unsupervised_dengrogram-2" class="quarto-xref">Figure&nbsp;<span>1.6 (b)</span></a> and <a href="#fig-clustering-unsupervised_dengrogram-4" class="quarto-xref">Figure&nbsp;<span>1.6 (d)</span></a>) show how the observations is clustered in the dendrogram. The bars correspond to the distance metric produced by the algorithm. The red lines indicate the region of a perfect split for the separation if the algorithm works perfectly and places every point in the original cluster. If we recall, that the first 25 points are from set 1 and the next 25 from set 2 we can see that the euclidean distance and the <em>cityblock</em> norm place one point in the wrong cluster.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -898,7 +898,7 @@ Note
 <p><span class="theorem-title"><strong>Exercise 1.2 (Apply the agglomerative clustering to the Fischer Iris data set)</strong></span> &nbsp;</p>
 <ol type="1">
 <li><p>Work out how to use the <code>scikit-learn</code> alternative.</p></li>
-<li><p>We already looked at the Fischer Iris data set in <a href="index.html#sec-fischer-iris-data-set" class="quarto-xref"><span>Section 1.1</span></a> and discussed some basic features. Try with only two dimensional data, as well as four dimensional data to find the three clusters.</p></li>
+<li><p>We already looked at the Fischer Iris data set in <a href="index.html#sec-fischer-iris-data-set" class="quarto-xref"><span>Section 1.1</span></a> and discussed some basic features. Try with only two dimensional data, as well as four dimensional data, to find the three clusters.</p></li>
 <li><p>For <a href="#fig-clustering-unsupervised_dbscan" class="quarto-xref">Figure&nbsp;<span>1.7</span></a> we will look at the moons data set. Try working out the clusters in this case, look at the different possibilities with the <code>linkage</code> option as <code>{"ward", "complete", "average", "single"}</code>.</p></li>
 </ol>
 </div>
@@ -912,12 +912,12 @@ Note
 <p>Our observations (we will call them points here for consistency) form the basis and they can be in any space but as for all the algorithms presented here, there needs to exist some form to measure distance. Furthermore, DBSCAN relies on two parameters, <span class="math inline">\(\epsilon\)</span> describing the radius of neighbourhood of a point and <span class="math inline">\(minPts\)</span> the minimum of points needed to form a cluster. With these parameters we perform the following steps:</p>
 <ol type="1">
 <li><p>A point <span class="math inline">\(p\)</span> is called a <em>core point</em> if at least <span class="math inline">\(minPts\)</span> (including <span class="math inline">\(p\)</span>) are within distance <span class="math inline">\(\epsilon\)</span> of <span class="math inline">\(p\)</span>. This region is called the <span class="math inline">\(\epsilon\)</span>-neighbourhood of <span class="math inline">\(p\)</span>.</p></li>
-<li><p>A point <span class="math inline">\(q\)</span> is called <em>directly reachable</em> form an core point <span class="math inline">\(p\)</span> iff<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> <span class="math inline">\(q\)</span> is in the <span class="math inline">\(\epsilon\)</span>-neighbourhood of <span class="math inline">\(p\)</span>.</p></li>
-<li><p>A point <span class="math inline">\(p\)</span> is <em>reachable</em> from <span class="math inline">\(p\)</span> if there exists a sequence of points (path) <span class="math inline">\(p=p_1, p_2,  \ldots, p_n=q\)</span> where each <span class="math inline">\(p_{i+1}\)</span> is directly reachable form <span class="math inline">\(p_i\)</span>. Consequently, all point on the path, except <span class="math inline">\(p\)</span>, need to be core points.</p></li>
+<li><p>A point <span class="math inline">\(q\)</span> is called <em>directly reachable</em> from a core point <span class="math inline">\(p\)</span> iff<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> <span class="math inline">\(q\)</span> is in the <span class="math inline">\(\epsilon\)</span>-neighbourhood of <span class="math inline">\(p\)</span>.</p></li>
+<li><p>A point <span class="math inline">\(p\)</span> is <em>reachable</em> from <span class="math inline">\(p\)</span>, if there exists a sequence of points (path) <span class="math inline">\(p=p_1, p_2,  \ldots, p_n=q\)</span> where each <span class="math inline">\(p_{i+1}\)</span> is directly reachable form <span class="math inline">\(p_i\)</span>. Consequently, all point on the path, except <span class="math inline">\(p\)</span>, need to be core points.</p></li>
 <li><p>A point that is not reachable from any other point is considered an <em>outlier</em> or <em>noise point</em>.</p></li>
 </ol>
-<p>Therefore, we get our definition of a cluster: a point core point <span class="math inline">\(p\)</span> together with all points that are reachable from <span class="math inline">\(p\)</span>. This includes core points (at least one) and none-core points (boundary points) on the boundary as they can not be used to reach more points.</p>
-<p>In contrast to <span class="math inline">\(k\)</span>-means the algorithm we can find none linear clusters. We can illustrate this with the <em>moon data set</em>.</p>
+<p>Therefore, we get our definition of a cluster: a core point <span class="math inline">\(p\)</span> together with all points that are reachable from <span class="math inline">\(p\)</span>. This includes core points (at least one) and none-core points (boundary points) on the boundary as they can not be used to reach more points.</p>
+<p>In contrast to <span class="math inline">\(k\)</span>-means the algorithm we can find <em>non-linear</em> (i.e.&nbsp;curved) clusters. We illustrate this with the <em>moon data set</em>.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1016,7 +1016,7 @@ Figure&nbsp;1.7: DBSCAN illustrated with the moons dataset.
 </figcaption>
 </figure>
 </div>
-<p>The algorithm works best for clusters well separated by low density regions. As all algorithms depending on distance measures it suffers from the curse of dimensionality<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
+<p>The algorithm works best for clusters well separated by low density regions. As all algorithms depending on distance measures, it suffers from the curse of dimensionality<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
 <p>As can be seen in <a href="#fig-clustering-unsupervised_dbscan-1" class="quarto-xref">Figure&nbsp;<span>1.7 (a)</span></a> the algorithm produces quite a lot of clusters for a small <span class="math inline">\(\epsilon=0.05\)</span>. In total we get 10 clusters and quite a lot of outliers that are not all easy to retract by the naked eye.</p>
 <p>Nevertheless, if we increase <span class="math inline">\(\epsilon=0.2\)</span> we can see that the two clusters are neatly reproduced, <a href="#fig-clustering-unsupervised_dbscan-2" class="quarto-xref">Figure&nbsp;<span>1.7 (b)</span></a>.</p>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -1041,8 +1041,8 @@ Note
 <div id="exr-dbscan" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise 1.3 (Application of DBSCAN)</strong></span> &nbsp;</p>
 <ol type="1">
-<li><p>Apply the DBSCAN algorithm to our toy example used through this section to recover the two clusters as good as possible. Try different <span class="math inline">\(\epsilon\)</span> values as well as different norms (<code>metric</code> parameter).</p></li>
-<li><p>Additionally, for a higher dimensional problem, using DBSCAN split the Iris data set (@<a href="index.html#sec-fischer-iris-data-set" class="quarto-xref"><span>Section 1.1</span></a>) into its three classes of flowers.</p></li>
+<li><p>Apply the DBSCAN algorithm to our toy example used through this section, to recover the two clusters as good as possible. Try different <span class="math inline">\(\epsilon\)</span> values as well as different norms (<code>metric</code> parameter).</p></li>
+<li><p>Additionally, for a higher dimensional problem, using DBSCAN to split the Fischer Iris data set (<a href="index.html#sec-fischer-iris-data-set" class="quarto-xref"><span>Section 1.1</span></a>) into its three clusters of flowers.</p></li>
 </ol>
 </div>
 </div>
@@ -1051,9 +1051,9 @@ Note
 </section>
 <section id="finite-mixtures-models" class="level2" data-number="1.4">
 <h2 data-number="1.4" class="anchored" data-anchor-id="finite-mixtures-models"><span class="header-section-number">1.4</span> Finite Mixtures Models</h2>
-<p>Finite mixture models assume that the observations <span class="math inline">\(x_i\)</span> are mixtures of <span class="math inline">\(k\)</span> processes which combine in the measurement. Each mixture is defined via a probability model with unknown parameters. The aim of the algorithm is to find the parameters such that the <span class="math inline">\(k\)</span> processes best describe the <span class="math inline">\(x_i\)</span> observations. The basis of the algorithm is the so called <em>expectation-maximization</em> (EM) algorithm of <span class="citation" data-cites="dempster1977maximum">Dempster, Laird, and Rubin (<a href="../references.html#ref-dempster1977maximum" role="doc-biblioref">1977</a>)</span>, that is designed to find the <em>maximum-likelihood</em> parameters of the defined statistical models.</p>
-<p>The most common choice for the probability models is the Gaussian distribution<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> and for this choice, the method is better known as <em>Gaussian mixture models</em> (GMM). This is often quite a sensible choice if nothing more is known about the observations and a Gaussian distribution is than always a save bet. As a result each process can be described by two parameters, <em>mean</em> and <em>variance</em>. Each cluster in turn, will be described by an ellipsoidal shape where size, density, orientation and semi-axis vary.</p>
-<p>Like <span class="math inline">\(k\)</span>-means, in the simplest version, GMM is provided with the number of clusters <span class="math inline">\(k\)</span> and starts from an initial guess of the means and corresponding variances. The parameters are than iteratively updated to find a (local) maximum. There are some problems with this approach, e.g.&nbsp;if you set one of the processes to have zero variance and mean equal to a point. To avoid such problems <em>cross-validation</em> can often help to avoid problems stemming from an initialization with a poor initial guess.</p>
+<p>Finite mixture models assume that the observations <span class="math inline">\(x_i\)</span> are mixtures of <span class="math inline">\(k\)</span> processes, which combine in the measurement. Each mixture is defined via a probability model with unknown parameters. The aim of the algorithm is to find the parameters such that the <span class="math inline">\(k\)</span> processes best describe the <span class="math inline">\(x_i\)</span> observations. The basis of the algorithm is the so called <em>expectation-maximization</em> (EM) algorithm of <span class="citation" data-cites="dempster1977maximum">Dempster, Laird, and Rubin (<a href="../references.html#ref-dempster1977maximum" role="doc-biblioref">1977</a>)</span>, that is designed to find the <em>maximum-likelihood</em> parameters of the defined statistical models.</p>
+<p>The most common choice for the probability models is the Gaussian distribution<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> and for this choice, the method is better known as <em>Gaussian mixture models</em> (GMM). This is often quite a sensible choice, if nothing more is known about the observations, and a Gaussian distribution is therefore a save bet. As a result each process can be described by two parameters, <em>mean</em> and <em>variance</em>. Each cluster in turn, will be described by an ellipsoidal shape where size, density, orientation, and semi-axis vary.</p>
+<p>Like <span class="math inline">\(k\)</span>-means, in the simplest version, GMM is provided with the number of clusters <span class="math inline">\(k\)</span> and starts from an initial guess of the means and corresponding variances. The parameters are than iteratively updated to find a (local) maximum. There are some problems with this approach, e.g.&nbsp;if we set one of the processes to have zero variance and mean equal to a point. To avoid such problems <em>cross-validation</em> can often help to avoid problems stemming from an initialization with a poor initial guess.</p>
 <p>As mentioned, the main idea of the mixture models is that the observations are a linear combination of probability density functions (PDF) <span class="math display">\[
 f(x_j, \Theta) = \sum_{p=1}^k \alpha_p f_p(x_j, \Theta_p),
 \]</span> where <span class="math inline">\(f\)</span> denotes the observed/measured PDF with parameters <span class="math inline">\(\Theta\)</span>, <span class="math inline">\(f_p\)</span> the PDF of mixture <span class="math inline">\(p\)</span> with parameters <span class="math inline">\(\Theta_p\)</span>, and <span class="math inline">\(k\)</span> denotes the number of mixtures. The weights <span class="math inline">\(\alpha_p\)</span> fulfil <span class="math inline">\(\sum_p \alpha_p = 1\)</span>.</p>
@@ -1071,24 +1071,24 @@ f(x_j, \Theta) = \sum_{p=1}^k \alpha_p f_p(x_j, \Theta_p),
 </div>
 </div>
 </div>
-<p>Lets follow the derivative for the GMM method in <span class="citation" data-cites="Brunton2022">(<a href="../references.html#ref-Brunton2022" role="doc-biblioref">Brunton and Kutz 2022, sec. 5.5</a>)</span> to bet a better idea what is happening.</p>
-<p>For the GMM <span class="math inline">\(f\)</span> becomes <span class="math display">\[
-f(x_j, \Theta) = \sum_{p=1}^k \alpha_p \mathcal{N}_p(x_j, \mu_p, \sigma_p)
-\]</span> and for a given <span class="math inline">\(k\)</span> we need to find <span class="math inline">\(\alpha_p, \mu_p, \sigma_p\)</span>. We get <span class="math inline">\(\Theta\)</span> from the roots of <span class="math display">\[
-L(\Theta) = \sum_{j=1}^n\log f(x_j | \Theta),
-\]</span> <span class="math inline">\(L\)</span> is called the <em>log-likelihood</em> function and we sum over all observations <span class="math inline">\(x_j\)</span>. We transform it into a optimization problem by setting the derivative to zero <span class="math display">\[
-\frac{\partial L(\Theta)}{\partial \Theta} = 0
+<p>Lets follow the derivative for the GMM method in <span class="citation" data-cites="Brunton2022">(<a href="../references.html#ref-Brunton2022" role="doc-biblioref">Brunton and Kutz 2022, sec. 5.5</a>)</span> to get a better idea what is happening.</p>
+<p>For GMM, <span class="math inline">\(f\)</span> reads as <span class="math display">\[
+f(x_j, \Theta) = \sum_{p=1}^k \alpha_p \mathcal{N}_p(x_j, \mu_p, \sigma_p),
+\]</span> and for a given <span class="math inline">\(k\)</span>, we need to find <span class="math inline">\(\alpha_p, \mu_p, \sigma_p\)</span>. We get <span class="math inline">\(\Theta\)</span> from the roots of <span class="math display">\[
+L(\Theta) = \sum_{j=1}^n\log f(x_j | \Theta).
+\]</span> <span class="math inline">\(L\)</span> is called the <em>log-likelihood</em> function and we sum over all observations <span class="math inline">\(x_j\)</span>. We transform it into an optimization problem by setting the derivative to zero <span class="math display">\[
+\frac{\partial L(\Theta)}{\partial \Theta} = 0,
 \]</span> and solve it via the EM algorithm. As the name suggests, there are two steps E and M.</p>
-<p>The E step uses the following posterior to establish memberships. Therefore, we start of by assuming an initial guess of the vector <span class="math inline">\(\Theta\)</span> and this leads to the <em>posterior probability of distribution <span class="math inline">\(p\)</span> of <span class="math inline">\(x_j\)</span> </em> <span class="math display">\[
+<p>The E step uses the following posterior to establish memberships. Therefore, we start of by assuming an initial guess of the vector <span class="math inline">\(\Theta\)</span> and this leads to the _posterior probability of distribution <span class="math inline">\(p\)</span> of <span class="math inline">\(x_j\)</span> <span class="math display">\[
 \tau_p(x_j, \Theta) = \frac{\alpha_p f_p(x_j, \Theta_p)}{f(x_j, \Theta)}.
-\]</span> In other words, we try to figure out if <span class="math inline">\(x_j\)</span> is part of the <span class="math inline">\(p\)</span>th mixture. For the GMM this becomes, in the <span class="math inline">\(l\)</span> iteration: <span class="math display">\[
-\tau_p^{(l)}(x_j) = \frac{\alpha_p^{(l)} \mathcal{N}_p(x_j, \mu_p^{(l)}, \sigma_p^{(l)})}{f(x_j, \Theta^{(l)})}.
-\]</span></p>
+\]</span> In other words, we try to figure out if <span class="math inline">\(x_j\)</span> is part of the <span class="math inline">\(p\)</span>th mixture. For GMM this becomes, <span class="math display">\[
+\tau_p^{(l)}(x_j) = \frac{\alpha_p^{(l)} \mathcal{N}_p(x_j, \mu_p^{(l)}, \sigma_p^{(l)})}{f(x_j, \Theta^{(l)})},
+\]</span> in the <span class="math inline">\(l\)</span> iteration.</p>
 <p>Now the M step starts to update the parameters and mixture weights as <span class="math display">\[
 \begin{align}
 \alpha_p^{(l+1)} &amp;= \frac1n \sum_{j=1}^n \tau_p^{(l)}(x_j), \\
 \mu_p^{(l+1)} &amp;= \frac{\sum_{j=1}^n x_j\tau_p^{(l)}(x_j)}{\sum_{j=1}^n \tau_p^{(l)}(x_j)}, \\
-\Sigma_p^{(l+1)} &amp;= \frac{\sum_{j=1}^n \tau_p^{(l)}(x_j)(x_j - \mu_p^{(l+1)})(x_j - \mu_p^{(l+1)})^\mathrm{T}}{\sum_{j=1}^n \tau_p^{(l)}(x_j)},
+\Sigma_p^{(l+1)} &amp;= \frac{\sum_{j=1}^n \tau_p^{(l)}(x_j)[(x_j - \mu_p^{(l+1)})(x_j - \mu_p^{(l+1)})^\mathrm{T}]}{\sum_{j=1}^n \tau_p^{(l)}(x_j)},
 \end{align}
 \]</span> with <span class="math inline">\(\Sigma_p^{(l+1)}\)</span> denotes the covariance matrix. The algorithm now alternates between E and M until convergence is reached.</p>
 <p>Let us try it with the cats and dogs images in wavelet basis from <a href="index.html#sec-clustering-cvd" class="quarto-xref"><span>Section 1.2</span></a> by fitting to the second and forth principal value of the SVD. Note, we directly load the images in wavelet basis and do not recompute them.</p>
@@ -1202,9 +1202,9 @@ Figure&nbsp;1.8: Fitting of the second and fourth principal value of the cats an
 </figure>
 </div>
 <p>As can be seen in <a href="#fig-clustering-gmm-1" class="quarto-xref">Figure&nbsp;<span>1.8 (a)</span></a> the two clusters are quite well captured by the GMM algorithm. The contour shows the linear combination of the two Gaussians. We see the two Gaussians on the right in <a href="#fig-clustering-gmm-2" class="quarto-xref">Figure&nbsp;<span>1.8 (b)</span></a> where we use the same colours as for the cats and dogs respectively. Note that the distributions are weight <span class="math inline">\(\alpha_p\)</span> from GMM but other than that there is no unit in the z direction.</p>
-<p>As discussed above the algorithm is prone to problems during the initialization, therefore we use <code>n_init = 10</code> to initialize the algorithm 10 times and only keep the best result.</p>
+<p>As discussed above, the algorithm is prone to problems during the initialization, therefore we use <code>n_init = 10</code> to initialize the algorithm 10 times and only keep the best result.</p>
 <p>We can draw new samples from the resulting object <code>.sample()</code> and we can also fit data to it and we can also perform hard and soft clustering. For hard clustering the model assigns each instance to the most likely cluster (<code>.predict()</code>), where for soft clustering (<code>.predict_proba()</code>) we get the probability of <em>membership</em> for each cluster.</p>
-<p>If the algorithm struggles to recover the clusters, we can halp it by imposing the shape of the cluster via restricting the covariance matrix <span class="math inline">\(\Sigma_p\)</span>. This can be done via the parameter <code>covariance_type</code>, see <a href="https://scikit-learn.org/stable/modules/generated/sklearn.mixture.GaussianMixture.html">docs</a>.</p>
+<p>If the algorithm struggles to recover the clusters, we can help it by imposing the shape of the cluster via restricting the covariance matrix <span class="math inline">\(\Sigma_p\)</span>. This can be done via the parameter <code>covariance_type</code>, see <a href="https://scikit-learn.org/stable/modules/generated/sklearn.mixture.GaussianMixture.html">docs</a>.</p>
 <div class="callout callout-style-simple callout-caution no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -1215,8 +1215,8 @@ Figure&nbsp;1.8: Fitting of the second and fourth principal value of the cats an
 <p><span class="theorem-title"><strong>Exercise 1.4 (Application of GMM)</strong></span> &nbsp;</p>
 <ol type="1">
 <li><p>Apply the GMM algorithm to our toy example used through this section to recover the two clusters as good as possible. This should be straight forward, as we constructed it via Gaussian distributions. Try constraining the algorithm by imposing the different values possible for <code>covariance_type</code>.</p></li>
-<li><p>Additionally, for a higher dimensional problem, using DBSCAN split the Iris dataset into its three classes of flowers.</p></li>
-<li><p>Try to use GMM to get clusters for the two moon dataset used in <a href="#sec-clustering-ul-dbscan" class="quarto-xref"><span>Section 1.3</span></a>. Also try with the <code>BayesianGaussianMixture</code> class, where no amount of clusters needs to be specified.</p></li>
+<li><p>Additionally, for a higher dimensional problem, split the Fischer Iris data set into its three clusters of flowers.</p></li>
+<li><p>Try to use GMM to get clusters for the moon data set used in <a href="#sec-clustering-ul-dbscan" class="quarto-xref"><span>Section 1.3</span></a>. Also try with the <code>BayesianGaussianMixture</code> class, where no amount of clusters needs to be specified.</p></li>
 </ol>
 </div>
 </div>
@@ -1232,8 +1232,8 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>GMM can also be used for anomaly detection. Simply assume every observation located in a low density region an anomaly. For this the threshold needs to be defined in accordance to your expected anomalies.</p>
-<p>E.g. to get about <span class="math inline">\(4\%\)</span> anomalies you can use the following snippet togethere with the above code:</p>
+<p>GMM can also be used for anomaly detection. Simply assume every observation located in a low density region an anomaly. For this the threshold needs to be defined in accordance to our expected anomalies.</p>
+<p>E.g. to get about <span class="math inline">\(4\%\)</span> anomalies we can use the following snippet together with the above code:</p>
 <div id="cell-fig-clustering-gmm-ano" class="cell" data-execution_count="9">
 <details class="code-fold">
 <summary>Show the code for the figure</summary>
@@ -1263,16 +1263,16 @@ Figure&nbsp;1.9: Fitting of the second and fourth principal value of the cats an
 </div>
 </div>
 </div>
-<p>see <span class="citation" data-cites="Geron2022-xh">Geron (<a href="../references.html#ref-Geron2022-xh" role="doc-biblioref">2022</a>)</span> and the corresponding <a href="https://github.com/ageron/handson-ml3/blob/main/09_unsupervised_learning.ipynb">GitHub repository</a></p>
+<p>See <span class="citation" data-cites="Geron2022-xh">Geron (<a href="../references.html#ref-Geron2022-xh" role="doc-biblioref">2022</a>)</span> and the corresponding <a href="https://github.com/ageron/handson-ml3/blob/main/09_unsupervised_learning.ipynb">GitHub repository</a>.</p>
 </div>
 </div>
 </section>
 <section id="sec-clustering-ul-me" class="level2" data-number="1.5">
 <h2 data-number="1.5" class="anchored" data-anchor-id="sec-clustering-ul-me"><span class="header-section-number">1.5</span> Motivational example</h2>
-<p>Before we make the leap to supervised learning we we introduce a new data set and see how our unsupervised approach works in this case.</p>
+<p>Before we make the leap to supervised learning, we we introduce a new data set and see how our unsupervised approach works in this case.</p>
 <p>We do this with the (in)famous MNIST data set of hand written digits. Lets start by looking at the data set and establishing some basic properties.</p>
 <p>We load the data set and look at its description</p>
-<div id="f23aed55" class="cell styled-output" data-execution_count="10">
+<div id="2279145d" class="cell styled-output" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_openml</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>mnist <span class="op">=</span> fetch_openml(<span class="st">'mnist_784'</span>, as_frame<span class="op">=</span><span class="va">False</span>)</span>
@@ -1327,10 +1327,10 @@ Figure&nbsp;1.10: First 100 digits from the MNIST data set.
 </div>
 </div>
 </div>
-<p>As can be seen from <a href="#fig-clustering-usl-mnist" class="quarto-xref">Figure&nbsp;<span>1.10</span></a>, most digits are easy to distinguish for us but there are some nasty things included. Especially, there are <span class="math inline">\(1\)</span>s with the english style (just one straight line) of writing (1st row, 7th column), but also as a diagonal line (1st row, 4th column), and finally also the german style (connecting line at base and top) of writing (3rd row, 5th column).</p>
-<p>Also the two digit comes in various forms, with loop (1st row, 6th column) and without (3rd row, 6th column). Finally we all know that a <span class="math inline">\(3\)</span> can hide in an <span class="math inline">\(8\)</span>, same as a <span class="math inline">\(9\)</span>, a <span class="math inline">\(1\)</span> can hide in a <span class="math inline">\(7\)</span> and much more.</p>
+<p>As can be seen from <a href="#fig-clustering-usl-mnist" class="quarto-xref">Figure&nbsp;<span>1.10</span></a>, most digits are easy to distinguish for us, but there are some nasty things included. Especially, there are <code>1</code>s with the english style (just one straight line) of writing (1st row, 7th column), but also as a diagonal line (1st row, 4th column), and finally also the german style (connecting line at base and top) of writing (3rd row, 5th column).</p>
+<p>Also the <code>2</code> digit comes in various forms, with loop (1st row, 6th column) and without (3rd row, 6th column). Finally we all know that a <code>3</code> can hide in an <code>8</code>, same as a <code>7</code> and <code>1</code> can hide in a <code>9</code> and much more.</p>
 <p>Now, before we go any further in the investigation we split up the data set into a training and a test set, we will not use this here but we should establish some way of working right from the start.</p>
-<div id="06788ae8" class="cell" data-execution_count="12">
+<div id="fb62883e" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>X_train, X_test <span class="op">=</span> mnist.data[:<span class="dv">60000</span>], mnist.data[<span class="dv">60000</span>:]</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>y_train, y_test <span class="op">=</span> mnist.target[:<span class="dv">60000</span>], mnist.target[<span class="dv">60000</span>:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -1371,7 +1371,7 @@ Figure&nbsp;1.11: The cluster means of <span class="math inline">\(k\)</span>-me
 </div>
 </div>
 </div>
-<p>As can be seen from <a href="#fig-clustering-usl-mnist2" class="quarto-xref">Figure&nbsp;<span>1.11</span></a>, the cluster centers do not recover our ten digits. In general they are, as expected smudged as the do not represent an actual image. It looks like <span class="math inline">\(0, 1, 2, 3, 6, 8, 9\)</span> are <em>easy</em> to discover but <span class="math inline">\(4, 5, 7\)</span> not. If we look closely, we can see <span class="math inline">\(4, 5, 7\)</span> represented in our clusters but not as separate digits. Obviously this is not a good way to proceed to find our digits. We will discuss methods to perform this task in the next section <a href="supervised.html" class="quarto-xref"><span>Chapter 2</span></a>. Furthermore, keep this part in mind as we will come back to how this can still be helpful in a different aspect as semi supervised learning <a href="semisupervised.html" class="quarto-xref"><span>Chapter 3</span></a>.</p>
+<p>As can be seen from <a href="#fig-clustering-usl-mnist2" class="quarto-xref">Figure&nbsp;<span>1.11</span></a>, the cluster centers do not recover our ten digits. In general, they are, as expected, smudged as they do not represent an actual image. It looks like <span class="math inline">\(0, 1, 2, 3, 6, 8, 9\)</span> are <em>easy</em> to discover but <span class="math inline">\(4, 5, 7\)</span> not. If we look closely, we can see <span class="math inline">\(4, 5, 7\)</span> represented in our clusters but not as separate digits. Obviously this is not a good way to proceed and to find our digits. We will discuss methods to perform this task in the next section <a href="supervised.html" class="quarto-xref"><span>Chapter 2</span></a>. Furthermore, keep this part in mind, as we will come back to how this can still be helpful in a different aspect as semi-supervised learning <a href="semisupervised.html" class="quarto-xref"><span>Chapter 3</span></a>.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
