@@ -1,7 +1,7 @@
 # Semi-Supervised learning {#sec-clustering-ssl}
 
 There is a hybrid between unsupervised and supervised learning, called _semi supervised learning_. 
-If we have a data set with just a couple of labelled observations we might be able to use the discussed clustering methods to extend the labels and therefore generate more labelled data. 
+If we have a data set with just a couple of labelled observations, we might be able to use the discussed clustering methods to extend the labels and therefore generate more labelled data. 
 
 We try this with the (in)famous MNIST data set of hand written digits. 
 As we did not do this when discussion MNIST in @sec-clustering-sl-performance we first looking at the dataset and establishing some basic properties.
@@ -39,7 +39,7 @@ plt.axis("off")
 plt.show()
 ```
 
-Before we go any further in the investigation we split up the data set into a training and a test set.
+Before we go any further in the investigation, we split up the data set into a training and a test set.
 
 ```{python}
 X_train, X_test = mnist.data[:60000], mnist.data[60000:]
@@ -76,18 +76,19 @@ plt.show()
 As can be seen from @fig-clustering-ssl-mnist2, the cluster centers do not recover our 10 digits. 
 It looks like $0, 1, 2, 3, 6, 8, 9$ are _easy_ to discover but $4, 5, 7$ not.
 If we look closely, we can see $4, 5, 7$ represented in our clusters but not as separate digits. 
-Obviously this is not a good way to proceed to find our digits.
+Obviously, this is not a good way to proceed to find our digits.
 We discussed methods to perform this task in @sec-clustering-sl now let us consider a different scenario. 
 
 Our aim is to only label 50 observations and not more. 
 How can we do this smartly?
 For this task $k$-means is a good choice. 
-Instead of trying to find our 10 digits we try to find 50 clusters within our dataset. We use the images closest to the mean as our representative and label these images. 
+Instead of trying to find our 10 digits we try to find 50 clusters within our data set.
+We use the images closest to the mean as our representative and label these images. 
 Now instead of labeling just 50 random digits we labelled 50 cluster centers.
 These labels we can than spread out onto the rest of the clusters and we can test how the performance is. 
 
 ::: {.callout-important}
-Do to the nature of these notes, being compiled interactively, we restrict the data set to 2000 points.
+Due to the nature of these notes, being compiled interactively, we restrict the data set to 2000 points.
 
 ```{python}
 X_train = X_train[:2000]
@@ -113,7 +114,7 @@ forest_full = RandomForestClassifier(random_state=6020).fit(X_train, y_train)
 score_forest_full = forest_full.score(X_test, y_test)
 print(f"score for training with {len(y_train)} labels {score_forest_full}")
 ```
-With our `{python} n_labels` labels we get a bit more than `{python} float(np.round(score_forest * 100, 2))`% correct but of course if we use all labels we can achieve results in the `{python} float(np.round(score_forest_full * 100, 2))`% range (we we train with all 60000 we get 97%).
+With our `{python} n_labels` labels we get a bit more than `{python} float(np.round(score_forest * 100, 2))`% correct but of course if we use all labels we can achieve results in the `{python} int(np.round(score_forest_full * 10, 0)*10)`% range (if we train with all 60000 we get 97%).
 So how can we approach this problem?
 
 Instead of just randomly selecting `{python} n_labels` images with labels, let us create `{python} n_labels` clusters, label the image centers, i.e. get good representatives of the classes we are interested in.
@@ -176,7 +177,7 @@ print(f"score for training with {len(y_train_prop)} propagated labels {score_for
 ```
 
 This again increases our score by another good 10%. 
-If we check our propagated labels we see that we can not expect more as we only have an accuracy there slightly higher.
+If we check our propagated labels, we see that, we can not expect more as we only have an accuracy slightly higher than our classification result, i.e. we provide wrong results labels for our classification.
 ```{python}
 #| classes: styled-output
 np.mean(y_train_prop == y_train)
