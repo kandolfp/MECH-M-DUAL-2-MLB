@@ -4,8 +4,8 @@ These are the lecture notes for the _Maschinelles Lernen in der industriellen Bi
 
 ## Acknowledgements {.unnumbered}
 
-We want to thank the open source community for providing excellent tutorial and guides for Data Science topics in and with Python on the web.
-Individual sources are cited at the appropriate spot throughout document at hand.
+We want to thank the open source community for providing excellent tutorials and guides for Data Science topics in and with Python on the web.
+Individual sources are cited at the appropriate spot throughout the document at hand.
 
 These notes are built with [Quarto](https://quarto.org/).
 
