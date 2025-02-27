@@ -118,7 +118,7 @@ We can also visualize the transformation steps as follows in @fig-appendices-dvc
 
 ## Precision/Recall trade-off {#sec-appendix-pvsr}
 
-In @sec-clustering-sl-performance we discuss the performance topics and we cam across the precision/recall trade-off.
+In @sec-clustering-sl-performance we discuss the performance topics and we come across the si called _precision/recall trade-off_.
 
 Lets remind ourself of the definitions:
 
@@ -175,7 +175,7 @@ plt.imshow(im, cmap="binary")
 plt.axis("off")
 ```
 
-We can also plot the entire prevision recall curve 
+We can also plot the entire precision/recall curves
 
 ```{python}
 #| label: fig-appendix-clustering-sl-thresholds
