@@ -14,7 +14,7 @@
     "href": "index.html#acknowledgements",
     "title": "Machine Learning in Industrial Image Processing",
     "section": "Acknowledgements",
-    "text": "Acknowledgements\nWe want to thank the open source community for providing excellent tutorial and guides for Data Science topics in and with Python on the web. Individual sources are cited at the appropriate spot throughout document at hand.\nThese notes are built with Quarto.",
+    "text": "Acknowledgements\nWe want to thank the open source community for providing excellent tutorials and guides for Data Science topics in and with Python on the web. Individual sources are cited at the appropriate spot throughout the document at hand.\nThese notes are built with Quarto.",
     "crumbs": [
       "Preface"
     ]
