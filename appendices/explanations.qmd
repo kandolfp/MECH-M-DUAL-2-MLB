@@ -4,13 +4,15 @@ In this section we collect more detailed explanations to help clear up some thin
 
 ## Wavelet decomposition for cats and dogs {#sec-appendix-dvc}
 
-In @sec-clustering-cvd we discuss using the wavelet transformation to transform the image into a different basis.
-Here are the details of how this is performed with cat zero as example.
+In @sec-clustering-cvd we discuss how to use the wavelet transformation[^wave] to transform the image into a different basis.
+Here are the details of how this is performed, with cat _zero_ as example.
+
+[^wave]: see @Kandolf_GDM, Section 10 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/signal/wavelet.html)
 
 ```{python}
 #| label: fig-appendix-clustering-cat-2-wavelet
 #| fig-cap:
-#|   - "The original cat."
+#|   - "The original image of cat zero."
 #| code-fold: true
 #| code-summary: "Show the code for the figure"
 import numpy as np
@@ -36,8 +38,6 @@ The images are, a downsampled version of the original image, one highlighting th
 ```{python}
 #| label: fig-appendix-clustering-cat-2-wavelet2
 #| fig-cap:
-#|   - "Wavelet transformation of the cat."
-#| fig-subcap: 
 #|   - "The downsampled version of the image"
 #|   - "The vertical highlights of the image."
 #|   - "The horizontal highlights of the image."
@@ -63,8 +63,8 @@ plt.imshow(cD1, cmap=plt.get_cmap("gray"))
 plt.axis("off")
 ```
 
-For our purposes only the vertical and horizontal feature are of interest and we combine these two images.
-In order to make sure the features are highlighted optimal we need to rescale the images before the combination.
+For our purposes, only the vertical and horizontal feature are of interest, and we combine these two images.
+In order to make sure the features are highlighted optimal, we need to rescale the images before combining them.
 For this we use a similar function like the MATLAB [`wcodemat`](https://de.mathworks.com/help/wavelet/ref/wcodemat.html) function.
 
 ```{python}
@@ -95,7 +95,7 @@ plt.imshow(rescale(cH1, 256) + rescale(cV1, 256), cmap=plt.get_cmap("gray"))
 plt.axis("off")
 ```
 
-In total this leads to the following function to transform a list of the images, given as row vectors.
+In total this leads to the following function to transform a list of images (given as row vectors).
 
 ```{python}
 import pywt
@@ -111,7 +111,7 @@ def img2wave(images):
     return data_w
 ```
 
-Note that the resulting image has only one forth of the pixels as the original image.
+Note, the resulting image has only one forth of the pixels as the original image.
 We can also visualize the transformation steps as follows in @fig-appendices-dvc-workflow.
 
 ![Workflow to get from the original image to the wavelet transformed version.](../_assets/appendices/catvdogs_workflow){#fig-appendices-dvc-workflow}
