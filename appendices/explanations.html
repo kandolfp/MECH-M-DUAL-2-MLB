@@ -74,8 +74,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-27b4a279de94591399be0375ebb537c1.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-10b99b35e94314204bf5fc7da7d8ff6b.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-60c12469a02addc16ece3c92f73823bb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-de1eb42f17741db2ad7a825f871af34a.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
@@ -399,7 +399,7 @@ Figure&nbsp;A.5
 </div>
 </div>
 <p>For our purposes only the vertical and horizontal feature are of interest and we combine these two images. In order to make sure the features are highlighted optimal we need to rescale the images before the combination. For this we use a similar function like the MATLAB <a href="https://de.mathworks.com/help/wavelet/ref/wcodemat.html"><code>wcodemat</code></a> function.</p>
-<div id="1528ba56" class="cell" data-execution_count="3">
+<div id="7c4d9176" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rescale(data, nb):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> np.<span class="bu">abs</span>(data)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> x <span class="op">-</span> np.<span class="bu">min</span>(x)</span>
@@ -448,7 +448,7 @@ Figure&nbsp;A.7: Combination of vertical and horizontal features rescaled.
 </div>
 </div>
 <p>In total this leads to the following function to transform a list of the images, given as row vectors.</p>
-<div id="3175396e" class="cell" data-execution_count="5">
+<div id="fe25fb10" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pywt</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -496,7 +496,7 @@ Figure&nbsp;A.9: Some representatives and their score and three different thresh
 </figcaption>
 </figure>
 </div>
-<div id="00e24acc" class="cell" data-execution_count="6">
+<div id="de3889d6" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code that provides the basis for the above figure.</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
