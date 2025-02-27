@@ -1,7 +1,6 @@
----
-lightbox: true
----
 # More detailed explanations
+
+In this section we collect more detailed explanations to help clear up some things that are only lightly touched in the main notes.
 
 ## Wavelet decomposition for cats and dogs {#sec-appendix-dvc}
 
