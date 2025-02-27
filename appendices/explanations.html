@@ -54,7 +54,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -289,9 +309,10 @@ window.Quarto = {
 </header>
 
 
+<p>In this section we collect more detailed explanations to help clear up some things that are only lightly touched in the main notes.</p>
 <section id="sec-appendix-dvc" class="level2" data-number="A.1">
 <h2 data-number="A.1" class="anchored" data-anchor-id="sec-appendix-dvc"><span class="header-section-number">A.1</span> Wavelet decomposition for cats and dogs</h2>
-<p>In <a href="../clustering/index.html#sec-clustering-cvd" class="quarto-xref"><span>Section 1.2</span></a> we discuss using the wavelet transformation to transform the image into a different basis. Here are the details of how this is performed with cat zero as example.</p>
+<p>In <a href="../clustering/index.html#sec-clustering-cvd" class="quarto-xref"><span>Section 1.2</span></a> we discuss how to use the wavelet transformation<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> to transform the image into a different basis. Here are the details of how this is performed, with cat <em>zero</em> as example.</p>
 <div id="cell-fig-appendix-clustering-cat-2-wavelet" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code for the figure</summary>
@@ -315,10 +336,10 @@ window.Quarto = {
 <div id="fig-appendix-clustering-cat-2-wavelet" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-appendix-clustering-cat-2-wavelet-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="explanations_files/figure-html/fig-appendix-clustering-cat-2-wavelet-output-1.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;A.1: The original cat."><img src="explanations_files/figure-html/fig-appendix-clustering-cat-2-wavelet-output-1.svg" class="img-fluid figure-img"></a>
+<a href="explanations_files/figure-html/fig-appendix-clustering-cat-2-wavelet-output-1.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;A.1: The original image of cat zero."><img src="explanations_files/figure-html/fig-appendix-clustering-cat-2-wavelet-output-1.svg" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-appendix-clustering-cat-2-wavelet-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;A.1: The original cat.
+Figure&nbsp;A.1: The original image of cat zero.
 </figcaption>
 </figure>
 </div>
@@ -344,16 +365,16 @@ Figure&nbsp;A.1: The original cat.
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>plt.imshow(cD1, cmap<span class="op">=</span>plt.get_cmap(<span class="st">"gray"</span>))</span>
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div id="cell-fig-appendix-clustering-cat-2-wavelet2" class="cell quarto-layout-panel" data-execution_count="2" data-layout-ncol="2">
+<div id="cell-fig-appendix-clustering-cat-2-wavelet2" class="cell quarto-layout-panel" data-layout-ncol="2" data-execution_count="2">
 <div class="quarto-layout-row">
 <div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div id="fig-appendix-clustering-cat-2-wavelet2" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-appendix-clustering-cat-2-wavelet2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="explanations_files/figure-html/fig-appendix-clustering-cat-2-wavelet2-output-1.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figure&nbsp;A.2: Wavelet transformation of the cat."><img src="explanations_files/figure-html/fig-appendix-clustering-cat-2-wavelet2-output-1.svg" class="img-fluid figure-img"></a>
+<a href="explanations_files/figure-html/fig-appendix-clustering-cat-2-wavelet2-output-1.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figure&nbsp;A.2: The downsampled version of the image"><img src="explanations_files/figure-html/fig-appendix-clustering-cat-2-wavelet2-output-1.svg" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-appendix-clustering-cat-2-wavelet2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;A.2: Wavelet transformation of the cat.
+Figure&nbsp;A.2: The downsampled version of the image
 </figcaption>
 </figure>
 </div>
@@ -362,10 +383,10 @@ Figure&nbsp;A.2: Wavelet transformation of the cat.
 <div id="fig-appendix-clustering-cat-2-wavelet2" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-appendix-clustering-cat-2-wavelet2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="explanations_files/figure-html/fig-appendix-clustering-cat-2-wavelet2-output-2.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Figure&nbsp;A.3: "><img src="explanations_files/figure-html/fig-appendix-clustering-cat-2-wavelet2-output-2.svg" id="fig-appendix-clustering-cat-2-wavelet2" class="img-fluid figure-img"></a>
+<a href="explanations_files/figure-html/fig-appendix-clustering-cat-2-wavelet2-output-2.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Figure&nbsp;A.3: The vertical highlights of the image."><img src="explanations_files/figure-html/fig-appendix-clustering-cat-2-wavelet2-output-2.svg" class="img-fluid figure-img"></a>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-appendix-clustering-cat-2-wavelet2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;A.3
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-appendix-clustering-cat-2-wavelet2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.3: The vertical highlights of the image.
 </figcaption>
 </figure>
 </div>
@@ -376,10 +397,10 @@ Figure&nbsp;A.3
 <div id="fig-appendix-clustering-cat-2-wavelet2" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-appendix-clustering-cat-2-wavelet2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="explanations_files/figure-html/fig-appendix-clustering-cat-2-wavelet2-output-3.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Figure&nbsp;A.4: "><img src="explanations_files/figure-html/fig-appendix-clustering-cat-2-wavelet2-output-3.svg" id="fig-appendix-clustering-cat-2-wavelet2" class="img-fluid figure-img"></a>
+<a href="explanations_files/figure-html/fig-appendix-clustering-cat-2-wavelet2-output-3.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Figure&nbsp;A.4: The horizontal highlights of the image."><img src="explanations_files/figure-html/fig-appendix-clustering-cat-2-wavelet2-output-3.svg" class="img-fluid figure-img"></a>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-appendix-clustering-cat-2-wavelet2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;A.4
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-appendix-clustering-cat-2-wavelet2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.4: The horizontal highlights of the image.
 </figcaption>
 </figure>
 </div>
@@ -388,18 +409,18 @@ Figure&nbsp;A.4
 <div id="fig-appendix-clustering-cat-2-wavelet2" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-appendix-clustering-cat-2-wavelet2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="explanations_files/figure-html/fig-appendix-clustering-cat-2-wavelet2-output-4.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Figure&nbsp;A.5: "><img src="explanations_files/figure-html/fig-appendix-clustering-cat-2-wavelet2-output-4.svg" id="fig-appendix-clustering-cat-2-wavelet2" class="img-fluid figure-img"></a>
+<a href="explanations_files/figure-html/fig-appendix-clustering-cat-2-wavelet2-output-4.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Figure&nbsp;A.5: The diagonal highlights of the image"><img src="explanations_files/figure-html/fig-appendix-clustering-cat-2-wavelet2-output-4.svg" class="img-fluid figure-img"></a>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-appendix-clustering-cat-2-wavelet2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;A.5
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-appendix-clustering-cat-2-wavelet2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.5: The diagonal highlights of the image
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
-<p>For our purposes only the vertical and horizontal feature are of interest and we combine these two images. In order to make sure the features are highlighted optimal we need to rescale the images before the combination. For this we use a similar function like the MATLAB <a href="https://de.mathworks.com/help/wavelet/ref/wcodemat.html"><code>wcodemat</code></a> function.</p>
-<div id="f7ecbd05" class="cell" data-execution_count="3">
+<p>For our purposes, only the vertical and horizontal feature are of interest, and we combine these two images. In order to make sure the features are highlighted optimal, we need to rescale the images before combining them. For this we use a similar function like the MATLAB <a href="https://de.mathworks.com/help/wavelet/ref/wcodemat.html"><code>wcodemat</code></a> function.</p>
+<div id="5edc5847" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rescale(data, nb):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> np.<span class="bu">abs</span>(data)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> x <span class="op">-</span> np.<span class="bu">min</span>(x)</span>
@@ -419,7 +440,7 @@ Figure&nbsp;A.5
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>plt.imshow(rescale(cH1, <span class="dv">256</span>) <span class="op">+</span> rescale(cV1, <span class="dv">256</span>), cmap<span class="op">=</span>plt.get_cmap(<span class="st">"gray"</span>))</span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div id="cell-fig-appendix-clustering-cat-2-wavelet3" class="cell quarto-layout-panel" data-execution_count="4" data-layout-ncol="2">
+<div id="cell-fig-appendix-clustering-cat-2-wavelet3" class="cell quarto-layout-panel" data-layout-ncol="2" data-execution_count="4">
 <div class="quarto-layout-row">
 <div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div id="fig-appendix-clustering-cat-2-wavelet3" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -447,8 +468,8 @@ Figure&nbsp;A.7: Combination of vertical and horizontal features rescaled.
 </div>
 </div>
 </div>
-<p>In total this leads to the following function to transform a list of the images, given as row vectors.</p>
-<div id="dc4be838" class="cell" data-execution_count="5">
+<p>In total this leads to the following function to transform a list of images (given as row vectors).</p>
+<div id="cc4088c6" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pywt</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -461,7 +482,7 @@ Figure&nbsp;A.7: Combination of vertical and horizontal features rescaled.
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        data_w[:, i] <span class="op">=</span> np.matrix.flatten(rescale(cH1, <span class="dv">256</span>) <span class="op">+</span> rescale(cV1, <span class="dv">256</span>))</span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> data_w</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Note that the resulting image has only one forth of the pixels as the original image. We can also visualize the transformation steps as follows in <a href="#fig-appendices-dvc-workflow" class="quarto-xref">Figure&nbsp;<span>A.8</span></a>.</p>
+<p>Note, the resulting image has only one forth of the pixels as the original image. We can also visualize the transformation steps as follows in <a href="#fig-appendices-dvc-workflow" class="quarto-xref">Figure&nbsp;<span>A.8</span></a>.</p>
 <div id="fig-appendices-dvc-workflow" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-appendices-dvc-workflow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -475,7 +496,7 @@ Figure&nbsp;A.8: Workflow to get from the original image to the wavelet transfor
 </section>
 <section id="sec-appendix-pvsr" class="level2" data-number="A.2">
 <h2 data-number="A.2" class="anchored" data-anchor-id="sec-appendix-pvsr"><span class="header-section-number">A.2</span> Precision/Recall trade-off</h2>
-<p>In <a href="../clustering/supervised.html#sec-clustering-sl-performance" class="quarto-xref"><span>Section 2.2</span></a> we discuss the performance topics and we cam across the precision/recall trade-off.</p>
+<p>In <a href="../clustering/supervised.html#sec-clustering-sl-performance" class="quarto-xref"><span>Section 2.2</span></a> we discuss the performance topics and we come across the si called <em>precision/recall trade-off</em>.</p>
 <p>Lets remind ourself of the definitions:</p>
 <p>Recall or true positive rate (TPR) is the rate of relevant instances that are retrieved, or <em>true positive</em> over <em>all occurrences</em> <span class="math display">\[
 \operatorname{recall} = \frac{TP}{P} = \frac{TP}{TP + FN}.
@@ -496,7 +517,7 @@ Figure&nbsp;A.9: Some representatives and their score and three different thresh
 </figcaption>
 </figure>
 </div>
-<div id="9f0717b0" class="cell" data-execution_count="6">
+<div id="82c899f6" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code that provides the basis for the above figure.</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -528,7 +549,7 @@ Figure&nbsp;A.9: Some representatives and their score and three different thresh
 <span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>We can also plot the entire prevision recall curve</p>
+<p>We can also plot the entire precision/recall curves</p>
 <div id="cell-fig-appendix-clustering-sl-thresholds" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Show the code for the figure</summary>
@@ -587,6 +608,17 @@ Figure&nbsp;A.11: Precision vs.&nbsp;recall.
 <p>With the help of the precision vs.&nbsp;recall curve we can select a threshold appropriate for our classification, i.e.&nbsp;level between precision and recall as we see fit and our classification allows.</p>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-Kandolf_GDM" class="csl-entry" role="listitem">
+Kandolf, Peter. 2025. <span>“MECH-m-DUAL-1-DBM - Grundlagen Datenbasierter Methoden.”</span> <em>Management Center Innsbruck, Course Material</em>. <a href="https://doi.org/10.5281/zenodo.14671708">https://doi.org/10.5281/zenodo.14671708</a>.
+</div>
+</div>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>see <span class="citation" data-cites="Kandolf_GDM">Kandolf (<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">2025</a>)</span>, Section 10 or follow the direct <a href="https://kandolfp.github.io/MECH-M-DUAL-1-DBM/signal/wavelet.html">link</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
 </section>
 
 </main> <!-- /main -->
