@@ -1,0 +1,27 @@
+# Data management and data engineering {.unnumbered}
+
+In the previous sections we discussed classification with the help of various examples. 
+We did not talk about how the observations/data for training was provided, we just loaded them, and how to persist the model we generated.
+Nevertheless, data management and data engineering are essential aspects. 
+As with other topics discussed in these notes we can not hope to cover these topics comprehensively.
+Therefore, we will focus on some aspects and use some software solution for the implementation to see it in action to help understand the practical aspects of the challenges within these topics.
+
+There are several trivial but key aspects to managing our data:
+
+- without data we can not train a model
+- we need to keep track if the data changes to allow reproducibility and also to detect drifts
+- training times are often long and we need to store the resulting model together with the code and the data we used
+- and much more
+
+The last example in @sec-clustering-ssl is actually also quite useful in illustrating the importance of having correct data as with, e.g. wrong labels we can not hope to generate correct result.
+
+In addition, if we come to images we could also see how changing the basis (_raw_ to _wavelet_) changed our results.
+As each pixel of an image can be considered a feature for our training, we can imagine that changing only a small amount might change our model. 
+Now consider that most formats for storing images include some kind of image compression (see some discussed in @Kandolf_GDM) we can imagine that this has some influence on the training and resulting model. 
+Therefore, we also need to keep track how these features (our images) are generated and stored if we also want to make sure we do not get unexpected behaviour in our results. 
+
+The entire field of data management and data engineering is becoming more important and spawned several (research) fields which are often captured under the umbrella of _data science_. 
+
+A nice deep dive into the topics can be found in @Reis2022-tm. 
+
+So lets start and  dive in.
