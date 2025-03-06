@@ -25,6 +25,8 @@ dependencies = [
     "seaborn>=0.13.2",
     "pydotplus>=2.0.2",
     "graphviz>=0.20.3",
+    "skl2onnx>=1.18.0",
+    "onnxruntime>=1.20.1",
 ]
 requires-python = "==3.12.*"
 readme = "README.md"

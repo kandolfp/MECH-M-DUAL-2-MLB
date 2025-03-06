@@ -1,0 +1,146 @@
+# Model persistence {#sec-data-mp}
+
+So far we either loaded a data set or generated it on the fly for excursion into classification.
+Therefore, we should start by looking into ways to persist the models we generated so far.
+
+The general idea is to simply store the object we generate and load it at some later time. 
+Nevertheless, this can be quite tricky. 
+
+For example it might be that you do your training in a different environment than the evaluation or prediction.
+It might even be the case, that you switch programming language for these tasks.
+
+As we mainly worked with `scikit-learn` we should check the documentation for a start [docs - model persistence](https://scikit-learn.org/stable/model_persistence.html).
+
+Let us use the following toy example with our cats and dogs as reference. 
+```{python}
+#| lst-label: lst-data-mp-toyexample
+#| lst-cap: Code for the toy example
+#| classes: styled-output
+
+import numpy as np
+import scipy
+import requests
+import io
+import sklearn
+from sklearn import svm
+from sklearn.decomposition import PCA
+from sklearn.pipeline import make_pipeline
+from sklearn.ensemble import RandomForestClassifier, VotingClassifier
+import sklearn.metrics
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.svm import SVC
+
+%config InlineBackend.figure_formats = ["svg"]
+
+response = requests.get(
+    "https://github.com/dynamicslab/databook_python/"
+    "raw/refs/heads/master/DATA/catData_w.mat")
+cats_w = scipy.io.loadmat(io.BytesIO(response.content))["cat_wave"]
+
+response = requests.get(
+    "https://github.com/dynamicslab/databook_python/"
+    "raw/refs/heads/master/DATA/dogData_w.mat")
+dogs_w = scipy.io.loadmat(io.BytesIO(response.content))["dog_wave"]
+
+X_train = np.concatenate((cats_w[:60, :], dogs_w[:60, :]))
+y_train = np.repeat(np.array([1, -1]), 60)
+X_test = np.concatenate((cats_w[60:80, :], dogs_w[60:80, :]))
+y_test = np.repeat(np.array([1, -1]), 20)
+
+voting_clf = make_pipeline(
+    PCA(n_components=41),
+    VotingClassifier(
+        estimators=[
+            ("lda", LinearDiscriminantAnalysis()),
+            ("rf", RandomForestClassifier(
+                n_estimators=500,
+                max_leaf_nodes=2,
+                random_state=6020)),
+            ("svc", SVC(
+                kernel="linear",
+                probability=True,
+                random_state=6020)),
+        ],
+        flatten_transform=False,
+    )
+)
+
+voting_clf.fit(X_train, y_train)
+score = voting_clf.score(X_test, y_test)
+print(f"We have a hard voting score of {score}")
+```
+
+## Open Neural Network Exchange - ONNX
+
+> ONNX is an open format built to represent machine learning models. ONNX defines a common set of operators - the building blocks of machine learning and deep learning models - and a common file format to enable AI developers to use models with a variety of frameworks, tools, runtimes, and compilers. [LEARN MORE](https://onnx.ai/about.html)
+>
+> [https://onnx.ai/](https://onnx.ai/)
+
+The use-case for ONNX is when the persisted model is used without necessarily using the Python object itself.
+This is especially the case when the runtime for distributing the model is not Python.
+
+Now let us see how we can persist the model of @lst-data-mp-toyexample as an ONNX. 
+
+```{python}
+#| classes: styled-output
+from skl2onnx import to_onnx
+onx = to_onnx(voting_clf, X_train[:1].astype(np.int64))                 # <1>
+with open("model.onnx", "wb") as f:
+    f.write(onx.SerializeToString())
+```
+1. Not all data types are supported, so we need to convert to `int64`.
+
+As mentioned, the file format is binary so it does not make a lot of sense to actually read the image in plain text but we can have a look at the size
+```{python}
+#| classes: styled-output
+#| echo: false
+%%bash
+du -h model.onnx
+```
+which is not very large.
+
+Unfortunately, there is no method to convert back to our sklearn model.
+What we can use it in the `onnxruntime` and see if we still get the same score:
+```{python}
+#| classes: styled-output
+import onnxruntime as ort
+
+model = ort.InferenceSession("model.onnx")
+input_name = model.get_inputs()[0].name
+predictions = model.run(None, {input_name: X_test.astype(np.int64)})
+
+score = sklearn.metrics.accuracy_score(y_test, predictions[0])
+print(f"We have a score of for {score} for the recovered model.")
+```
+
+```{python}
+#| echo: false
+%%bash
+# Code to remove above files
+rm model.onnx
+```
+As we can see, the score is actually better than before. 
+
+::: {.callout-important}
+This is due to the fact, that `skl2onnx` is not able to convert all `sklearn` models.
+This is especially true for the `SVC` class included in our composite model.
+:::
+
+Furthermore, if we inspect our predictions output from above a bit more it looks like we have switched to soft voting.
+
+::: {.callout-caution appearance="simple" icon=false}
+:::: {#exr-data-mp-onnx}
+
+## Test how the recovery works for SVC
+
+Try to rewrite the model and check the resulting score after recovery vs. the original score for the following modifications.
+
+1. Remove the `probability=True` for `SVC`.
+1. Replace `SVC` by `LinearSVC`.
+1. Remove the `SVC` all together and replace it with a `LogisticRegression` classifier.
+
+::::
+:::
+
+### `pickle` - Python object serialization
+
