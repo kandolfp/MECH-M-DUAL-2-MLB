@@ -36,9 +36,10 @@ Luckily for us there are several data packages available for general use.
 One of them is the [Fisher Iris data set](https://en.wikipedia.org/wiki/Iris_flower_data_set).
 
 :::: {#fig-medium-iris}
-[![](https://miro.medium.com/v2/resize:fit:1400/format:webp/1*H2UmG5L1I5bzFCW006N5Ag.png)](https://eminebozkus.medium.com/exploring-the-iris-flower-dataset-4e000bcc266c)
 
-Illustration of the recorded features and structure of the iris dataset from the [Medium article - Exploring the Iris flower dataset](https://eminebozkus.medium.com/exploring-the-iris-flower-dataset-4e000bcc266c).
+![](../_assets/clustering/fischer)
+
+Illustration of the recorded features and structure of the iris dataset inspired by the  [Medium article - Exploring the Iris flower dataset](https://eminebozkus.medium.com/exploring-the-iris-flower-dataset-4e000bcc266c).
 ::::
 
 We use the possibilities of [`sklearn`](https://scikit-learn.org/stable/) [^1] to access the dataset in Python.
