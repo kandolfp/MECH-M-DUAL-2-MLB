@@ -216,7 +216,7 @@ As we can see, the score stays the same.
 ::: {.callout-caution appearance="simple" icon=false}
 :::: {#exr-data-mp-pickle}
 
-## Further investigations
+## Further investigations for `pickle`
 
 1. For the loaded model, switch to soft voting by calling
    ```{.python}
