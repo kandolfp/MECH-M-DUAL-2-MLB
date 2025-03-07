@@ -292,3 +292,22 @@ Hint: look at `voting_clf[0].components_`.
 1. Apply the self defined kernel from @exr-data-mp-pickle and test the load/recover cycle. 
 ::::
 :::
+
+## Comparison of the different approaches
+
+The [docs](https://scikit-learn.org/stable/model_persistence.html#summarizing-the-key-points) are doing an excellent job in summarizing the key differences.
+
+> Based on the different approaches for model persistence, the key points for each approach can be summarized as follows:
+> 
+> 1. ONNX: It provides a uniform format for persisting any machine learning or deep learning model (other than `scikit-learn`) and is useful for model inference (predictions). It can however, result in compatibility issues with different frameworks.
+>
+> 1. `skops.io`: Trained `scikit-learn` models can be easily shared and put into production using `skops.io`. It is more secure compared to alternate approaches based on `pickle` because it does not load arbitrary code unless explicitly asked for by the user. Such code needs to be packaged and importable in the target Python environment.
+>
+> 1. `joblib`: Efficient memory mapping techniques make it faster when using the same persisted model in multiple Python processes when using `mmap_mode="r"`. It also gives easy shortcuts to compress and decompress the persisted object without the need for extra code. However, it may trigger the execution of malicious code when loading a model from an untrusted source as any other `pickle`-based persistence mechanism.
+> 
+> 1. `pickle`: It is native to Python and most Python objects can be serialized and deserialized using `pickle`, including custom Python classes and functions as long as they are defined in a package that can be imported in the target environment. While `pickle` can be used to easily save and load `scikit-learn` models, it may trigger the execution of malicious code while loading a model from an untrusted source. `pickle` can also be very efficient memorywise if the model was persisted with protocol=5 but it does not support memory mapping.
+>
+> 1. `cloudpickle`: It has comparable loading efficiency as `pickle` and `joblib` (without memory mapping), but offers additional flexibility to serialize custom Python code such as `lambda` expressions and interactively defined functions and classes. It might be a last resort to persist pipelines with custom Python components such as a `sklearn.preprocessing.FunctionTransformer` that wraps a function defined in the training script itself or more generally outside of any importable Python package. Note that `cloudpickle` offers no forward compatibility guarantees and you might need the same version of `cloudpickle` to load the persisted model along with the same version of all the libraries used to define the model. As the other pickle-based persistence mechanisms, it may trigger the execution of malicious code while loading a model from an untrusted source.
+>
+> Source: [scikit-learn.org](https://scikit-learn.org/stable/model_persistence.html#summarizing-the-key-points), accessed 07.03.2025.
+
