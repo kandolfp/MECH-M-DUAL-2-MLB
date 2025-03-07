@@ -128,6 +128,8 @@ This is especially true for the `SVC` class included in our composite model.
 
 Furthermore, if we inspect our predictions output from above a bit more it looks like we have switched to soft voting.
 
+Overall, we can see that ONNX is a way to persist a model such that we can make predictions with it but we do no longer have the Python object.
+
 ::: {.callout-caution appearance="simple" icon=false}
 :::: {#exr-data-mp-onnx}
 
