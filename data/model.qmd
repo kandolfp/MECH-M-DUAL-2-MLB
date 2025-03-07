@@ -231,3 +231,64 @@ As we can see, the score stays the same.
 
 ::::
 :::
+
+## `skops.io` - the more secure Python alternative
+
+As an alternative to `pickle` we can use [`skops.io`](https://skops.readthedocs.io/en/stable/persistence.html#persistence) as a more secure alternative. 
+It is developed as a secure alternative for `pickle` and therefore supports a wide range of objects.
+The main idea is, that only _trusted_ functions are loaded and not anything included in the file.
+It is also possible to verify our data before load it, increasing the security further.
+Still, it returns the Python object, if it can be loaded and we can manipulate it as with `pickle`.
+
+As a downside, the process is slower and some user defined functions/object might not work as desired.
+This also implies, that we also need to have the same environment for loading as we had for storing the Python object.
+
+The interface itself is simple and orients itself at `pickle`.
+
+```{python}
+#| classes: styled-output
+import skops.io as sio
+obj = sio.dump(voting_clf, "model.skops")
+```
+
+For comparison, we show the size of the file
+```{python}
+#| classes: styled-output
+#| echo: false
+%%bash
+du -h model.skops
+```
+and we can see that this format has a significant higher overhead as the other formats. 
+
+Retrieving the model is a two step process, first loading the _untrusted types_ and than loading the verified objects.
+
+```{python}
+#| classes: styled-output
+unknown_types = sio.get_untrusted_types(file="model.skops")
+# investigate the contents of unknown_types, and only load if you trust
+# everything you see.
+for i, a in enumerate(unknown_types):
+    print(f"Unknown type at {i} is {a}.")
+
+clf = sio.load("model.skops", trusted=unknown_types)
+score = clf.score(X_test, y_test)
+print(f"We have score of {score} after loading the object again.")
+```
+```{python}
+#| echo: false
+%%bash
+# Code to remove above files
+rm model.skops
+```
+
+::: {.callout-caution appearance="simple" icon=false}
+:::: {#exr-data-mp-skops.io}
+
+## Further investigations for `skops.io`
+
+1. The included PCA works with `float64`, this is not necessary, can we reduce the file size by switching to `float16`? 
+Hint: look at `voting_clf[0].components_`.
+
+1. Apply the self defined kernel from @exr-data-mp-pickle and test the load/recover cycle. 
+::::
+:::
