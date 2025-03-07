@@ -70,6 +70,11 @@ score = voting_clf.score(X_test, y_test)
 print(f"We have a hard voting score of {score}")
 ```
 
+::: {.callout-note}
+In the next couple of exercises we create different version of our model and persist it to storage.
+Try to keep track of what model version corresponds to which exercise/code block.
+:::
+
 ## Open Neural Network Exchange - ONNX
 
 > ONNX is an open format built to represent machine learning models. ONNX defines a common set of operators - the building blocks of machine learning and deep learning models - and a common file format to enable AI developers to use models with a variety of frameworks, tools, runtimes, and compilers. [LEARN MORE](https://onnx.ai/about.html)
@@ -311,3 +316,14 @@ The [docs](https://scikit-learn.org/stable/model_persistence.html#summarizing-th
 >
 > Source: [scikit-learn.org](https://scikit-learn.org/stable/model_persistence.html#summarizing-the-key-points), accessed 07.03.2025.
 
+## Further considerations
+
+Now that we know how to persist our models, or hope to do so, we need to talk about how we keep track of what exactly we stored.
+
+In the previous exercises we created multiple versions of our model and stored them to.
+If we look at the different files, are we sure we know which version corresponds to which code block?
+If we can, good job but what about in two weeks?
+
+Now if we try with various parameters for our composite method to achieve better results we might end up with even more variants. 
+To make sure we have reproducible models we need to track the model together with the code.
+This is what we are going go look at in the next section. 
