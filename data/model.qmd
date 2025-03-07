@@ -146,3 +146,88 @@ Try to rewrite the model and check the resulting score after recovery vs. the or
 
 ### `pickle` - Python object serialization
 
+We can also swing the pendulum in the other direction and use the Python Standard Library
+[`pickle`](https://docs.python.org/3/library/pickle.html#module-pickle) to persist a model. 
+
+Before we go into more details we should emphasise the potential security problem included with `pickle` as stated in its own docs:
+
+::: {.callout-important}
+
+## The `pickle` module is not secure. Only _unpickle_ data you trust.
+
+It is possible to construct malicious pickle data which will **execute arbitrary code during unpickling**. Never unpickle data that could have come from an untrusted source, or that could have been tampered with.
+
+Consider signing data with [`hmac`](https://docs.python.org/3/library/hmac.html#module-hmac) if you need to ensure that it has not been tampered with.
+
+Safer serialization formats such as [`json`](https://docs.python.org/3/library/json.html#module-json) may be more appropriate if you are processing untrusted data. See [Comparison with json](https://docs.python.org/3/library/pickle.html#comparison-with-json).
+:::
+
+As `pickle` is the native implementation in Python.
+It is easy to use and works for (almost) all models and configurations.
+The downside is, that we need to absolutely trust the source of our model and where it was stored as well as the different steps it takes to arrive in our storage.
+
+Furthermore, the environment we load the model into needs to be the same as the one we stored it from.
+As we have already seen how the _dependency hell_[^dh] influences our development, we bring theses issues with us.
+
+It is not guaranteed that a model can be loaded with a different `scikit-learn` version or let alone a different `numpy` version that is only a sub-dependency of `scikit-learn`.
+Furthermore, if a different hardware is involved there might be problems as well. 
+As a consequence, if we use `pickle` a thorough version control with package management is key!
+
+If we have a model that moves around different processes via the disc or is restored frequently from storage but can not be permanently in storage and therefore performance for loading and storing is of interest we can also use [`joblib`](https://joblib.readthedocs.io/en/latest/index.html#module-joblib).
+
+[^dh]: see [MECH-M-DUAL-1-SWD, Section 4.1](https://kandolfp.github.io/MECH-M-DUAL-1-SWD/basics/epilogue.html#sec-intro-pm-reproducibility)
+
+Now let us see how we can persist the model of @lst-data-mp-toyexample as an `pickle`. 
+
+```{python}
+#| classes: styled-output
+from pickle import dump
+with open("model.pkl", "wb") as f:
+    dump(voting_clf, f, protocol=5)
+```
+
+As mentioned, the file format is binary so it does not make a lot of sense to actually read the image in plain text but we can have a look at the size
+```{python}
+#| classes: styled-output
+#| echo: false
+%%bash
+du -h model.pkl
+```
+and we can see that the storage demands are slightly higher than for ONNX.
+
+We restore the model via
+```{python}
+#| classes: styled-output
+from pickle import load
+with open("model.pkl", "rb") as f:
+    clf = load(f)
+score = clf.score(X_test, y_test)
+print(f"We have score of {score} after loading the object again.")
+```
+```{python}
+#| echo: false
+%%bash
+# Code to remove above files
+rm model.pkl
+```
+As we can see, the score stays the same. 
+
+
+::: {.callout-caution appearance="simple" icon=false}
+:::: {#exr-data-mp-pickle}
+
+## Further investigations
+
+1. For the loaded model, switch to soft voting by calling
+   ```{.python}
+   clf[1].voting = "soft"
+   clf[1].named_estimators["svc"].probability = True
+   clf.fit(X_train, y_train)
+   clf.score(X_test, y_test)
+   ```
+1. Use [`joblib`](https://joblib.readthedocs.io/en/latest/index.html#module-joblib) to persist and load the module, also check the file size.
+1. Switch for the `SVC` to a `"rbf"` kernel and see if you can fully recover the object
+1. Some user defined functions can cause problems for `pickle` try persisting the model with [`cloudpickle`](https://github.com/cloudpipe/cloudpickle) and test with the kernel function `rbf = lambda x, y: np.exp(1e-2 * np.abs(x@y.T))`.
+
+::::
+:::
