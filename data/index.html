@@ -63,6 +63,9 @@ div.csl-indent {
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap-60c12469a02addc16ece3c92f73823bb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="../site_libs/bootstrap/bootstrap-dark-de1eb42f17741db2ad7a825f871af34a.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -193,6 +196,12 @@ div.csl-indent {
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Model persistence</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../data/code.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Code persistence</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item">
@@ -265,8 +274,19 @@ div.csl-indent {
 <p>The last example in <a href="../clustering/semisupervised.html" class="quarto-xref"><span>3&nbsp; Semi-Supervised learning</span></a> is actually also quite useful in illustrating the importance of having correct data as with, e.g.&nbsp;wrong labels we can not hope to generate correct result.</p>
 <p>In addition, if we come to images we could also see how changing the basis (<em>raw</em> to <em>wavelet</em>) changed our results. As each pixel of an image can be considered a feature for our training, we can imagine that changing only a small amount might change our model. Now consider that most formats for storing images include some kind of image compression (see some discussed in <span class="citation" data-cites="Kandolf_GDM">Kandolf (<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">2025</a>)</span>) we can imagine that this has some influence on the training and resulting model. Therefore, we also need to keep track how these features (our images) are generated and stored if we also want to make sure we do not get unexpected behaviour in our results.</p>
 <p>The entire field of data management and data engineering is becoming more important and spawned several (research) fields which are often captured under the umbrella of <em>data science</em>.</p>
-<p>A nice deep dive into the topics can be found in <span class="citation" data-cites="Reis2022-tm">Reis (<a href="../references.html#ref-Reis2022-tm" role="doc-biblioref">2022</a>)</span>.</p>
-<p>So lets start and dive in.</p>
+<p>A nice deep dive into the topics can be found in <span class="citation" data-cites="Reis2022-tm">Reis (<a href="../references.html#ref-Reis2022-tm" role="doc-biblioref">2022</a>)</span>, where the details to the so called <em>data engineering lifecycle</em> illustrated in <a href="#fig-data-delf" class="quarto-xref">Figure&nbsp;<span>1</span></a> can be found.</p>
+<div id="fig-data-delf" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-data-delf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../_assets/data/data_eng_lifecycle.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;1: Illustration of a common data engineering lifecycle in data processing. The related topics are often referred to as undercurrents."><img src="../_assets/data/data_eng_lifecycle.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-data-delf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Illustration of a common data engineering lifecycle in data processing. The <em>related topics</em> are often referred to as <em>undercurrents</em>.
+</figcaption>
+</figure>
+</div>
+<p>We will see some aspects of the lifecycle in action, we also integrate code into this picture. Several aspects to the <em>related topics</em> are very important but can not be fully covered here, we highlight sections of importance.</p>
+<p>So let us start and dive into the waters of data management.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
@@ -866,6 +886,38 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>
   </div>
 </footer>
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 

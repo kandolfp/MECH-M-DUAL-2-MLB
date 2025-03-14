@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../summary.html" rel="next">
+<link href="../data/code.html" rel="next">
 <link href="../data/index.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -207,6 +207,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Model persistence</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../data/code.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Code persistence</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item">
@@ -248,13 +254,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#open-neural-network-exchange---onnx" id="toc-open-neural-network-exchange---onnx" class="nav-link active" data-scroll-target="#open-neural-network-exchange---onnx"><span class="header-section-number">4.1</span> Open Neural Network Exchange - ONNX</a>
-  <ul class="collapse">
-  <li><a href="#pickle---python-object-serialization" id="toc-pickle---python-object-serialization" class="nav-link" data-scroll-target="#pickle---python-object-serialization"><span class="header-section-number">4.1.1</span> <code>pickle</code> - Python object serialization</a></li>
-  </ul></li>
-  <li><a href="#skops.io---the-more-secure-python-alternative" id="toc-skops.io---the-more-secure-python-alternative" class="nav-link" data-scroll-target="#skops.io---the-more-secure-python-alternative"><span class="header-section-number">4.2</span> <code>skops.io</code> - the more secure Python alternative</a></li>
-  <li><a href="#comparison-of-the-different-approaches" id="toc-comparison-of-the-different-approaches" class="nav-link" data-scroll-target="#comparison-of-the-different-approaches"><span class="header-section-number">4.3</span> Comparison of the different approaches</a></li>
-  <li><a href="#further-considerations" id="toc-further-considerations" class="nav-link" data-scroll-target="#further-considerations"><span class="header-section-number">4.4</span> Further considerations</a></li>
+  <li><a href="#open-neural-network-exchange---onnx" id="toc-open-neural-network-exchange---onnx" class="nav-link active" data-scroll-target="#open-neural-network-exchange---onnx"><span class="header-section-number">4.1</span> Open Neural Network Exchange - ONNX</a></li>
+  <li><a href="#pickle---python-object-serialization" id="toc-pickle---python-object-serialization" class="nav-link" data-scroll-target="#pickle---python-object-serialization"><span class="header-section-number">4.2</span> <code>pickle</code> - Python object serialization</a></li>
+  <li><a href="#skops.io---the-more-secure-python-alternative" id="toc-skops.io---the-more-secure-python-alternative" class="nav-link" data-scroll-target="#skops.io---the-more-secure-python-alternative"><span class="header-section-number">4.3</span> <code>skops.io</code> - the more secure Python alternative</a></li>
+  <li><a href="#comparison-of-the-different-approaches" id="toc-comparison-of-the-different-approaches" class="nav-link" data-scroll-target="#comparison-of-the-different-approaches"><span class="header-section-number">4.4</span> Comparison of the different approaches</a></li>
+  <li><a href="#further-considerations" id="toc-further-considerations" class="nav-link" data-scroll-target="#further-considerations"><span class="header-section-number">4.5</span> Further considerations</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/edit/main/data/model.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -285,7 +289,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>For example it might be that you do your training in a different environment than the evaluation or prediction. It might even be the case, that you switch programming language for these tasks.</p>
 <p>As we mainly worked with <code>scikit-learn</code> we should check the documentation for a start <a href="https://scikit-learn.org/stable/model_persistence.html">docs - model persistence</a>.</p>
 <p>Let us use the following toy example with our cats and dogs as reference.</p>
-<div id="e2ed7ee1" class="cell styled-output" data-execution_count="1">
+<div id="336256a1" class="cell styled-output" data-execution_count="1">
 <div id="lst-data-mp-toyexample" class="python cell-code listing quarto-float quarto-figure quarto-figure-left anchored">
 <figure class="quarto-float quarto-float-lst figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-data-mp-toyexample-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -297,52 +301,48 @@ Listing&nbsp;4.1: Code for the toy example
 <span id="lst-data-mp-toyexample-3"><a href="#lst-data-mp-toyexample-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="lst-data-mp-toyexample-4"><a href="#lst-data-mp-toyexample-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> io</span>
 <span id="lst-data-mp-toyexample-5"><a href="#lst-data-mp-toyexample-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sklearn</span>
-<span id="lst-data-mp-toyexample-6"><a href="#lst-data-mp-toyexample-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> svm</span>
-<span id="lst-data-mp-toyexample-7"><a href="#lst-data-mp-toyexample-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA</span>
-<span id="lst-data-mp-toyexample-8"><a href="#lst-data-mp-toyexample-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> make_pipeline</span>
-<span id="lst-data-mp-toyexample-9"><a href="#lst-data-mp-toyexample-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier, VotingClassifier</span>
-<span id="lst-data-mp-toyexample-10"><a href="#lst-data-mp-toyexample-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sklearn.metrics</span>
-<span id="lst-data-mp-toyexample-11"><a href="#lst-data-mp-toyexample-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.discriminant_analysis <span class="im">import</span> LinearDiscriminantAnalysis</span>
-<span id="lst-data-mp-toyexample-12"><a href="#lst-data-mp-toyexample-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.svm <span class="im">import</span> SVC</span>
-<span id="lst-data-mp-toyexample-13"><a href="#lst-data-mp-toyexample-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="lst-data-mp-toyexample-14"><a href="#lst-data-mp-toyexample-14" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
-<span id="lst-data-mp-toyexample-15"><a href="#lst-data-mp-toyexample-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="lst-data-mp-toyexample-16"><a href="#lst-data-mp-toyexample-16" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(</span>
-<span id="lst-data-mp-toyexample-17"><a href="#lst-data-mp-toyexample-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://github.com/dynamicslab/databook_python/"</span></span>
-<span id="lst-data-mp-toyexample-18"><a href="#lst-data-mp-toyexample-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"raw/refs/heads/master/DATA/catData_w.mat"</span>)</span>
-<span id="lst-data-mp-toyexample-19"><a href="#lst-data-mp-toyexample-19" aria-hidden="true" tabindex="-1"></a>cats_w <span class="op">=</span> scipy.io.loadmat(io.BytesIO(response.content))[<span class="st">"cat_wave"</span>]</span>
-<span id="lst-data-mp-toyexample-20"><a href="#lst-data-mp-toyexample-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="lst-data-mp-toyexample-21"><a href="#lst-data-mp-toyexample-21" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(</span>
-<span id="lst-data-mp-toyexample-22"><a href="#lst-data-mp-toyexample-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://github.com/dynamicslab/databook_python/"</span></span>
-<span id="lst-data-mp-toyexample-23"><a href="#lst-data-mp-toyexample-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">"raw/refs/heads/master/DATA/dogData_w.mat"</span>)</span>
-<span id="lst-data-mp-toyexample-24"><a href="#lst-data-mp-toyexample-24" aria-hidden="true" tabindex="-1"></a>dogs_w <span class="op">=</span> scipy.io.loadmat(io.BytesIO(response.content))[<span class="st">"dog_wave"</span>]</span>
-<span id="lst-data-mp-toyexample-25"><a href="#lst-data-mp-toyexample-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="lst-data-mp-toyexample-26"><a href="#lst-data-mp-toyexample-26" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> np.concatenate((cats_w[:<span class="dv">60</span>, :], dogs_w[:<span class="dv">60</span>, :]))</span>
-<span id="lst-data-mp-toyexample-27"><a href="#lst-data-mp-toyexample-27" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> np.repeat(np.array([<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>]), <span class="dv">60</span>)</span>
-<span id="lst-data-mp-toyexample-28"><a href="#lst-data-mp-toyexample-28" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> np.concatenate((cats_w[<span class="dv">60</span>:<span class="dv">80</span>, :], dogs_w[<span class="dv">60</span>:<span class="dv">80</span>, :]))</span>
-<span id="lst-data-mp-toyexample-29"><a href="#lst-data-mp-toyexample-29" aria-hidden="true" tabindex="-1"></a>y_test <span class="op">=</span> np.repeat(np.array([<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>]), <span class="dv">20</span>)</span>
-<span id="lst-data-mp-toyexample-30"><a href="#lst-data-mp-toyexample-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="lst-data-mp-toyexample-31"><a href="#lst-data-mp-toyexample-31" aria-hidden="true" tabindex="-1"></a>voting_clf <span class="op">=</span> make_pipeline(</span>
-<span id="lst-data-mp-toyexample-32"><a href="#lst-data-mp-toyexample-32" aria-hidden="true" tabindex="-1"></a>    PCA(n_components<span class="op">=</span><span class="dv">41</span>),</span>
-<span id="lst-data-mp-toyexample-33"><a href="#lst-data-mp-toyexample-33" aria-hidden="true" tabindex="-1"></a>    VotingClassifier(</span>
-<span id="lst-data-mp-toyexample-34"><a href="#lst-data-mp-toyexample-34" aria-hidden="true" tabindex="-1"></a>        estimators<span class="op">=</span>[</span>
-<span id="lst-data-mp-toyexample-35"><a href="#lst-data-mp-toyexample-35" aria-hidden="true" tabindex="-1"></a>            (<span class="st">"lda"</span>, LinearDiscriminantAnalysis()),</span>
-<span id="lst-data-mp-toyexample-36"><a href="#lst-data-mp-toyexample-36" aria-hidden="true" tabindex="-1"></a>            (<span class="st">"rf"</span>, RandomForestClassifier(</span>
-<span id="lst-data-mp-toyexample-37"><a href="#lst-data-mp-toyexample-37" aria-hidden="true" tabindex="-1"></a>                n_estimators<span class="op">=</span><span class="dv">500</span>,</span>
-<span id="lst-data-mp-toyexample-38"><a href="#lst-data-mp-toyexample-38" aria-hidden="true" tabindex="-1"></a>                max_leaf_nodes<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="lst-data-mp-toyexample-6"><a href="#lst-data-mp-toyexample-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA</span>
+<span id="lst-data-mp-toyexample-7"><a href="#lst-data-mp-toyexample-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> make_pipeline</span>
+<span id="lst-data-mp-toyexample-8"><a href="#lst-data-mp-toyexample-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier, VotingClassifier </span>
+<span id="lst-data-mp-toyexample-9"><a href="#lst-data-mp-toyexample-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.discriminant_analysis <span class="im">import</span> LinearDiscriminantAnalysis</span>
+<span id="lst-data-mp-toyexample-10"><a href="#lst-data-mp-toyexample-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.svm <span class="im">import</span> SVC</span>
+<span id="lst-data-mp-toyexample-11"><a href="#lst-data-mp-toyexample-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="lst-data-mp-toyexample-12"><a href="#lst-data-mp-toyexample-12" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(</span>
+<span id="lst-data-mp-toyexample-13"><a href="#lst-data-mp-toyexample-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://github.com/dynamicslab/databook_python/"</span></span>
+<span id="lst-data-mp-toyexample-14"><a href="#lst-data-mp-toyexample-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"raw/refs/heads/master/DATA/catData_w.mat"</span>)</span>
+<span id="lst-data-mp-toyexample-15"><a href="#lst-data-mp-toyexample-15" aria-hidden="true" tabindex="-1"></a>cats_w <span class="op">=</span> scipy.io.loadmat(io.BytesIO(response.content))[<span class="st">"cat_wave"</span>]</span>
+<span id="lst-data-mp-toyexample-16"><a href="#lst-data-mp-toyexample-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="lst-data-mp-toyexample-17"><a href="#lst-data-mp-toyexample-17" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(</span>
+<span id="lst-data-mp-toyexample-18"><a href="#lst-data-mp-toyexample-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://github.com/dynamicslab/databook_python/"</span></span>
+<span id="lst-data-mp-toyexample-19"><a href="#lst-data-mp-toyexample-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"raw/refs/heads/master/DATA/dogData_w.mat"</span>)</span>
+<span id="lst-data-mp-toyexample-20"><a href="#lst-data-mp-toyexample-20" aria-hidden="true" tabindex="-1"></a>dogs_w <span class="op">=</span> scipy.io.loadmat(io.BytesIO(response.content))[<span class="st">"dog_wave"</span>]</span>
+<span id="lst-data-mp-toyexample-21"><a href="#lst-data-mp-toyexample-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="lst-data-mp-toyexample-22"><a href="#lst-data-mp-toyexample-22" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> np.concatenate((cats_w[:<span class="dv">60</span>, :], dogs_w[:<span class="dv">60</span>, :]))</span>
+<span id="lst-data-mp-toyexample-23"><a href="#lst-data-mp-toyexample-23" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> np.repeat(np.array([<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>]), <span class="dv">60</span>)</span>
+<span id="lst-data-mp-toyexample-24"><a href="#lst-data-mp-toyexample-24" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> np.concatenate((cats_w[<span class="dv">60</span>:<span class="dv">80</span>, :], dogs_w[<span class="dv">60</span>:<span class="dv">80</span>, :]))</span>
+<span id="lst-data-mp-toyexample-25"><a href="#lst-data-mp-toyexample-25" aria-hidden="true" tabindex="-1"></a>y_test <span class="op">=</span> np.repeat(np.array([<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>]), <span class="dv">20</span>)</span>
+<span id="lst-data-mp-toyexample-26"><a href="#lst-data-mp-toyexample-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="lst-data-mp-toyexample-27"><a href="#lst-data-mp-toyexample-27" aria-hidden="true" tabindex="-1"></a>voting_clf <span class="op">=</span> make_pipeline(</span>
+<span id="lst-data-mp-toyexample-28"><a href="#lst-data-mp-toyexample-28" aria-hidden="true" tabindex="-1"></a>    PCA(n_components<span class="op">=</span><span class="dv">41</span>),</span>
+<span id="lst-data-mp-toyexample-29"><a href="#lst-data-mp-toyexample-29" aria-hidden="true" tabindex="-1"></a>    VotingClassifier(</span>
+<span id="lst-data-mp-toyexample-30"><a href="#lst-data-mp-toyexample-30" aria-hidden="true" tabindex="-1"></a>        estimators<span class="op">=</span>[</span>
+<span id="lst-data-mp-toyexample-31"><a href="#lst-data-mp-toyexample-31" aria-hidden="true" tabindex="-1"></a>            (<span class="st">"lda"</span>, LinearDiscriminantAnalysis()),</span>
+<span id="lst-data-mp-toyexample-32"><a href="#lst-data-mp-toyexample-32" aria-hidden="true" tabindex="-1"></a>            (<span class="st">"rf"</span>, RandomForestClassifier(</span>
+<span id="lst-data-mp-toyexample-33"><a href="#lst-data-mp-toyexample-33" aria-hidden="true" tabindex="-1"></a>                n_estimators<span class="op">=</span><span class="dv">500</span>,</span>
+<span id="lst-data-mp-toyexample-34"><a href="#lst-data-mp-toyexample-34" aria-hidden="true" tabindex="-1"></a>                max_leaf_nodes<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="lst-data-mp-toyexample-35"><a href="#lst-data-mp-toyexample-35" aria-hidden="true" tabindex="-1"></a>                random_state<span class="op">=</span><span class="dv">6020</span>)),</span>
+<span id="lst-data-mp-toyexample-36"><a href="#lst-data-mp-toyexample-36" aria-hidden="true" tabindex="-1"></a>            (<span class="st">"svc"</span>, SVC(</span>
+<span id="lst-data-mp-toyexample-37"><a href="#lst-data-mp-toyexample-37" aria-hidden="true" tabindex="-1"></a>                kernel<span class="op">=</span><span class="st">"linear"</span>,</span>
+<span id="lst-data-mp-toyexample-38"><a href="#lst-data-mp-toyexample-38" aria-hidden="true" tabindex="-1"></a>                probability<span class="op">=</span><span class="va">True</span>,</span>
 <span id="lst-data-mp-toyexample-39"><a href="#lst-data-mp-toyexample-39" aria-hidden="true" tabindex="-1"></a>                random_state<span class="op">=</span><span class="dv">6020</span>)),</span>
-<span id="lst-data-mp-toyexample-40"><a href="#lst-data-mp-toyexample-40" aria-hidden="true" tabindex="-1"></a>            (<span class="st">"svc"</span>, SVC(</span>
-<span id="lst-data-mp-toyexample-41"><a href="#lst-data-mp-toyexample-41" aria-hidden="true" tabindex="-1"></a>                kernel<span class="op">=</span><span class="st">"linear"</span>,</span>
-<span id="lst-data-mp-toyexample-42"><a href="#lst-data-mp-toyexample-42" aria-hidden="true" tabindex="-1"></a>                probability<span class="op">=</span><span class="va">True</span>,</span>
-<span id="lst-data-mp-toyexample-43"><a href="#lst-data-mp-toyexample-43" aria-hidden="true" tabindex="-1"></a>                random_state<span class="op">=</span><span class="dv">6020</span>)),</span>
-<span id="lst-data-mp-toyexample-44"><a href="#lst-data-mp-toyexample-44" aria-hidden="true" tabindex="-1"></a>        ],</span>
-<span id="lst-data-mp-toyexample-45"><a href="#lst-data-mp-toyexample-45" aria-hidden="true" tabindex="-1"></a>        flatten_transform<span class="op">=</span><span class="va">False</span>,</span>
-<span id="lst-data-mp-toyexample-46"><a href="#lst-data-mp-toyexample-46" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="lst-data-mp-toyexample-47"><a href="#lst-data-mp-toyexample-47" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="lst-data-mp-toyexample-48"><a href="#lst-data-mp-toyexample-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="lst-data-mp-toyexample-49"><a href="#lst-data-mp-toyexample-49" aria-hidden="true" tabindex="-1"></a>voting_clf.fit(X_train, y_train)</span>
-<span id="lst-data-mp-toyexample-50"><a href="#lst-data-mp-toyexample-50" aria-hidden="true" tabindex="-1"></a>score <span class="op">=</span> voting_clf.score(X_test, y_test)</span>
-<span id="lst-data-mp-toyexample-51"><a href="#lst-data-mp-toyexample-51" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"We have a hard voting score of </span><span class="sc">{</span>score<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="lst-data-mp-toyexample-40"><a href="#lst-data-mp-toyexample-40" aria-hidden="true" tabindex="-1"></a>        ],</span>
+<span id="lst-data-mp-toyexample-41"><a href="#lst-data-mp-toyexample-41" aria-hidden="true" tabindex="-1"></a>        flatten_transform<span class="op">=</span><span class="va">False</span>,</span>
+<span id="lst-data-mp-toyexample-42"><a href="#lst-data-mp-toyexample-42" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="lst-data-mp-toyexample-43"><a href="#lst-data-mp-toyexample-43" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="lst-data-mp-toyexample-44"><a href="#lst-data-mp-toyexample-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="lst-data-mp-toyexample-45"><a href="#lst-data-mp-toyexample-45" aria-hidden="true" tabindex="-1"></a>voting_clf.fit(X_train, y_train)</span>
+<span id="lst-data-mp-toyexample-46"><a href="#lst-data-mp-toyexample-46" aria-hidden="true" tabindex="-1"></a>score <span class="op">=</span> voting_clf.score(X_test, y_test)</span>
+<span id="lst-data-mp-toyexample-47"><a href="#lst-data-mp-toyexample-47" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"We have a hard voting score of </span><span class="sc">{</span>score<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </figure>
 </div>
@@ -367,11 +367,11 @@ Note
 <h2 data-number="4.1" class="anchored" data-anchor-id="open-neural-network-exchange---onnx"><span class="header-section-number">4.1</span> Open Neural Network Exchange - ONNX</h2>
 <blockquote class="blockquote">
 <p>ONNX is an open format built to represent machine learning models. ONNX defines a common set of operators - the building blocks of machine learning and deep learning models - and a common file format to enable AI developers to use models with a variety of frameworks, tools, runtimes, and compilers. <a href="https://onnx.ai/about.html">LEARN MORE</a></p>
-<p><a href="https://onnx.ai/">https://onnx.ai/</a></p>
+<p>Source: <a href="https://onnx.ai/">https://onnx.ai/</a>, accessed 07.03.2025.</p>
 </blockquote>
 <p>The use-case for ONNX is when the persisted model is used without necessarily using the Python object itself. This is especially the case when the runtime for distributing the model is not Python.</p>
 <p>Now let us see how we can persist the model of <a href="#lst-data-mp-toyexample" class="quarto-xref">Listing&nbsp;<span>4.1</span></a> as an ONNX.</p>
-<div id="1739aa97" class="cell styled-output" data-execution_count="2">
+<div id="8cc50d74" class="cell styled-output" data-execution_count="2">
 <div class="sourceCode cell-code" id="annotated-cell-1"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-1-1"><a href="#annotated-cell-1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> skl2onnx <span class="im">import</span> to_onnx</span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-1-2" class="code-annotation-target"><a href="#annotated-cell-1-2" aria-hidden="true" tabindex="-1"></a>onx <span class="op">=</span> to_onnx(voting_clf, X_train[:<span class="dv">1</span>].astype(np.int64))</span>
 <span id="annotated-cell-1-3"><a href="#annotated-cell-1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"model.onnx"</span>, <span class="st">"wb"</span>) <span class="im">as</span> f:</span>
@@ -386,14 +386,14 @@ Note
 </div>
 </div>
 <p>As mentioned, the file format is binary so it does not make a lot of sense to actually read the image in plain text but we can have a look at the size</p>
-<div id="90192ed5" class="cell styled-output" data-execution_count="3">
+<div id="6140234c" class="cell styled-output" data-execution_count="3">
 <div class="cell-output cell-output-stdout">
 <pre><code>80K model.onnx</code></pre>
 </div>
 </div>
 <p>which is not very large.</p>
 <p>Unfortunately, there is no method to convert back to our sklearn model. What we can use it in the <code>onnxruntime</code> and see if we still get the same score:</p>
-<div id="041cb787" class="cell styled-output" data-execution_count="4">
+<div id="d7fc9e57" class="cell styled-output" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> onnxruntime <span class="im">as</span> ort</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> ort.InferenceSession(<span class="st">"model.onnx"</span>)</span>
@@ -439,8 +439,9 @@ Important
 </div>
 </div>
 </div>
-<section id="pickle---python-object-serialization" class="level3" data-number="4.1.1">
-<h3 data-number="4.1.1" class="anchored" data-anchor-id="pickle---python-object-serialization"><span class="header-section-number">4.1.1</span> <code>pickle</code> - Python object serialization</h3>
+</section>
+<section id="pickle---python-object-serialization" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="pickle---python-object-serialization"><span class="header-section-number">4.2</span> <code>pickle</code> - Python object serialization</h2>
 <p>We can also swing the pendulum in the other direction and use the Python Standard Library <a href="https://docs.python.org/3/library/pickle.html#module-pickle"><code>pickle</code></a> to persist a model.</p>
 <p>Before we go into more details we should emphasise the potential security problem included with <code>pickle</code> as stated in its own docs:</p>
 <div class="callout callout-style-default callout-important callout-titled">
@@ -463,20 +464,20 @@ The <code>pickle</code> module is not secure. Only <em>unpickle</em> data you tr
 <p>It is not guaranteed that a model can be loaded with a different <code>scikit-learn</code> version or let alone a different <code>numpy</code> version that is only a sub-dependency of <code>scikit-learn</code>. Furthermore, if a different hardware is involved there might be problems as well. As a consequence, if we use <code>pickle</code> a thorough version control with package management is key!</p>
 <p>If we have a model that moves around different processes via the disc or is restored frequently from storage but can not be permanently in storage and therefore performance for loading and storing is of interest we can also use <a href="https://joblib.readthedocs.io/en/latest/index.html#module-joblib"><code>joblib</code></a>.</p>
 <p>Now let us see how we can persist the model of <a href="#lst-data-mp-toyexample" class="quarto-xref">Listing&nbsp;<span>4.1</span></a> as an <code>pickle</code>.</p>
-<div id="ee93e563" class="cell styled-output" data-execution_count="6">
+<div id="1a4e836f" class="cell styled-output" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pickle <span class="im">import</span> dump</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"model.pkl"</span>, <span class="st">"wb"</span>) <span class="im">as</span> f:</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    dump(voting_clf, f, protocol<span class="op">=</span><span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>As mentioned, the file format is binary so it does not make a lot of sense to actually read the image in plain text but we can have a look at the size</p>
-<div id="608af946" class="cell styled-output" data-execution_count="7">
+<div id="17bc335d" class="cell styled-output" data-execution_count="7">
 <div class="cell-output cell-output-stdout">
 <pre><code>304K    model.pkl</code></pre>
 </div>
 </div>
 <p>and we can see that the storage demands are slightly higher than for ONNX.</p>
 <p>We restore the model via</p>
-<div id="791e288a" class="cell styled-output" data-execution_count="8">
+<div id="7158e13c" class="cell styled-output" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pickle <span class="im">import</span> load</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"model.pkl"</span>, <span class="st">"rb"</span>) <span class="im">as</span> f:</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    clf <span class="op">=</span> load(f)</span>
@@ -510,25 +511,24 @@ The <code>pickle</code> module is not secure. Only <em>unpickle</em> data you tr
 </div>
 </div>
 </section>
-</section>
-<section id="skops.io---the-more-secure-python-alternative" class="level2" data-number="4.2">
-<h2 data-number="4.2" class="anchored" data-anchor-id="skops.io---the-more-secure-python-alternative"><span class="header-section-number">4.2</span> <code>skops.io</code> - the more secure Python alternative</h2>
+<section id="skops.io---the-more-secure-python-alternative" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="skops.io---the-more-secure-python-alternative"><span class="header-section-number">4.3</span> <code>skops.io</code> - the more secure Python alternative</h2>
 <p>As an alternative to <code>pickle</code> we can use <a href="https://skops.readthedocs.io/en/stable/persistence.html#persistence"><code>skops.io</code></a> as a more secure alternative. It is developed as a secure alternative for <code>pickle</code> and therefore supports a wide range of objects. The main idea is, that only <em>trusted</em> functions are loaded and not anything included in the file. It is also possible to verify our data before load it, increasing the security further. Still, it returns the Python object, if it can be loaded and we can manipulate it as with <code>pickle</code>.</p>
 <p>As a downside, the process is slower and some user defined functions/object might not work as desired. This also implies, that we also need to have the same environment for loading as we had for storing the Python object.</p>
 <p>The interface itself is simple and orients itself at <code>pickle</code>.</p>
-<div id="e3056d49" class="cell styled-output" data-execution_count="10">
+<div id="5cb0e3f2" class="cell styled-output" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> skops.io <span class="im">as</span> sio</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>obj <span class="op">=</span> sio.dump(voting_clf, <span class="st">"model.skops"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>For comparison, we show the size of the file</p>
-<div id="c302a1f2" class="cell styled-output" data-execution_count="11">
+<div id="36a6888c" class="cell styled-output" data-execution_count="11">
 <div class="cell-output cell-output-stdout">
 <pre><code>26M model.skops</code></pre>
 </div>
 </div>
 <p>and we can see that this format has a significant higher overhead as the other formats.</p>
 <p>Retrieving the model is a two step process, first loading the <em>untrusted types</em> and than loading the verified objects.</p>
-<div id="631ade79" class="cell styled-output" data-execution_count="12">
+<div id="c6d77902" class="cell styled-output" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>unknown_types <span class="op">=</span> sio.get_untrusted_types(<span class="bu">file</span><span class="op">=</span><span class="st">"model.skops"</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># investigate the contents of unknown_types, and only load if you trust</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># everything you see.</span></span>
@@ -560,8 +560,8 @@ We have score of 0.8 after loading the object again.</code></pre>
 </div>
 </div>
 </section>
-<section id="comparison-of-the-different-approaches" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="comparison-of-the-different-approaches"><span class="header-section-number">4.3</span> Comparison of the different approaches</h2>
+<section id="comparison-of-the-different-approaches" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="comparison-of-the-different-approaches"><span class="header-section-number">4.4</span> Comparison of the different approaches</h2>
 <p>The <a href="https://scikit-learn.org/stable/model_persistence.html#summarizing-the-key-points">docs</a> are doing an excellent job in summarizing the key differences.</p>
 <blockquote class="blockquote">
 <p>Based on the different approaches for model persistence, the key points for each approach can be summarized as follows:</p>
@@ -575,11 +575,11 @@ We have score of 0.8 after loading the object again.</code></pre>
 <p>Source: <a href="https://scikit-learn.org/stable/model_persistence.html#summarizing-the-key-points">scikit-learn.org</a>, accessed 07.03.2025.</p>
 </blockquote>
 </section>
-<section id="further-considerations" class="level2" data-number="4.4">
-<h2 data-number="4.4" class="anchored" data-anchor-id="further-considerations"><span class="header-section-number">4.4</span> Further considerations</h2>
-<p>Now that we know how to persist our models, or hope to do so, we need to talk about how we keep track of what exactly we stored.</p>
-<p>In the previous exercises we created multiple versions of our model and stored them to. If we look at the different files, are we sure we know which version corresponds to which code block? If we can, good job but what about in two weeks?</p>
-<p>Now if we try with various parameters for our composite method to achieve better results we might end up with even more variants. To make sure we have reproducible models we need to track the model together with the code. This is what we are going go look at in the next section.</p>
+<section id="further-considerations" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="further-considerations"><span class="header-section-number">4.5</span> Further considerations</h2>
+<p>Now that we know how to persist our models, or at least hope we do so, we need to talk about how we keep track of our different model versions (parameters, training data, random seeds, etc.).</p>
+<p>In the previous exercises we created multiple versions of our model and stored them to disc. If we now look at the different files, do we still know which version corresponds to which code block?</p>
+<p>As we experiment with different parameters for our composite method in pursuit of better results, we’ll likely generate even more model variations. To ensure reproducibility, we need a way to track our models alongside the code that produced them. This is what we are going to look at in the next section.</p>
 
 
 </section>
@@ -1159,8 +1159,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../summary.html" class="pagination-link" aria-label="Summary">
-        <span class="nav-page-text">Summary</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../data/code.html" class="pagination-link" aria-label="Code persistence">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Code persistence</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
