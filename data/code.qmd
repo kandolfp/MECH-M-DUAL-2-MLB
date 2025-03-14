@@ -237,6 +237,42 @@ Now our files are tracked, but as you probably realised we did not add the `modu
 This is due to the fact that we can use the `dvc exp` feature to allow for more fine grained control and even parameter overviews.
 Furthermore, we can use logging features to integrate with this system even better.
 
+## `dvclive` for experiment management
+
+`dvclive` works best with the big ML Frameworks like `keras` or `pytorch` but we can also utilize it for our toy example.
+The introduction to the experiment management form the `dvc` perspective can be found [here](https://dvc.org/doc/start/experiments).
+
+To show some of the `dvclive` features we reworked to code, see commit [7f407b](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/7f407bab7bfcc191014eeb3b939bb2fe0456fb58).
+Now, when we run our job and it will create the `dvclive` directory with a couple of subdirectories containing our metrics, looking like this:
+
+```bash
+MLB-DATA$ pdm run src/MECH-M-DUAL-2-MLB-DATA/train.py 
+INFO:root: We have a hard voting score of 0.8
+100% Adding...|███████████████████████████████████████|1/1 [00:00,  7.64file/s]
+```
+
+and the experiment is automatically added. 
+We can check this with:
+
+```
+MLB-DATA$ pdm run dvc exp show
+ ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────>
+  Experiment                 Created    train_score   test_score   PCA/n_components   LinearDiscriminantAnalysis/solver   RandomForestClassifier/n_estimators   RandomForestClassifier/max_lea>
+ ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────>
+  workspace                  -                    1          0.8   41                 svd                                 500                                   2                             >
+  main                       07:37 PM             -            -   -                  -                                   -                                     -                             >
+  └── 22ae3e7 [faint-hate]   07:42 PM             1          0.8   41                 svd                                 500                                   2                             >
+ ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────>
+```
+
+The last command gives us an overview of our experiments (check out the options, especially `--num` and `-A`).
+Each experiment has a unique name, as we did not specify anything a random name is created, in our case `faint-hate` (they are often fun but can be hard to infer meaning and speaking names are more useful).
+More importantly, we can see the score for our model and the parameters, this allows for a quick check to see how the current model performs in comparison to another version. 
+
+`dvclive` relies on `git` to do the magic for files and `dvc` for large files. 
+How this works is that a reference inside `git` is created for each experiment and stores the data there.
+By default this is not moved to the `git` remote, to do so we need to run `dvc exp push`.
+
 
 [^git]: see the lecture MECH-M-DUAL-1-SWD, Chapter 3 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-SWD/basics/versioncontrol.html)
 [^pdm]: see the lecture MECH-M-DUAL-1-SWD, Chapter 2 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-SWD/basics/packagemanager.html)
