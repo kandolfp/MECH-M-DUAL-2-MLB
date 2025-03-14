@@ -214,12 +214,29 @@ For now we just work locally and as we could do with a `git` repository.
 
 Other than that we can now change the files use `dvc add data` and as soon as we commit the corresponding change in the `data.dvc` to `git` we know exactly what data is used and we can also restore it.
 
-## `DVCLive` for experiment persistence
+To do these operations `dvc` uses a cache (default it is in `.dvc/cache`).
 
-We will use `dvc` for managing data a bit later on but for now we can just assume it basically works like `git` for code.
-We can add, modify and delete data while keeping track of the changes internally.
+The most important `dvc` commands are (we link the docs for an extended reference):
 
-Nevertheless, we can use the Python module 
+- [`dvc add`](https://dvc.org/doc/command-reference/add) to add a file or directory
+- [`dvc checkout`](https://dvc.org/doc/command-reference/checkout) brings your work space up to date, according to the `.dvc` files current states
+- [`dvc commit`](https://dvc.org/doc/command-reference/checkout) updates the `.dvc` files and stores the content in the cache, most of the time called implicitly
+- [`dvc config`](https://dvc.org/doc/command-reference/config) view and change the config for the repo or globally
+- [`dvc data status`](https://dvc.org/doc/command-reference/data/status) chow changes to the files in the work space with respect to the`git` `HEAD`
+- [`dvc destroy`](https://dvc.org/doc/command-reference/destroy) remove all files and `dvc` structures for the current project, the cache as well but the symlinks will be replaced by the actual data so the current sate is preserved
+- [`dvc exp`](https://dvc.org/doc/command-reference/exp) has multiple subcommands and is used to handle experiments, we will use this later
+- [`dvc fetch`](https://dvc.org/doc/command-reference/fetch) download files from the remote repository to the cache
+- [`dvc pull`](https://dvc.org/doc/command-reference/pull) download files from the remote and make them visible in the working space
+- [`dvc push`](https://dvc.org/doc/command-reference/push) upload the tracked files to the remote
+
+For the other commands run `dvc --help` or look at the [docs](https://dvc.org/doc/command-reference).
+`dvc` also allows for nice pipelines and automatic computation.
+This is far more advanced than we need right now so we will not introduce it her but leave it for exercises or advanced studies.
+
+Now our files are tracked, but as you probably realised we did not add the `module` folder to `dvc`. 
+This is due to the fact that we can use the `dvc exp` feature to allow for more fine grained control and even parameter overviews.
+Furthermore, we can use logging features to integrate with this system even better.
+
 
 [^git]: see the lecture MECH-M-DUAL-1-SWD, Chapter 3 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-SWD/basics/versioncontrol.html)
 [^pdm]: see the lecture MECH-M-DUAL-1-SWD, Chapter 2 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-SWD/basics/packagemanager.html)
