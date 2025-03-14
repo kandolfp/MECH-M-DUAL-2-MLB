@@ -29,6 +29,7 @@ book:
     - part: data/index.qmd
       chapters: 
         - data/model.qmd
+        - data/code.qmd
     - summary.qmd
     - references.qmd
   appendices:

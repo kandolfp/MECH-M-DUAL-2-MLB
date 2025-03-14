@@ -1,0 +1,227 @@
+# Code persistence {#sec-data-repro}
+
+When talking about storing the model we quickly realise that there is more to this task than simply calling `dump`.
+The same is true for persisting the code. 
+
+Luckily, we already have the perfect tool for that in use, `git` [^git].
+We can make sure to commit our source files and when using a proper package manager like `pdm` [^pdm] we can hope to reproduce our environment for the formats that require these features. 
+
+We move the code from @lst-data-mp-toyexample into a project.
+In this process we move from the dense script to a proper file structure by splitting up the source script into several parts.
+Furthermore, we rework some of the details, like only downloading the data once.
+
+::: {.callout-important}
+## Reference repository
+
+The following example is referenced according to the github repository [kandolfp/MECH-M-DUAL-2-MLB-DATA](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA) on github.
+
+Please use it as reference and move along the corresponding commit SHAs to see certain reference points.
+
+This also means some of the code included below is not interactively created.
+:::
+
+ and we get a structure looking something like the following:
+
+```bash
+MLB-DATA$ tree
+.
+├── models
+│   └── model.skops
+├── pdm.lock
+├── pyproject.toml
+└── src
+    └── MECH-M-DUAL-2-MLB-DATA
+        ├── data.py
+        ├── inference.py
+        ├── myio.py
+        └── train.py
+
+4 directories, 7 files
+```
+
+We can train the model by calling (in this case with a logger[^logging] on `DEBUG` )
+```bash
+MLB-DATA$ pdm run src/MECH-M-DUAL-2-MLB-DATA/train.py 
+DEBUG:root: Loaded the data with Split of 60 to 20 per category.
+DEBUG:root: Create classifier
+DEBUG:root: Train classifier
+DEBUG:root: Score classifier
+INFO:root: We have a hard voting score of 0.8
+DEBUG:root: Save clf to skops file models/model.skops
+```
+
+Of course we can also load the model again and do inference with it 
+```bash
+MLB-DATA$ pdm run src/MECH-M-DUAL-2-MLB-DATA/inference.py 
+DEBUG:root: Loaded the data with Split of 60 to 20 per category.
+DEBUG:root: Load classifier
+DEBUG:root: Load clf from skops file models/model.skops
+WARNING:root: Unknown type at 0 is sklearn.utils._bunch.Bunch.
+DEBUG:root: Score classifier
+INFO:root: We have a hard voting score of 0.8
+```
+
+Now we can start connecting the model and the code.
+Our model was created at commit [`757e26`](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/757e263bec63cc679a18d234c25ab6d9210a8ed8).
+
+Now there are several things we can do to make sure this is reflected within our little project.
+
+1. Make the convention to never train and store an experiment for later use as long as you have not commited your code (easier said than done).
+1. Make sure to note somewhere what commit SHA is the current HEAD when storing the model.
+This allows ue to reproduce it in case of data corruption or loss and for comparison with other models. 
+1. When running inference we can check for the SHA in case the project dependencies have changed and we get problems loading the file. 
+1. Every time we change a parameter we get a new commit, which is not very nice. 
+
+This is rather cumbersome and requires a lot of discipline, it will also become tricky if several people work on the same project and run experiments with different parameters. 
+
+## Externalize the configuration
+
+First thing we do is we externalize the configuration to make sure this is no longer part of our code source and a commit to the code source stands for a real change in the project and not a _simple experiment_.
+
+`yaml` is the format to go for these aspects, see [Wikipedia](https://en.wikipedia.org/wiki/YAML).
+It is a human readable data serialization language. 
+One possible interpretation of the config (among many others is)
+
+```yaml
+---
+model:
+  components:
+    - type: sklearn.decomposition.PCA
+      init_args:
+        n_components: 41
+    - type: sklearn.ensemble.VotingClassifier
+      init_args:
+        flatten_transform: False
+        estimators:
+          - type: sklearn.discriminant_analysis.LinearDiscriminantAnalysis
+            init_args:
+              solver: svd
+          - type: sklearn.ensemble.RandomForestClassifier
+            init_args:
+              n_estimators: 500
+              max_leaf_nodes: 2
+              random_state: 6020
+          - type: sklearn.svm.SVC
+            init_args:
+              kernel: linear
+              probability: True
+              random_state: 6020
+```
+and we can use the Python package [`omegaconf`](https://omegaconf.readthedocs.io/en/2.3_branch/) to load and use it.
+
+One of feature of the `OmegaConf`class is that we can use _unpacking_ [^docs] and therefore write a line like:
+```{.python}
+PCA(**config.model.components[0].init_args)
+```
+Have a look at the commit [bbe32f](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/bbe32fac13b251738612bc90d198a6a871c18838) to see this in action. 
+
+
+::: {.callout-caution appearance="simple" icon=false}
+:::: {#exr-data-code-config}
+
+## Externalize config
+
+We can generate the entire model from the config, even the different classes.
+By using the function `from importlib import import_module` we can dynamically load a class with the following snippet:
+
+```{.python}
+module = import_module(config.model.components[0].type.rsplit(".", 1)[0])
+PCA = getattr(module, config.model.components[0].type.rsplit(".", 1)[-1])(
+    **config.model.components[0].init_args
+)
+```
+
+Use this to make the model creation more and more dynamic.
+
+1. Replace the array `estimators=[]` by dynamically loading the different estimators.
+1. Use the same for the pipeline
+
+Note: If you see an advantage in rewriting the config structure to make your code easier feel free to do so.
+::::
+:::
+
+Now that the config is externalized we can continue on our quest to persist our work usefully. 
+
+## Data persistence
+
+Or model depends on the code, the configuration but crucially, also on the input data itself.
+In order to make sure that we can reliably reproduce a model we also need to make sure our data is reproducible. 
+
+In our little toy example we use some files from github but let us still make sure they are tracked within our system. 
+
+On tool to do data version control is [`dvc`](https://dvc.org/doc).
+As it is written in Python we can even add and track the version via our package manager. 
+Once we have it installed we can run
+
+```bash
+MLB-DATA$ pdm run dvc init
+Initialized DVC repository.
+
+You can now commit the changes to git.
+
++---------------------------------------------------------------------+
+|                                                                     |
+|        DVC has enabled anonymous aggregate usage analytics.         |
+|     Read the analytics documentation (and how to opt-out) here:     |
+|             <https://dvc.org/doc/user-guide/analytics>              |
+|                                                                     |
++---------------------------------------------------------------------+
+
+What's next?
+------------
+- Check out the documentation: <https://dvc.org/doc>
+- Get help and share ideas: <https://dvc.org/chat>
+- Star us on GitHub: <https://github.com/iterative/dvc>
+```
+
+and commit the directory `.dvc` to git and our project now runs with `dvc`, see commit [ba8c89](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/ba8c89a99637f8530e697c2a26759f5ce1410d76).
+
+To add the `data` directory simply run
+
+```bash
+MLB-DATA$ pdm run dvc add data
+100% Adding...|███████████████████████████████████████|1/1 [00:00,  5.67file/s]
+                                                                                                                                                                                               
+To track the changes with git, run:
+
+        git add data.dvc
+
+To enable auto staging, run:
+
+        dvc config core.autostage true
+```
+
+and we also add `data.dvc` to the `git` as suggested. 
+
+::: {.callout-note}
+At this point we have the two files `catData_w.mat` and `dogData_w.mat` in this directory and they are under version control from `dvc`.
+:::
+
+If we take a look into `data.dvc`  we can see that is tracks the files via md5 sha and includes some additional information: 
+
+```bash
+MLB-DATA$ cat data.dvc 
+outs:
+- md5: 5987e80830fc2caf6d475da3deca1dfe.dir
+  size: 111165
+  nfiles: 2
+  hash: md5
+  path: data
+```
+
+As mentioned, `dvc` works similar to `git` so eventually we will need to include a remote that we _push_ data to. 
+For now we just work locally and as we could do with a `git` repository. 
+
+Other than that we can now change the files use `dvc add data` and as soon as we commit the corresponding change in the `data.dvc` to `git` we know exactly what data is used and we can also restore it.
+
+## `DVCLive` for experiment persistence
+
+We will use `dvc` for managing data a bit later on but for now we can just assume it basically works like `git` for code.
+We can add, modify and delete data while keeping track of the changes internally.
+
+Nevertheless, we can use the Python module 
+
+[^git]: see the lecture MECH-M-DUAL-1-SWD, Chapter 3 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-SWD/basics/versioncontrol.html)
+[^pdm]: see the lecture MECH-M-DUAL-1-SWD, Chapter 2 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-SWD/basics/packagemanager.html)
+[^logging]: see the lecture MECH-M-DUAL-1-SWD, Chapter 11 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-SWD/errorhandling/logging.html)
+[^docs]: see the Python documentation or follow the direct [link](https://docs.python.org/3/tutorial/controlflow.html#tut-unpacking-arguments)
