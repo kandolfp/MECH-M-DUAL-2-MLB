@@ -22,15 +22,11 @@ import scipy
 import requests
 import io
 import sklearn
-from sklearn import svm
 from sklearn.decomposition import PCA
 from sklearn.pipeline import make_pipeline
-from sklearn.ensemble import RandomForestClassifier, VotingClassifier
-import sklearn.metrics
+from sklearn.ensemble import RandomForestClassifier, VotingClassifier 
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.svm import SVC
-
-%config InlineBackend.figure_formats = ["svg"]
 
 response = requests.get(
     "https://github.com/dynamicslab/databook_python/"
@@ -149,7 +145,7 @@ Try to rewrite the model and check the resulting score after recovery vs. the or
 ::::
 :::
 
-### `pickle` - Python object serialization
+## `pickle` - Python object serialization
 
 We can also swing the pendulum in the other direction and use the Python Standard Library
 [`pickle`](https://docs.python.org/3/library/pickle.html#module-pickle) to persist a model. 
