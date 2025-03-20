@@ -416,6 +416,154 @@ As the current configuration would produce a conflict.
 Before we add this file to the our `git` repository we introduce the pipeline feature of `dvc` to see some additional possibilities for the configuration modification.
 These so called `stages` are also of the `dvc.yaml` as well.
 
+## `dvc` pipeline
+
+The pipeline features we are after are part of `dvc stage` command and we add our training
+
+```bash
+MLB-DATA$ pdm run dvc stage add --name train \
+          --deps data --deps src/MECH-M-DUAL-2-MLB-DATA/ \
+          --deps params.yaml --outs dvclive \
+          pdm run python src/MECH-M-DUAL-2-MLB-DATA/train.py
+Added stage 'train' in 'dvc.yaml'                                     
+
+To track the changes with git, run:
+
+        git add dvc.yaml dvclive/artifacts/.gitignore
+```
+
+Before we follow the instructions to we need to run 
+
+```bash
+MLB-DATA$ pdm run dvc commit
+```
+to create the `dvc.lock` file associated with the stage.
+It keeps track of the dependencies:
+```yaml
+schema: '2.0'
+stages:
+  train:
+    cmd: pdm run python src/MECH-M-DUAL-2-MLB-DATA/train.py
+    deps:
+    - path: data
+      hash: md5
+      md5: 5987e80830fc2caf6d475da3deca1dfe.dir
+      size: 111165
+      nfiles: 2
+    - path: params.yaml
+      hash: md5
+      md5: cb73b44317c559fce7c5e035ba5be854
+      size: 644
+    - path: src/MECH-M-DUAL-2-MLB-DATA/
+      hash: md5
+      md5: c93360b2cf461f6b2f8e9656882331a7.dir
+      size: 14538
+      nfiles: 8
+    outs:
+    - path: dvclive
+      hash: md5
+      md5: c2bbfd7cb23c3aa8700bc24287b56fee.dir
+      size: 5569537
+      nfiles: 6
+```
+
+See [1282a7e9](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/1282a7e926e17d4a5ac2f02a30764bfd1026872f) and how this is reflected in our reference repository.
+
+Now we can run:
+
+```bash
+MLB-DATA$ pdm run dvc exp run
+Reproducing experiment 'mesic-beep'  
+Building workspace index                            |16.0 [00:00, 1.23kentry/s]
+Comparing indexes                                   |15.0 [00:00, 1.22kentry/s]
+Applying changes                                    |0.00 [00:00,     ?file/s]
+'data.dvc' didn't change, skipping                 
+Stage 'train' didn't change, skipping
+                                 
+Ran experiment(s): mesic-beep
+Experiment results have been applied to your workspace.
+```
+
+As we did no change anything in our configuration (see pependencies) `dvc` is smart enough to basically just copy the experiment.
+But we can also change the parameters interactively, e.g.
+
+```bash
+MLB-DATA$ pdm run dvc exp run --set-param 'PCA.init_args.n_components=5'
+Reproducing experiment 'sappy-corm'
+Building workspace index                             |4.00 [00:00,  378entry/s]
+Comparing indexes                                   |15.0 [00:00, 1.20kentry/s]
+Applying changes                                     |6.00 [00:00,   391file/s]
+'data.dvc' didn't change, skipping
+Running stage 'train':
+> pdm run python src/MECH-M-DUAL-2-MLB-DATA/train.py
+DEBUG:root: Loaded the data with Split of 60 to 20 per category.
+DEBUG:root: Load config
+DEBUG:root: Create classifier
+DEBUG:root: Train classifier
+DEBUG:root: Score classifier
+INFO:root: We have a hard voting train-score of 0.9916666666666667
+INFO:root: We have a hard voting test-score of 0.6
+DEBUG:root: Save clf to skops file dvclive/artifacts/model.skops
+Updating lock file 'dvc.lock'
+
+Ran experiment(s): sappy-corm
+Experiment results have been applied to your workspace.
+```
+
+This is reflected in the experiment list 
+
+```bash
+ ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── 
+  Experiment                 Created        trainscore   testscore   PCA/n_components   LinearDiscriminantAnalysis/solver   RandomForestClassifier/n_estimators   RandomForestClassifier/max_leaf_nodes   RandomForestClassifier/random_state   SVC/kernel   SVC/probability   SVC/random_state   PCA.type                    PCA.init_args.n_components   VotingClassifier.type               VotingClassifier.init_args.flatten_transform   VotingClassifier.estimators                                       LinearDiscriminantAnalysis.type                            LinearDiscriminantAnalysis.init_args.solver   RandomForestClassifier.type               RandomForestClassifier.init_args.n_estimators   RandomForestClassifier.init_args.max_leaf_nodes   RandomForestClassifier.init_args.random_state   SVC.type          SVC.init_args.kernel   SVC.init_args.probability   SVC.init_args.random_state   data                                   params.yaml                        src/MECH-M-DUAL-2-MLB-DATA            
+ ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── 
+  workspace                  -                 0.99167         0.6   5                  svd                                 500                                   2                                       6020                                  linear       True              6020               sklearn.decomposition.PCA   5                            sklearn.ensemble.VotingClassifier   False                                          ['LinearDiscriminantAnalysis', 'RandomForestClassifier', 'SVC']   sklearn.discriminant_analysis.LinearDiscriminantAnalysis   svd                                           sklearn.ensemble.RandomForestClassifier   500                                             2                                                 6020                                            sklearn.svm.SVC   linear                 True                        6020                         5987e80830fc2caf6d475da3deca1dfe.dir   0ad678c7c338214916d88a106b4fe90a   c93360b2cf461f6b2f8e9656882331a7.dir  
+  main                       01:36 PM                -           -   -                  -                                   -                                     -                                       -                                     -            -                 -                  sklearn.decomposition.PCA   41                           sklearn.ensemble.VotingClassifier   False                                          ['LinearDiscriminantAnalysis', 'RandomForestClassifier', 'SVC']   sklearn.discriminant_analysis.LinearDiscriminantAnalysis   svd                                           sklearn.ensemble.RandomForestClassifier   500                                             2                                                 6020                                            sklearn.svm.SVC   linear                 True                        6020                         5987e80830fc2caf6d475da3deca1dfe.dir   cb73b44317c559fce7c5e035ba5be854   c93360b2cf461f6b2f8e9656882331a7.dir  
+  └── 9c326d3 [sappy-corm]   01:36 PM          0.99167         0.6   5                  svd                                 500                                   2                                       6020                                  linear       True              6020               sklearn.decomposition.PCA   5                            sklearn.ensemble.VotingClassifier   False                                          ['LinearDiscriminantAnalysis', 'RandomForestClassifier', 'SVC']   sklearn.discriminant_analysis.LinearDiscriminantAnalysis   svd                                           sklearn.ensemble.RandomForestClassifier   500                                             2                                                 6020                                            sklearn.svm.SVC   linear                 True                        6020                         5987e80830fc2caf6d475da3deca1dfe.dir   0ad678c7c338214916d88a106b4fe90a   c93360b2cf461f6b2f8e9656882331a7.dir  
+  519a854                    10:15 AM                -           -   -                  -                                   -                                     -                                       -                                     -            -                 -                  sklearn.decomposition.PCA   41                           sklearn.ensemble.VotingClassifier   False                                          ['LinearDiscriminantAnalysis', 'RandomForestClassifier', 'SVC']   sklearn.discriminant_analysis.LinearDiscriminantAnalysis   svd                                           sklearn.ensemble.RandomForestClassifier   500                                             2                                                 6020                                            sklearn.svm.SVC   linear                 True                        6020                         -                                      -                                  -                                     
+  ├── 1b92871 [mesic-beep]   01:26 PM                -           -   -                  -                                   -                                     -                                       -                                     -            -                 -                  sklearn.decomposition.PCA   41                           sklearn.ensemble.VotingClassifier   False                                          ['LinearDiscriminantAnalysis', 'RandomForestClassifier', 'SVC']   sklearn.discriminant_analysis.LinearDiscriminantAnalysis   svd                                           sklearn.ensemble.RandomForestClassifier   500                                             2                                                 6020                                            sklearn.svm.SVC   linear                 True                        6020                         5987e80830fc2caf6d475da3deca1dfe.dir   cb73b44317c559fce7c5e035ba5be854   c93360b2cf461f6b2f8e9656882331a7.dir  
+  └── 1f2bee5 [sural-cyma]   10:15 AM                1         0.8   41                 svd                                 500                                   2                                       6020                                  linear       True              6020               sklearn.decomposition.PCA   41                           sklearn.ensemble.VotingClassifier   False                                          ['LinearDiscriminantAnalysis', 'RandomForestClassifier', 'SVC']   sklearn.discriminant_analysis.LinearDiscriminantAnalysis   svd                                           sklearn.ensemble.RandomForestClassifier   500                                             2                                                 6020                                            sklearn.svm.SVC   linear                 True                        6020                         -                                      -                                  -                                     
+  f264314                    Mar 19, 2025            -           -   -                  -                                   -                                     -                                       -                                     -            -                 -                  sklearn.decomposition.PCA   41                           sklearn.ensemble.VotingClassifier   False                                          ['LinearDiscriminantAnalysis', 'RandomForestClassifier', 'SVC']   sklearn.discriminant_analysis.LinearDiscriminantAnalysis   svd                                           sklearn.ensemble.RandomForestClassifier   500                                             2                                                 6020                                            sklearn.svm.SVC   linear                 True                        6020                         -                                      -                                  -                                     
+  df38086                    Mar 19, 2025            -           -   -                  -                                   -                                     -                                       -                                     -            -                 -                  sklearn.decomposition.PCA   41                           sklearn.ensemble.VotingClassifier   False                                          ['LinearDiscriminantAnalysis', 'RandomForestClassifier', 'SVC']   sklearn.discriminant_analysis.LinearDiscriminantAnalysis   svd                                           sklearn.ensemble.RandomForestClassifier   500                                             2                                                 6020                                            sklearn.svm.SVC   linear                 True                        6020                         -                                      -                                  -                                     
+  073fb93                    Mar 19, 2025            -           -   -                  -                                   -                                     -                                       -                                     -            -                 -                  sklearn.decomposition.PCA   41                           sklearn.ensemble.VotingClassifier   False                                          ['LinearDiscriminantAnalysis', 'RandomForestClassifier', 'SVC']   sklearn.discriminant_analysis.LinearDiscriminantAnalysis   svd                                           sklearn.ensemble.RandomForestClassifier   500                                             2                                                 6020                                            sklearn.svm.SVC   linear                 True                        6020                         -                                      -                                  -                                     
+  9f7dead                    Mar 19, 2025            -           -   -                  -                                   -                                     -                                       -                                     -            -                 -                  -                           -                            -                                   -                                              -                                                                 -                                                          -                                             -                                         -                                               -                                                 -                                               -                 -                      -                           -                            -                                      -                                  -                                     
+  22788a6                    Mar 19, 2025            -           -   -                  -                                   -                                     -                                       -                                     -            -                 -                  -                           -                            -                                   -                                              -                                                                 -                                                          -                                             -                                         -                                               -                                                 -                                               -                 -                      -                           -                            -                                      -                                  -                                     
+ ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── 
+```
+
+If we want to look at a specific experiment we can use `dvc exp apply` to restore it.
+
+In order to share experiments we need to push them to the (git) remote.
+This is done via
+
+```bash
+MLB-DATA$ pdm run dvc exp push origin -A
+Experiment sural-cyma is up to date on Git remote 'origin'.
+Pushed experiment sappy-corm and mesic-beep to Git remote 'origin'.
+```
+
+::: {.callout-caution appearance="simple" icon=false}
+:::: {#exr-data-code-pipeline}
+
+## `dvc` queue
+
+Checkout the option `--queue` for `dvc exp run`. 
+Use it to plan various experiments with different parameters from the `params.yaml` file. 
+
+Run them via `dvc queue start`. 
+::::
+:::
+
+::: {.callout-caution appearance="simple" icon=false}
+:::: {#exr-data-code-pipeline-2}
+
+## `dvc` visualization
+
+`dvc` can help us visualize our experiments.
+Have a look at [`dvc plots`](https://dvc.org/doc/command-reference/plots) to visualize the experiments and there differences. 
+::::
+:::
+
+
 
 [^git]: see the lecture MECH-M-DUAL-1-SWD, Chapter 3 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-SWD/basics/versioncontrol.html)
 [^pdm]: see the lecture MECH-M-DUAL-1-SWD, Chapter 2 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-SWD/basics/packagemanager.html)
