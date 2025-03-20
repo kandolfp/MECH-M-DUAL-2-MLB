@@ -73,7 +73,17 @@ This allows ue to reproduce it in case of data corruption or loss and for compar
 
 This is rather cumbersome and requires a lot of discipline, it will also become tricky if several people work on the same project and run experiments with different parameters. 
 
-## Externalize the configuration
+::: {.callout-caution appearance="simple" icon=false}
+:::: {#exr-data-code-git}
+
+## Check for a _dirty_ `git` repository
+
+Implement a function (or a decorator) in Python that uses [`GitPython`](https://gitpython.readthedocs.io/en/stable/) or some alternative to introduce a safeguard such that training can only be called if the repository is not _dirty_.
+
+Optional: Extend the implementation and check if the local repository is not behind the remote?
+::::
+:::
+
 
 First thing we do is we externalize the configuration to make sure this is no longer part of our code source and a commit to the code source stands for a real change in the project and not a _simple experiment_.
 
