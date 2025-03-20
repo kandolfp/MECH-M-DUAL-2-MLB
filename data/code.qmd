@@ -95,36 +95,36 @@ One possible interpretation of the config (among many others is)
 ```yaml
 PCA:
   type: sklearn.decomposition.PCA
-      init_args:
-        n_components: 41
+  init_args:
+    n_components: 41
 
 VotingClassifier:
   type: sklearn.ensemble.VotingClassifier
-      init_args:
-        flatten_transform: False
-        estimators:
+  init_args:
+    flatten_transform: False
+  estimators:
     - LinearDiscriminantAnalysis
     - RandomForestClassifier
     - SVC
 
 LinearDiscriminantAnalysis:
   type: sklearn.discriminant_analysis.LinearDiscriminantAnalysis
-            init_args:
-              solver: svd
+  init_args:
+    solver: svd
 
 RandomForestClassifier:
   type: sklearn.ensemble.RandomForestClassifier
-            init_args:
-              n_estimators: 500
-              max_leaf_nodes: 2
-              random_state: 6020
+  init_args:
+    n_estimators: 500
+    max_leaf_nodes: 2
+    random_state: 6020
 
 SVC:
   type: sklearn.svm.SVC
-            init_args:
-              kernel: linear
-              probability: True
-              random_state: 6020
+  init_args:
+    kernel: linear
+    probability: True
+    random_state: 6020
 ```
 and we can use the Python package [`omegaconf`](https://omegaconf.readthedocs.io/en/2.3_branch/) to load and use it.
 
@@ -335,7 +335,7 @@ MLB-DATA$ pdm run dvc exp show
 
 The last command gives us an overview of our experiments (check out the options, especially `--num` and `-A`).
 Each experiment has a unique name, as we did not specify anything a random name is created, in our case `sural-cyma` (they are often fun but can be hard to infer meaning and speaking names are most the time more useful).
-More importantly, we can see the score for our model and the parameters, this allows for a quick check to see how the current model performs in comparison to another version. 
+More importantly, we can see the score for our model and the parameters, this allows for a quick check to see how the current model performs in comparison to another version.
 
 ::: {.callout-note}
 We can see that the parameter from `params.yaml` are automatically added and our code somewhat duplicated them.
