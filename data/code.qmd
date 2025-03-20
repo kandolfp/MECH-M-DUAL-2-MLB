@@ -84,6 +84,7 @@ Optional: Extend the implementation and check if the local repository is not beh
 ::::
 :::
 
+## Externalize the parameters/configuration
 
 First thing we do is we externalize the configuration to make sure this is no longer part of our code source and a commit to the code source stands for a real change in the project and not a _simple experiment_.
 
@@ -92,25 +93,34 @@ It is a human readable data serialization language.
 One possible interpretation of the config (among many others is)
 
 ```yaml
----
-model:
-  components:
-    - type: sklearn.decomposition.PCA
+PCA:
+  type: sklearn.decomposition.PCA
       init_args:
         n_components: 41
-    - type: sklearn.ensemble.VotingClassifier
+
+VotingClassifier:
+  type: sklearn.ensemble.VotingClassifier
       init_args:
         flatten_transform: False
         estimators:
-          - type: sklearn.discriminant_analysis.LinearDiscriminantAnalysis
+    - LinearDiscriminantAnalysis
+    - RandomForestClassifier
+    - SVC
+
+LinearDiscriminantAnalysis:
+  type: sklearn.discriminant_analysis.LinearDiscriminantAnalysis
             init_args:
               solver: svd
-          - type: sklearn.ensemble.RandomForestClassifier
+
+RandomForestClassifier:
+  type: sklearn.ensemble.RandomForestClassifier
             init_args:
               n_estimators: 500
               max_leaf_nodes: 2
               random_state: 6020
-          - type: sklearn.svm.SVC
+
+SVC:
+  type: sklearn.svm.SVC
             init_args:
               kernel: linear
               probability: True
@@ -120,23 +130,24 @@ and we can use the Python package [`omegaconf`](https://omegaconf.readthedocs.io
 
 One of feature of the `OmegaConf`class is that we can use _unpacking_ [^docs] and therefore write a line like:
 ```{.python}
-PCA(**config.model.components[0].init_args)
+PCA(**params["PCA"].init_args)
 ```
-Have a look at the commit [bbe32f](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/bbe32fac13b251738612bc90d198a6a871c18838) to see this in action. 
+Have a look at the commit [9f7dead](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/9f7dead95663d9cef7a7cc21ec8133b03acb650c) to see this in action.
+As a template we include the above parameters as `params.yaml`.
 
 
 ::: {.callout-caution appearance="simple" icon=false}
-:::: {#exr-data-code-config}
+:::: {#exr-data-code-params}
 
-## Externalize config
+## Externalize params
 
-We can generate the entire model from the config, even the different classes.
+We can generate the entire model from the params, even the different classes.
 By using the function `from importlib import import_module` we can dynamically load a class with the following snippet:
 
 ```{.python}
-module = import_module(config.model.components[0].type.rsplit(".", 1)[0])
-PCA = getattr(module, config.model.components[0].type.rsplit(".", 1)[-1])(
-    **config.model.components[0].init_args
+module = import_module(params["PCA"].type.rsplit(".", 1)[0])
+PCA = getattr(module, params["PCA"].type.rsplit(".", 1)[-1])(
+    **params["PCA"].init_args
 )
 ```
 
