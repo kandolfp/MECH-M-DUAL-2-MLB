@@ -1,26 +1,26 @@
 # Code persistence {#sec-data-repro}
 
-When talking about storing the model we quickly realise that there is more to this task than simply calling `dump`.
+When talking about storing the model we quickly realise that there is more to this task than simply calling `pickle.dump`.
 The same is true for persisting the code. 
 
-Luckily, we already have the perfect tool for that in use, `git` [^git].
-We can make sure to commit our source files and when using a proper package manager like `pdm` [^pdm] we can hope to reproduce our environment for the formats that require these features. 
+Luckily, we already have the perfect tool for that in use, `git`[^git].
+We can make sure to commit our source files and when using a proper package manager like `pdm`[^pdm] we can hope to reproduce our environment for the formats that require these features. 
 
-We move the code from @lst-data-mp-toyexample into a project.
+To illustrate this, we move the code from @lst-data-mp-toyexample into a project.
 In this process we move from the dense script to a proper file structure by splitting up the source script into several parts.
 Furthermore, we rework some of the details, like only downloading the data once.
 
 ::: {.callout-important}
 ## Reference repository
 
-The following example is referenced according to the github repository [kandolfp/MECH-M-DUAL-2-MLB-DATA](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA) on github.
+The following example is referenced according to the GitHub repository [kandolfp/MECH-M-DUAL-2-MLB-DATA](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA) on GitHub.
 
 Please use it as reference and move along the corresponding commit SHAs to see certain reference points.
 
-This also means some of the code included below is not interactively created.
+This also means some of the code included below is not interactively created but static with regard to the execution time. 
 :::
 
- and we get a structure looking something like the following:
+After the redesign we get a structure looking something like the following:
 
 ```bash
 MLB-DATA$ tree
