@@ -564,6 +564,50 @@ Have a look at [`dvc plots`](https://dvc.org/doc/command-reference/plots) to vis
 :::
 
 
+## Add a remote for `dvc`
+
+The biggest thing missing for our configuration with `dvc` is a remote to store our data. 
+
+::: {.callout-important}
+For this lecture we use the storage on [Sakai](https://sakai.mci4me.at/), this also means that this part is tricky to follow if you do not have something like this.
+
+In such a case use local storage as an alternative: [File systems (local remotes)](https://dvc.org/doc/user-guide/data-management/remote-storage#file-systems-local-remotes). 
+:::
+
+We can add the remote as
+```bash
+MLB-DATA$ pdm run dvc remote add -d myremote webdavs://sakai.mci4me.at/dav/Course-ID-SLVA-46549/MECH-M-DUAL-2-MLB-DATA
+Setting 'myremote' as a default remote.
+```
+this create the file `.dvc/config` with the following content:
+
+```toml
+[core]
+    remote = myremote
+['remote "myremote"']
+    url = webdavs://sakai.mci4me.at/dav/Course-ID-SLVA-46549/MECH-M-DUAL-2-MLB-DATA
+```
+
+To nicely separate the sensitive information there also exist a `.dvc/config.local` file that is in the `.gitignore` and will not be committed. 
+We add our user information as
+
+```bash
+pdm run dvc remote modify --local myremote user ***
+pdm run dvc remote modify --local myremote password ***
+```
+(the user is without the `@mci4me.at`)
+
+To handle webdav `dvc` requires the package `dvc-webdav`, install it via `pdm`.
+See [afe0848](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/afe08488167a3a68788f67b64cbd76e7261deee6) and how this is reflected in our reference repository.
+
+Now we can run `dvc push` and our data is stored remote
+```bash
+MLB-DATA$ pdm run dvc push
+Collecting                                           |14.0 [00:00,  381entry/s]
+Pushing                                   
+10 files pushed
+```
+or `dvc pull` to get the files.
 
 
 [^git]: see the lecture MECH-M-DUAL-1-SWD, Chapter 3 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-SWD/basics/versioncontrol.html)
