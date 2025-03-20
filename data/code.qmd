@@ -565,6 +565,7 @@ Have a look at [`dvc plots`](https://dvc.org/doc/command-reference/plots) to vis
 
 
 
+
 [^git]: see the lecture MECH-M-DUAL-1-SWD, Chapter 3 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-SWD/basics/versioncontrol.html)
 [^pdm]: see the lecture MECH-M-DUAL-1-SWD, Chapter 2 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-SWD/basics/packagemanager.html)
 [^logging]: see the lecture MECH-M-DUAL-1-SWD, Chapter 11 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-SWD/errorhandling/logging.html)
