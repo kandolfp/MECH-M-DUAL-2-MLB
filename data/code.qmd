@@ -61,11 +61,11 @@ INFO:root: We have a hard voting score of 0.8
 ```
 
 Now we can start connecting the model and the code.
-Our model was created at commit [`757e26`](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/757e263bec63cc679a18d234c25ab6d9210a8ed8).
+Our model was created at commit [`22788a6`](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/22788a608b76d0b3180728c36c0351cc531b1def).
 
 Now there are several things we can do to make sure this is reflected within our little project.
 
-1. Make the convention to never train and store an experiment for later use as long as you have not commited your code (easier said than done).
+1. Make the convention to never train and store an experiment for later use as long as you have uncommitted changes in your code (easier said than done).
 1. Make sure to note somewhere what commit SHA is the current HEAD when storing the model.
 This allows ue to reproduce it in case of data corruption or loss and for comparison with other models. 
 1. When running inference we can check for the SHA in case the project dependencies have changed and we get problems loading the file. 
