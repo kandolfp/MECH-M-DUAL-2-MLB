@@ -167,10 +167,10 @@ Now that the config is externalized we can continue on our quest to persist our 
 Or model depends on the code, the configuration but crucially, also on the input data itself.
 In order to make sure that we can reliably reproduce a model we also need to make sure our data is reproducible. 
 
-In our little toy example we use some files from github but let us still make sure they are tracked within our system. 
+In our little toy example we use some files from GitHub but let us still make sure they are tracked within our system. 
 
-On tool to do data version control is [`dvc`](https://dvc.org/doc).
-As it is written in Python we can even add and track the version via our package manager. 
+One tool for data version control is [`dvc`](https://dvc.org/doc).
+As it is written in Python we can even add and track the version via our package manager `pdm add dvc`. 
 Once we have it installed we can run
 
 ```bash
@@ -194,7 +194,7 @@ What's next?
 - Star us on GitHub: <https://github.com/iterative/dvc>
 ```
 
-and commit the directory `.dvc` to git and our project now runs with `dvc`, see commit [ba8c89](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/ba8c89a99637f8530e697c2a26759f5ce1410d76).
+and commit the directory `.dvc` to git and our project now runs with `dvc`, see commit [df38086](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/df38086b756ed27e70fa2573b8d01c51ea69086c).
 
 To add the `data` directory simply run
 
