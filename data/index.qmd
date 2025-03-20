@@ -28,7 +28,7 @@ A nice deep dive into the topics can be found in @Reis2022-tm, where the details
 
 ![](../_assets/data/data_eng_lifecycle)
 
-Illustration of a common data engineering lifecycle in data processing. The _related topics_ are often referred to as _undercurrents_.
+Illustration of a common data engineering lifecycle in data processing. The _related topics_ are often referred as _undercurrents_.
 ::::
 
 We will see some aspects of the lifecycle in action, we also integrate code into this picture.
