@@ -1,28 +1,36 @@
 # Data management and data engineering {.unnumbered}
 
 In the previous sections we discussed classification with the help of various examples. 
-We did not talk about how the observations/data for training was provided, we just loaded them, and how to persist the model we generated.
-Nevertheless, data management and data engineering are essential aspects. 
-As with other topics discussed in these notes we can not hope to cover these topics comprehensively.
-Therefore, we will focus on some aspects and use some software solution for the implementation to see it in action to help understand the practical aspects of the challenges within these topics.
+We did not talk about how we provide the observations/data for our training, validation, and testing.
+They where just there or more precisely, we just loaded them.
+Furthermore, we also did not talk about how to persist the model we generated, after the program finished the model was gone again and needs to be retrained to further use it.
+Nevertheless, _data management and data engineering_ are essential aspects of our topics at hand.
+As with other topics discussed in these notes, we can not hope to cover the entire field comprehensively, but we can provide an introduction and highlight the main and basic concepts that help us to get started.
+Therefore, we will focus on a couple of aspects and use only one specific software solution for the implementation.
+On the one hand, this limits us and the notes might will be outdated sooner but in the spirit of the practical introduction it will allow us to work on the topics at hand.
+The intend is to see _it_ in action and to help understand the practical aspects of the challenges within these topics.
 
-There are several trivial but key aspects to managing our data:
+There are several trivial but important key aspects to managing data:
 
-- without data we can not train a model
-- we need to keep track if the data changes to allow reproducibility and also to detect drifts
-- training times are often long and we need to store the resulting model together with the code and the data we used
-- and much more
+- without data we can not hope to train a model
+- we need to keep track of the state of our data and the data changes to allow reproducibility and also to detect drifts[^drift]
+- training times are often long and we need to store the resulting model together with the code and the data we used for training
 
-The last example in @sec-clustering-ssl is actually also quite useful in illustrating the importance of having correct data as with, e.g. wrong labels we can not hope to generate correct result.
+and so much more.
 
-In addition, if we come to images we could also see how changing the basis (_raw_ to _wavelet_) changed our results.
-As each pixel of an image can be considered a feature for our training, we can imagine that changing only a small amount might change our model. 
-Now consider that most formats for storing images include some kind of image compression (see some discussed in @Kandolf_GDM) we can imagine that this has some influence on the training and resulting model. 
+The last _step_ in @sec-clustering-ssl is actually quite a useful illustration to highlight the importance of having correct data. 
+We could see that with _wrong_ labels we can not hope to generate correct result.
+Consequently, if we can not say for sure if we had correct labels for the training three months ago we can not validate results.
+
+In addition, if we come to images, we could also see how changing the basis (_raw_ to _wavelet_) changed our results, see @sec-clustering-cvd.
+As each pixel of an image can be considered a feature for our training, we can imagine that changing only a small amount might change our model and our performance. 
+Now consider that most formats for storing images include some kind of image compression (see some discussed in @Kandolf_GDM) we can imagine that this can have major influence on the training and resulting model.
 Therefore, we also need to keep track how these features (our images) are generated and stored if we also want to make sure we do not get unexpected behaviour in our results. 
 
-The entire field of data management and data engineering is becoming more important and spawned several (research) fields which are often captured under the umbrella of _data science_. 
+The entire field of data management and data engineering is not new but received a lot of focus in the machine learning age, it also spawned several (research) fields which are often captured under the umbrella of _data science_.
 
-A nice deep dive into the topics can be found in @Reis2022-tm, where the details to the so called _data engineering lifecycle_ illustrated in @fig-data-delf can be found.
+A nice deep dive into the topics that focuses on concepts and not on technologies is @Reis2022-tm.
+It build on the so called _data engineering lifecycle_ illustrated in @fig-data-delf.
 
 :::: {#fig-data-delf}
 
@@ -31,7 +39,10 @@ A nice deep dive into the topics can be found in @Reis2022-tm, where the details
 Illustration of a common data engineering lifecycle in data processing. The _related topics_ are often referred as _undercurrents_.
 ::::
 
-We will see some aspects of the lifecycle in action, we also integrate code into this picture.
+In this chapter we will see some aspects of the lifecycle in action. 
+We will also integrate our code for model and data generation into this framework.
 Several aspects to the _related topics_ are very important but can not be fully covered here, we highlight sections of importance.
 
-So let us start and dive into the waters of data management.
+So let us start and dive into the shallows of data management.
+
+[^drift]: We talk about a drift as _an evolution of data that invalidates the data model_, see [Wikipedia](https://en.wikipedia.org/wiki/Concept_drift), accessed on the 21.03.2025
