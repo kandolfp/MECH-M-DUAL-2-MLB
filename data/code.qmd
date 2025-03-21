@@ -1,9 +1,9 @@
 # Code persistence {#sec-data-repro}
 
 When talking about storing the model we quickly realise that there is more to this task than simply calling `pickle.dump`.
-The same is true for persisting the code. 
+The same is true for persisting the model, data, and code together. 
 
-Luckily, we already have the perfect tool for that in use, `git`[^git].
+Luckily, we already have the perfect tool for controlling the code in use, `git`[^git].
 We can make sure to commit our source files and when using a proper package manager like `pdm`[^pdm] we can hope to reproduce our environment for the formats that require these features. 
 
 To illustrate this, we move the code from @lst-data-mp-toyexample into a project.
@@ -15,15 +15,20 @@ Furthermore, we rework some of the details, like only downloading the data once.
 
 The following example is referenced according to the GitHub repository [kandolfp/MECH-M-DUAL-2-MLB-DATA](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA) on GitHub.
 
-Please use it as reference and move along the corresponding commit SHAs to see certain reference points.
+Please use it as reference and move along the corresponding commit SHAs to see certain reference points as we continuously rework the code to adapt to the new requirements and situation.
 
-This also means some of the code included below is not interactively created but static with regard to the execution time. 
+This also means some of the code included below is not interactively created but static with regard to the execution time and state. 
+
+To emphasise that we are in the context of this reference repository the prompt for the terminal will always start with `MLB-DATA$`.
+
+The code is called with respect to the root director of the project as seen in the next output block.
 :::
 
-After the redesign we get a structure looking something like the following:
+After the redesign we get a structure looking something like the following, see [`22788a6`](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/22788a608b76d0b3180728c36c0351cc531b1def) for reference and file content:
 
 ```bash
 MLB-DATA$ tree
+
 .
 ├── pdm.lock
 ├── pyproject.toml
@@ -38,9 +43,11 @@ MLB-DATA$ tree
 3 directories, 7 files
 ```
 
-We can train the model by calling `train.py` (in this case with a logger[^logging] on `DEBUG` )
+We can train the model by calling `train.py` (in this case with a logger[^logging] on `DEBUG` enabled).
+
 ```bash
 MLB-DATA$ pdm run src/MECH-M-DUAL-2-MLB-DATA/train.py 
+
 DEBUG:root: Loaded the data with Split of 60 to 20 per category.
 DEBUG:root: Create classifier
 DEBUG:root: Train classifier
@@ -50,8 +57,10 @@ DEBUG:root: Save clf to skops file models/model.skops
 ```
 
 Of course we can also load the model again and do inference with it by calling `inference.py`
+
 ```bash
 MLB-DATA$ pdm run src/MECH-M-DUAL-2-MLB-DATA/inference.py 
+
 DEBUG:root: Loaded the data with Split of 60 to 20 per category.
 DEBUG:root: Load classifier
 DEBUG:root: Load clf from skops file models/model.skops
@@ -61,15 +70,16 @@ INFO:root: We have a hard voting score of 0.8
 ```
 
 Now we can start connecting the model and the code.
-Our model was created at commit [`22788a6`](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/22788a608b76d0b3180728c36c0351cc531b1def).
+Our model was created at commit [`22788a6`](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/22788a608b76d0b3180728c36c0351cc531b1def) and stored into the directory `model`.
 
 Now there are several things we can do to make sure this is reflected within our little project.
 
-1. Make the convention to never train and store an experiment for later use as long as you have uncommitted changes in your code (easier said than done).
+1. We can share experiments and models with other people and they can reproduce them.
+1. Make the convention to never train and store an experiment for later use as long as we have uncommitted changes in our code (easier said than done).
 1. Make sure to note somewhere what commit SHA is the current HEAD when storing the model.
-This allows ue to reproduce it in case of data corruption or loss and for comparison with other models. 
-1. When running inference we can check for the SHA in case the project dependencies have changed and we get problems loading the file. 
-1. Every time we change a parameter we get a new commit, which is not very nice. 
+This allows us to reproduce it in case of data corruption or loss and for comparison with other models. 
+1. When running inference we can check for the commit SHA and switch to it in case the project dependencies have changed and we get problems loading the file. 
+1. Every time we change a parameter, we get a new commit, which is not very nice for our code but can be used to note the intend of the experiment in the commit message.
 
 This is rather cumbersome and requires a lot of discipline, it will also become tricky if several people work on the same project and run experiments with different parameters. 
 
@@ -78,19 +88,20 @@ This is rather cumbersome and requires a lot of discipline, it will also become 
 
 ## Check for a _dirty_ `git` repository
 
-Implement a function (or a decorator) in Python that uses [`GitPython`](https://gitpython.readthedocs.io/en/stable/) or some alternative to introduce a safeguard such that training can only be called if the repository is not _dirty_.
+Implement a function (or a decorator) in Python that uses [`GitPython`](https://gitpython.readthedocs.io/en/stable/) (alternatives or the plain shell can also be used) to introduce a safeguard such that training can only be called if the repository is not _dirty_.
 
-Optional: Extend the implementation and check if the local repository is not behind the remote?
+Optional: Extend the implementation and check if the local repository is not behind the remote.
 ::::
 :::
 
 ## Externalize the parameters/configuration
 
-First thing we do is we externalize the configuration to make sure this is no longer part of our code source and a commit to the code source stands for a real change in the project and not a _simple experiment_.
+First thing we do is we externalize the configuration to make sure this is no longer part of our main code source.
+This means we can filter between actual changes to the structure and source and a commit for a _simple experiment_.
 
 `yaml` is the format to go for these aspects, see [Wikipedia](https://en.wikipedia.org/wiki/YAML).
 It is a human readable data serialization language. 
-One possible interpretation of the config (among many others is)
+One possible interpretation of the config (among many others is) can be seen in the next code block.
 
 ```yaml
 PCA:
@@ -126,14 +137,18 @@ SVC:
     probability: True
     random_state: 6020
 ```
-and we can use the Python package [`omegaconf`](https://omegaconf.readthedocs.io/en/2.3_branch/) to load and use it.
 
-One of feature of the `OmegaConf`class is that we can use _unpacking_ [^docs] and therefore write a line like:
+We can use the Python package [`omegaconf`](https://omegaconf.readthedocs.io/en/2.3_branch/) to load and use it.
+
+One feature of the `OmegaConf`class is that we can use _unpacking_[^docs] and therefore write a line like:
+
 ```{.python}
 PCA(**params["PCA"].init_args)
 ```
-Have a look at the commit [9f7dead](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/9f7dead95663d9cef7a7cc21ec8133b03acb650c) to see this in action.
-As a template we include the above parameters as `params.yaml`.
+
+dramatically simplifying our code.
+Have a look at commit [9f7dead](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/9f7dead95663d9cef7a7cc21ec8133b03acb650c) to see this implemented and in action.
+As a our default parameter template we include the above parameters as `params.yaml` in the main directory of our project.
 
 
 ::: {.callout-caution appearance="simple" icon=false}
@@ -160,21 +175,37 @@ Note: If you see an advantage in rewriting the config structure to make your cod
 ::::
 :::
 
-Now that the config is externalized we can continue on our quest to persist our work usefully. 
+Now that the config is externalized we can continue on our quest to persist all aspects of this project together in a useful way. 
 
 ## Data persistence
 
-Or model depends on the code, the configuration but crucially, also on the input data itself.
+Or model depends on the code, the configuration, but crucially also on the input data itself.
 In order to make sure that we can reliably reproduce a model we also need to make sure our data is reproducible. 
 
-In our little toy example we use some files from GitHub but let us still make sure they are tracked within our system. 
+In our reference project we use some files from GitHub (see @@Brunton2022 for as reference) but let us still make sure they are tracked within our system. 
+
+::: {.callout-important}
+We use a simple tool for the next paragraphs to illustrate the concepts.
+There are plenty of alternatives that can and are used.
+
+The selection of [`dvc`](https://dvc.org/doc) is purely motivated by the following features: it can easily be used in such our lecture, has some basic features that illustrate the requirements on such systems, integrates nicely with Python, has only limited dependencies outside of the Python eco-system.
+
+Alternatives include:
+
+- [Git Large File Storage](https://git-lfs.com/)
+- [Pachyderm](https://www.pachyderm.com/)
+- [lakefs](https://lakefs.io/)
+
+Like always, the _best_ platform depends on the project and the available infrastructure.
+:::
 
 One tool for data version control is [`dvc`](https://dvc.org/doc).
 As it is written in Python we can even add and track the version via our package manager `pdm add dvc`. 
-Once we have it installed we can run
+Once installed we can initialize it in our project,
 
 ```bash
 MLB-DATA$ pdm run dvc init
+
 Initialized DVC repository.
 
 You can now commit the changes to git.
@@ -194,14 +225,15 @@ What's next?
 - Star us on GitHub: <https://github.com/iterative/dvc>
 ```
 
-and commit the directory `.dvc` to git and our project now runs with `dvc`, see commit [df38086](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/df38086b756ed27e70fa2573b8d01c51ea69086c).
+To make the changes permanent we commit the directory `.dvc` (with all the files included) to `git` and therefore our project now runs with `dvc`, see commit [df38086](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/df38086b756ed27e70fa2573b8d01c51ea69086c) for reference.
 
 To add the `data` directory simply run
 
 ```bash
 MLB-DATA$ pdm run dvc add data
+
 100% Adding...|███████████████████████████████████████|1/1 [00:00,  5.67file/s]
-                                                                                                                                                                                               
+
 To track the changes with git, run:
 
         git add data.dvc
@@ -211,16 +243,17 @@ To enable auto staging, run:
         dvc config core.autostage true
 ```
 
-and we also add `data.dvc` to the `git` as suggested. 
+Again, to make it permanent in the project we need to add `data.dvc` to `git` (as suggested). 
 
 ::: {.callout-note}
 At this point we have the two files `catData_w.mat` and `dogData_w.mat` in this directory and they are under version control from `dvc`.
 :::
 
-If we take a look into `data.dvc`  we can see that is tracks the files via md5 sha and includes some additional information: 
+If we take a look into `data.dvc` we can see that it tracks the files via md5 SHAs and includes some additional useful information .
 
 ```bash
-MLB-DATA$ cat data.dvc 
+MLB-DATA$ cat data.dvc
+
 outs:
 - md5: 5987e80830fc2caf6d475da3deca1dfe.dir
   size: 111165
@@ -229,44 +262,55 @@ outs:
   path: data
 ```
 
-As mentioned, `dvc` works similar to `git` so eventually we will need to include a remote that we _push_ data to. 
-For now we just work locally and as we could do with a `git` repository. 
+As mentioned, `dvc` works similar to `git` so eventually we will need to include a remote that we _push_ data to.
+For now we just work locally, similar as we could do for a `git` repository.
 
-Other than that we can now change the files use `dvc add data` and as soon as we commit the corresponding change in the `data.dvc` to `git` we know exactly what data is used and we can also restore it.
+Other than that, we can now change the files use `dvc add data` and as soon as we commit the corresponding change in the `data.dvc` to `git` we know exactly what data is used and we can also restore it.
 
-To do these operations `dvc` uses a cache (default it is in `.dvc/cache`).
+To do these operations `dvc` uses a cache (default location is in `.dvc/cache`) and the files are links to the cache.
 
 The most important `dvc` commands are (we link the docs for an extended reference):
 
-- [`dvc add`](https://dvc.org/doc/command-reference/add) to add a file or directory
-- [`dvc checkout`](https://dvc.org/doc/command-reference/checkout) brings your work space up to date, according to the `.dvc` files current states
-- [`dvc commit`](https://dvc.org/doc/command-reference/checkout) updates the `.dvc` files and stores the content in the cache, most of the time called implicitly
-- [`dvc config`](https://dvc.org/doc/command-reference/config) view and change the config for the repo or globally
-- [`dvc data status`](https://dvc.org/doc/command-reference/data/status) chow changes to the files in the work space with respect to the`git` `HEAD`
-- [`dvc destroy`](https://dvc.org/doc/command-reference/destroy) remove all files and `dvc` structures for the current project, the cache as well but the symlinks will be replaced by the actual data so the current sate is preserved
-- [`dvc exp`](https://dvc.org/doc/command-reference/exp) has multiple subcommands and is used to handle experiments, we will use this later
-- [`dvc fetch`](https://dvc.org/doc/command-reference/fetch) download files from the remote repository to the cache
-- [`dvc pull`](https://dvc.org/doc/command-reference/pull) download files from the remote and make them visible in the working space
-- [`dvc push`](https://dvc.org/doc/command-reference/push) upload the tracked files to the remote
+- [`dvc add`](https://dvc.org/doc/command-reference/add) to add a file or directory.
+- [`dvc checkout`](https://dvc.org/doc/command-reference/checkout) brings your work space up to date, according to the `.dvc` files current states.
+- [`dvc commit`](https://dvc.org/doc/command-reference/checkout) updates the `.dvc` files and stores the content in the cache, most of the time called implicitly.
+- [`dvc config`](https://dvc.org/doc/command-reference/config) view and change the config for the repo or globally for `dvc` on the system.
+- [`dvc data status`](https://dvc.org/doc/command-reference/data/status) chow changes to the files in the work space with respect to the`git HEAD`.
+- [`dvc destroy`](https://dvc.org/doc/command-reference/destroy) remove all files and `dvc` structures for the current project, including the cache. The symlinks will be replaced by the actual data so the current state is preserved.
+- [`dvc exp`](https://dvc.org/doc/command-reference/exp) has multiple subcommands and is used to handle experiments, we will use this command later.
+- [`dvc fetch`](https://dvc.org/doc/command-reference/fetch) download files from the remote repository to the cache.
+- [`dvc pull`](https://dvc.org/doc/command-reference/pull) download files from the remote and make them visible in the working space.
+- [`dvc push`](https://dvc.org/doc/command-reference/push) upload the tracked files to the remote.
 
 For the other commands run `dvc --help` or look at the [docs](https://dvc.org/doc/command-reference).
-`dvc` also allows for nice pipelines and automatic computation.
-This is far more advanced than we need right now so we will not introduce it her but leave it for exercises or advanced studies.
 
-Now our files are tracked, but as you probably realised we did not add the `module` folder to `dvc`. 
+::: {.callout-note}
+As can be seen from the command, `dvc` was build with `git` in mind and feels quite similar.
+This means it uses the same commands for the same (or almost same) operations. 
+Unfortionalty or luckily (depending on our preferences), it also brings in the sometimes confusing command structure and the concepts like a working space.
+
+Recall the introduction to `git` for some of these [^git].
+We will use this to also recall some details about `git` to, hopefully, further foster the understanding
+:::
+
+Now our files are tracked, but as you probably realised we did not add the `module` folder to `dvc`.
 This is due to the fact that we can use the `dvc exp` feature to allow for more fine grained control and even parameter overviews.
 Furthermore, we can use logging features to integrate with this system even better.
 
+`dvc` also allows advanced nice pipelines (we look at a small example later) and automatic computation as well as monitoring.
+In all its facets this is quite advanced and can be introduced when our project grows.
+
 ## `dvclive` for experiment management
 
-`dvclive` works best with the big ML Frameworks like `keras` or `pytorch` but we can also utilize it for our toy example.
-The introduction to the experiment management form the `dvc` perspective can be found [here](https://dvc.org/doc/start/experiments).
+`dvclive` works best with the big ML Frameworks like `keras` or `pytorch` but we can also utilize it for our example project.
+The introduction to the experiment management from the `dvc` perspective can be found in the [docs](https://dvc.org/doc/start/experiments).
 
-To show some of the `dvclive` features we reworked to code, see commit [7f407b](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/7f407bab7bfcc191014eeb3b939bb2fe0456fb58) (do not forget `pdm add dvclive`).
-Now, when we run our job and it will create the `dvclive` directory with a couple of subdirectories containing our metrics, looking like this:
+To show some of the `dvclive` features we reworked to code, see commit [7f407b](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/7f407bab7bfcc191014eeb3b939bb2fe0456fb58) for the changes (including `pdm add dvclive`).
+Now, when we run our job once more it will create the `dvclive` directory with a couple of subdirectories containing our metrics, looking like the following output.
 
 ```bash
-MLB-DATA$ pdm run src/MECH-M-DUAL-2-MLB-DATA/train.py 
+MLB-DATA$ pdm run src/MECH-M-DUAL-2-MLB-DATA/train.py
+
 INFO:root: We have a hard voting train-score of 1.0
 INFO:root: We have a hard voting test-score of 0.8
 100% Adding...|███████████████████████████████████████|1/1 [00:00,  7.64file/s]
@@ -275,7 +319,8 @@ INFO:root: We have a hard voting test-score of 0.8
 ::: {.callout collapse="true"}
 ## Output with logger on DEBUG.
 ```bash
-MLB-DATA$ pdm run python src/MECH-M-DUAL-2-MLB-DATA/train.py 
+MLB-DATA$ pdm run python src/MECH-M-DUAL-2-MLB-DATA/train.py
+
 DEBUG:root: Loaded the data with Split of 60 to 20 per category.
 DEBUG:root: Load config
 DEBUG:root: Create classifier
@@ -285,7 +330,7 @@ INFO:root: We have a hard voting train-score of 1.0
 INFO:root: We have a hard voting test-score of 0.8
 DEBUG:root: Save clf to skops file dvclive/artifacts/model.skops
 100% Adding...|███████████████████████████████████████|1/1 [00:00,  9.35file/s]
-DEBUG:scmrepo.git: Stashing workspace                                                                                                                                                          
+DEBUG:scmrepo.git: Stashing workspace
 DEBUG:scmrepo.git.stash: Stashing changes in 'refs/stash'
 DEBUG:scmrepo.git: Detaching HEAD at 'HEAD'
 DEBUG:scmrepo.git.stash: Applying stash commit '7d0806908ca50c01b5626e944591e138a8cebc28'
@@ -295,7 +340,7 @@ DEBUG:fsspec.memoryfs: info: memory://.UFCO7_lfUrOd1sAFVpO-vw.tmp
 Collecting files and computing hashes in data        |0.00 [00:00,     ?file/s]
 DEBUG:fsspec.memoryfs: open file /.4cDC9-sZfddrOSDnK8EeJA.tmp
 DEBUG:fsspec.memoryfs: info: memory://.4cDC9-sZfddrOSDnK8EeJA.tmp
-DEBUG:scmrepo.git.stash: Stashing changes in 'refs/exps/stash'                                                                                                                                 
+DEBUG:scmrepo.git.stash: Stashing changes in 'refs/exps/stash'
 DEBUG:scmrepo.git: Restore HEAD to 'main'
 DEBUG:scmrepo.git: Restoring stashed workspace
 DEBUG:scmrepo.git.stash: Popping from stash 'refs/stash'
@@ -318,11 +363,31 @@ DEBUG:scmrepo.git: Restore HEAD to 'main'
 Here we can also see how `dvc` interacts with `git` to store the files. 
 :::
 
+And the resulting files are stored in `dvclive`.
+```bash
+MLB-DATA$ tree dvclive/
+
+dvclive/
+├── artifacts
+│   └── model.skops
+├── metrics.json
+├── params.yaml
+└── plots
+    ├── metrics
+    │   ├── testscore.tsv
+    │   └── trainscore.tsv
+    └── sklearn
+        └── confusion_matrix.json
+
+5 directories, 6 files
+```
+
 The experiment is automatically added. 
-We can check this with:
+We can check this with `dvc exp show`
 
 ```
 MLB-DATA$ pdm run dvc exp show
+
  ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── 
   Experiment                 Created        trainscore   testscore   PCA/n_components   LinearDiscriminantAnalysis/solver   RandomForestClassifier/n_estimators   RandomForestClassifier/max_leaf_nodes   RandomForestClassifier/random_state   SVC/kernel   SVC/probability   SVC/random_state   PCA.type                    PCA.init_args.n_components   VotingClassifier.type               VotingClassifier.init_args.flatten_transform   VotingClassifier.estimators                                       LinearDiscriminantAnalysis.type                            LinearDiscriminantAnalysis.init_args.solver   RandomForestClassifier.type               RandomForestClassifier.init_args.n_estimators   RandomForestClassifier.init_args.max_leaf_nodes   RandomForestClassifier.init_args.random_state   SVC.type          SVC.init_args.kernel   SVC.init_args.probability   SVC.init_args.random_state  
  ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── 
@@ -333,33 +398,60 @@ MLB-DATA$ pdm run dvc exp show
 
 ```
 
-The last command gives us an overview of our experiments (check out the options, especially `--num` and `-A`).
-Each experiment has a unique name, as we did not specify anything a random name is created, in our case `sural-cyma` (they are often fun but can be hard to infer meaning and speaking names are most the time more useful).
-More importantly, we can see the score for our model and the parameters, this allows for a quick check to see how the current model performs in comparison to another version.
+::: {.callout-note}
+`dvc exp show` provides an overview of the experiments base on the `git` commit SHAs. The output can be counter intuitive.
+Check out the option ( `dvc exp show --help`), especially `--num` and `-A` to control where to search for experiments.
+
+Each experiment has a unique name, as we did not specify anything a random name is created.
+In our case `sural-cyma` (they are often fun but can be hard to infer meaning and speaking names are most the time more useful, see `-n` option).
+
+It is also possible provide a _commit message_ to give more details to the experiment.
+:::
+
+The overview also allows us to see the score for our model and the parameters, this allows us to quickly compare models.
 
 ::: {.callout-note}
 We can see that the parameter from `params.yaml` are automatically added and our code somewhat duplicated them.
 :::
 
 `dvclive` relies on `git` to do its magic for files and the `dvc` cache for large files. 
-How this works is that a reference inside `git` is created for each experiment and stores the data there.
-We can see this in the above logger output.
-Furthermore, we did not commit our changes to git (bad practice!!!) but they are stored alongside with the experiment, so no information is lost.
-To clean up we commit our changes as we know they work and then rerun the code for a new experiment, see [519a854](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/519a8544c82667cec5356f92ddde77993f0a0e76)
+How this works is that a reference inside `git` is created for each experiment and stores the changes there.
+We can see this in the above logger output or via git.
 
-By default this is not moved to the `git` remote, to do so we need to run `dvc exp push`.
+```bash
+MLB-DATA$ git lg # <1>
+
+| * 1f2bee5 - (29 hours ago) dvc: commit experiment 44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a - Peter Kandolf
+|/  
+* 519a854 - (29 hours ago) feat: include dvc-live - Peter Kandolf
+* f264314 - (2 days ago) feat: add data to dvc - Peter Kandolf
+* df38086 - (2 days ago) feat: init dvc - Peter Kandolf
+* 073fb93 - (2 days ago) fixup! feat: externalize params via omegaconfig - Peter Kandolf
+* 9f7dead - (2 days ago) feat: externalize params via omegaconfig - Peter Kandolf
+* 22788a6 - (2 days ago) init: project - Peter Kandolf
+```
+1. This is a shorthand see[^shorthand].
+
+Furthermore, we did not commit our changes to git (bad practice!!!) but they are stored alongside with the experiment, so no information is lost (we can find them in `.git/refs` , see below.)
+
+To clean up, we commit our changes as we know they work and then rerun the code for a new experiment, see [519a854](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/519a8544c82667cec5356f92ddde77993f0a0e76).
+We can remove the previous version with `dvc exp rm <name>`.
+
+By default, this is not moved to the `git` remote, to do so we need to run `dvc exp push <git remote>`.
 
 ```bash
 MLB-DATA$ pdm run dvc exp push origin
+
 Collecting                                           |0.00 [00:00,    ?entry/s]
 Pushing
 Experiment sural-cyma is up to date on Git remote 'origin'.
 ```
 
-We can also see this in the `git reflog`
+We can also see this in the `git reflog` (compare above output).
 
 ```bash
 MLB-DATA$ git reflog
+
 519a854 (HEAD -> main) HEAD@{0}: dvc: Restore HEAD to 'main'
 1f2bee5 HEAD@{1}: commit: dvc: commit experiment 44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a
 519a854 (HEAD -> main) HEAD@{2}: checkout: moving from main to 519a8544c82667cec5356f92ddde77993f0a0e76
@@ -370,7 +462,7 @@ f264314 HEAD@{6}: dvc: Restore HEAD to 'main'
 9e83c73 HEAD@{7}: commit: dvc: commit experiment 44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a
 f264314 HEAD@{8}: checkout: moving from main to f264314e5442315c74c395a89c2c73a3b7269f90
 f264314 HEAD@{9}: dvc: Restore HEAD to 'main'
-f264314 HEAD@{10}: checkout: moving from main to f264314e5442315c74c395a89c2c73a3b7269f90
+f264314 HEAD@{10}: checkout: moving from main add dat to f264314e5442315c74c395a89c2c73a3b7269f90
 f264314 HEAD@{11}: dvc: Restore HEAD to 'main'
 4afc6af HEAD@{12}: commit: dvc: commit experiment 44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a
 f264314 HEAD@{13}: checkout: moving from main to f264314e5442315c74c395a89c2c73a3b7269f90
@@ -378,14 +470,16 @@ f264314 HEAD@{14}: dvc: Restore HEAD to 'main'
 f264314 HEAD@{15}: checkout: moving from main to f264314e5442315c74c395a89c2c73a3b7269f90
 ``` 
 
-or via `ls` (on Linux)
+In the file system we can look inside (via `ls` on Linux).
 
 ```bash
-MLB-DATA$ ls .git/refs/exps/51/9a8544c82667cec5356f92ddde77993f0a0e76/sural-cyma 
-.git/refs/exps/51/9a8544c82667cec5356f92ddde77993f0a0e76/sural-cyma
+MLB-DATA$ ls .git/refs/exps/51/9a8544c82667cec5356f92ddde77993f0a0e76/
+
+sural-cyma
 ```
 
-We can also see, that a new file has appeared `dvc.yaml` with the following content
+We can also see, that a new file has appeared in our root directory, `dvc.yaml` with the following content.
+
 ```yaml
 params:
 - dvclive/params.yaml
@@ -406,39 +500,45 @@ artifacts:
     path: dvclive/artifacts/model.skops
     type: model
 ```
-reflecting our configuration.
+
+The content reflects our call and integration with `dvclive` from the `dvc` perspective and is called a _stage_.
+Furthermore, the file `dvclive/artifacts/model.skops.dvc` keeps track of the model itself.
 
 ::: {.callout-important}
-In order to show the next feature we need to remove the `dvc.yaml` and the `dvclive/artifacts/model.skops.dvc` files.
-As the current configuration would produce a conflict. 
+In order to show the next feature we need to remove the `dvc.yaml` and the `dvclive/artifacts/model.skops.dvc` files again.
+As the current configuration would produce a conflict with the stage we want to introduce next, please delete these files if you type along.
 :::
-
-Before we add this file to the our `git` repository we introduce the pipeline feature of `dvc` to see some additional possibilities for the configuration modification.
-These so called `stages` are also of the `dvc.yaml` as well.
 
 ## `dvc` pipeline
 
-The pipeline features we are after are part of `dvc stage` command and we add our training
+The pipeline features we are after are part of the `dvc stage` command and we add our training call in the following fashion.
 
 ```bash
-MLB-DATA$ pdm run dvc stage add --name train \
-          --deps data --deps src/MECH-M-DUAL-2-MLB-DATA/ \
-          --deps params.yaml --outs dvclive \
-          pdm run python src/MECH-M-DUAL-2-MLB-DATA/train.py
+MLB-DATA$ pdm run dvc stage add --name train \ # <1>
+          --deps data --deps src/MECH-M-DUAL-2-MLB-DATA/ --deps params.yaml \ # <2>
+          --outs dvclive \ # <3>
+          pdm run python src/MECH-M-DUAL-2-MLB-DATA/train.py # <4>
+
 Added stage 'train' in 'dvc.yaml'                                     
 
 To track the changes with git, run:
 
         git add dvc.yaml dvclive/artifacts/.gitignore
 ```
+1. Define the name of the stage.
+1. Include the dependencies, `dvc` will keep track of these files and only reruns the code if there are any changes in these files/directories.
+1. Define the output directory to keep track of all the files.
+1. Command to run to execute the stage.
 
-Before we follow the instructions to we need to run 
+Before we follow the instructions for the `git` commit, we make a `dvc commit`. 
 
 ```bash
 MLB-DATA$ pdm run dvc commit
 ```
-to create the `dvc.lock` file associated with the stage.
-It keeps track of the dependencies:
+
+This creates the `dvc.lock` file associated with the stage.
+It keeps track of the dependencies (see above explanations):
+
 ```yaml
 schema: '2.0'
 stages:
@@ -467,12 +567,13 @@ stages:
       nfiles: 6
 ```
 
-See [1282a7e9](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/1282a7e926e17d4a5ac2f02a30764bfd1026872f) and how this is reflected in our reference repository.
+Have a look at [1282a7e9](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/1282a7e926e17d4a5ac2f02a30764bfd1026872f) to see how this is reflected in our reference project.
 
-Now we can run:
+Now we can put it to action and execute (all) stages and therefore create a new experiment.
 
 ```bash
 MLB-DATA$ pdm run dvc exp run
+
 Reproducing experiment 'mesic-beep'  
 Building workspace index                            |16.0 [00:00, 1.23kentry/s]
 Comparing indexes                                   |15.0 [00:00, 1.22kentry/s]
@@ -484,18 +585,19 @@ Ran experiment(s): mesic-beep
 Experiment results have been applied to your workspace.
 ```
 
-As we did no change anything in our configuration (see pependencies) `dvc` is smart enough to basically just copy the experiment.
-But we can also change the parameters interactively, e.g.
+As we did no change anything in our configuration (see dependencies above), `dvc` is smart enough to basically just copy the experiment.
+But we can also change the parameters, either the file directly or interactively as seen in the next command block.
 
 ```bash
 MLB-DATA$ pdm run dvc exp run --set-param 'PCA.init_args.n_components=5'
+
 Reproducing experiment 'sappy-corm'
-Building workspace index                             |4.00 [00:00,  378entry/s]
-Comparing indexes                                   |15.0 [00:00, 1.20kentry/s]
-Applying changes                                     |6.00 [00:00,   391file/s]
-'data.dvc' didn't change, skipping
+Building workspace index                             |4.00 [00:00,  378entry/s] # <1>
+Comparing indexes                                   |15.0 [00:00, 1.20kentry/s] # <1>
+Applying changes                                     |6.00 [00:00,   391file/s] # <1>
+'data.dvc' didn't change, skipping                                              # <1>
 Running stage 'train':
-> pdm run python src/MECH-M-DUAL-2-MLB-DATA/train.py
+> pdm run python src/MECH-M-DUAL-2-MLB-DATA/train.py                            # <2>
 DEBUG:root: Loaded the data with Split of 60 to 20 per category.
 DEBUG:root: Load config
 DEBUG:root: Create classifier
@@ -509,8 +611,10 @@ Updating lock file 'dvc.lock'
 Ran experiment(s): sappy-corm
 Experiment results have been applied to your workspace.
 ```
+1. `dvc` checks the dependencies and applies the changes.
+1. Run the command specified in the stage.
 
-This is reflected in the experiment list 
+The result can be seen in the experiment list, of course under a new commit SHA.
 
 ```bash
  ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── 
@@ -530,16 +634,30 @@ This is reflected in the experiment list
  ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── 
 ```
 
-If we want to look at a specific experiment we can use `dvc exp apply` to restore it.
+If we want to restore a specific experiment we can use `dvc exp apply` to restore it, note that this will also restore the code and the data. 
 
-In order to share experiments we need to push them to the (git) remote.
+In order to share experiments we need to push them to the remote, `git` and `dvc`.
 This is done via
 
 ```bash
 MLB-DATA$ pdm run dvc exp push origin -A
+
 Experiment sural-cyma is up to date on Git remote 'origin'.
 Pushed experiment sappy-corm and mesic-beep to Git remote 'origin'.
 ```
+
+::: {.callout-caution}
+
+## Warning: Be careful with changed `git` SHAs
+
+As we can see `dvc` attaches experiments to `git` SHAs.
+This is an excellent idea as they identify a code state uniquely. 
+Nevertheless, this can backfire.
+
+Some commands and actions can _change_ a `git` SHA.
+This includes _squash merges_, or a _rebase_.
+Be careful when using such actions in your `dvc` repository together with experiment storage. 
+:::
 
 ::: {.callout-caution appearance="simple" icon=false}
 :::: {#exr-data-code-pipeline}
@@ -566,20 +684,23 @@ Have a look at [`dvc plots`](https://dvc.org/doc/command-reference/plots) to vis
 
 ## Add a remote for `dvc`
 
-The biggest thing missing for our configuration with `dvc` is a remote to store our data. 
+The biggest thing missing from our example project with `dvc` is a remote to store our data and make it available for cooperation.
 
 ::: {.callout-important}
-For this lecture we use the storage on [Sakai](https://sakai.mci4me.at/), this also means that this part is tricky to follow if you do not have something like this.
+For this lecture we use the storage on [Sakai](https://sakai.mci4me.at/), this also means that this part is tricky to follow if you are not part of the lecture.
 
-In such a case use local storage as an alternative: [File systems (local remotes)](https://dvc.org/doc/user-guide/data-management/remote-storage#file-systems-local-remotes). 
+If a storage that can be accessed via WebDAV[^webdav] is available is it or use _local storage_ as an alternative, see [File systems (local remotes)](https://dvc.org/doc/user-guide/data-management/remote-storage#file-systems-local-remotes). 
 :::
 
-We can add the remote as
+We can add the remote with the `dvc remote add` command.
+
 ```bash
 MLB-DATA$ pdm run dvc remote add -d myremote webdavs://sakai.mci4me.at/dav/Course-ID-SLVA-46549/MECH-M-DUAL-2-MLB-DATA
+
 Setting 'myremote' as a default remote.
 ```
-this create the file `.dvc/config` with the following content:
+
+This create the file `.dvc/config` with the following content (a toml file). 
 
 ```toml
 [core]
@@ -588,29 +709,48 @@ this create the file `.dvc/config` with the following content:
     url = webdavs://sakai.mci4me.at/dav/Course-ID-SLVA-46549/MECH-M-DUAL-2-MLB-DATA
 ```
 
-To nicely separate the sensitive information there also exist a `.dvc/config.local` file that is in the `.gitignore` and will not be committed. 
-We add our user information as
+To nicely separate the sensitive information for the access, there also exist a `.dvc/config.local` file that is in the `.gitignore` and will not be committed. 
+We add our user information to this file or via a command in the terminal
 
 ```bash
-pdm run dvc remote modify --local myremote user ***
-pdm run dvc remote modify --local myremote password ***
+MLB-DATA$ pdm run dvc remote modify --local myremote user ***
+
+MLB-DATA$ pdm run dvc remote modify --local myremote password ***
 ```
+
 (the user is without the `@mci4me.at`)
 
-To handle webdav `dvc` requires the package `dvc-webdav`, install it via `pdm`.
-See [afe0848](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/afe08488167a3a68788f67b64cbd76e7261deee6) and how this is reflected in our reference repository.
+To handle WebDAV `dvc` requires the package `dvc-webdav`, install it via `pdm`.
+See [afe0848](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/afe08488167a3a68788f67b64cbd76e7261deee6) on how this is reflected in our reference project.
 
-Now we can run `dvc push` and our data is stored remote
+Now we can run `dvc push` and our data is stored remotely,
+
 ```bash
 MLB-DATA$ pdm run dvc push
+
 Collecting                                           |14.0 [00:00,  381entry/s]
 Pushing                                   
 10 files pushed
 ```
-or `dvc pull` to get the files.
 
+And of course, `dvc pull` to get the files on another computer.
+
+::: {.callout-caution appearance="simple" icon=false}
+:::: {#exr-data-code-remote}
+
+## `dvc` remote
+
+1. Synch the data from the remote described here.
+
+1. Add your own _sakai cloud_ as a remote and sync the data to this remote.
+
+1. Use a local directory as remote and look at see if you can make sense of the content.
+::::
+:::
 
 [^git]: see the lecture MECH-M-DUAL-1-SWD, Chapter 3 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-SWD/basics/versioncontrol.html)
 [^pdm]: see the lecture MECH-M-DUAL-1-SWD, Chapter 2 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-SWD/basics/packagemanager.html)
 [^logging]: see the lecture MECH-M-DUAL-1-SWD, Chapter 11 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-SWD/errorhandling/logging.html)
 [^docs]: see the Python documentation or follow the direct [link](https://docs.python.org/3/tutorial/controlflow.html#tut-unpacking-arguments)
+[^shorthand]: The long version uses some options for `git log` precisely `git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all`
+[^webdav]: See [Wiki](https://en.wikipedia.org/wiki/WebDAV) for a quick reference, accessed on 21.03.2025
