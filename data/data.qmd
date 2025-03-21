@@ -1,0 +1,131 @@
+# Data persistence {#sec-data-data}
+
+In our example the data is downloaded from a remote and added to `dvc`.
+This already covers the basic data persistence problems as we described it. 
+We can always make sure that the data content is verified and we know the state.
+If we run an experiment we see it in the output:
+
+```bash
+Applying changes                                     |0.00 [00:00,     ?file/s]
+'data.dvc' didn't change, skipping     
+```
+
+If we change the data we know that we need to update the training as well.
+Nevertheless, we want to highlight some different aspects in this context.
+
+It is quite common, if not always the case, that the model we want to train is not using the _raw_ data but rather processed data.
+On common pattern to get from the raw data to the processed data is called ETL (_extract, transform, load_).
+
+In @fig-data-etl we can see an illustration of the pattern and @Reis2022-tm covers this concept as well.
+
+![Illustration of an ETL pattern for data processing](../_assets/data/etl){#fig-data-etl}
+
+The main idea is that in order to create a report, train a model, or any other ML tasks the raw data (illustrated via the _Data sources_) needs some processing.
+Maybe some sources are combined, cumulative data is computed, images are cropped and transformed, converted into a different format etc..
+At the end of the process the new _data_ is stored again.
+This is often called a _Data warehouse_ in the context of data science.
+From this storage our tasks can _load_ the data again for direct processing.
+
+Separating these tasks has some advantages. 
+
+1. The processes can run asynchronous.
+1. A state of the processed data can be frozen for processing.
+1. There is a well defined and reproducible way to come from the raw data to our _input data_ (the code is under version control).
+1. Unstructured data can be transformed into structured data that is easier to process.
+1. If a format changes this can be incorporated into the ETL to allow backwards or forwards compatibility.
+1. Depending on our use-case we can extend this list.
+
+We illustrate this task in the context of our example project.
+This means, instead of directly using `catData_w.mat` we start of from the _raw_ data `catData.mat`, see [b097ba6](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/b097ba6cba3e150eb1587ce62b861ed91d866b76) for the implementation details.
+
+We introduce a new module called `etl` with three files plus the module file to accomplish this task. 
+
+```bash
+etl
+├── extract.py
+├── __init__.py
+├── load.py
+└── transform.py
+
+1 directory, 4 files
+```
+
+Now a simple call to `etl.load("catData_w.mat")` will run the following chain:
+
+1. If the file does not exist:
+    a. **extract**:
+        - access `catData.mat` and extract the content as a `np.array`
+    b. **transform**:
+        - transform the image in the same fashion as described in @sec-appendix-dvc 
+        - store the data in the `.mat` format in `catData_w.mat`
+1. **load**:
+    - return the content as a `np.array
+
+We try to only store the processed data and not the _raw_ data itself, as this would be a duplication. 
+In this case, we therefore do not store `catData.mat` locally but just the _final_ result.
+Depending on your ETL you might build up a buffer _locally_ to optimize processing time over access time. 
+
+::: {.callout-note}
+
+## Storage
+
+While for image processing, computational resources are often called out as _the bottleneck_, the influence of storage and the correct structure of data should not be ignored.
+
+Modern GPU architectures are designed for high data throughput.
+This comes with the drawback that we need to provide the data as quickly as it gets processed.
+Consequently, a high throughput for storage is required or the performance is not optimal.
+
+Note: as `dvc` uses a cache and links the data, this means the performance of the cache location is important. 
+:::
+
+::: {.callout-caution appearance="simple" icon=false}
+:::: {#exr-data-data-etl}
+
+## Extension of the ETL
+
+To get more into image processing extend the ETL with the following steps:
+
+1. From the original `.mat` files extract the single images and store them in an appropriate format - consider compression loss - separate for the two classes.
+
+1. Split them up into a test and a training set. The structure should look like the following tree.
+   ```bash
+   MLB-DATA$ tree data
+
+   data
+    └── raw
+        ├── cat
+        │   ├── test
+        │   │   └── cat60
+        │   └── train
+        │       └── cat0
+        └── dog
+            ├── test
+            │   └── dog60
+            └── train
+                └── dog0
+
+    8 directories, 4 files
+   ```
+
+1. Extend the transformation capabilities to allow an image as input.
+
+1. Extend the store capabilities to store the transformed images in an appropriate image format.
+
+
+1. Extend the load capabilities to only specify a folder (in our case `data/raw`) and the classes as well as the test and training set a generated automatically from these files.
+
+::::
+:::
+
+
+::: {.callout-caution appearance="simple" icon=false}
+:::: {#exr-data-data-result}
+
+## Optional! Changed accuracy
+
+**Optional**: If we rerun our training, we can see that the results change slightly.
+Find out what has changed.
+
+Note: This is not optimal but the upside is we control the ETL so we can actually make sure that a new image is processed in the same fashion and we do not need to ask the authors of @Brunton2022 to help us out.
+::::
+:::
