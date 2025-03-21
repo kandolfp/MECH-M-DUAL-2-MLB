@@ -1,17 +1,19 @@
 # Model persistence {#sec-data-mp}
 
-So far we either loaded a data set or generated it on the fly for excursion into classification.
-Therefore, we should start by looking into ways to persist the models we generated so far.
+So far, we either loaded a data set or generated it on the fly.
+Therefore, we start by looking into ways to persist the models we generated.
 
 The general idea is to simply store the object we generate and load it at some later time. 
-Nevertheless, this can be quite tricky. 
+Nevertheless, this can be quite tricky as we will see in the following.
 
-For example it might be that you do your training in a different environment than the evaluation or prediction.
-It might even be the case, that you switch programming language for these tasks.
+For example it might be that we do our training in a different environment than the _inference or prediction_.
+It might even be the case, that we switch programming language for these tasks to extract the best performance.
 
-As we mainly worked with `scikit-learn` we should check the documentation for a start [docs - model persistence](https://scikit-learn.org/stable/model_persistence.html).
+As we mainly work with `scikit-learn` we introduce the concepts with it.
+Our first step is to check the documentation [docs - model persistence](https://scikit-learn.org/stable/model_persistence.html) and we can use it as reference for this introduction.
+We introduce different possibilities, all of them have strengths and weaknesses, unfortunately there is no gold standard.
 
-Let us use the following toy example with our cats and dogs as reference. 
+Let us use the following toy example with our cats and dogs as reference, see @sec-clustering-cvd.
 ```{python}
 #| lst-label: lst-data-mp-toyexample
 #| lst-cap: Code for the toy example
@@ -71,16 +73,26 @@ In the next couple of exercises we create different version of our model and per
 Try to keep track of what model version corresponds to which exercise/code block.
 :::
 
+::: {.callout-important}
+We need to install several packages for the following exercises.
+
+All of them can be installed via:
+
+```bash
+pdm add skl2onnx onnxruntime skops
+```
+:::
+
 ## Open Neural Network Exchange - ONNX
 
 > ONNX is an open format built to represent machine learning models. ONNX defines a common set of operators - the building blocks of machine learning and deep learning models - and a common file format to enable AI developers to use models with a variety of frameworks, tools, runtimes, and compilers. [LEARN MORE](https://onnx.ai/about.html)
 >
 > Source: [https://onnx.ai/](https://onnx.ai/), accessed 07.03.2025.
 
-The use-case for ONNX is when the persisted model is used without necessarily using the Python object itself.
-This is especially the case when the runtime for distributing the model is not Python.
+The use-case for ONNX is to persist a model without necessarily using the Python object itself.
+This is especially useful, when the runtime for distributing the model is not Python or a very restricted Python environment.
 
-Now let us see how we can persist the model of @lst-data-mp-toyexample as an ONNX. 
+Now let us see how we can persist the model of @lst-data-mp-toyexample via ONNX. 
 
 ```{python}
 #| classes: styled-output
@@ -89,19 +101,18 @@ onx = to_onnx(voting_clf, X_train[:1].astype(np.int64))                 # <1>
 with open("model.onnx", "wb") as f:
     f.write(onx.SerializeToString())
 ```
-1. Not all data types are supported, so we need to convert to `int64`.
+1. Not all data types are supported, so we need to convert our reference training sample to `int64` (potentially increasing storage demands).
 
-As mentioned, the file format is binary so it does not make a lot of sense to actually read the image in plain text but we can have a look at the size
+As mentioned, the file format is binary so it does not make a lot of sense to actually read the resulting file in plain text but we can have a look at the size.
 ```{python}
 #| classes: styled-output
 #| echo: false
 %%bash
 du -h model.onnx
 ```
-which is not very large.
 
-Unfortunately, there is no method to convert back to our sklearn model.
-What we can use it in the `onnxruntime` and see if we still get the same score:
+Unfortunately, there is no method to convert back to our `scikit-learn`.
+What we can do is to use the `onnxruntime` and see if we still get the same score as before.
 ```{python}
 #| classes: styled-output
 import onnxruntime as ort
@@ -111,7 +122,10 @@ input_name = model.get_inputs()[0].name
 predictions = model.run(None, {input_name: X_test.astype(np.int64)})
 
 score = sklearn.metrics.accuracy_score(y_test, predictions[0])
-print(f"We have a score of for {score} for the recovered model.")
+print(f"We have a test_score of for {score} for the recovered model.")
+predictions = model.run(None, {input_name: X_train.astype(np.int64)})
+score = sklearn.metrics.accuracy_score(y_train, predictions[0])
+print(f"We have a train_score of for {score} for the recovered model.")
 ```
 
 ```{python}
@@ -120,16 +134,19 @@ print(f"We have a score of for {score} for the recovered model.")
 # Code to remove above files
 rm model.onnx
 ```
-As we can see, the score is actually better than before. 
+As we can see, the score is actually better than before, which is odd and definitely not intended. 
 
 ::: {.callout-important}
-This is due to the fact, that `skl2onnx` is not able to convert all `sklearn` models.
+This is due to the fact, that `skl2onnx` is not able to convert all `scikit-learn` models exactly.
 This is especially true for the `SVC` class included in our composite model.
+Therefore, the class is stored with the same weights but slightly different parameters.
 :::
 
 Furthermore, if we inspect our predictions output from above a bit more it looks like we have switched to soft voting.
 
 Overall, we can see that ONNX is a way to persist a model such that we can make predictions with it but we do no longer have the Python object.
+Of course it is possible that we can write our own provided and persist our required models to a better state, see [`sklearn-onnx` docs](https://onnx.ai/sklearn-onnx/tutorial_2_new_converter.html)
+Regarding file size, we can already say it is efficient and it provides some independence from our training environment.
 
 ::: {.callout-caution appearance="simple" icon=false}
 :::: {#exr-data-mp-onnx}
@@ -147,10 +164,10 @@ Try to rewrite the model and check the resulting score after recovery vs. the or
 
 ## `pickle` - Python object serialization
 
-We can also swing the pendulum in the other direction and use the Python Standard Library
-[`pickle`](https://docs.python.org/3/library/pickle.html#module-pickle) to persist a model. 
+We can also swing the pendulum in the other direction and use the Python standard library
+[`pickle`](https://docs.python.org/3/library/pickle.html#module-pickle) to persist our model. 
 
-Before we go into more details we should emphasise the potential security problem included with `pickle` as stated in its own docs:
+Before we go into more details, we should emphasise the potential security problem we introduce with `pickle` as stated in its own docs:
 
 ::: {.callout-important}
 
@@ -160,25 +177,26 @@ It is possible to construct malicious pickle data which will **execute arbitrary
 
 Consider signing data with [`hmac`](https://docs.python.org/3/library/hmac.html#module-hmac) if you need to ensure that it has not been tampered with.
 
-Safer serialization formats such as [`json`](https://docs.python.org/3/library/json.html#module-json) may be more appropriate if you are processing untrusted data. See [Comparison with json](https://docs.python.org/3/library/pickle.html#comparison-with-json).
+Safer serialization formats such as [`json`](https://docs.python.org/3/library/json.html#module-json) may be more appropriate if you are processing untrusted data, see [Comparison with json](https://docs.python.org/3/library/pickle.html#comparison-with-json).
 :::
 
 As `pickle` is the native implementation in Python.
 It is easy to use and works for (almost) all models and configurations.
-The downside is, that we need to absolutely trust the source of our model and where it was stored as well as the different steps it takes to arrive in our storage.
+The downside is, that we need to absolutely trust the source of our model.
+We need to trust all steps from the storage provider, through the network to our own infrastructure.
 
 Furthermore, the environment we load the model into needs to be the same as the one we stored it from.
-As we have already seen how the _dependency hell_[^dh] influences our development, we bring theses issues with us.
+As we have already seen how the _dependency hell_[^dh] influences our development, we bring import these issues together with the `pickle` file.
 
-It is not guaranteed that a model can be loaded with a different `scikit-learn` version or let alone a different `numpy` version that is only a sub-dependency of `scikit-learn`.
-Furthermore, if a different hardware is involved there might be problems as well. 
+This notably implies, it is not guaranteed that a model can be loaded with a different `scikit-learn` version or let alone a different `numpy` version, that is only a sub-dependency of `scikit-learn`.
+Furthermore, if a different hardware is involved there might be problems as well, e.g. a different architecture of an integer or float. 
 As a consequence, if we use `pickle` a thorough version control with package management is key!
 
-If we have a model that moves around different processes via the disc or is restored frequently from storage but can not be permanently in storage and therefore performance for loading and storing is of interest we can also use [`joblib`](https://joblib.readthedocs.io/en/latest/index.html#module-joblib).
+If we have a model that moves around different processes via the disc or is restored frequently from storage but can not be permanently in storage and therefore performance for loading and storing is of interest we can also use [`joblib`](https://joblib.readthedocs.io/en/latest/index.html#module-joblib) as a more performant alternative.
 
 [^dh]: see [MECH-M-DUAL-1-SWD, Section 4.1](https://kandolfp.github.io/MECH-M-DUAL-1-SWD/basics/epilogue.html#sec-intro-pm-reproducibility)
 
-Now let us see how we can persist the model of @lst-data-mp-toyexample as an `pickle`. 
+Now let us see how we can persist the model of @lst-data-mp-toyexample as a `pickle` file. 
 
 ```{python}
 #| classes: styled-output
@@ -187,14 +205,14 @@ with open("model.pkl", "wb") as f:
     dump(voting_clf, f, protocol=5)
 ```
 
-As mentioned, the file format is binary so it does not make a lot of sense to actually read the image in plain text but we can have a look at the size
+Again, the file format is binary so it does not make a lot of sense to actually read the file in plain text but we can have a look at the size
 ```{python}
 #| classes: styled-output
 #| echo: false
 %%bash
 du -h model.pkl
 ```
-and we can see that the storage demands are slightly higher than for ONNX.
+and we can see that the storage demands are higher than for ONNX.
 
 We restore the model via
 ```{python}
@@ -203,7 +221,9 @@ from pickle import load
 with open("model.pkl", "rb") as f:
     clf = load(f)
 score = clf.score(X_test, y_test)
-print(f"We have score of {score} after loading the object again.")
+print(f"We have test_score of {score} after loading the object again.")
+score = clf.score(X_train, y_train)
+print(f"We have train_score of {score} after loading the object again.")
 ```
 ```{python}
 #| echo: false
@@ -211,8 +231,8 @@ print(f"We have score of {score} after loading the object again.")
 # Code to remove above files
 rm model.pkl
 ```
-As we can see, the score stays the same. 
 
+As we can see, the score stays the same and we can deal with the loaded object in the same way as with the original.
 
 ::: {.callout-caution appearance="simple" icon=false}
 :::: {#exr-data-mp-pickle}
@@ -227,24 +247,24 @@ As we can see, the score stays the same.
    clf.score(X_test, y_test)
    ```
 1. Use [`joblib`](https://joblib.readthedocs.io/en/latest/index.html#module-joblib) to persist and load the module, also check the file size.
-1. Switch for the `SVC` to a `"rbf"` kernel and see if you can fully recover the object
-1. Some user defined functions can cause problems for `pickle` try persisting the model with [`cloudpickle`](https://github.com/cloudpipe/cloudpickle) and test with the kernel function `rbf = lambda x, y: np.exp(1e-2 * np.abs(x@y.T))`.
+1. Switch for the `SVC` to a `"rbf"` kernel and see if you can fully recover the object.
+1. Some user defined functions can cause problems for `pickle` try persisting the model with [`cloudpickle`](https://github.com/cloudpipe/cloudpickle) and test with the user defined kernel function `rbf = lambda x, y: np.exp(1e-2 * np.abs(x@y.T))`.
 
 ::::
 :::
 
 ## `skops.io` - the more secure Python alternative
 
-As an alternative to `pickle` we can use [`skops.io`](https://skops.readthedocs.io/en/stable/persistence.html#persistence) as a more secure alternative. 
+As an alternative to `pickle` we can use [`skops.io`](https://skops.readthedocs.io/en/stable/persistence.html#persistence). 
 It is developed as a secure alternative for `pickle` and therefore supports a wide range of objects.
-The main idea is, that only _trusted_ functions are loaded and not anything included in the file.
-It is also possible to verify our data before load it, increasing the security further.
-Still, it returns the Python object, if it can be loaded and we can manipulate it as with `pickle`.
+The main idea is, that only _trusted functions_ are loaded and not everything included in the file.
+It is also possible to verify our data before loading it into our program, increasing the security further.
+Still, it returns the Python object, if it can be loaded, and we can manipulate it in the same fashion as with `pickle`.
 
 As a downside, the process is slower and some user defined functions/object might not work as desired.
-This also implies, that we also need to have the same environment for loading as we had for storing the Python object.
+This also implies, that we need to have the same environment for loading as we had for storing the Python object, similar to `pickle`.
 
-The interface itself is simple and orients itself at `pickle`.
+The interface itself is simple and follows `pickle`.
 
 ```{python}
 #| classes: styled-output
@@ -259,22 +279,25 @@ For comparison, we show the size of the file
 %%bash
 du -h model.skops
 ```
+
 and we can see that this format has a significant higher overhead as the other formats. 
 
 Retrieving the model is a two step process, first loading the _untrusted types_ and than loading the verified objects.
 
 ```{python}
 #| classes: styled-output
-unknown_types = sio.get_untrusted_types(file="model.skops")
-# investigate the contents of unknown_types, and only load if you trust
-# everything you see.
+unknown_types = sio.get_untrusted_types(file="model.skops") # <1>
 for i, a in enumerate(unknown_types):
     print(f"Unknown type at {i} is {a}.")
 
 clf = sio.load("model.skops", trusted=unknown_types)
 score = clf.score(X_test, y_test)
-print(f"We have score of {score} after loading the object again.")
+print(f"We have test_score of {score} after loading the object again.")
+score = clf.score(X_train, y_train)
+print(f"We have train_score of {score} after loading the object again.")
 ```
+1. We should investigate the contents of `unknown_types`, and only load if we trust everything we see.
+
 ```{python}
 #| echo: false
 %%bash
@@ -314,10 +337,11 @@ The [docs](https://scikit-learn.org/stable/model_persistence.html#summarizing-th
 
 ## Further considerations
 
-Now that we know how to persist our models, or at least hope we do so, we need to talk about how we keep track of our different model versions (parameters, training data, random seeds, etc.).
+Now that we know how to persist our models, or at least hope to do so, we need to talk about how we keep track of our different model versions (parameters, training data, random seeds, etc.).
 
-In the previous exercises we created multiple versions of our model and stored them to disc.
+In the previous exercises we created multiple versions of _our model_ and stored them to disc.
 If we now look at the different files, do we still know which version corresponds to which code block? 
 
-As we experiment with different parameters for our composite method in pursuit of better results, we’ll likely generate even more model variations. To ensure reproducibility, we need a way to track our models alongside the code that produced them.
-This is what we are going to look at in the next section. 
+As we experiment with different parameters for our composite method - in pursuit of better results - we’ll likely generate even more model variations.
+To ensure reproducibility, we need a way to track our models alongside the code and parameters that produces them.
+This is what we are going to look into in the next section. 
