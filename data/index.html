@@ -202,6 +202,12 @@ div.csl-indent {
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Code persistence</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../data/data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Data persistence</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item">
@@ -263,30 +269,30 @@ div.csl-indent {
 </header>
 
 
-<p>In the previous sections we discussed classification with the help of various examples. We did not talk about how the observations/data for training was provided, we just loaded them, and how to persist the model we generated. Nevertheless, data management and data engineering are essential aspects. As with other topics discussed in these notes we can not hope to cover these topics comprehensively. Therefore, we will focus on some aspects and use some software solution for the implementation to see it in action to help understand the practical aspects of the challenges within these topics.</p>
-<p>There are several trivial but key aspects to managing our data:</p>
+<p>In the previous sections we discussed classification with the help of various examples. We did not talk about how we provide the observations/data for our training, validation, and testing. They where just there or more precisely, we just loaded them. Furthermore, we also did not talk about how to persist the model we generated, after the program finished the model was gone again and needs to be retrained to further use it. Nevertheless, <em>data management and data engineering</em> are essential aspects of our topics at hand. As with other topics discussed in these notes, we can not hope to cover the entire field comprehensively, but we can provide an introduction and highlight the main and basic concepts that help us to get started. Therefore, we will focus on a couple of aspects and use only one specific software solution for the implementation. On the one hand, this limits us and the notes might will be outdated sooner but in the spirit of the practical introduction it will allow us to work on the topics at hand. The intend is to see <em>it</em> in action and to help understand the practical aspects of the challenges within these topics.</p>
+<p>There are several trivial but important key aspects to managing data:</p>
 <ul>
-<li>without data we can not train a model</li>
-<li>we need to keep track if the data changes to allow reproducibility and also to detect drifts</li>
-<li>training times are often long and we need to store the resulting model together with the code and the data we used</li>
-<li>and much more</li>
+<li>without data we can not hope to train a model</li>
+<li>we need to keep track of the state of our data and the data changes to allow reproducibility and also to detect drifts<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
+<li>training times are often long and we need to store the resulting model together with the code and the data we used for training</li>
 </ul>
-<p>The last example in <a href="../clustering/semisupervised.html" class="quarto-xref"><span>3&nbsp; Semi-Supervised learning</span></a> is actually also quite useful in illustrating the importance of having correct data as with, e.g.&nbsp;wrong labels we can not hope to generate correct result.</p>
-<p>In addition, if we come to images we could also see how changing the basis (<em>raw</em> to <em>wavelet</em>) changed our results. As each pixel of an image can be considered a feature for our training, we can imagine that changing only a small amount might change our model. Now consider that most formats for storing images include some kind of image compression (see some discussed in <span class="citation" data-cites="Kandolf_GDM">Kandolf (<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">2025</a>)</span>) we can imagine that this has some influence on the training and resulting model. Therefore, we also need to keep track how these features (our images) are generated and stored if we also want to make sure we do not get unexpected behaviour in our results.</p>
-<p>The entire field of data management and data engineering is becoming more important and spawned several (research) fields which are often captured under the umbrella of <em>data science</em>.</p>
-<p>A nice deep dive into the topics can be found in <span class="citation" data-cites="Reis2022-tm">Reis (<a href="../references.html#ref-Reis2022-tm" role="doc-biblioref">2022</a>)</span>, where the details to the so called <em>data engineering lifecycle</em> illustrated in <a href="#fig-data-delf" class="quarto-xref">Figure&nbsp;<span>1</span></a> can be found.</p>
+<p>and so much more.</p>
+<p>The last <em>step</em> in <a href="../clustering/semisupervised.html" class="quarto-xref"><span>3&nbsp; Semi-Supervised learning</span></a> is actually quite a useful illustration to highlight the importance of having correct data. We could see that with <em>wrong</em> labels we can not hope to generate correct result. Consequently, if we can not say for sure if we had correct labels for the training three months ago we can not validate results.</p>
+<p>In addition, if we come to images, we could also see how changing the basis (<em>raw</em> to <em>wavelet</em>) changed our results, see <a href="../clustering/index.html#sec-clustering-cvd" class="quarto-xref"><span>Dogs and Cats</span></a>. As each pixel of an image can be considered a feature for our training, we can imagine that changing only a small amount might change our model and our performance. Now consider that most formats for storing images include some kind of image compression (see some discussed in <span class="citation" data-cites="Kandolf_GDM">Kandolf (<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">2025</a>)</span>) we can imagine that this can have major influence on the training and resulting model. Therefore, we also need to keep track how these features (our images) are generated and stored if we also want to make sure we do not get unexpected behaviour in our results.</p>
+<p>The entire field of data management and data engineering is not new but received a lot of focus in the machine learning age, it also spawned several (research) fields which are often captured under the umbrella of <em>data science</em>.</p>
+<p>A nice deep dive into the topics that focuses on concepts and not on technologies is <span class="citation" data-cites="Reis2022-tm">Reis (<a href="../references.html#ref-Reis2022-tm" role="doc-biblioref">2022</a>)</span>. It build on the so called <em>data engineering lifecycle</em> illustrated in <a href="#fig-data-delf" class="quarto-xref">Figure&nbsp;<span>1</span></a>.</p>
 <div id="fig-data-delf" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-data-delf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../_assets/data/data_eng_lifecycle.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;1: Illustration of a common data engineering lifecycle in data processing. The related topics are often referred to as undercurrents."><img src="../_assets/data/data_eng_lifecycle.svg" class="img-fluid figure-img"></a>
+<a href="../_assets/data/data_eng_lifecycle.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;1: Illustration of a common data engineering lifecycle in data processing. The related topics are often referred as undercurrents."><img src="../_assets/data/data_eng_lifecycle.svg" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-data-delf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Illustration of a common data engineering lifecycle in data processing. The <em>related topics</em> are often referred to as <em>undercurrents</em>.
+Figure&nbsp;1: Illustration of a common data engineering lifecycle in data processing. The <em>related topics</em> are often referred as <em>undercurrents</em>.
 </figcaption>
 </figure>
 </div>
-<p>We will see some aspects of the lifecycle in action, we also integrate code into this picture. Several aspects to the <em>related topics</em> are very important but can not be fully covered here, we highlight sections of importance.</p>
-<p>So let us start and dive into the waters of data management.</p>
+<p>In this chapter we will see some aspects of the lifecycle in action. We will also integrate our code for model and data generation into this framework. Several aspects to the <em>related topics</em> are very important but can not be fully covered here, we highlight sections of importance.</p>
+<p>So let us start and dive into the shallows of data management.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
@@ -297,6 +303,12 @@ Kandolf, Peter. 2025. <span>“MECH-m-DUAL-1-DBM - Grundlagen Datenbasierter Met
 Reis, Joe. 2022. <em>Fundamentals of Data Engineering</em>. Sebastopol, CA: O’Reilly Media.
 </div>
 </div>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>We talk about a drift as <em>an evolution of data that invalidates the data model</em>, see <a href="https://en.wikipedia.org/wiki/Concept_drift">Wikipedia</a>, accessed on the 21.03.2025<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
