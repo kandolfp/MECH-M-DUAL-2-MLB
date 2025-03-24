@@ -4,6 +4,18 @@ We start with unsupervised learning.
 The goal of unsupervised learning is to discover clusters in the data of observations that have no labels, i.e. we have nothing to look at as reference.
 There are several algorithms to perform this task, the most prominent is the $k$-means clustering algorithm.
 
+::: {.callout-tip}
+We will use `scikit-learn` in this section heavily.
+The [User Guide](https://scikit-learn.org/stable/user_guide.html) and [Examples](https://scikit-learn.org/stable/auto_examples/index.html) sections in the documentation are well structured and a good source for additional information. 
+
+Furthermore, there are several Examples that compare different methods on different data sets and therefore give a nice overview on strengths and weaknesses.
+Have look at them to gain further insights into the methods and their differences.
+
+- [Comparing different clustering algorithms on toy datasets](https://scikit-learn.org/stable/auto_examples/cluster/plot_cluster_comparison.html#sphx-glr-auto-examples-cluster-plot-cluster-comparison-py)
+- [Classifier comparison](https://scikit-learn.org/stable/auto_examples/classification/plot_classifier_comparison.html#sphx-glr-auto-examples-classification-plot-classifier-comparison-py)
+- [Comparing different hierarchical linkage methods on toy datasets](https://scikit-learn.org/stable/auto_examples/cluster/plot_linkage_comparison.html#sphx-glr-auto-examples-cluster-plot-linkage-comparison-py)
+:::
+
 ## $k$-Means Clustering {#sec-clustering-usl-kmeans}
 
 The $k$-means algorithm tries to partition a set of $m$ (vector-valued) _data observations_ into $k$ clusters.
