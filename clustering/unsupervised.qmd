@@ -299,7 +299,7 @@ top-down often called _divisive_.
 
 - For the agglomerative approach each observation $x_i$ is initially its own cluster and in each step points are combined according to their distance. Eventually everything ends up in a single cluster and the algorithm stops. 
 
-- For the divisive approach we go the opposite direction and start with the super cluster containing all observations §x_i$ and we gradually split up into smaller and smaller clusters. The algorithm stops, when each observation is its own leave. 
+- For the divisive approach we go the opposite direction and start with the super cluster containing all observations $x_i$ and we gradually split up into smaller and smaller clusters. The algorithm stops, when each observation is its own leave. 
 
 Of course the norm[^norm] used has quite an influence as can be seen in [@Kandolf_GDM, Section 7.1] [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/regression/optimizers.html#over-determined-systems) where we compared LASSO and RIDGE algorithms for our optimization problem. 
 
