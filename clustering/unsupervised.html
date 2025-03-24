@@ -346,6 +346,25 @@ window.Quarto = {
 
 
 <p>We start with unsupervised learning. The goal of unsupervised learning is to discover clusters in the data of observations that have no labels, i.e.&nbsp;we have nothing to look at as reference. There are several algorithms to perform this task, the most prominent is the <span class="math inline">\(k\)</span>-means clustering algorithm.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We will use <code>scikit-learn</code> in this section heavily. The <a href="https://scikit-learn.org/stable/user_guide.html">User Guide</a> and <a href="https://scikit-learn.org/stable/auto_examples/index.html">Examples</a> sections in the documentation are well structured and a good source for additional information.</p>
+<p>Furthermore, there are several Examples that compare different methods on different data sets and therefore give a nice overview on strengths and weaknesses. Have look at them to gain further insights into the methods and their differences.</p>
+<ul>
+<li><a href="https://scikit-learn.org/stable/auto_examples/cluster/plot_cluster_comparison.html#sphx-glr-auto-examples-cluster-plot-cluster-comparison-py">Comparing different clustering algorithms on toy datasets</a></li>
+<li><a href="https://scikit-learn.org/stable/auto_examples/classification/plot_classifier_comparison.html#sphx-glr-auto-examples-classification-plot-classifier-comparison-py">Classifier comparison</a></li>
+<li><a href="https://scikit-learn.org/stable/auto_examples/cluster/plot_linkage_comparison.html#sphx-glr-auto-examples-cluster-plot-linkage-comparison-py">Comparing different hierarchical linkage methods on toy datasets</a></li>
+</ul>
+</div>
+</div>
 <section id="sec-clustering-usl-kmeans" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="sec-clustering-usl-kmeans"><span class="header-section-number">1.1</span> <span class="math inline">\(k\)</span>-Means Clustering</h2>
 <p>The <span class="math inline">\(k\)</span>-means algorithm tries to partition a set of <span class="math inline">\(m\)</span> (vector-valued) <em>data observations</em> into <span class="math inline">\(k\)</span> clusters. Where in general, the dimension of the data and the amount of observations is known, the number of clusters is often not known a priori.</p>
@@ -368,7 +387,7 @@ window.Quarto = {
 <li>Repeat, starting from step 2, until the cluster centers stay stable up to some tolerance.</li>
 </ol>
 <p>This algorithm was first introduced in <span class="citation" data-cites="DBLP:journals/tit/Lloyd82">Lloyd (<a href="../references.html#ref-DBLP:journals/tit/Lloyd82" role="doc-biblioref">1982</a>)</span> and is therefore often called Lloyd algorithm.</p>
-<div id="ba6bd42c" class="cell" data-execution_count="1">
+<div id="aa23c7ac" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code for Lloyd algorithm</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lloyd(data, centers, steps):</span>
@@ -765,7 +784,7 @@ Figure&nbsp;1.4: Colour segmentation for the image of a lady bug.
 <p>There are two main approaches in creating the desired hierarchy: bottom-up often called <em>agglomerative</em>, top-down often called <em>divisive</em>.</p>
 <ul>
 <li><p>For the agglomerative approach each observation <span class="math inline">\(x_i\)</span> is initially its own cluster and in each step points are combined according to their distance. Eventually everything ends up in a single cluster and the algorithm stops.</p></li>
-<li><p>For the divisive approach we go the opposite direction and start with the super cluster containing all observations §x_i$ and we gradually split up into smaller and smaller clusters. The algorithm stops, when each observation is its own leave.</p></li>
+<li><p>For the divisive approach we go the opposite direction and start with the super cluster containing all observations <span class="math inline">\(x_i\)</span> and we gradually split up into smaller and smaller clusters. The algorithm stops, when each observation is its own leave.</p></li>
 </ul>
 <p>Of course the norm<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> used has quite an influence as can be seen in <span class="citation" data-cites="Kandolf_GDM">(<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">Kandolf 2025, sec. 7.1</a>)</span> <a href="https://kandolfp.github.io/MECH-M-DUAL-1-DBM/regression/optimizers.html#over-determined-systems">Link</a> where we compared LASSO and RIDGE algorithms for our optimization problem.</p>
 <p>To illustrate the agglomerative approach and the difference in norms we use four points and construct the hierarchy by combining the two closest points.</p>
@@ -914,7 +933,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>In In <code>scikit-learn</code> this is supported via the <a href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.AgglomerativeClustering.html#sklearn.cluster.AgglomerativeClustering"><code>sklearn.cluster.AgglomerativeClustering</code></a> class.</p>
+<p>In <code>scikit-learn</code> this is supported via the <a href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.AgglomerativeClustering.html#sklearn.cluster.AgglomerativeClustering"><code>sklearn.cluster.AgglomerativeClustering</code></a> class.</p>
 </div>
 </div>
 <div class="callout callout-style-simple callout-caution no-icon">
@@ -1301,7 +1320,7 @@ Figure&nbsp;1.9: Fitting of the second and fourth principal value of the cats an
 <p>Before we make the leap to supervised learning, we we introduce a new data set and see how our unsupervised approach works in this case.</p>
 <p>We do this with the (in)famous MNIST data set of hand written digits. Lets start by looking at the data set and establishing some basic properties.</p>
 <p>We load the data set and look at its description</p>
-<div id="c3b2d7c5" class="cell styled-output" data-execution_count="10">
+<div id="b82f2baf" class="cell styled-output" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_openml</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>mnist <span class="op">=</span> fetch_openml(<span class="st">'mnist_784'</span>, as_frame<span class="op">=</span><span class="va">False</span>)</span>
@@ -1359,7 +1378,7 @@ Figure&nbsp;1.10: First 100 digits from the MNIST data set.
 <p>As can be seen from <a href="#fig-clustering-usl-mnist" class="quarto-xref">Figure&nbsp;<span>1.10</span></a>, most digits are easy to distinguish for us, but there are some nasty things included. Especially, there are <code>1</code>s with the english style (just one straight line) of writing (1st row, 7th column), but also as a diagonal line (1st row, 4th column), and finally also the german style (connecting line at base and top) of writing (3rd row, 5th column).</p>
 <p>Also the <code>2</code> digit comes in various forms, with loop (1st row, 6th column) and without (3rd row, 6th column). Finally we all know that a <code>3</code> can hide in an <code>8</code>, same as a <code>7</code> and <code>1</code> can hide in a <code>9</code> and much more.</p>
 <p>Now, before we go any further in the investigation we split up the data set into a training and a test set, we will not use this here but we should establish some way of working right from the start.</p>
-<div id="2561c844" class="cell" data-execution_count="12">
+<div id="039ee84e" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>X_train, X_test <span class="op">=</span> mnist.data[:<span class="dv">60000</span>], mnist.data[<span class="dv">60000</span>:]</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>y_train, y_test <span class="op">=</span> mnist.target[:<span class="dv">60000</span>], mnist.target[<span class="dv">60000</span>:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
