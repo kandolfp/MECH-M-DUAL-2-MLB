@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Data management and data engineering – Machine Learning in Industrial Image Processing</title>
+<title>Neural Networks and Deep Learning – Machine Learning in Industrial Image Processing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 /* CSS for citations */
 div.csl-bib-body { }
@@ -50,8 +84,8 @@ div.csl-indent {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../data/model.html" rel="next">
-<link href="../clustering/semisupervised.html" rel="prev">
+<link href="../summary.html" rel="next">
+<link href="../data/data.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -94,6 +128,35 @@ div.csl-indent {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -106,7 +169,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../data/index.html">Data management and data engineering</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../nn/index.html">Neural Networks and Deep Learning</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -183,7 +246,7 @@ div.csl-indent {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../data/index.html" class="sidebar-item-text sidebar-link active">
+            <a href="../data/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Data management and data engineering</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -248,15 +311,21 @@ div.csl-indent {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#let-us-try-to-demystify-the-mathematics-behind-nn" id="toc-let-us-try-to-demystify-the-mathematics-behind-nn" class="nav-link active" data-scroll-target="#let-us-try-to-demystify-the-mathematics-behind-nn">Let us try to demystify the mathematics behind NN</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/edit/main/nn/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Data management and data engineering</h1>
+<h1 class="title">Neural Networks and Deep Learning</h1>
 </div>
 
 
@@ -273,44 +342,174 @@ div.csl-indent {
 </header>
 
 
-<p>In the previous sections we discussed classification with the help of various examples. We did not talk about how we provide the observations/data for our training, validation, and testing. They where just there or more precisely, we just loaded them. Furthermore, we also did not talk about how to persist the model we generated, after the program finished the model was gone again and needs to be retrained to further use it. Nevertheless, <em>data management and data engineering</em> are essential aspects of our topics at hand. As with other topics discussed in these notes, we can not hope to cover the entire field comprehensively, but we can provide an introduction and highlight the main and basic concepts that help us to get started. Therefore, we will focus on a couple of aspects and use only one specific software solution for the implementation. On the one hand, this limits us and the notes might will be outdated sooner but in the spirit of the practical introduction it will allow us to work on the topics at hand. The intend is to see <em>it</em> in action and to help understand the practical aspects of the challenges within these topics.</p>
-<p>There are several trivial but important key aspects to managing data:</p>
-<ul>
-<li>without data we can not hope to train a model</li>
-<li>we need to keep track of the state of our data and the data changes to allow reproducibility and also to detect drifts<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
-<li>training times are often long and we need to store the resulting model together with the code and the data we used for training</li>
-</ul>
-<p>and so much more.</p>
-<p>The last <em>step</em> in <a href="../clustering/semisupervised.html" class="quarto-xref"><span>3&nbsp; Semi-Supervised learning</span></a> is actually quite a useful illustration to highlight the importance of having correct data. We could see that with <em>wrong</em> labels we can not hope to generate correct result. Consequently, if we can not say for sure if we had correct labels for the training three months ago we can not validate results.</p>
-<p>In addition, if we come to images, we could also see how changing the basis (<em>raw</em> to <em>wavelet</em>) changed our results, see <a href="../clustering/index.html#sec-clustering-cvd" class="quarto-xref"><span>Dogs and Cats</span></a>. As each pixel of an image can be considered a feature for our training, we can imagine that changing only a small amount might change our model and our performance. Now consider that most formats for storing images include some kind of image compression (see some discussed in <span class="citation" data-cites="Kandolf_GDM">Kandolf (<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">2025</a>)</span>) we can imagine that this can have major influence on the training and resulting model. Therefore, we also need to keep track how these features (our images) are generated and stored if we also want to make sure we do not get unexpected behaviour in our results.</p>
-<p>The entire field of data management and data engineering is not new but received a lot of focus in the machine learning age, it also spawned several (research) fields which are often captured under the umbrella of <em>data science</em>.</p>
-<p>A nice deep dive into the topics that focuses on concepts and not on technologies is <span class="citation" data-cites="Reis2022-tm">Reis (<a href="../references.html#ref-Reis2022-tm" role="doc-biblioref">2022</a>)</span>. It build on the so called <em>data engineering lifecycle</em> illustrated in <a href="#fig-data-delf" class="quarto-xref">Figure&nbsp;<span>1</span></a>.</p>
-<div id="fig-data-delf" class="quarto-float quarto-figure quarto-figure-center anchored">
+<p><em>Neural Networks</em> (NNs) are inspired by the work of <span class="citation" data-cites="hubel1962receptive">Hubel and Wiesel (<a href="../references.html#ref-hubel1962receptive" role="doc-biblioref">1962</a>)</span> about the visual cortex of cats. They showed how <em>hierarchical layers of cells</em> process visual stimuli. This insight was the base for the first mathematical model of a NN, published in 1980 (<span class="citation" data-cites="Fukushima1980">Fukushima (<a href="../references.html#ref-Fukushima1980" role="doc-biblioref">1980</a>)</span>), that would in the modern terminology be best described as a deep convolutional neural network (DCNN). It contains a multi-layer structure, convolution, max pooling, and nonlinear dynamical nodes.</p>
+<p>The current high interest in NNs was arguably kickstarted with <span class="citation" data-cites="NIPS2012_c399862d">Krizhevsky, Sutskever, and Hinton (<a href="../references.html#ref-NIPS2012_c399862d" role="doc-biblioref">2012</a>)</span> and their introduction of <em>ImageNet</em>. The used with high resolution images, facilitated with 15 million labels in over 22 000 categories. This transformed the field of computer vision tasks for classification and identification. All of this was made possible by the large labelled data set and the available compute power<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<p>At its core a neural network consists of multiple layers (some with specific names) of interconnected nodes (or <em>neurons</em>).</p>
+<div id="fig-nn-generic" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-data-delf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../_assets/data/data_eng_lifecycle.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;1: Illustration of a common data engineering lifecycle in data processing. The related topics are often referred as undercurrents."><img src="../_assets/data/data_eng_lifecycle.svg" class="img-fluid figure-img"></a>
+<div aria-describedby="fig-nn-generic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../_assets/nn/generic_nn.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;1: Illustration of a generic Neural Network. On the left in green we have the input, on the right in purple the output. In between we have multiple layers of various size. The connections (mapping) between the neurons can be defined but they do not have to be fully interconnected. We highlight some neurons and their connections simply for reference."><img src="../_assets/nn/generic_nn.svg" class="img-fluid figure-img"></a>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-data-delf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Illustration of a common data engineering lifecycle in data processing. The <em>related topics</em> are often referred as <em>undercurrents</em>.
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn-generic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Illustration of a generic Neural Network. On the left in green we have the input, on the right in purple the output. In between we have multiple layers of various size. The connections (mapping) between the neurons can be defined but they do not have to be fully interconnected. We highlight some neurons and their connections simply for reference.
 </figcaption>
 </figure>
 </div>
-<p>In this chapter we will see some aspects of the lifecycle in action. We will also integrate our code for model and data generation into this framework. Several aspects to the <em>related topics</em> are very important but can not be fully covered here, we highlight sections of importance.</p>
-<p>So let us start and dive into the shallows of data management.</p>
+<p>Similar to our view of the brain, the neurons process information and make decisions based on this information and their state (weights, biases, activation functions, etc.). Given enough data, computing power, the correct architecture, and hyperparameters they are universal functions approximation machines. They can be used to <em>learn</em> about complex relationships between the input and the output without requiring any rules or programming. They are ideal for pattern recognition, data classification, and regression analysis.</p>
+<p>Following the discussion of <span class="citation" data-cites="Brunton2022">(<a href="../references.html#ref-Brunton2022" role="doc-biblioref">Brunton and Kutz 2022, chap. 6</a>)</span>, mathematically speaking the main task in NNs lies in optimization. Specifically, NNs optimize over a composite function <span class="math display">\[
+\underset{A_j}{\operatorname{arg min}}\, \big( f_m(A_m, f_{m-1}(A_{m-1}, \cdots, f_2(A_2, f_1(A_1, x)))) + \lambda g(A_j) \big)
+\]</span></p>
+<p>where <span class="math inline">\(x\)</span> denotes the input, the matrix <span class="math inline">\(A_k\)</span> denotes the weights connecting layer <span class="math inline">\(k\)</span> with layer <span class="math inline">\(k+1\)</span>, <span class="math inline">\(\lambda\)</span> and <span class="math inline">\(g\)</span> are regularizations (bias) and <span class="math inline">\(f_k\)</span> is the <em>activation function</em> <span class="math inline">\(k\)</span>.</p>
+<p>In the context of deep learning models this is often written in the compact and generic form <span class="math display">\[
+\underset{\Theta}{\operatorname{arg min}}\, f_\Theta(x)
+\]</span> for <span class="math inline">\(\Theta\)</span> denoting the weights of the network and <span class="math inline">\(f\)</span> the characteristics of the network (layers, structure, activation functions, etc.).</p>
+<p>The training of the network uses the labelled data to find the best weights such that the labels are recovered best from the observations (input), i.e.&nbsp;map <span class="math inline">\(x_j\)</span> to <span class="math inline">\(y_j\)</span>. This is often done via backpropagation algorithms and stochastic gradient decent.</p>
+<section id="let-us-try-to-demystify-the-mathematics-behind-nn" class="level2">
+<h2 class="anchored" data-anchor-id="let-us-try-to-demystify-the-mathematics-behind-nn">Let us try to demystify the mathematics behind NN</h2>
+<p>The main building block is a so called <em>perceptron</em> (a single neutron) that takes its set of inputs, multiplies each by a weight, sums them up, adds a bias term, and applies a function to produce an output.</p>
+<div id="fig-nn-perceptron" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-nn-perceptron-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../_assets/nn/perceptron.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figure&nbsp;2: Basic building block perceptron with its input, weights, bias, and activation function."><img src="../_assets/nn/perceptron.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn-perceptron-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Basic building block <em>perceptron</em> with its input, weights, bias, and activation function.
+</figcaption>
+</figure>
+</div>
+<p>If we extend again to a multilayer NN with multiple neutrons in each layer we can simplify this a bit by limiting us for a moment to a linear NN. In this case the functions <span class="math inline">\(f_k\)</span> are all linear maps and the composition is just the matrix-matrix computation <span class="math display">\[
+y = A_m A_{m-1} \cdots A_2 A_1 x.
+\]</span> The matrices might be sparse or dense, depending on the connections they describe. The resulting system is most likely under-determined and requires some constraints to select a <em>unique solution</em>.</p>
+<p>We can investigate this further by considering a one layer NN for our cats and dogs example with the following structure.</p>
+<div id="fig-nn-cvd" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-nn-cvd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../_assets/nn/cats_vs_dogs.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Figure&nbsp;3: A single layer structure for the cats vs.&nbsp;dogs classification."><img src="../_assets/nn/cats_vs_dogs.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn-cvd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: A single layer structure for the cats vs.&nbsp;dogs classification.
+</figcaption>
+</figure>
+</div>
+<p>Or mathematically <span class="math display">\[
+y = A x.
+\]</span></p>
+<p>One possible solution is via the Moore-Penrose pseudo inverse<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> <span class="math inline">\(A = Y X^\dagger\)</span>, where all our training data is combined into <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are the corresponding labels. And we can see that a single layer NN can be used to build a least-square fit.</p>
+<p>Of course there are other possibilities to solve this system (as discussed in <span class="citation" data-cites="Kandolf_GDM">Kandolf (<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">2025</a>)</span>), e.g.&nbsp;the LASSO method or RIDGE. Let us test this.</p>
+<div class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Show the code for the figure</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> io</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> linear_model</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> myplot(y):</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    plt.figure()</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    plt.bar(<span class="bu">range</span>(<span class="dv">40</span>), y)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    plt.plot([<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">39.5</span>], [<span class="dv">0</span>, <span class="dv">0</span>], <span class="st">"k"</span>, linewidth<span class="op">=</span><span class="fl">1.0</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    plt.plot([<span class="fl">19.5</span>, <span class="fl">19.5</span>], [<span class="op">-</span><span class="fl">1.1</span>, <span class="fl">1.1</span>], <span class="st">"r-."</span>, linewidth<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    plt.yticks([<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span>], [<span class="st">"cats"</span>, <span class="st">"dogs"</span>], rotation<span class="op">=</span><span class="dv">90</span>, va<span class="op">=</span><span class="st">"center"</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    plt.text(<span class="dv">10</span>, <span class="fl">1.05</span>, <span class="st">"dogs"</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    plt.text(<span class="dv">30</span>, <span class="fl">1.05</span>, <span class="st">"cats"</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    plt.gca().set_aspect(<span class="dv">40</span> <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> <span class="dv">3</span>))</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://github.com/dynamicslab/databook_python/"</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">"raw/refs/heads/master/DATA/catData_w.mat"</span>)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>cats_w <span class="op">=</span> scipy.io.loadmat(io.BytesIO(response.content))[<span class="st">"cat_wave"</span>]</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://github.com/dynamicslab/databook_python/"</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="st">"raw/refs/heads/master/DATA/dogData_w.mat"</span>)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>dogs_w <span class="op">=</span> scipy.io.loadmat(io.BytesIO(response.content))[<span class="st">"dog_wave"</span>]</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> np.concatenate((dogs_w[:, :<span class="dv">60</span>], cats_w[:, :<span class="dv">60</span>]), axis<span class="op">=</span><span class="dv">1</span>).T</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> np.repeat(np.array([<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>]), <span class="dv">60</span>)</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> np.concatenate((dogs_w[:, <span class="dv">60</span>:], cats_w[:, <span class="dv">60</span>:]), axis<span class="op">=</span><span class="dv">1</span>).T</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>y_test <span class="op">=</span> np.repeat(np.array([<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>]), <span class="dv">20</span>)</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> y_train <span class="op">@</span> np.linalg.pinv(X_train.T)</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>y_test_pinv <span class="op">=</span> np.sign(A <span class="op">@</span> X_test.T)</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>myplot(y_test_pinv)</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Same result as the above computation via the scikit-learn functions.</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>lsq <span class="op">=</span> linear_model.LinearRegression().fit(X_train, y_train)</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>y_test_lsq <span class="op">=</span> np.sign(lsq.predict(X_test))</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="co">#myplot(y_test_lsq)</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>ridge <span class="op">=</span> linear_model.Ridge(random_state<span class="op">=</span><span class="dv">6020</span>).fit(X_train, y_train)</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>y_test_ridge <span class="op">=</span> np.sign(ridge.predict(X_test))</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>myplot(y_test_ridge)</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="fig-nn-singlelayer" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="1">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-nn-singlelayer-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display">
+<div id="fig-nn-singlelayer-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-nn-singlelayer-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="index_files/figure-html/fig-nn-singlelayer-output-1.svg" class="lightbox" data-gallery="fig-nn-singlelayer" title="Figure&nbsp;4&nbsp;(a): Pseudo inverse implemented by hand."><img src="index_files/figure-html/fig-nn-singlelayer-output-1.svg" class="img-fluid figure-img" data-ref-parent="fig-nn-singlelayer"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-nn-singlelayer-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Pseudo inverse implemented by hand.
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-nn-singlelayer-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-nn-singlelayer-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="index_files/figure-html/fig-nn-singlelayer-output-2.svg" class="lightbox" data-gallery="fig-nn-singlelayer" title="Figure&nbsp;4&nbsp;(b): RIDGE solution via scikit-learn."><img src="index_files/figure-html/fig-nn-singlelayer-output-2.svg" class="img-fluid figure-img" data-ref-parent="fig-nn-singlelayer"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-nn-singlelayer-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) RIDGE solution via scikit-learn.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn-singlelayer-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Linear single layer neural network for different solutions of the resulting system.
+</figcaption>
+</figure>
+</div>
+</div>
+<p>Note that we compressed via the matrix <span class="math inline">\(A\)</span> (actually it is just a vector) our input of 1024 pixels to 1 value. Depending on the method we can promote sparsity (not all inputs are used for the output) or other properties.</p>
+<p>Nevertheless, we can only cover a limited range of possibilities with linear functions. Therefore, the extension to <em>arbitrary</em> activation functions is a natural progression.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-Brunton2022" class="csl-entry" role="listitem">
+Brunton, Steven L., and J. Nathan Kutz. 2022. <em>Data-Driven Science and Engineering - Machine Learning, Dynamical Systems, and Control</em>. 2nd ed. Cambridge: Cambridge University Press.
+</div>
+<div id="ref-Fukushima1980" class="csl-entry" role="listitem">
+Fukushima, Kunihiko. 1980. <span>“Neocognitron: A Self-Organizing Neural Network Model for a Mechanism of Pattern Recognition Unaffected by Shift in Position.”</span> <em>Biological Cybernetics</em> 36 (4): 193–202. <a href="https://doi.org/10.1007/BF00344251">https://doi.org/10.1007/BF00344251</a>.
+</div>
+<div id="ref-hubel1962receptive" class="csl-entry" role="listitem">
+Hubel, D., and T. Wiesel. 1962. <span>“Receptive Fields, Binocular Interaction, and Functional Architecture in the Cat’s Visual Cortex.”</span> <em>Journal of Physiology</em> 160: 106–54.
+</div>
 <div id="ref-Kandolf_GDM" class="csl-entry" role="listitem">
 Kandolf, Peter. 2025. <span>“MECH-m-DUAL-1-DBM - Grundlagen Datenbasierter Methoden.”</span> <em>Management Center Innsbruck, Course Material</em>. <a href="https://doi.org/10.5281/zenodo.14671708">https://doi.org/10.5281/zenodo.14671708</a>.
 </div>
-<div id="ref-Reis2022-tm" class="csl-entry" role="listitem">
-Reis, Joe. 2022. <em>Fundamentals of Data Engineering</em>. Sebastopol, CA: O’Reilly Media.
+<div id="ref-NIPS2012_c399862d" class="csl-entry" role="listitem">
+Krizhevsky, Alex, Ilya Sutskever, and Geoffrey E Hinton. 2012. <span>“ImageNet Classification with Deep Convolutional Neural Networks.”</span> In <em>Advances in Neural Information Processing Systems</em>, edited by F. Pereira, C. J. Burges, L. Bottou, and K. Q. Weinberger. Vol. 25. Curran Associates, Inc. <a href="https://proceedings.neurips.cc/paper_files/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf">https://proceedings.neurips.cc/paper_files/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf</a>.
 </div>
 </div>
+</section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p>We talk about a drift as <em>an evolution of data that invalidates the data model</em>, see <a href="https://en.wikipedia.org/wiki/Concept_drift">Wikipedia</a>, accessed on the 21.03.2025<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>As a reference: The IBM Personal Computer (PC) was introduced in 1981, after the first NN.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>See <span class="citation" data-cites="Kandolf_GDM">(<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">Kandolf 2025</a>, Definition 4.3)</span> or access it directly via the <a href="https://kandolfp.github.io/MECH-M-DUAL-1-DBM/matrixdc/svd.html#def-pinv">Link</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
@@ -878,13 +1077,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../clustering/semisupervised.html" class="pagination-link" aria-label="Semi-Supervised learning">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Semi-Supervised learning</span></span>
+      <a href="../data/data.html" class="pagination-link" aria-label="Data persistence">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Data persistence</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../data/model.html" class="pagination-link" aria-label="Model persistence">
-        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Model persistence</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../summary.html" class="pagination-link" aria-label="Summary">
+        <span class="nav-page-text">Summary</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -896,7 +1095,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
 <p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> Peter Kandolf</p>
-<div class="toc-actions"><ul><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/edit/main/data/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/edit/main/nn/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was built with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>
