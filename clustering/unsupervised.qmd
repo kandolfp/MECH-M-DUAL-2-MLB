@@ -508,7 +508,7 @@ See @Geron2022-xh and  [GitHub](https://github.com/ageron/handson-ml3/blob/main/
 
 ## Application of DBSCAN
 
-1. Apply the DBSCAN algorithm to our toy example used through this section, to recover the two clusters as good as possible.
+1. Apply the DBSCAN algorithm to our toy example (the two ellipsoids from @sec-clustering-usl-kmeans) used through this section, to recover the two clusters as good as possible.
 Try different $\epsilon$ values as well as different norms (`metric` parameter).
 
 1. Additionally, for a higher dimensional problem, using DBSCAN to split the Fischer Iris data set (@sec-fischer-iris-data-set) into its three clusters of flowers.
@@ -689,7 +689,7 @@ This can be done via the parameter `covariance_type`, see [docs](https://scikit-
 
 ## Application of GMM
 
-1. Apply the GMM algorithm to our toy example used through this section to recover the two clusters as good as possible.
+1. Apply the GMM algorithm to our toy example (the two ellipsoids from @sec-clustering-usl-kmeans) used through this section to recover the two clusters as good as possible.
 This should be straight forward, as we constructed it via Gaussian distributions.
 Try constraining the algorithm by imposing the different values possible for `covariance_type`. 
 
