@@ -121,7 +121,7 @@ To get more into image processing extend the ETL with the following steps:
 ::: {.callout-caution appearance="simple" icon=false}
 :::: {#exr-data-data-result}
 
-## Optional! Changed accuracy
+## Optional: Changed accuracy
 
 **Optional**: If we rerun our training, we can see that the results change slightly.
 Find out what has changed.
