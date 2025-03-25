@@ -1,0 +1,141 @@
+# Neural Networks and Deep Learning {.unnumbered}
+
+_Neural Networks_ (NNs) are inspired by the work of @hubel1962receptive about the visual cortex of cats.
+They showed how _hierarchical layers of cells_ process visual stimuli.
+This insight was the base for the first mathematical model of a NN, published in 1980 (@Fukushima1980), that would in the modern terminology be best described as a deep convolutional neural network (DCNN).
+It contains a multi-layer structure, convolution, max pooling, and nonlinear dynamical nodes.
+
+The current high interest in NNs was arguably kickstarted with @NIPS2012_c399862d and their introduction of _ImageNet_.
+The used with high resolution images, facilitated with 15 million labels in over 22 000 categories.
+This transformed the field of computer vision tasks for classification and identification.
+All of this was made possible by the large labelled data set and the available compute power[^1].
+
+At its core a neural network consists of multiple layers (some with specific names) of interconnected nodes (or _neurons_).
+
+:::: {#fig-nn-generic}
+
+![](../_assets/nn/generic_nn)
+
+Illustration of a generic Neural Network. On the left in green we have the input, on the right in purple the output. In between we have multiple layers of various size.
+The connections (mapping) between the neurons can be defined but they do not have to be fully interconnected. We highlight some neurons and their connections simply for reference.
+::::
+
+Similar to our view of the brain, the neurons process information and make decisions based on this information and their state (weights, biases, activation functions, etc.).
+Given enough data, computing power, the correct architecture, and hyperparameters they are universal functions approximation machines.
+They can be used to _learn_ about complex relationships between the input and the output without requiring any rules or programming.
+They are ideal for pattern recognition, data classification, and regression analysis.
+
+Following the discussion of [@Brunton2022, Chapter 6], mathematically speaking the main task in NNs lies in optimization.
+Specifically, NNs optimize over a composite function 
+$$
+\underset{A_j}{\operatorname{arg min}}\, \big( f_m(A_m, f_{m-1}(A_{m-1}, \cdots, f_2(A_2, f_1(A_1, x)))) + \lambda g(A_j) \big)
+$$
+
+where $x$ denotes the input, the matrix $A_k$ denotes the weights connecting layer $k$ with layer $k+1$, $\lambda$ and $g$ are regularizations (bias) and $f_k$ is the _activation function_ $k$. 
+
+In the context of deep learning models this is often written in the compact and generic form
+$$
+\underset{\Theta}{\operatorname{arg min}}\, f_\Theta(x)
+$$
+for $\Theta$ denoting the weights of the network and $f$ the characteristics of the network (layers, structure, activation functions, etc.).
+
+The training of the network uses the labelled data to find the best weights such that the labels are recovered best from the observations (input), i.e. map $x_j$ to $y_j$. 
+This is often done via backpropagation algorithms and stochastic gradient decent. 
+
+## Let us try to demystify the mathematics behind NN
+
+The main building block is a so called _perceptron_ (a single neutron) that takes its set of inputs, multiplies each by a weight, sums them up, adds a bias term, and applies a function to produce an output.
+
+![Basic building block _perceptron_ with its input, weights, bias, and activation function.](../_assets/nn/perceptron){#fig-nn-perceptron}
+
+If we extend again to a multilayer NN with multiple neutrons in each layer we can simplify this a bit by limiting us for a moment to a linear NN.
+In this case the functions $f_k$ are all linear maps and the composition is just the matrix-matrix computation
+$$
+y = A_m A_{m-1} \cdots A_2 A_1 x.
+$$
+The matrices might be sparse or dense, depending on the connections they describe.
+The resulting system is most likely under-determined and requires some constraints to select a _unique solution_.
+
+We can investigate this further by considering a one layer NN for our cats and dogs example with the following structure.
+
+![A single layer structure for the cats vs. dogs classification.](../_assets/nn/cats_vs_dogs){#fig-nn-cvd}
+
+Or mathematically
+$$
+y = A x.
+$$
+
+One possible solution is via the Moore-Penrose pseudo inverse[^pinv] $A = Y X^\dagger$, where all our training data is combined into $X$ and $Y$ are the  corresponding labels.
+And we can see that a single layer NN can be used to build a least-square fit.
+
+Of course there are other possibilities to solve this system (as discussed in @Kandolf_GDM), e.g. the LASSO method or RIDGE.
+Let us test this. 
+
+```{python}
+#| label: fig-nn-singlelayer
+#| fig-cap: "Linear single layer neural network for different solutions of the resulting system."
+#| fig-subcap: 
+#|   - "Pseudo inverse implemented by hand."
+#|   - "RIDGE solution via scikit-learn."
+#| code-fold: true
+#| code-summary: "Show the code for the figure"
+import numpy as np
+import scipy
+import requests
+import io
+from sklearn import linear_model
+import matplotlib.pyplot as plt
+%config InlineBackend.figure_formats = ["svg"]
+
+
+def myplot(y):
+    plt.figure()
+    plt.bar(range(40), y)
+    plt.plot([-0.5, 39.5], [0, 0], "k", linewidth=1.0)
+    plt.plot([19.5, 19.5], [-1.1, 1.1], "r-.", linewidth=3)
+    plt.yticks([-0.5, 0.5], ["cats", "dogs"], rotation=90, va="center")
+    plt.text(10, 1.05, "dogs")
+    plt.text(30, 1.05, "cats")
+    plt.gca().set_aspect(40 / (2 * 3))
+
+
+response = requests.get(
+    "https://github.com/dynamicslab/databook_python/"
+    "raw/refs/heads/master/DATA/catData_w.mat")
+cats_w = scipy.io.loadmat(io.BytesIO(response.content))["cat_wave"]
+
+response = requests.get(
+    "https://github.com/dynamicslab/databook_python/"
+    "raw/refs/heads/master/DATA/dogData_w.mat")
+dogs_w = scipy.io.loadmat(io.BytesIO(response.content))["dog_wave"]
+
+X_train = np.concatenate((dogs_w[:, :60], cats_w[:, :60]), axis=1).T
+y_train = np.repeat(np.array([1, -1]), 60)
+X_test = np.concatenate((dogs_w[:, 60:], cats_w[:, 60:]), axis=1).T
+y_test = np.repeat(np.array([1, -1]), 20)
+
+A = y_train @ np.linalg.pinv(X_train.T)
+y_test_pinv = np.sign(A @ X_test.T)
+myplot(y_test_pinv)
+
+# Same result as the above computation via the scikit-learn functions.
+lsq = linear_model.LinearRegression().fit(X_train, y_train)
+y_test_lsq = np.sign(lsq.predict(X_test))
+#myplot(y_test_lsq)
+
+ridge = linear_model.Ridge(random_state=6020).fit(X_train, y_train)
+y_test_ridge = np.sign(ridge.predict(X_test))
+myplot(y_test_ridge)
+
+plt.show()
+```
+
+Note that we compressed via the matrix $A$ (actually it is just a vector) our input of 1024 pixels to 1 value.
+Depending on the method we can promote sparsity (not all inputs are used for the output) or other properties. 
+
+Nevertheless, we can only cover a limited range of possibilities with linear functions.
+Therefore, the extension to _arbitrary_ activation functions is a natural progression. 
+
+
+[^1]: As a reference: The IBM Personal Computer (PC) was introduced in 1981, after the first NN.
+[^pinv]: See [@Kandolf_GDM, Definition 4.3] or access it directly via the [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/matrixdc/svd.html#def-pinv)
