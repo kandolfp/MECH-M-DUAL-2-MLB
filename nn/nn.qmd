@@ -1,0 +1,248 @@
+# Neural Networks {#sec-nn-nn}
+
+Now that we constructed one of the simplest NNs possible we build on this and extend our model.
+The first step is to introduce some (non-linear) activation functions or transfer functions
+$$
+y = f(A, x).
+$$
+
+Some common functions are:
+
+1. **linear**
+    $$ f(x) = x. $$
+
+1. **binary step**
+    $$ f(x) = 
+        \begin{cases} 
+            0 & \text{for}\quad x \leq 0,\\
+            1 & \text{for}\quad x > 0.\\
+        \end{cases}
+    $$
+
+1. **logistic (soft step)** or **sigmoid**
+    $$ f(x) = \frac{1}{1 + \exp (-x)}. $$
+
+1. **tanh**
+    $$ f(x) = \tanh (x). $$
+
+1. **rectified linear unit** (ReLU)
+    $$ \begin{cases} 
+            0 & \text{for}\quad x \leq 0,\\
+            x & \text{for}\quad x > 0.\\
+        \end{cases}
+    $$
+
+We can visualize them and their derivatives (we need them later).
+
+```{python}
+#| label: fig-nn-singlelayer
+#| fig-cap: "Different activation functions and their derivatives."
+#| fig-subcap: 
+#|   - "Activation functions."
+#|   - "Numerical derivates of the activation functions."
+#| code-fold: true
+#| code-summary: "Show the code for the figure"
+import numpy as np
+import sklearn
+import scipy
+import matplotlib.pyplot as plt
+%config InlineBackend.figure_formats = ["svg"]
+
+import scipy.differentiate
+
+x = np.linspace(-4, 4, 1025, endpoint=True)
+linear = lambda x: x
+binary = lambda x: np.heaviside(x, 1)
+logistic = lambda x: 1 / (1 + np.exp(-x))
+tanh = lambda x: np.tanh(x)
+relu = lambda x: np.maximum(0, x)
+
+plt.figure()
+plt.plot(x, linear(x), "-", label="Linear")
+plt.plot(x, binary(x), ":", label="Binary")
+plt.plot(x, logistic(x),"--",  label="Logistic")
+plt.plot(x, tanh(x), "-.", label="tanh")
+plt.plot(x, relu(x), label="ReLU")
+plt.legend()
+plt.xlim([-4, 4])
+plt.ylim([-2, 2])
+plt.gca().set_aspect(8 / (4 * 3))
+
+plt.figure()
+plt.plot(x, scipy.differentiate.derivative(linear, x).df, "-", label="Linear")
+plt.plot(x, scipy.differentiate.derivative(binary, x).df, ":", label="Binary")
+plt.plot(x, scipy.differentiate.derivative(logistic, x).df,"--",  label="Logistic")
+plt.plot(x, scipy.differentiate.derivative(tanh, x).df, "-.", label="tanh")
+plt.plot(x, scipy.differentiate.derivative(relu, x).df, label="ReLU")
+plt.legend()
+plt.xlim([-4, 4])
+plt.ylim([-0.1, 1.1])
+plt.gca().set_aspect(8 / (1.2 * 3))
+plt.show()
+```
+
+::: {.callout-important}
+There are multiple frameworks available for NN.
+We will focus on [`keras`](https://keras.io/) with [`TensorFlow`](https://www.tensorflow.org/) as backend.
+:::
+
+## Our first Neural Network
+
+First we split our data into a training and test set.
+It is important, that we scale our image data.
+This wa not necessary for the other methods but will make sure we get feasible results in this case. 
+We scale by $255$ our theoretical maximum in an image. 
+
+```{python}
+#| code-fold: true
+#| code-summary: "Show the code for loading, splitting and scaling the images."
+import numpy as np
+import scipy
+import requests
+import io
+import matplotlib.pyplot as plt
+%config InlineBackend.figure_formats = ["svg"]
+
+
+response = requests.get(
+    "https://github.com/dynamicslab/databook_python/"
+    "raw/refs/heads/master/DATA/catData_w.mat")
+cats_w = scipy.io.loadmat(io.BytesIO(response.content))["cat_wave"]
+
+response = requests.get(
+    "https://github.com/dynamicslab/databook_python/"
+    "raw/refs/heads/master/DATA/dogData_w.mat")
+dogs_w = scipy.io.loadmat(io.BytesIO(response.content))["dog_wave"]
+
+X_train = np.concatenate((dogs_w[:, :40], cats_w[:, :40]), axis=1).T / 255.0
+y_train = np.repeat(np.array([0, 1]), 40)
+X_test = np.concatenate((dogs_w[:, 40:], cats_w[:, 40:]), axis=1).T / 255.0
+y_test = np.repeat(np.array([0, 1]), 40)
+
+
+def myplot(y):
+    plt.figure()
+    n = y.shape[0]
+    plt.bar(range(n), y)
+    plt.plot([-0.5, n - 0.5], [0, 0], "k", linewidth=1.0)
+    plt.plot([n // 2 - 0.5, y.shape[0] // 2 - 0.5], [-1.1, 1.1], "r-.", linewidth=3)
+    plt.yticks([-0.5, 0.5], ["cats", "dogs"], rotation=90, va="center")
+    plt.text(n // 4, 1.05, "dogs")
+    plt.text(n // 4 * 3, 1.05, "cats")
+    plt.gca().set_aspect(n / (2 * 3))
+```
+
+Now we can build our model.
+In order to do so we need to slightly modify our output.
+Instead of having a single neuron that is zero or one we will have two neurons, i.e. $y\in\mathbb{R^2}$
+$$
+y = \left[\begin{array}{c}1 \\ 0\end{array}\right] = \text{dog},
+\quad\text{and}\quad
+y = \left[\begin{array}{c}0 \\ 1\end{array}\right] = \text{cat}.
+$$
+
+The model will provide us with the probability of the image being a dog on $y_1$ and a cat on $y_2$.
+
+Next, we define our activation function in the first layer by the non-linear function $f_1 = \tanh$, the rest stays the same as before with our weights (combined to matrix $A_1$ and our bias vector $b_1$).
+The result needs to be translated into probabilities, this is done via the `softmax` function $\sigma$
+$$
+\sigma: \mathbb{R^n} \to (0, 1)^n, \quad \sigma(x)_i = \frac{\exp(x_i)}{\sum_j{\exp(x_j)}}.
+$$
+
+We visualized the network in @fig-nn-cvd-nl.
+
+![A two layer structure for the cats vs. dogs classification with a non-linear model.](../_assets/nn/cats_vs_dogs_nonlinear){#fig-nn-cvd-nl}
+
+Note, the layer _inside_ the network are usually called _hidden layers_.
+If we translate it into a `tensorflow.keras` model this looks like the following code.
+```{python}
+#| classes: styled-output
+import tensorflow as tf
+
+# Initialize everything for reproducibility
+tf.keras.utils.set_random_seed(6020)
+tf.keras.backend.clear_session(free_memory=True)
+
+
+model = tf.keras.Sequential([                                       # <1>
+    tf.keras.layers.InputLayer(shape=[X_train.shape[1]]),           # <2>
+    tf.keras.layers.Dense(2, activation="tanh"),                    # <3>
+    tf.keras.layers.Dense(2, activation="softmax")                  # <4>
+])                                                                  # <1>
+
+model.summary()                                                     # <5>
+```
+1. Generate a [_sequential_ model](https://www.tensorflow.org/api_docs/python/tf/keras/Sequential), the `keras` way of calling a linear stack of layers.
+1. Our fist layer defines the input size, in our case we have _flat_ images of size $1024$.
+1. Use the activation function $\tanh$ and we reduce down to $2$ neurons.
+1. Use the activation function `softmax` to compute the probability per class.
+1. Print the summary of the model.
+
+Next, we need to _compile_ the model to prepare it for execution/training.
+In this step we define the optimizer to use for solving the included optimization method and how loss is computed.
+After this we can 
+
+```{python}
+model.compile(loss="sparse_categorical_crossentropy",       # <1>
+              optimizer=tf.keras.optimizers.SGD(),          # <2>
+              metrics=["accuracy"])
+```
+1. Function to compute the loss, the name corresponds to []`tf.keras.losses.sparse_categorical_crossentropy`](https://www.tensorflow.org/api_docs/python/tf/keras/losses/sparse_categorical_crossentropy).
+1. Our optimizer, the [Stochastic Gradient Decent](https://www.tensorflow.org/api_docs/python/tf/keras/optimizers/SGD) method, more details later.
+
+After we compiled the model we can train it using our data
+```{python}
+history = model.fit(X_train,                            # <1>
+                    y_train,                            # <1>
+                    epochs=130,                         # <2>
+                    batch_size=8,                       # <3>
+                    validation_split=0.1,               # <4>
+                    verbose=0,                          # <5>
+                    shuffle=True,                       # <6>
+                    )
+```
+1. Our entire training set, it is shuffled and split into a validation set during each epoch.
+1. Number of epochs, i.e. iterations to run the optimization with the data provided.
+1. The `batch_size` describes the number of samples per gradient update to use.
+1. We can define how large the split between training and validation data is.
+1. Deactivate the output to not clutter the notes
+1. Shuffle the data on each run to make sure different sets are provided in different orders.
+
+Now that training is complete we can have a look at the performance.
+```{python}
+#| label: fig-nn-nn-dvc-non-linear
+#| fig-cap: "Performance of our model."
+#| fig-subcap: 
+#|   - "Classification for our test set."
+#|   - "Probabilities of the two classes - our actual output of the model."
+#|   - "Summary of the key metrics of the model training."
+#| code-fold: true
+#| code-summary: "Show the code for the figure"
+
+
+y_proba = model.predict(X_test, verbose=0)
+y_predict = y_proba.argmax(axis=-1)
+myplot(y_predict * (-2) + 1)
+
+n = y_proba.shape[0]
+plt.figure()
+plt.bar(range(n), y_proba[:, 0], color='y', label=r"p(dog)")
+plt.bar(range(n), y_proba[:, 1], color='b', label=r"p(cat)", 
+        bottom=y_proba[:, 0])
+plt.plot([-0.5, n - 0.5], [0.5, 0.5], "r", linewidth=1.0)
+plt.gca().set_aspect(n / (1 * 3))
+plt.legend()
+
+plt.figure()
+
+epochs = range(len(history.history["accuracy"]))
+plt_list = [["accuracy", "-"], ["loss", ":"],
+            ["val_accuracy", "--"], ["val_loss", "-."]]
+
+for name, style in plt_list:
+    plt.plot(epochs, history.history[name], style, label=name)
+plt.legend()
+plt.gca().set_aspect(130 / (1 * 3))
+plt.show()
+```
+Overall, we have an accuracy of `{python} float(np.round(model.evaluate(X_test, y_test)[1] * 100, 2))`% for our test set, better than with our linear models.

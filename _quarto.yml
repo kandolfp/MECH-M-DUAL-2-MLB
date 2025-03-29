@@ -32,6 +32,8 @@ book:
         - data/code.qmd
         - data/data.qmd
     - part: nn/index.qmd
+      chapters:
+        - nn/nn.qmd
     - summary.qmd
     - references.qmd
   appendices:
