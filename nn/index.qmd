@@ -48,28 +48,35 @@ The main building block is a so called _perceptron_ (a single neutron) that take
 
 ![Basic building block _perceptron_ with its input, weights, bias, and activation function.](../_assets/nn/perceptron){#fig-nn-perceptron}
 
-If we extend again to a multilayer NN with multiple neutrons in each layer we can simplify this a bit by limiting us for a moment to a linear NN.
-In this case the functions $f_k$ are all linear maps and the composition is just the matrix-matrix computation
+::: {.callout-note}
+A perceptron is the equivalent of the `scikit-learn` classifier [SGDClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDClassifier.html) with `loss="perceptron"`.
+:::
+
+For multiple perceptions in one layer we get weights for each of them and they are combined into the matrix $A$.
+
+If we extend again to a multilayer NN with multiple neurons in each layer we can simplify this a bit by limiting us for a moment to a linear NN.
+In this case the functions $f_k$ are all linear maps (we will see shortly it is in fact the identity) and the composition is just the matrix-matrix computation
 $$
 y = A_m A_{m-1} \cdots A_2 A_1 x.
 $$
-The matrices might be sparse or dense, depending on the connections they describe.
-The resulting system is most likely under-determined and requires some constraints to select a _unique solution_.
 
-We can investigate this further by considering a one layer NN for our cats and dogs example with the following structure.
+The matrices might be sparse or dense, depending on the connections they describe.
+The resulting system is most likely under-determined and requires some constraints to select a _unique solution_, see @Kandolf_GDM.
+
+To make it more hands on, let us considering a one layer NN for our cats and dogs example with the following structure.
 
 ![A single layer structure for the cats vs. dogs classification.](../_assets/nn/cats_vs_dogs){#fig-nn-cvd}
 
-Or mathematically
+Or mathematically,
 $$
 y = A x.
 $$
+and to connect back to the perceptron, $A = w^\mathsf{T}$.
 
-One possible solution is via the Moore-Penrose pseudo inverse[^pinv] $A = Y X^\dagger$, where all our training data is combined into $X$ and $Y$ are the  corresponding labels.
-And we can see that a single layer NN can be used to build a least-square fit.
+One possible solution is via the Moore-Penrose pseudo inverse[^pinv] $A = Y X^\dagger$, where all our training data is combined into $X$ and $Y$ are the corresponding labels.
+This in return, tells us that a single layer linear NN can be used to build a least-square fit.
 
-Of course there are other possibilities to solve this system (as discussed in @Kandolf_GDM), e.g. the LASSO method or RIDGE.
-Let us test this. 
+Of course there are other possibilities to solve this system (as discussed in @Kandolf_GDM), e.g. the LASSO method or RIDGE can be used to promote certain properties on the matrix $A$.
 
 ```{python}
 #| label: fig-nn-singlelayer
@@ -90,13 +97,14 @@ import matplotlib.pyplot as plt
 
 def myplot(y):
     plt.figure()
-    plt.bar(range(40), y)
-    plt.plot([-0.5, 39.5], [0, 0], "k", linewidth=1.0)
-    plt.plot([19.5, 19.5], [-1.1, 1.1], "r-.", linewidth=3)
+    len = y.shape[0]
+    plt.bar(range(len), y)
+    plt.plot([-0.5, len - 0.5], [0, 0], "k", linewidth=1.0)
+    plt.plot([len // 2 - 0.5, y.shape[0] // 2 - 0.5], [-1.1, 1.1], "r-.", linewidth=3)
     plt.yticks([-0.5, 0.5], ["cats", "dogs"], rotation=90, va="center")
-    plt.text(10, 1.05, "dogs")
-    plt.text(30, 1.05, "cats")
-    plt.gca().set_aspect(40 / (2 * 3))
+    plt.text(len // 4, 1.05, "dogs")
+    plt.text(len // 4 * 3, 1.05, "cats")
+    plt.gca().set_aspect(len / (2 * 3))
 
 
 response = requests.get(
@@ -119,14 +127,14 @@ y_test_pinv = np.sign(A @ X_test.T)
 myplot(y_test_pinv)
 
 # Same result as the above computation via the scikit-learn functions.
-lsq = linear_model.LinearRegression().fit(X_train, y_train)
+lsq = linear_model.LinearRegression(fit_intercept=False).fit(X_train, y_train)
 y_test_lsq = np.sign(lsq.predict(X_test))
+np.testing.assert_allclose(A, lsq.coef_)
 #myplot(y_test_lsq)
 
 ridge = linear_model.Ridge(random_state=6020).fit(X_train, y_train)
 y_test_ridge = np.sign(ridge.predict(X_test))
 myplot(y_test_ridge)
-
 plt.show()
 ```
 
