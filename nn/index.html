@@ -84,7 +84,7 @@ div.csl-indent {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../summary.html" rel="next">
+<link href="../nn/nn.html" rel="next">
 <link href="../data/data.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -274,8 +274,21 @@ window.Quarto = {
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
-      <span class="sidebar-item-text sidebar-link text-start">
- <span class="menu-text">Neural Networks and Deep Learning</span></span>
+      <div class="sidebar-item-container"> 
+            <a href="../nn/index.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Neural Networks and Deep Learning</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nn/nn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Neural Networks</span></span></a>
+  </div>
+</li>
+      </ul>
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
@@ -377,10 +390,25 @@ Figure&nbsp;2: Basic building block <em>perceptron</em> with its input, weights,
 </figcaption>
 </figure>
 </div>
-<p>If we extend again to a multilayer NN with multiple neutrons in each layer we can simplify this a bit by limiting us for a moment to a linear NN. In this case the functions <span class="math inline">\(f_k\)</span> are all linear maps and the composition is just the matrix-matrix computation <span class="math display">\[
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A perceptron is the equivalent of the <code>scikit-learn</code> classifier <a href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDClassifier.html">SGDClassifier</a> with <code>loss="perceptron"</code>.</p>
+</div>
+</div>
+<p>For multiple perceptions in one layer we get weights for each of them and they are combined into the matrix <span class="math inline">\(A\)</span>.</p>
+<p>If we extend again to a multilayer NN with multiple neurons in each layer we can simplify this a bit by limiting us for a moment to a linear NN. In this case the functions <span class="math inline">\(f_k\)</span> are all linear maps (we will see shortly it is in fact the identity) and the composition is just the matrix-matrix computation <span class="math display">\[
 y = A_m A_{m-1} \cdots A_2 A_1 x.
-\]</span> The matrices might be sparse or dense, depending on the connections they describe. The resulting system is most likely under-determined and requires some constraints to select a <em>unique solution</em>.</p>
-<p>We can investigate this further by considering a one layer NN for our cats and dogs example with the following structure.</p>
+\]</span></p>
+<p>The matrices might be sparse or dense, depending on the connections they describe. The resulting system is most likely under-determined and requires some constraints to select a <em>unique solution</em>, see <span class="citation" data-cites="Kandolf_GDM">Kandolf (<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">2025</a>)</span>.</p>
+<p>To make it more hands on, let us considering a one layer NN for our cats and dogs example with the following structure.</p>
 <div id="fig-nn-cvd" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-nn-cvd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -391,11 +419,11 @@ Figure&nbsp;3: A single layer structure for the cats vs.&nbsp;dogs classificatio
 </figcaption>
 </figure>
 </div>
-<p>Or mathematically <span class="math display">\[
+<p>Or mathematically, <span class="math display">\[
 y = A x.
-\]</span></p>
-<p>One possible solution is via the Moore-Penrose pseudo inverse<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> <span class="math inline">\(A = Y X^\dagger\)</span>, where all our training data is combined into <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are the corresponding labels. And we can see that a single layer NN can be used to build a least-square fit.</p>
-<p>Of course there are other possibilities to solve this system (as discussed in <span class="citation" data-cites="Kandolf_GDM">Kandolf (<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">2025</a>)</span>), e.g.&nbsp;the LASSO method or RIDGE. Let us test this.</p>
+\]</span> and to connect back to the perceptron, <span class="math inline">\(A = w^\mathsf{T}\)</span>.</p>
+<p>One possible solution is via the Moore-Penrose pseudo inverse<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> <span class="math inline">\(A = Y X^\dagger\)</span>, where all our training data is combined into <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are the corresponding labels. This in return, tells us that a single layer linear NN can be used to build a least-square fit.</p>
+<p>Of course there are other possibilities to solve this system (as discussed in <span class="citation" data-cites="Kandolf_GDM">Kandolf (<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">2025</a>)</span>), e.g.&nbsp;the LASSO method or RIDGE can be used to promote certain properties on the matrix <span class="math inline">\(A\)</span>.</p>
 <div class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code for the figure</summary>
@@ -410,44 +438,45 @@ y = A x.
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> myplot(y):</span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    plt.figure()</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    plt.bar(<span class="bu">range</span>(<span class="dv">40</span>), y)</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    plt.plot([<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">39.5</span>], [<span class="dv">0</span>, <span class="dv">0</span>], <span class="st">"k"</span>, linewidth<span class="op">=</span><span class="fl">1.0</span>)</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    plt.plot([<span class="fl">19.5</span>, <span class="fl">19.5</span>], [<span class="op">-</span><span class="fl">1.1</span>, <span class="fl">1.1</span>], <span class="st">"r-."</span>, linewidth<span class="op">=</span><span class="dv">3</span>)</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    plt.yticks([<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span>], [<span class="st">"cats"</span>, <span class="st">"dogs"</span>], rotation<span class="op">=</span><span class="dv">90</span>, va<span class="op">=</span><span class="st">"center"</span>)</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    plt.text(<span class="dv">10</span>, <span class="fl">1.05</span>, <span class="st">"dogs"</span>)</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    plt.text(<span class="dv">30</span>, <span class="fl">1.05</span>, <span class="st">"cats"</span>)</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    plt.gca().set_aspect(<span class="dv">40</span> <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> <span class="dv">3</span>))</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">len</span> <span class="op">=</span> y.shape[<span class="dv">0</span>]</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    plt.bar(<span class="bu">range</span>(<span class="bu">len</span>), y)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    plt.plot([<span class="op">-</span><span class="fl">0.5</span>, <span class="bu">len</span> <span class="op">-</span> <span class="fl">0.5</span>], [<span class="dv">0</span>, <span class="dv">0</span>], <span class="st">"k"</span>, linewidth<span class="op">=</span><span class="fl">1.0</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    plt.plot([<span class="bu">len</span> <span class="op">//</span> <span class="dv">2</span> <span class="op">-</span> <span class="fl">0.5</span>, y.shape[<span class="dv">0</span>] <span class="op">//</span> <span class="dv">2</span> <span class="op">-</span> <span class="fl">0.5</span>], [<span class="op">-</span><span class="fl">1.1</span>, <span class="fl">1.1</span>], <span class="st">"r-."</span>, linewidth<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    plt.yticks([<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span>], [<span class="st">"cats"</span>, <span class="st">"dogs"</span>], rotation<span class="op">=</span><span class="dv">90</span>, va<span class="op">=</span><span class="st">"center"</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    plt.text(<span class="bu">len</span> <span class="op">//</span> <span class="dv">4</span>, <span class="fl">1.05</span>, <span class="st">"dogs"</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    plt.text(<span class="bu">len</span> <span class="op">//</span> <span class="dv">4</span> <span class="op">*</span> <span class="dv">3</span>, <span class="fl">1.05</span>, <span class="st">"cats"</span>)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    plt.gca().set_aspect(<span class="bu">len</span> <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> <span class="dv">3</span>))</span>
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://github.com/dynamicslab/databook_python/"</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">"raw/refs/heads/master/DATA/catData_w.mat"</span>)</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>cats_w <span class="op">=</span> scipy.io.loadmat(io.BytesIO(response.content))[<span class="st">"cat_wave"</span>]</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://github.com/dynamicslab/databook_python/"</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="st">"raw/refs/heads/master/DATA/dogData_w.mat"</span>)</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>dogs_w <span class="op">=</span> scipy.io.loadmat(io.BytesIO(response.content))[<span class="st">"dog_wave"</span>]</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> np.concatenate((dogs_w[:, :<span class="dv">60</span>], cats_w[:, :<span class="dv">60</span>]), axis<span class="op">=</span><span class="dv">1</span>).T</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> np.repeat(np.array([<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>]), <span class="dv">60</span>)</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> np.concatenate((dogs_w[:, <span class="dv">60</span>:], cats_w[:, <span class="dv">60</span>:]), axis<span class="op">=</span><span class="dv">1</span>).T</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>y_test <span class="op">=</span> np.repeat(np.array([<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>]), <span class="dv">20</span>)</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> y_train <span class="op">@</span> np.linalg.pinv(X_train.T)</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>y_test_pinv <span class="op">=</span> np.sign(A <span class="op">@</span> X_test.T)</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>myplot(y_test_pinv)</span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Same result as the above computation via the scikit-learn functions.</span></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>lsq <span class="op">=</span> linear_model.LinearRegression().fit(X_train, y_train)</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>y_test_lsq <span class="op">=</span> np.sign(lsq.predict(X_test))</span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="co">#myplot(y_test_lsq)</span></span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>ridge <span class="op">=</span> linear_model.Ridge(random_state<span class="op">=</span><span class="dv">6020</span>).fit(X_train, y_train)</span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>y_test_ridge <span class="op">=</span> np.sign(ridge.predict(X_test))</span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>myplot(y_test_ridge)</span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://github.com/dynamicslab/databook_python/"</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">"raw/refs/heads/master/DATA/catData_w.mat"</span>)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>cats_w <span class="op">=</span> scipy.io.loadmat(io.BytesIO(response.content))[<span class="st">"cat_wave"</span>]</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://github.com/dynamicslab/databook_python/"</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="st">"raw/refs/heads/master/DATA/dogData_w.mat"</span>)</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>dogs_w <span class="op">=</span> scipy.io.loadmat(io.BytesIO(response.content))[<span class="st">"dog_wave"</span>]</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> np.concatenate((dogs_w[:, :<span class="dv">60</span>], cats_w[:, :<span class="dv">60</span>]), axis<span class="op">=</span><span class="dv">1</span>).T</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> np.repeat(np.array([<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>]), <span class="dv">60</span>)</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> np.concatenate((dogs_w[:, <span class="dv">60</span>:], cats_w[:, <span class="dv">60</span>:]), axis<span class="op">=</span><span class="dv">1</span>).T</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>y_test <span class="op">=</span> np.repeat(np.array([<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>]), <span class="dv">20</span>)</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> y_train <span class="op">@</span> np.linalg.pinv(X_train.T)</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>y_test_pinv <span class="op">=</span> np.sign(A <span class="op">@</span> X_test.T)</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>myplot(y_test_pinv)</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Same result as the above computation via the scikit-learn functions.</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>lsq <span class="op">=</span> linear_model.LinearRegression(fit_intercept<span class="op">=</span><span class="va">False</span>).fit(X_train, y_train)</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>y_test_lsq <span class="op">=</span> np.sign(lsq.predict(X_test))</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>np.testing.assert_allclose(A, lsq.coef_)</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="co">#myplot(y_test_lsq)</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>ridge <span class="op">=</span> linear_model.Ridge(random_state<span class="op">=</span><span class="dv">6020</span>).fit(X_train, y_train)</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>y_test_ridge <span class="op">=</span> np.sign(ridge.predict(X_test))</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>myplot(y_test_ridge)</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div id="fig-nn-singlelayer" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="1">
 <figure class="quarto-float quarto-float-fig figure">
@@ -1082,8 +1111,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../summary.html" class="pagination-link" aria-label="Summary">
-        <span class="nav-page-text">Summary</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../nn/nn.html" class="pagination-link" aria-label="Neural Networks">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Neural Networks</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
