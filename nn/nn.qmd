@@ -84,6 +84,8 @@ plt.show()
 ::: {.callout-important}
 There are multiple frameworks available for NN.
 We will focus on [`keras`](https://keras.io/) with [`TensorFlow`](https://www.tensorflow.org/) as backend.
+This means we find our main modules under `tensorflow.keras`.
+We will, in general, reference the documentation via `tensorflow`, the content on [keras.io Api Docs](https://keras.io/api/).
 :::
 
 ## Our first Neural Network
