@@ -146,7 +146,7 @@ $$
 The model will provide us with the probability of the image being a dog on $y_1$ and a cat on $y_2$.
 
 Next, we define our activation function in the first layer by the non-linear function $f_1 = \tanh$, the rest stays the same as before with our weights (combined to matrix $A_1$ and our bias vector $b_1$).
-The result needs to be translated into probabilities, this is done via the `softmax` function $\sigma$
+The result needs to be translated into probabilities, this is done via the `softmax` function $\sigma$ (see @sec-appendix-softmax for a more detailed explanation and example)
 $$
 \sigma: \mathbb{R^n} \to (0, 1)^n, \quad \sigma(x)_i = \frac{\exp(x_i)}{\sum_j{\exp(x_j)}}.
 $$

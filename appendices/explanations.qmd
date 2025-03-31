@@ -213,3 +213,33 @@ plt.show()
 ```
 
 With the help of the precision vs. recall curve we can select a threshold appropriate for our classification, i.e. level between precision and recall as we see fit and our classification allows.
+
+## Details on `softmax` {#sec-appendix-softmax}
+
+For Neural Networks (NNs) a common activation function is the so called `softmax` function, defined as
+$$
+\sigma: \mathbb{R^n} \to (0, 1)^n, \quad \sigma(x)_i = \frac{\exp(x_i)}{\sum_j{\exp(x_j)}}.
+$$
+
+In this section we are going to try explain in more detail what it does and what it is used for.
+
+This particular activation function is most commonly used as the output layer of an NN for a _multi-class classification/learning problem_, as it is the case in our _dogs vs. cats_ example.
+
+Loosely speaking, the main idea is, that it _transforms a vector into probabilities_.
+By scaling via the sum of all entries we end with a total sum of 1.
+This makes us independent from the actual scaling the previous layers of the network worked with and lands us alway in the interval $[0, 1]$.
+The _probability_ we get can be interpreted as the _confidence_ of the network in the classification per class.
+
+Lets look at it via an example, we assume we have a simple NN with only the two layers, the last being our `softmax` layer.
+
+![A small NN for classifying hand written digits, we only distinguish between 5, 6 and all others.](../_assets/appendices/softmax_model){#fig-appendix-softmax_model}
+
+We use the hand written letters from @sec-appendix-pvsr as our example, where we only have three classes: `5`, `6`, `else`.
+Here `else` should be understood as neither `5` nor `6`.
+We classify the images from right to left.
+The output of our fist layer is a number with no apparent scaling, after the `softmax` we can see the _most likely class_ suggested from our NN. 
+
+![From several images to the output of the NN.](../_assets/appendices/softmax_classify){#fig-appendix-softmax_classify}
+
+As we can see, the exponential scaling makes sure that we separate quite well and we can easily destinguish between the three classes
+We can also see, when it is very close and the NN is not _very sure_ what the correct class is.
