@@ -296,11 +296,32 @@ As we have seen so often before, the optimizer used for the problem can change h
 ::::
 :::
 
+## How to save a `keras` model
+
+Of course we can save a `keras` model with the methods discussed in @sec-data-mp but it is more convenient to use the dedicated backend from `keras`, see [docs](https://www.tensorflow.org/tutorials/keras/save_and_load).
+
+In short, we only need to call `.save(file)` to save in the default `.keras` format.
+This is also the recommended format to use.
+There also exist a `tf` and `h5` format, note that for the last we need to install the Python package `h5py` [^hf5].
+The `tf` version might execute arbitrary code during loading the model, be careful when using it, see @sec-data-model-pickle
+
+```{.python}
+model.save("model.keras")
+loaded_model = tf.keras.saving.load_model("model.keras")
+```
+
+It is also possible to implement continuous checkpoints during training.
+This allows us to resume training after an interrupt or simply store the model at the end of the training. 
+
+All of this can be done via the already discussed `dvclive` interface, the implementation is defined as an exercise. 
+
 ::: {.callout-caution appearance="simple" icon=false}
 :::: {#exr-nn-nn-dvc-dvc}
 
-## `DVCLive` integration
+## `dvclive` integration into the `keras` training
 
 Implement the [`DVCLive`](https://dvc.org/doc/dvclive/ml-frameworks/keras) integration to track the metrics.
 ::::
 :::
+
+[^hf5]: HDF5 is a file format for storing large complex heterogeneous data often used for large simulations in High Performance Computing, see details on the project page [hdfgroup.org](https://www.hdfgroup.org/solutions/hdf5/).
