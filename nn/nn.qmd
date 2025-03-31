@@ -156,7 +156,7 @@ We visualized the network in @fig-nn-cvd-nl.
 ![A two layer structure for the cats vs. dogs classification with a non-linear model.](../_assets/nn/cats_vs_dogs_nonlinear){#fig-nn-cvd-nl}
 
 Note, the layer _inside_ the network are usually called _hidden layers_.
-If we translate it into a `tensorflow.keras` model this looks like the following code.
+If we translate it into a `tensorflow.keras` model this looks like the following code (already including a summary at the end).
 ```{python}
 #| echo: false
 #| output: false
@@ -172,11 +172,11 @@ tf.keras.utils.set_random_seed(6020)
 tf.keras.backend.clear_session(free_memory=True)
 
 
-model = tf.keras.Sequential([                                       # <1>
-    tf.keras.layers.InputLayer(shape=[X_train.shape[1]]),           # <2>
-    tf.keras.layers.Dense(2, activation="tanh"),                    # <3>
-    tf.keras.layers.Dense(2, activation="softmax")                  # <4>
-])                                                                  # <1>
+model = tf.keras.Sequential([                                              # <1>
+    tf.keras.layers.InputLayer(shape=[X_train.shape[1]], name="Input"),    # <2>
+    tf.keras.layers.Dense(2, activation="tanh", name="H01"),               # <3>
+    tf.keras.layers.Dense(2, activation="softmax", name="H02")             # <4>
+])                                                                         # <1>
 
 model.summary()                                                     # <5>
 ```
@@ -185,6 +185,20 @@ model.summary()                                                     # <5>
 1. Use the activation function $\tanh$ and we reduce down to $2$ neurons.
 1. Use the activation function `softmax` to compute the probability per class.
 1. Print the summary of the model.
+
+It is often also quite useful to export the model as an image.
+In our case we can work again with a `dot` file rendered as @fig-nn-nn-model-visual.
+```{python}
+dot = tf.keras.utils.model_to_dot(model, show_shapes=True,
+                                  show_layer_activations=True, dpi=False)
+with open("model.dot", "w") as f:
+    f.write(dot.to_string())
+```
+```{dot}
+//| label: fig-nn-nn-model-visual
+//| fig-cap: "Model with all its parameters visualized."
+//|file: model.dot
+```
 
 Next, we need to _compile_ the model to prepare it for execution/training.
 In this step we define the optimizer to use for solving the included optimization method and how loss is computed.
