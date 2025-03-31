@@ -313,6 +313,7 @@ window.Quarto = {
    
   <ul>
   <li><a href="#our-first-neural-network" id="toc-our-first-neural-network" class="nav-link active" data-scroll-target="#our-first-neural-network"><span class="header-section-number">7.1</span> Our first Neural Network</a></li>
+  <li><a href="#how-to-save-a-keras-model" id="toc-how-to-save-a-keras-model" class="nav-link" data-scroll-target="#how-to-save-a-keras-model"><span class="header-section-number">7.2</span> How to save a <code>keras</code> model</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/edit/main/nn/nn.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -444,13 +445,13 @@ Important
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>There are multiple frameworks available for NN. We will focus on <a href="https://keras.io/"><code>keras</code></a> with <a href="https://www.tensorflow.org/"><code>TensorFlow</code></a> as backend.</p>
+<p>There are multiple frameworks available for NN. We will focus on <a href="https://keras.io/"><code>keras</code></a> with <a href="https://www.tensorflow.org/"><code>TensorFlow</code></a> as backend. This means we find our main modules under <code>tensorflow.keras</code>. We will, in general, reference the documentation via <code>tensorflow</code>, the content on <a href="https://keras.io/api/">keras.io Api Docs</a>.</p>
 </div>
 </div>
 <section id="our-first-neural-network" class="level2" data-number="7.1">
 <h2 data-number="7.1" class="anchored" data-anchor-id="our-first-neural-network"><span class="header-section-number">7.1</span> Our first Neural Network</h2>
 <p>First we split our data into a training and test set. It is important, that we scale our image data. This wa not necessary for the other methods but will make sure we get feasible results in this case. We scale by <span class="math inline">\(255\)</span> our theoretical maximum in an image.</p>
-<div id="10a25b20" class="cell" data-execution_count="2">
+<div id="6e1bf797" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Show the code for loading, splitting and scaling the images.</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -495,7 +496,7 @@ y = \left[\begin{array}{c}1 \\ 0\end{array}\right] = \text{dog},
 y = \left[\begin{array}{c}0 \\ 1\end{array}\right] = \text{cat}.
 \]</span></p>
 <p>The model will provide us with the probability of the image being a dog on <span class="math inline">\(y_1\)</span> and a cat on <span class="math inline">\(y_2\)</span>.</p>
-<p>Next, we define our activation function in the first layer by the non-linear function <span class="math inline">\(f_1 = \tanh\)</span>, the rest stays the same as before with our weights (combined to matrix <span class="math inline">\(A_1\)</span> and our bias vector <span class="math inline">\(b_1\)</span>). The result needs to be translated into probabilities, this is done via the <code>softmax</code> function <span class="math inline">\(\sigma\)</span> <span class="math display">\[
+<p>Next, we define our activation function in the first layer by the non-linear function <span class="math inline">\(f_1 = \tanh\)</span>, the rest stays the same as before with our weights (combined to matrix <span class="math inline">\(A_1\)</span> and our bias vector <span class="math inline">\(b_1\)</span>). The result needs to be translated into probabilities, this is done via the <code>softmax</code> function <span class="math inline">\(\sigma\)</span> (see <a href="../appendices/explanations.html#sec-appendix-softmax" class="quarto-xref"><span>Section A.3</span></a> for a more detailed explanation and example) <span class="math display">\[
 \sigma: \mathbb{R^n} \to (0, 1)^n, \quad \sigma(x)_i = \frac{\exp(x_i)}{\sum_j{\exp(x_j)}}.
 \]</span></p>
 <p>We visualized the network in <a href="#fig-nn-cvd-nl" class="quarto-xref">Figure&nbsp;<span>7.2</span></a>.</p>
@@ -509,8 +510,8 @@ Figure&nbsp;7.2: A two layer structure for the cats vs.&nbsp;dogs classification
 </figcaption>
 </figure>
 </div>
-<p>Note, the layer <em>inside</em> the network are usually called <em>hidden layers</em>. If we translate it into a <code>tensorflow.keras</code> model this looks like the following code.</p>
-<div id="b6c7fa43" class="cell styled-output" data-execution_count="3">
+<p>Note, the layer <em>inside</em> the network are usually called <em>hidden layers</em>. If we translate it into a <code>tensorflow.keras</code> model this looks like the following code (already including a summary at the end).</p>
+<div id="df143a4e" class="cell styled-output" data-execution_count="4">
 <div class="sourceCode cell-code" id="annotated-cell-3"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-3-1"><a href="#annotated-cell-3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
 <span id="annotated-cell-3-2"><a href="#annotated-cell-3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-3-3"><a href="#annotated-cell-3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize everything for reproducibility</span></span>
@@ -519,9 +520,9 @@ Figure&nbsp;7.2: A two layer structure for the cats vs.&nbsp;dogs classification
 <span id="annotated-cell-3-6"><a href="#annotated-cell-3-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-3-7"><a href="#annotated-cell-3-7" aria-hidden="true" tabindex="-1"></a></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-3-8" class="code-annotation-target"><a href="#annotated-cell-3-8" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> tf.keras.Sequential([</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-3-9" class="code-annotation-target"><a href="#annotated-cell-3-9" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.InputLayer(shape<span class="op">=</span>[X_train.shape[<span class="dv">1</span>]]),</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-3-10" class="code-annotation-target"><a href="#annotated-cell-3-10" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Dense(<span class="dv">2</span>, activation<span class="op">=</span><span class="st">"tanh"</span>),</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-3-11" class="code-annotation-target"><a href="#annotated-cell-3-11" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Dense(<span class="dv">2</span>, activation<span class="op">=</span><span class="st">"softmax"</span>)</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-3-9" class="code-annotation-target"><a href="#annotated-cell-3-9" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.InputLayer(shape<span class="op">=</span>[X_train.shape[<span class="dv">1</span>]], name<span class="op">=</span><span class="st">"Input"</span>),</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-3-10" class="code-annotation-target"><a href="#annotated-cell-3-10" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Dense(<span class="dv">2</span>, activation<span class="op">=</span><span class="st">"tanh"</span>, name<span class="op">=</span><span class="st">"H01"</span>),</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-3-11" class="code-annotation-target"><a href="#annotated-cell-3-11" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Dense(<span class="dv">2</span>, activation<span class="op">=</span><span class="st">"softmax"</span>, name<span class="op">=</span><span class="st">"H02"</span>)</span>
 <span id="annotated-cell-3-12"><a href="#annotated-cell-3-12" aria-hidden="true" tabindex="-1"></a>])</span>
 <span id="annotated-cell-3-13"><a href="#annotated-cell-3-13" aria-hidden="true" tabindex="-1"></a></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="5" onclick="event.preventDefault();">5</a><span id="annotated-cell-3-14" class="code-annotation-target"><a href="#annotated-cell-3-14" aria-hidden="true" tabindex="-1"></a>model.summary()</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -550,19 +551,7 @@ Figure&nbsp;7.2: A two layer structure for the cats vs.&nbsp;dogs classification
 </dl>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>2025-03-29 17:11:37.661787: I external/local_xla/xla/tsl/cuda/cudart_stub.cc:32] Could not find cuda drivers on your machine, GPU will not be used.
-2025-03-29 17:11:37.665112: I external/local_xla/xla/tsl/cuda/cudart_stub.cc:32] Could not find cuda drivers on your machine, GPU will not be used.
-2025-03-29 17:11:37.673506: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:467] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
-WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
-E0000 00:00:1743268297.687640    3432 cuda_dnn.cc:8579] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
-E0000 00:00:1743268297.691856    3432 cuda_blas.cc:1407] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
-W0000 00:00:1743268297.703884    3432 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
-W0000 00:00:1743268297.703895    3432 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
-W0000 00:00:1743268297.703897    3432 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
-W0000 00:00:1743268297.703898    3432 computation_placer.cc:177] computation placer already registered. Please check linkage and avoid linking the same target more than once.
-2025-03-29 17:11:37.707788: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
-To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
-2025-03-29 17:11:43.659609: E external/local_xla/xla/stream_executor/cuda/cuda_platform.cc:51] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: UNKNOWN ERROR (303)</code></pre>
+<pre><code>2025-03-31 13:44:25.462056: E external/local_xla/xla/stream_executor/cuda/cuda_platform.cc:51] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: UNKNOWN ERROR (303)</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-weight: bold">Model: "sequential"</span>
@@ -572,9 +561,9 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 <pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
 ┃<span style="font-weight: bold"> Layer (type)                    </span>┃<span style="font-weight: bold"> Output Shape           </span>┃<span style="font-weight: bold">       Param # </span>┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
-│ dense (<span style="color: #0087ff; text-decoration-color: #0087ff">Dense</span>)                   │ (<span style="color: #00d7ff; text-decoration-color: #00d7ff">None</span>, <span style="color: #00af00; text-decoration-color: #00af00">2</span>)              │         <span style="color: #00af00; text-decoration-color: #00af00">2,050</span> │
+│ H01 (<span style="color: #0087ff; text-decoration-color: #0087ff">Dense</span>)                     │ (<span style="color: #00d7ff; text-decoration-color: #00d7ff">None</span>, <span style="color: #00af00; text-decoration-color: #00af00">2</span>)              │         <span style="color: #00af00; text-decoration-color: #00af00">2,050</span> │
 ├─────────────────────────────────┼────────────────────────┼───────────────┤
-│ dense_1 (<span style="color: #0087ff; text-decoration-color: #0087ff">Dense</span>)                 │ (<span style="color: #00d7ff; text-decoration-color: #00d7ff">None</span>, <span style="color: #00af00; text-decoration-color: #00af00">2</span>)              │             <span style="color: #00af00; text-decoration-color: #00af00">6</span> │
+│ H02 (<span style="color: #0087ff; text-decoration-color: #0087ff">Dense</span>)                     │ (<span style="color: #00d7ff; text-decoration-color: #00d7ff">None</span>, <span style="color: #00af00; text-decoration-color: #00af00">2</span>)              │             <span style="color: #00af00; text-decoration-color: #00af00">6</span> │
 └─────────────────────────────────┴────────────────────────┴───────────────┘
 </pre>
 </div>
@@ -591,100 +580,178 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 </pre>
 </div>
 </div>
+<p>It is often also quite useful to export the model as an image. In our case we can work again with a <code>dot</code> file rendered as <a href="#fig-nn-nn-model-visual" class="quarto-xref">Figure&nbsp;<span>7.3</span></a>.</p>
+<div id="24713406" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dot <span class="op">=</span> tf.keras.utils.model_to_dot(model, show_shapes<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                                  show_layer_activations<span class="op">=</span><span class="va">True</span>, dpi<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"model.dot"</span>, <span class="st">"w"</span>) <span class="im">as</span> f:</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    f.write(dot.to_string())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-file="model.dot" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-nn-nn-model-visual" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-nn-nn-model-visual-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<svg width="672" height="480" viewbox="0.00 0.00 373.00 296.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 292)">
+<title>G</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-292 369,-292 369,4 -4,4"></polygon>
+<!-- 140479480674112 -->
+<g id="node1" class="node">
+<title>140479480674112</title>
+<polygon fill="none" stroke="black" points="0,-162.5 0,-287.5 365,-287.5 365,-162.5 0,-162.5"></polygon>
+<polygon fill="black" stroke="transparent" points="0,-162.5 0,-287.5 365,-287.5 365,-162.5 0,-162.5"></polygon>
+<polygon fill="black" stroke="transparent" points="2.5,-244 2.5,-285 363.5,-285 363.5,-244 2.5,-244"></polygon>
+<polygon fill="none" stroke="black" points="2.5,-244 2.5,-285 363.5,-285 363.5,-244 2.5,-244"></polygon>
+<text text-anchor="start" x="137.65" y="-260.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="16.00" fill="white">H01</text>
+<text text-anchor="start" x="167" y="-260.6" font-family="Helvetica,sans-Serif" font-size="16.00" fill="white"> (Dense)</text>
+<polygon fill="white" stroke="transparent" points="2.5,-204 2.5,-242 363.5,-242 363.5,-204 2.5,-204"></polygon>
+<polygon fill="none" stroke="black" points="2.5,-204 2.5,-242 363.5,-242 363.5,-204 2.5,-204"></polygon>
+<text text-anchor="start" x="133.99" y="-219.4" font-family="Helvetica,sans-Serif" font-size="14.00">Activation: </text>
+<text text-anchor="start" x="202.46" y="-219.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="14.00">tanh</text>
+<polygon fill="white" stroke="transparent" points="2.5,-164 2.5,-202 188.5,-202 188.5,-164 2.5,-164"></polygon>
+<polygon fill="none" stroke="black" points="2.5,-164 2.5,-202 188.5,-202 188.5,-164 2.5,-164"></polygon>
+<text text-anchor="start" x="13.4" y="-179.4" font-family="Helvetica,sans-Serif" font-size="14.00">Input shape: </text>
+<text text-anchor="start" x="94.35" y="-179.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="14.00">(None, 1024)</text>
+<polygon fill="white" stroke="transparent" points="190.5,-164 190.5,-202 363.5,-202 363.5,-164 190.5,-164"></polygon>
+<polygon fill="none" stroke="black" points="190.5,-164 190.5,-202 363.5,-202 363.5,-164 190.5,-164"></polygon>
+<text text-anchor="start" x="201.13" y="-179.4" font-family="Helvetica,sans-Serif" font-size="14.00">Output shape: </text>
+<text text-anchor="start" x="292.98" y="-179.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="14.00">(None, 2)</text>
+</g>
+<!-- 140479480670032 -->
+<g id="node2" class="node">
+<title>140479480670032</title>
+<polygon fill="none" stroke="black" points="12,-0.5 12,-125.5 353,-125.5 353,-0.5 12,-0.5"></polygon>
+<polygon fill="black" stroke="transparent" points="12,-0.5 12,-125.5 353,-125.5 353,-0.5 12,-0.5"></polygon>
+<polygon fill="black" stroke="transparent" points="14.5,-82 14.5,-123 351.5,-123 351.5,-82 14.5,-82"></polygon>
+<polygon fill="none" stroke="black" points="14.5,-82 14.5,-123 351.5,-123 351.5,-82 14.5,-82"></polygon>
+<text text-anchor="start" x="137.65" y="-98.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="16.00" fill="white">H02</text>
+<text text-anchor="start" x="167" y="-98.6" font-family="Helvetica,sans-Serif" font-size="16.00" fill="white"> (Dense)</text>
+<polygon fill="white" stroke="transparent" points="14.5,-42 14.5,-80 351.5,-80 351.5,-42 14.5,-42"></polygon>
+<polygon fill="none" stroke="black" points="14.5,-42 14.5,-80 351.5,-80 351.5,-42 14.5,-42"></polygon>
+<text text-anchor="start" x="121.92" y="-57.4" font-family="Helvetica,sans-Serif" font-size="14.00">Activation: </text>
+<text text-anchor="start" x="190.4" y="-57.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="14.00">softmax</text>
+<polygon fill="white" stroke="transparent" points="14.5,-2 14.5,-40 176.5,-40 176.5,-2 14.5,-2"></polygon>
+<polygon fill="none" stroke="black" points="14.5,-2 14.5,-40 176.5,-40 176.5,-2 14.5,-2"></polygon>
+<text text-anchor="start" x="25.08" y="-17.4" font-family="Helvetica,sans-Serif" font-size="14.00">Input shape: </text>
+<text text-anchor="start" x="106.03" y="-17.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="14.00">(None, 2)</text>
+<polygon fill="white" stroke="transparent" points="178.5,-2 178.5,-40 351.5,-40 351.5,-2 178.5,-2"></polygon>
+<polygon fill="none" stroke="black" points="178.5,-2 178.5,-40 351.5,-40 351.5,-2 178.5,-2"></polygon>
+<text text-anchor="start" x="189.13" y="-17.4" font-family="Helvetica,sans-Serif" font-size="14.00">Output shape: </text>
+<text text-anchor="start" x="280.98" y="-17.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="14.00">(None, 2)</text>
+</g>
+<!-- 140479480674112&#45;&gt;140479480670032 -->
+<g id="edge1" class="edge">
+<title>140479480674112-&gt;140479480670032</title>
+<path fill="none" stroke="black" stroke-width="2" d="M182.5,-162.37C182.5,-162.37 182.5,-135.73 182.5,-135.73"></path>
+<polygon fill="black" stroke="black" stroke-width="2" points="186,-135.73 182.5,-125.73 179,-135.73 186,-135.73"></polygon>
+</g>
+</g>
+</svg>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn-nn-model-visual-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.3: Model with all its parameters visualized.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
 <p>Next, we need to <em>compile</em> the model to prepare it for execution/training. In this step we define the optimizer to use for solving the included optimization method and how loss is computed. After this we can</p>
-<div id="b57c4c5f" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="annotated-cell-4"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-4-1" class="code-annotation-target"><a href="#annotated-cell-4-1" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">compile</span>(loss<span class="op">=</span><span class="st">"sparse_categorical_crossentropy"</span>,</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-4-2" class="code-annotation-target"><a href="#annotated-cell-4-2" aria-hidden="true" tabindex="-1"></a>              optimizer<span class="op">=</span>tf.keras.optimizers.SGD(),</span>
-<span id="annotated-cell-4-3"><a href="#annotated-cell-4-3" aria-hidden="true" tabindex="-1"></a>              metrics<span class="op">=</span>[<span class="st">"accuracy"</span>])</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="2e1ba9ad" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="annotated-cell-5"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-5-1" class="code-annotation-target"><a href="#annotated-cell-5-1" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">compile</span>(loss<span class="op">=</span><span class="st">"sparse_categorical_crossentropy"</span>,</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-5-2" class="code-annotation-target"><a href="#annotated-cell-5-2" aria-hidden="true" tabindex="-1"></a>              optimizer<span class="op">=</span>tf.keras.optimizers.SGD(),</span>
+<span id="annotated-cell-5-3"><a href="#annotated-cell-5-3" aria-hidden="true" tabindex="-1"></a>              metrics<span class="op">=</span>[<span class="st">"accuracy"</span>])</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-4" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-5" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-4" data-code-lines="1" data-code-annotation="1">Function to compute the loss, the name corresponds to []<code>tf.keras.losses.sparse_categorical_crossentropy</code>](https://www.tensorflow.org/api_docs/python/tf/keras/losses/sparse_categorical_crossentropy).</span>
+<span data-code-cell="annotated-cell-5" data-code-lines="1" data-code-annotation="1">Function to compute the loss, the name corresponds to <a href="https://www.tensorflow.org/api_docs/python/tf/keras/losses/sparse_categorical_crossentropy"><code>tf.keras.losses.sparse_categorical_crossentropy</code></a>.</span>
 </dd>
-<dt data-target-cell="annotated-cell-4" data-target-annotation="2">2</dt>
+<dt data-target-cell="annotated-cell-5" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-4" data-code-lines="2" data-code-annotation="2">Our optimizer, the <a href="https://www.tensorflow.org/api_docs/python/tf/keras/optimizers/SGD">Stochastic Gradient Decent</a> method, more details later.</span>
+<span data-code-cell="annotated-cell-5" data-code-lines="2" data-code-annotation="2">Our optimizer, the <a href="https://www.tensorflow.org/api_docs/python/tf/keras/optimizers/SGD">Stochastic Gradient Decent</a> method, more details later.</span>
 </dd>
 </dl>
 </div>
 </div>
 <p>After we compiled the model we can train it using our data</p>
-<div id="6fae1b2b" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="annotated-cell-5"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-5-1" class="code-annotation-target"><a href="#annotated-cell-5-1" aria-hidden="true" tabindex="-1"></a>history <span class="op">=</span> model.fit(X_train,</span>
-<span id="annotated-cell-5-2"><a href="#annotated-cell-5-2" aria-hidden="true" tabindex="-1"></a>                    y_train,</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-5-3" class="code-annotation-target"><a href="#annotated-cell-5-3" aria-hidden="true" tabindex="-1"></a>                    epochs<span class="op">=</span><span class="dv">130</span>,</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-5-4" class="code-annotation-target"><a href="#annotated-cell-5-4" aria-hidden="true" tabindex="-1"></a>                    batch_size<span class="op">=</span><span class="dv">8</span>,</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-5-5" class="code-annotation-target"><a href="#annotated-cell-5-5" aria-hidden="true" tabindex="-1"></a>                    validation_split<span class="op">=</span><span class="fl">0.1</span>,</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="5" onclick="event.preventDefault();">5</a><span id="annotated-cell-5-6" class="code-annotation-target"><a href="#annotated-cell-5-6" aria-hidden="true" tabindex="-1"></a>                    verbose<span class="op">=</span><span class="dv">0</span>,</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="6" onclick="event.preventDefault();">6</a><span id="annotated-cell-5-7" class="code-annotation-target"><a href="#annotated-cell-5-7" aria-hidden="true" tabindex="-1"></a>                    shuffle<span class="op">=</span><span class="va">True</span>,</span>
-<span id="annotated-cell-5-8"><a href="#annotated-cell-5-8" aria-hidden="true" tabindex="-1"></a>                    )</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="6c47bbd7" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="annotated-cell-6"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-6-1" class="code-annotation-target"><a href="#annotated-cell-6-1" aria-hidden="true" tabindex="-1"></a>history <span class="op">=</span> model.fit(X_train,</span>
+<span id="annotated-cell-6-2"><a href="#annotated-cell-6-2" aria-hidden="true" tabindex="-1"></a>                    y_train,</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-6-3" class="code-annotation-target"><a href="#annotated-cell-6-3" aria-hidden="true" tabindex="-1"></a>                    epochs<span class="op">=</span><span class="dv">130</span>,</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-6-4" class="code-annotation-target"><a href="#annotated-cell-6-4" aria-hidden="true" tabindex="-1"></a>                    batch_size<span class="op">=</span><span class="dv">8</span>,</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-6-5" class="code-annotation-target"><a href="#annotated-cell-6-5" aria-hidden="true" tabindex="-1"></a>                    validation_split<span class="op">=</span><span class="fl">0.1</span>,</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="5" onclick="event.preventDefault();">5</a><span id="annotated-cell-6-6" class="code-annotation-target"><a href="#annotated-cell-6-6" aria-hidden="true" tabindex="-1"></a>                    verbose<span class="op">=</span><span class="dv">0</span>,</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="6" onclick="event.preventDefault();">6</a><span id="annotated-cell-6-7" class="code-annotation-target"><a href="#annotated-cell-6-7" aria-hidden="true" tabindex="-1"></a>                    shuffle<span class="op">=</span><span class="va">True</span>,</span>
+<span id="annotated-cell-6-8"><a href="#annotated-cell-6-8" aria-hidden="true" tabindex="-1"></a>                    )</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-5" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-6" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-5" data-code-lines="1,2" data-code-annotation="1">Our entire training set, it is shuffled and split into a validation set during each epoch.</span>
+<span data-code-cell="annotated-cell-6" data-code-lines="1,2" data-code-annotation="1">Our entire training set, it is shuffled and split into a validation set during each epoch.</span>
 </dd>
-<dt data-target-cell="annotated-cell-5" data-target-annotation="2">2</dt>
+<dt data-target-cell="annotated-cell-6" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-5" data-code-lines="3" data-code-annotation="2">Number of epochs, i.e.&nbsp;iterations to run the optimization with the data provided.</span>
+<span data-code-cell="annotated-cell-6" data-code-lines="3" data-code-annotation="2">Number of epochs, i.e.&nbsp;iterations to run the optimization with the data provided.</span>
 </dd>
-<dt data-target-cell="annotated-cell-5" data-target-annotation="3">3</dt>
+<dt data-target-cell="annotated-cell-6" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="annotated-cell-5" data-code-lines="4" data-code-annotation="3">The <code>batch_size</code> describes the number of samples per gradient update to use.</span>
+<span data-code-cell="annotated-cell-6" data-code-lines="4" data-code-annotation="3">The <code>batch_size</code> describes the number of samples per gradient update to use.</span>
 </dd>
-<dt data-target-cell="annotated-cell-5" data-target-annotation="4">4</dt>
+<dt data-target-cell="annotated-cell-6" data-target-annotation="4">4</dt>
 <dd>
-<span data-code-cell="annotated-cell-5" data-code-lines="5" data-code-annotation="4">We can define how large the split between training and validation data is.</span>
+<span data-code-cell="annotated-cell-6" data-code-lines="5" data-code-annotation="4">We can define how large the split between training and validation data is.</span>
 </dd>
-<dt data-target-cell="annotated-cell-5" data-target-annotation="5">5</dt>
+<dt data-target-cell="annotated-cell-6" data-target-annotation="5">5</dt>
 <dd>
-<span data-code-cell="annotated-cell-5" data-code-lines="6" data-code-annotation="5">Deactivate the output to not clutter the notes</span>
+<span data-code-cell="annotated-cell-6" data-code-lines="6" data-code-annotation="5">Deactivate the output to not clutter the notes</span>
 </dd>
-<dt data-target-cell="annotated-cell-5" data-target-annotation="6">6</dt>
+<dt data-target-cell="annotated-cell-6" data-target-annotation="6">6</dt>
 <dd>
-<span data-code-cell="annotated-cell-5" data-code-lines="7" data-code-annotation="6">Shuffle the data on each run to make sure different sets are provided in different orders.</span>
+<span data-code-cell="annotated-cell-6" data-code-lines="7" data-code-annotation="6">Shuffle the data on each run to make sure different sets are provided in different orders.</span>
 </dd>
 </dl>
 </div>
 </div>
 <p>Now that training is complete we can have a look at the performance.</p>
-<div class="cell" data-execution_count="6">
+<div class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Show the code for the figure</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>y_proba <span class="op">=</span> model.predict(X_test, verbose<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>y_predict <span class="op">=</span> y_proba.argmax(axis<span class="op">=-</span><span class="dv">1</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>myplot(y_predict <span class="op">*</span> (<span class="op">-</span><span class="dv">2</span>) <span class="op">+</span> <span class="dv">1</span>)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> y_proba.shape[<span class="dv">0</span>]</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>plt.bar(<span class="bu">range</span>(n), y_proba[:, <span class="dv">0</span>], color<span class="op">=</span><span class="st">'y'</span>, label<span class="op">=</span><span class="vs">r"p(dog)"</span>)</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>plt.bar(<span class="bu">range</span>(n), y_proba[:, <span class="dv">1</span>], color<span class="op">=</span><span class="st">'b'</span>, label<span class="op">=</span><span class="vs">r"p(cat)"</span>, </span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        bottom<span class="op">=</span>y_proba[:, <span class="dv">0</span>])</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>plt.plot([<span class="op">-</span><span class="fl">0.5</span>, n <span class="op">-</span> <span class="fl">0.5</span>], [<span class="fl">0.5</span>, <span class="fl">0.5</span>], <span class="st">"r"</span>, linewidth<span class="op">=</span><span class="fl">1.0</span>)</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>plt.gca().set_aspect(n <span class="op">/</span> (<span class="dv">1</span> <span class="op">*</span> <span class="dv">3</span>))</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>epochs <span class="op">=</span> <span class="bu">range</span>(<span class="bu">len</span>(history.history[<span class="st">"accuracy"</span>]))</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>plt_list <span class="op">=</span> [[<span class="st">"accuracy"</span>, <span class="st">"-"</span>], [<span class="st">"loss"</span>, <span class="st">":"</span>],</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>            [<span class="st">"val_accuracy"</span>, <span class="st">"--"</span>], [<span class="st">"val_loss"</span>, <span class="st">"-."</span>]]</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, style <span class="kw">in</span> plt_list:</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    plt.plot(epochs, history.history[name], style, label<span class="op">=</span>name)</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>plt.gca().set_aspect(<span class="dv">130</span> <span class="op">/</span> (<span class="dv">1</span> <span class="op">*</span> <span class="dv">3</span>))</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>y_proba <span class="op">=</span> model.predict(X_test, verbose<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>y_predict <span class="op">=</span> y_proba.argmax(axis<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>myplot(y_predict <span class="op">*</span> (<span class="op">-</span><span class="dv">2</span>) <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> y_proba.shape[<span class="dv">0</span>]</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>plt.bar(<span class="bu">range</span>(n), y_proba[:, <span class="dv">0</span>], color<span class="op">=</span><span class="st">'y'</span>, label<span class="op">=</span><span class="vs">r"p(dog)"</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>plt.bar(<span class="bu">range</span>(n), y_proba[:, <span class="dv">1</span>], color<span class="op">=</span><span class="st">'b'</span>, label<span class="op">=</span><span class="vs">r"p(cat)"</span>, </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        bottom<span class="op">=</span>y_proba[:, <span class="dv">0</span>])</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>plt.plot([<span class="op">-</span><span class="fl">0.5</span>, n <span class="op">-</span> <span class="fl">0.5</span>], [<span class="fl">0.5</span>, <span class="fl">0.5</span>], <span class="st">"r"</span>, linewidth<span class="op">=</span><span class="fl">1.0</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>plt.gca().set_aspect(n <span class="op">/</span> (<span class="dv">1</span> <span class="op">*</span> <span class="dv">3</span>))</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>epochs <span class="op">=</span> <span class="bu">range</span>(<span class="bu">len</span>(history.history[<span class="st">"accuracy"</span>]))</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>plt_list <span class="op">=</span> [[<span class="st">"accuracy"</span>, <span class="st">"-"</span>], [<span class="st">"loss"</span>, <span class="st">":"</span>],</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>            [<span class="st">"val_accuracy"</span>, <span class="st">"--"</span>], [<span class="st">"val_loss"</span>, <span class="st">"-."</span>]]</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, style <span class="kw">in</span> plt_list:</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    plt.plot(epochs, history.history[name], style, label<span class="op">=</span>name)</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>plt.legend(loc<span class="op">=</span><span class="st">"lower right"</span>)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>plt.gca().set_aspect(<span class="dv">130</span> <span class="op">/</span> (<span class="dv">1</span> <span class="op">*</span> <span class="dv">3</span>))</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div id="fig-nn-nn-dvc-non-linear" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="6">
+<div id="fig-nn-nn-dvc-non-linear" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="8">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-nn-nn-dvc-non-linear-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-display">
 <div id="fig-nn-nn-dvc-non-linear-1" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-nn-nn-dvc-non-linear-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="nn_files/figure-html/fig-nn-nn-dvc-non-linear-output-1.svg" class="lightbox" data-gallery="fig-nn-nn-dvc-non-linear" title="Figure&nbsp;7.3&nbsp;(a): Classification for our test set."><img src="nn_files/figure-html/fig-nn-nn-dvc-non-linear-output-1.svg" class="img-fluid figure-img" data-ref-parent="fig-nn-nn-dvc-non-linear"></a>
+<a href="nn_files/figure-html/fig-nn-nn-dvc-non-linear-output-1.svg" class="lightbox" data-gallery="fig-nn-nn-dvc-non-linear" title="Figure&nbsp;7.4&nbsp;(a): Classification for our test set."><img src="nn_files/figure-html/fig-nn-nn-dvc-non-linear-output-1.svg" class="img-fluid figure-img" data-ref-parent="fig-nn-nn-dvc-non-linear"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-nn-nn-dvc-non-linear-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (a) Classification for our test set.
@@ -696,7 +763,7 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 <div id="fig-nn-nn-dvc-non-linear-2" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-nn-nn-dvc-non-linear-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="nn_files/figure-html/fig-nn-nn-dvc-non-linear-output-2.svg" class="lightbox" data-gallery="fig-nn-nn-dvc-non-linear" title="Figure&nbsp;7.3&nbsp;(b): Probabilities of the two classes - our actual output of the model."><img src="nn_files/figure-html/fig-nn-nn-dvc-non-linear-output-2.svg" class="img-fluid figure-img" data-ref-parent="fig-nn-nn-dvc-non-linear"></a>
+<a href="nn_files/figure-html/fig-nn-nn-dvc-non-linear-output-2.svg" class="lightbox" data-gallery="fig-nn-nn-dvc-non-linear" title="Figure&nbsp;7.4&nbsp;(b): Probabilities of the two classes - our actual output of the model."><img src="nn_files/figure-html/fig-nn-nn-dvc-non-linear-output-2.svg" class="img-fluid figure-img" data-ref-parent="fig-nn-nn-dvc-non-linear"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-nn-nn-dvc-non-linear-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (b) Probabilities of the two classes - our actual output of the model.
@@ -708,7 +775,7 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 <div id="fig-nn-nn-dvc-non-linear-3" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-nn-nn-dvc-non-linear-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="nn_files/figure-html/fig-nn-nn-dvc-non-linear-output-3.svg" class="lightbox" data-gallery="fig-nn-nn-dvc-non-linear" title="Figure&nbsp;7.3&nbsp;(c): Summary of the key metrics of the model training."><img src="nn_files/figure-html/fig-nn-nn-dvc-non-linear-output-3.svg" class="img-fluid figure-img" data-ref-parent="fig-nn-nn-dvc-non-linear"></a>
+<a href="nn_files/figure-html/fig-nn-nn-dvc-non-linear-output-3.svg" class="lightbox" data-gallery="fig-nn-nn-dvc-non-linear" title="Figure&nbsp;7.4&nbsp;(c): Summary of the key metrics of the model training."><img src="nn_files/figure-html/fig-nn-nn-dvc-non-linear-output-3.svg" class="img-fluid figure-img" data-ref-parent="fig-nn-nn-dvc-non-linear"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-nn-nn-dvc-non-linear-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (c) Summary of the key metrics of the model training.
@@ -718,14 +785,74 @@ To enable the following instructions: AVX2 FMA, in other operations, rebuild Ten
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn-nn-dvc-non-linear-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;7.3: Performance of our model.
+Figure&nbsp;7.4: Performance of our model.
 </figcaption>
 </figure>
 </div>
 </div>
 <p>Overall, we have an accuracy of 83.75% for our test set, better than with our linear models.</p>
+<div class="callout callout-style-simple callout-caution no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exr-nn-nn-dvc-one_hot" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 7.1 (Switch to <code>one_hot</code> representation)</strong></span> In the compile step we used <code>sparse_categorical_crossentropy</code> to allow for the computation of the loss function. Often a so called <em>one_hot</em> vector is more appropriate, this is supported via <code>categorical_crossentropy</code> as <code>loss</code> function.</p>
+<ol type="1">
+<li><p>Change to <a href="https://www.tensorflow.org/api_docs/python/tf/keras/losses/categorical_crossentropy"><code>categorical_crossentropy</code></a>.</p></li>
+<li><p>Use the function <a href="https://www.tensorflow.org/api_docs/python/tf/keras/utils/to_categorical"><code>tensorflow.keras.utils.to_categorical</code></a> to switch to a one_hot encoding.</p></li>
+<li><p>To switch back we can use <code>np.argmax</code> as in the code above.</p></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-caution no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exr-nn-nn-dvc-adam" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 7.2 (Change the optimizer)</strong></span> As we have seen so often before, the optimizer used for the problem can change how fast convergence is reached (if at all).</p>
+<ol type="1">
+<li><p>Have a look at the possibilites provided in the framework <a href="https://www.tensorflow.org/api_docs/python/tf/keras/optimizers">Overview - Optimizers</a> - they are basically all improvements on Stochastic Gradient Decent.</p></li>
+<li><p>Test different approaches, especially one of the Adam (<code>Adam</code>, <code>AdamW</code>, <code>Adamax</code>) and Ada (<code>Adadelta</code>, <code>Adafactor</code>, <code>Adagrad</code>) implementations and record the performance (final accuracy).</p></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="how-to-save-a-keras-model" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="how-to-save-a-keras-model"><span class="header-section-number">7.2</span> How to save a <code>keras</code> model</h2>
+<p>Of course we can save a <code>keras</code> model with the methods discussed in <a href="../data/model.html" class="quarto-xref"><span>Chapter 4</span></a> but it is more convenient to use the dedicated backend from <code>keras</code>, see <a href="https://www.tensorflow.org/tutorials/keras/save_and_load">docs</a>.</p>
+<p>In short, we only need to call <code>.save(file)</code> to save in the default <code>.keras</code> format. This is also the recommended format to use. There also exist a <code>tf</code> and <code>h5</code> format, note that for the last we need to install the Python package <code>h5py</code> <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. The <code>tf</code> version might execute arbitrary code during loading the model, be careful when using it, see <span class="quarto-unresolved-ref">?sec-data-model-pickle</span></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>model.save(<span class="st">"model.keras"</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>loaded_model <span class="op">=</span> tf.keras.saving.load_model(<span class="st">"model.keras"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>It is also possible to implement continuous checkpoints during training. This allows us to resume training after an interrupt or simply store the model at the end of the training.</p>
+<p>All of this can be done via the already discussed <code>dvclive</code> interface, the implementation is defined as an exercise.</p>
+<div class="callout callout-style-simple callout-caution no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exr-nn-nn-dvc-dvc" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 7.3 (<code>dvclive</code> integration into the <code>keras</code> training)</strong></span> Implement the <a href="https://dvc.org/doc/dvclive/ml-frameworks/keras"><code>DVCLive</code></a> integration to track the metrics.</p>
+</div>
+</div>
+</div>
+</div>
 
 
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>HDF5 is a file format for storing large complex heterogeneous data often used for large simulations in High Performance Computing, see details on the project page <a href="https://www.hdfgroup.org/solutions/hdf5/">hdfgroup.org</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
 </section>
 
 </main> <!-- /main -->

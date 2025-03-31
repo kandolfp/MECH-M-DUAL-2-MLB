@@ -330,6 +330,7 @@ window.Quarto = {
   <ul>
   <li><a href="#sec-appendix-dvc" id="toc-sec-appendix-dvc" class="nav-link active" data-scroll-target="#sec-appendix-dvc"><span class="header-section-number">A.1</span> Wavelet decomposition for cats and dogs</a></li>
   <li><a href="#sec-appendix-pvsr" id="toc-sec-appendix-pvsr" class="nav-link" data-scroll-target="#sec-appendix-pvsr"><span class="header-section-number">A.2</span> Precision/Recall trade-off</a></li>
+  <li><a href="#sec-appendix-softmax" id="toc-sec-appendix-softmax" class="nav-link" data-scroll-target="#sec-appendix-softmax"><span class="header-section-number">A.3</span> Details on <code>softmax</code></a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/edit/main/appendices/explanations.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -411,7 +412,7 @@ Figure&nbsp;A.1: The original image of cat zero.
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>plt.imshow(cD1, cmap<span class="op">=</span>plt.get_cmap(<span class="st">"gray"</span>))</span>
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div id="cell-fig-appendix-clustering-cat-2-wavelet2" class="cell quarto-layout-panel" data-execution_count="2" data-layout-ncol="2">
+<div id="cell-fig-appendix-clustering-cat-2-wavelet2" class="cell quarto-layout-panel" data-layout-ncol="2" data-execution_count="2">
 <div class="quarto-layout-row">
 <div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div id="fig-appendix-clustering-cat-2-wavelet2" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -466,7 +467,7 @@ Figure&nbsp;A.5: The diagonal highlights of the image
 </div>
 </div>
 <p>For our purposes, only the vertical and horizontal feature are of interest, and we combine these two images. In order to make sure the features are highlighted optimal, we need to rescale the images before combining them. For this we use a similar function like the MATLAB <a href="https://de.mathworks.com/help/wavelet/ref/wcodemat.html"><code>wcodemat</code></a> function.</p>
-<div id="b764a823" class="cell" data-execution_count="3">
+<div id="f2ec9f3f" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rescale(data, nb):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> np.<span class="bu">abs</span>(data)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> x <span class="op">-</span> np.<span class="bu">min</span>(x)</span>
@@ -486,7 +487,7 @@ Figure&nbsp;A.5: The diagonal highlights of the image
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>plt.imshow(rescale(cH1, <span class="dv">256</span>) <span class="op">+</span> rescale(cV1, <span class="dv">256</span>), cmap<span class="op">=</span>plt.get_cmap(<span class="st">"gray"</span>))</span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div id="cell-fig-appendix-clustering-cat-2-wavelet3" class="cell quarto-layout-panel" data-execution_count="4" data-layout-ncol="2">
+<div id="cell-fig-appendix-clustering-cat-2-wavelet3" class="cell quarto-layout-panel" data-layout-ncol="2" data-execution_count="4">
 <div class="quarto-layout-row">
 <div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div id="fig-appendix-clustering-cat-2-wavelet3" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -515,7 +516,7 @@ Figure&nbsp;A.7: Combination of vertical and horizontal features rescaled.
 </div>
 </div>
 <p>In total this leads to the following function to transform a list of images (given as row vectors).</p>
-<div id="daccfaab" class="cell" data-execution_count="5">
+<div id="4b5b6bb7" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pywt</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -563,7 +564,7 @@ Figure&nbsp;A.9: Some representatives and their score and three different thresh
 </figcaption>
 </figure>
 </div>
-<div id="16c4d360" class="cell" data-execution_count="6">
+<div id="7473e605" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code that provides the basis for the above figure.</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -652,6 +653,38 @@ Figure&nbsp;A.11: Precision vs.&nbsp;recall.
 </div>
 </div>
 <p>With the help of the precision vs.&nbsp;recall curve we can select a threshold appropriate for our classification, i.e.&nbsp;level between precision and recall as we see fit and our classification allows.</p>
+</section>
+<section id="sec-appendix-softmax" class="level2" data-number="A.3">
+<h2 data-number="A.3" class="anchored" data-anchor-id="sec-appendix-softmax"><span class="header-section-number">A.3</span> Details on <code>softmax</code></h2>
+<p>For Neural Networks (NNs) a common activation function is the so called <code>softmax</code> function, defined as <span class="math display">\[
+\sigma: \mathbb{R^n} \to (0, 1)^n, \quad \sigma(x)_i = \frac{\exp(x_i)}{\sum_j{\exp(x_j)}}.
+\]</span></p>
+<p>In this section we are going to try explain in more detail what it does and what it is used for.</p>
+<p>This particular activation function is most commonly used as the output layer of an NN for a <em>multi-class classification/learning problem</em>, as it is the case in our <em>dogs vs.&nbsp;cats</em> example.</p>
+<p>Loosely speaking, the main idea is, that it <em>transforms a vector into probabilities</em>. By scaling via the sum of all entries we end with a total sum of 1. This makes us independent from the actual scaling the previous layers of the network worked with and lands us alway in the interval <span class="math inline">\([0, 1]\)</span>. The <em>probability</em> we get can be interpreted as the <em>confidence</em> of the network in the classification per class.</p>
+<p>Lets look at it via an example, we assume we have a simple NN with only the two layers, the last being our <code>softmax</code> layer.</p>
+<div id="fig-appendix-softmax_model" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-appendix-softmax_model-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../_assets/appendices/softmax_model.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-12" title="Figure&nbsp;A.12: A small NN for classifying hand written digits, we only distinguish between 5, 6 and all others."><img src="../_assets/appendices/softmax_model.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-appendix-softmax_model-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.12: A small NN for classifying hand written digits, we only distinguish between 5, 6 and all others.
+</figcaption>
+</figure>
+</div>
+<p>We use the hand written letters from <a href="#sec-appendix-pvsr" class="quarto-xref"><span>Section A.2</span></a> as our example, where we only have three classes: <code>5</code>, <code>6</code>, <code>else</code>. Here <code>else</code> should be understood as neither <code>5</code> nor <code>6</code>. We classify the images from right to left. The output of our fist layer is a number with no apparent scaling, after the <code>softmax</code> we can see the <em>most likely class</em> suggested from our NN.</p>
+<div id="fig-appendix-softmax_classify" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-appendix-softmax_classify-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../_assets/appendices/softmax_classify.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-13" title="Figure&nbsp;A.13: From several images to the output of the NN."><img src="../_assets/appendices/softmax_classify.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-appendix-softmax_classify-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.13: From several images to the output of the NN.
+</figcaption>
+</figure>
+</div>
+<p>As we can see, the exponential scaling makes sure that we separate quite well and we can easily destinguish between the three classes We can also see, when it is very close and the NN is not <em>very sure</em> what the correct class is.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
