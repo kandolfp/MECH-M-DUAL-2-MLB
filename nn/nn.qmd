@@ -252,3 +252,41 @@ plt.gca().set_aspect(130 / (1 * 3))
 plt.show()
 ```
 Overall, we have an accuracy of `{python} float(np.round(model.evaluate(X_test, y_test)[1] * 100, 2))`% for our test set, better than with our linear models.
+
+::: {.callout-caution appearance="simple" icon=false}
+:::: {#exr-nn-nn-dvc-one_hot}
+
+## Switch to `one_hot` representation
+
+In the compile step we used `sparse_categorical_crossentropy` to allow for the computation of the loss function. 
+Often a so called _one_hot_ vector is more appropriate, this is supported via `categorical_crossentropy` as `loss` function. 
+
+1. Change to [`categorical_crossentropy`](https://www.tensorflow.org/api_docs/python/tf/keras/losses/categorical_crossentropy).
+
+1. Use the function [`tensorflow.keras.utils.to_categorical`](https://www.tensorflow.org/api_docs/python/tf/keras/utils/to_categorical) to switch to a one_hot encoding.
+
+1. To switch back we can use `np.argmax` as in the code above.
+::::
+:::
+
+::: {.callout-caution appearance="simple" icon=false}
+:::: {#exr-nn-nn-dvc-adam}
+
+## Change the optimizer
+
+As we have seen so often before, the optimizer used for the problem can change how fast convergence is reached (if at all). 
+
+1. Have a look at the possibilites provided in the framework [Overview - Optimizers](https://www.tensorflow.org/api_docs/python/tf/keras/optimizers) - they are basically all improvements on Stochastic Gradient Decent.
+
+1. Test different approaches, especially one of the Adam (`Adam`, `AdamW`, `Adamax`) and Ada (`Adadelta`, `Adafactor`, `Adagrad`) implementations and record the performance (final accuracy).
+::::
+:::
+
+::: {.callout-caution appearance="simple" icon=false}
+:::: {#exr-nn-nn-dvc-dvc}
+
+## `DVCLive` integration
+
+Implement the [`DVCLive`](https://dvc.org/doc/dvclive/ml-frameworks/keras) integration to track the metrics.
+::::
+:::
