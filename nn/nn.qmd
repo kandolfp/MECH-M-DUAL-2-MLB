@@ -156,6 +156,12 @@ We visualized the network in @fig-nn-cvd-nl.
 Note, the layer _inside_ the network are usually called _hidden layers_.
 If we translate it into a `tensorflow.keras` model this looks like the following code.
 ```{python}
+#| echo: false
+#| output: false
+# Code to avoid having some warning from ts in the notes.
+import tensorflow as tf
+```
+```{python}
 #| classes: styled-output
 import tensorflow as tf
 
