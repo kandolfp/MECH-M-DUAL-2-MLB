@@ -193,7 +193,7 @@ model.compile(loss="sparse_categorical_crossentropy",       # <1>
               optimizer=tf.keras.optimizers.SGD(),          # <2>
               metrics=["accuracy"])
 ```
-1. Function to compute the loss, the name corresponds to []`tf.keras.losses.sparse_categorical_crossentropy`](https://www.tensorflow.org/api_docs/python/tf/keras/losses/sparse_categorical_crossentropy).
+1. Function to compute the loss, the name corresponds to [`tf.keras.losses.sparse_categorical_crossentropy`](https://www.tensorflow.org/api_docs/python/tf/keras/losses/sparse_categorical_crossentropy).
 1. Our optimizer, the [Stochastic Gradient Decent](https://www.tensorflow.org/api_docs/python/tf/keras/optimizers/SGD) method, more details later.
 
 After we compiled the model we can train it using our data
@@ -247,7 +247,7 @@ plt_list = [["accuracy", "-"], ["loss", ":"],
 
 for name, style in plt_list:
     plt.plot(epochs, history.history[name], style, label=name)
-plt.legend()
+plt.legend(loc="lower right")
 plt.gca().set_aspect(130 / (1 * 3))
 plt.show()
 ```
