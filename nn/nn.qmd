@@ -240,8 +240,6 @@ Now that training is complete we can have a look at the performance.
 #|   - "Summary of the key metrics of the model training."
 #| code-fold: true
 #| code-summary: "Show the code for the figure"
-
-
 y_proba = model.predict(X_test, verbose=0)
 y_predict = y_proba.argmax(axis=-1)
 myplot(y_predict * (-2) + 1)
