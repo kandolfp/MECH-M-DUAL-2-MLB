@@ -3,7 +3,7 @@
 Now that we constructed one of the simplest NNs possible we build on this and extend our model.
 The first step is to introduce some (non-linear) activation functions or transfer functions
 $$
-y = f(A, x).
+y = f(A, b, x).
 $$
 
 Some common functions are:
