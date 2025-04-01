@@ -180,7 +180,7 @@ model = tf.keras.Sequential([                                              # <1>
     tf.keras.layers.Dense(2, activation="softmax", name="H02")             # <4>
 ])                                                                         # <1>
 
-model.summary()                                                     # <5>
+model.summary(line_length=60)                                              # <5>
 ```
 1. Generate a [_sequential_ model](https://www.tensorflow.org/api_docs/python/tf/keras/Sequential), the `keras` way of calling a linear stack of layers.
 1. Our fist layer defines the input size, in our case we have _flat_ images of size $1024$.
@@ -201,6 +201,25 @@ with open("model.dot", "w") as f:
 //| fig-cap: "Model with all its parameters visualized."
 //|file: model.dot
 ```
+
+::: {.callout-caution appearance="simple" icon=false}
+:::: {#exr-nn-nn-params}
+
+## Explain the output of `.summary()`
+
+For the (extended) output of `.summary()`
+```{python}
+#| classes: styled-output
+model.summary(line_length=60, 
+              expand_nested=True, show_trainable=True)
+```
+answer the following questions.
+
+1. Explain how the `Param #` column is computed and retrace the details.
+1. What does the memory usage of `8.03KB` imply on the used number format for the parameters?
+1. What does the `(None, 2)` imply for the shape?
+::::
+:::
 
 Next, we need to _compile_ the model to prepare it for execution/training.
 In this step we define the optimizer to use for solving the included optimization method and how loss is computed.
@@ -227,7 +246,7 @@ history = model.fit(X_train,                            # <1>
 ```
 1. Our entire training set, it is shuffled and split into a validation set during each epoch.
 1. Number of epochs, i.e. iterations to run the optimization with the data provided.
-1. The `batch_size` describes the number of samples per gradient update to use.
+1. The `batch_size` describes the number of samples per gradient update to use - can be interpreted as filling the spot of `None` in the above summary output.
 1. We can define how large the split between training and validation data is.
 1. Deactivate the output to not clutter the notes
 1. Shuffle the data on each run to make sure different sets are provided in different orders.
