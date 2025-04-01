@@ -54,8 +54,10 @@ A perceptron is the equivalent of the `scikit-learn` classifier [SGDClassifier](
 
 For multiple perceptions in one layer we get weights for each of them and they are combined into the matrix $A$.
 
+![First weight matrix for a generic NN, where no connection is present a 0 is inserted.](../_assets/nn/generic_matrices_dims){#fig-nn-metrices_dims}
+
 If we extend again to a multilayer NN with multiple neurons in each layer we can simplify this a bit by limiting us for a moment to a linear NN.
-In this case the functions $f_k$ are all linear maps (we will see shortly it is in fact the identity) and the composition is just the matrix-matrix computation
+In this case the functions $f_k$ are all linear maps (as we will see shortly, it is in fact the identity) and the composition is the matrix-matrix computation
 $$
 y = A_m A_{m-1} \cdots A_2 A_1 x.
 $$
