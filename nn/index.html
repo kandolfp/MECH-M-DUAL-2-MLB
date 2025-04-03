@@ -317,6 +317,12 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">More detailed explanations</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/keras.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Our first Neural Network in <code>tensorflow.keras</code></span></span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -404,7 +410,17 @@ Note
 </div>
 </div>
 <p>For multiple perceptions in one layer we get weights for each of them and they are combined into the matrix <span class="math inline">\(A\)</span>.</p>
-<p>If we extend again to a multilayer NN with multiple neurons in each layer we can simplify this a bit by limiting us for a moment to a linear NN. In this case the functions <span class="math inline">\(f_k\)</span> are all linear maps (we will see shortly it is in fact the identity) and the composition is just the matrix-matrix computation <span class="math display">\[
+<div id="fig-nn-metrices_dims" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-nn-metrices_dims-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../_assets/nn/generic_matrices_dims.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Figure&nbsp;3: First weight matrix for a generic NN, where no connection is present a 0 is inserted."><img src="../_assets/nn/generic_matrices_dims.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn-metrices_dims-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: First weight matrix for a generic NN, where no connection is present a 0 is inserted.
+</figcaption>
+</figure>
+</div>
+<p>If we extend again to a multilayer NN with multiple neurons in each layer we can simplify this a bit by limiting us for a moment to a linear NN without a bias. In this case the functions <span class="math inline">\(f_k\)</span> are all linear maps (as we will see shortly, it is in fact the identity) and the composition is the matrix-matrix computation <span class="math display">\[
 y = A_m A_{m-1} \cdots A_2 A_1 x.
 \]</span></p>
 <p>The matrices might be sparse or dense, depending on the connections they describe. The resulting system is most likely under-determined and requires some constraints to select a <em>unique solution</em>, see <span class="citation" data-cites="Kandolf_GDM">Kandolf (<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">2025</a>)</span>.</p>
@@ -412,10 +428,10 @@ y = A_m A_{m-1} \cdots A_2 A_1 x.
 <div id="fig-nn-cvd" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-nn-cvd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../_assets/nn/cats_vs_dogs.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Figure&nbsp;3: A single layer structure for the cats vs.&nbsp;dogs classification."><img src="../_assets/nn/cats_vs_dogs.svg" class="img-fluid figure-img"></a>
+<a href="../_assets/nn/cats_vs_dogs.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Figure&nbsp;4: A single layer structure for the cats vs.&nbsp;dogs classification."><img src="../_assets/nn/cats_vs_dogs.svg" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn-cvd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3: A single layer structure for the cats vs.&nbsp;dogs classification.
+Figure&nbsp;4: A single layer structure for the cats vs.&nbsp;dogs classification.
 </figcaption>
 </figure>
 </div>
@@ -485,7 +501,7 @@ y = A x.
 <div id="fig-nn-singlelayer-1" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-nn-singlelayer-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/fig-nn-singlelayer-output-1.svg" class="lightbox" data-gallery="fig-nn-singlelayer" title="Figure&nbsp;4&nbsp;(a): Pseudo inverse implemented by hand."><img src="index_files/figure-html/fig-nn-singlelayer-output-1.svg" class="img-fluid figure-img" data-ref-parent="fig-nn-singlelayer"></a>
+<a href="index_files/figure-html/fig-nn-singlelayer-output-1.svg" class="lightbox" data-gallery="fig-nn-singlelayer" title="Figure&nbsp;5&nbsp;(a): Pseudo inverse implemented by hand."><img src="index_files/figure-html/fig-nn-singlelayer-output-1.svg" class="img-fluid figure-img" data-ref-parent="fig-nn-singlelayer"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-nn-singlelayer-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (a) Pseudo inverse implemented by hand.
@@ -497,7 +513,7 @@ y = A x.
 <div id="fig-nn-singlelayer-2" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-nn-singlelayer-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/fig-nn-singlelayer-output-2.svg" class="lightbox" data-gallery="fig-nn-singlelayer" title="Figure&nbsp;4&nbsp;(b): RIDGE solution via scikit-learn."><img src="index_files/figure-html/fig-nn-singlelayer-output-2.svg" class="img-fluid figure-img" data-ref-parent="fig-nn-singlelayer"></a>
+<a href="index_files/figure-html/fig-nn-singlelayer-output-2.svg" class="lightbox" data-gallery="fig-nn-singlelayer" title="Figure&nbsp;5&nbsp;(b): RIDGE solution via scikit-learn."><img src="index_files/figure-html/fig-nn-singlelayer-output-2.svg" class="img-fluid figure-img" data-ref-parent="fig-nn-singlelayer"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-nn-singlelayer-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (b) RIDGE solution via scikit-learn.
@@ -507,7 +523,7 @@ y = A x.
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn-singlelayer-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4: Linear single layer neural network for different solutions of the resulting system.
+Figure&nbsp;5: Linear single layer neural network for different solutions of the resulting system.
 </figcaption>
 </figure>
 </div>
