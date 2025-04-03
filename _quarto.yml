@@ -38,6 +38,7 @@ book:
     - references.qmd
   appendices:
     - appendices/explanations.qmd
+    - appendices/keras.qmd
 
 bibliography: references.bib
 
