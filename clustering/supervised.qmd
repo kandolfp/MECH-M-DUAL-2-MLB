@@ -29,9 +29,9 @@ It is also common practice to use $k$-folds cross-validation for the training se
 The $k$-folds cross-validation technique is a method to allow better _hyperparameter tuning_, especially for smaller data sets where training and validation data is small.
 The main idea is that we split our iterate over different validation sets by splitting up our training set.
 Lets say we use $5$-fold cross-validation we split the training set into 5 parts.
-Train with 4 parts and validate against the 5th.
-We than rotate and select a different validation fold.
-At the end we average over the 5 iterations to get our final parameters.
+Therefore, we train the model with four parts and validate against the fifth.
+We then rotate the folds and select a different one for validation.
+At the end, we average over the five iterations to get our final parameters.
 
 This looks something like this:
 
