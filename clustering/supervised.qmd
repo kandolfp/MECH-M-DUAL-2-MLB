@@ -9,7 +9,7 @@ The following introduction and illustrational data set, as well as the basic str
 Also see [GitHub](https://github.com/dynamicslab/databook_python).
 :::
 
-The idea if LDA is to find a linear combination of features that optimally separates two or more classes.
+The idea of LDA is to find a linear combination of features that optimally separates two or more classes.
 The crucial part in the algorithm is that it is guided by labelled observations.
 At its core, the algorithm aims to solve an optimization problem: find an optimal low-dimensional embedding of the data that shows a clear separation between their point distribution, or maximize the distance between the inter-class data and minimize the intra-class data distance.
 
