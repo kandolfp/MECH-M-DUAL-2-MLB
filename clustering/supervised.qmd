@@ -348,7 +348,7 @@ scores = sklearn.model_selection.cross_val_score(
 pd.DataFrame({"accuracy [%]": np.round(scores * 100, 2)}).T
 ```
 
-With scores in the high $90\%$ range the results look promession if not great, but are they really that good?
+With scores in the high $90\%$ range the results look promising, if not great, but are they really that good?
 In order to get a better idea just always guess that we do not see a `5` that should be the most common class in our case.
 To simulate this we use the `DummyClassifier` class.
 
