@@ -1,0 +1,2103 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>1&nbsp; Unsupervised learning – Machine Learning in Industrial Image Processing</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../clustering/supervised.html" rel="next">
+<link href="../clustering/index.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-60c12469a02addc16ece3c92f73823bb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-de1eb42f17741db2ad7a825f871af34a.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../clustering/index.html">Clustering and Classification</a></li><li class="breadcrumb-item"><a href="../clustering/unsupervised.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Unsupervised learning</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Machine Learning in Industrial Image Processing</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../clustering/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Clustering and Classification</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../clustering/unsupervised.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Unsupervised learning</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../clustering/supervised.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Supervised learning</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../clustering/semisupervised.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Semi-Supervised learning</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../data/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data management and data engineering</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../data/model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Model persistence</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../data/code.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Code persistence</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../data/data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Data persistence</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../nn/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Neural Networks and Deep Learning</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nn/nn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Neural Networks</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Summary</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/explanations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">More detailed explanations</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/keras.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Our first Neural Network in <code>tensorflow.keras</code></span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-clustering-usl-kmeans" id="toc-sec-clustering-usl-kmeans" class="nav-link active" data-scroll-target="#sec-clustering-usl-kmeans"><span class="header-section-number">1.1</span> <span class="math inline">\(k\)</span>-Means Clustering</a>
+  <ul class="collapse">
+  <li><a href="#applications-of-k-means" id="toc-applications-of-k-means" class="nav-link" data-scroll-target="#applications-of-k-means"><span class="header-section-number">1.1.1</span> Applications of <span class="math inline">\(k\)</span>-means</a></li>
+  </ul></li>
+  <li><a href="#unsupervised-hierarchical-clustering---dendrogram" id="toc-unsupervised-hierarchical-clustering---dendrogram" class="nav-link" data-scroll-target="#unsupervised-hierarchical-clustering---dendrogram"><span class="header-section-number">1.2</span> Unsupervised hierarchical clustering - Dendrogram</a></li>
+  <li><a href="#sec-clustering-ul-dbscan" id="toc-sec-clustering-ul-dbscan" class="nav-link" data-scroll-target="#sec-clustering-ul-dbscan"><span class="header-section-number">1.3</span> Density-based spatial clustering of applications with noise (DBSCAN)</a></li>
+  <li><a href="#finite-mixtures-models" id="toc-finite-mixtures-models" class="nav-link" data-scroll-target="#finite-mixtures-models"><span class="header-section-number">1.4</span> Finite Mixtures Models</a></li>
+  <li><a href="#sec-clustering-ul-me" id="toc-sec-clustering-ul-me" class="nav-link" data-scroll-target="#sec-clustering-ul-me"><span class="header-section-number">1.5</span> Motivational example</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/edit/main/clustering/unsupervised.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../clustering/index.html">Clustering and Classification</a></li><li class="breadcrumb-item"><a href="../clustering/unsupervised.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Unsupervised learning</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-clustering-usl" class="quarto-section-identifier"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Unsupervised learning</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>We start with unsupervised learning. The goal of unsupervised learning is to discover clusters in the data of observations that have no labels, i.e.&nbsp;we have nothing to look at as reference. There are several algorithms to perform this task, the most prominent is the <span class="math inline">\(k\)</span>-means clustering algorithm.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We will use <code>scikit-learn</code> in this section heavily. The <a href="https://scikit-learn.org/stable/user_guide.html">User Guide</a> and <a href="https://scikit-learn.org/stable/auto_examples/index.html">Examples</a> sections in the documentation are well structured and a good source for additional information.</p>
+<p>Furthermore, there are several Examples that compare different methods on different data sets and therefore give a nice overview on strengths and weaknesses. Have look at them to gain further insights into the methods and their differences.</p>
+<ul>
+<li><a href="https://scikit-learn.org/stable/auto_examples/cluster/plot_cluster_comparison.html#sphx-glr-auto-examples-cluster-plot-cluster-comparison-py">Comparing different clustering algorithms on toy datasets</a></li>
+<li><a href="https://scikit-learn.org/stable/auto_examples/classification/plot_classifier_comparison.html#sphx-glr-auto-examples-classification-plot-classifier-comparison-py">Classifier comparison</a></li>
+<li><a href="https://scikit-learn.org/stable/auto_examples/cluster/plot_linkage_comparison.html#sphx-glr-auto-examples-cluster-plot-linkage-comparison-py">Comparing different hierarchical linkage methods on toy datasets</a></li>
+</ul>
+</div>
+</div>
+<section id="sec-clustering-usl-kmeans" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="sec-clustering-usl-kmeans"><span class="header-section-number">1.1</span> <span class="math inline">\(k\)</span>-Means Clustering</h2>
+<p>The <span class="math inline">\(k\)</span>-means algorithm tries to partition a set of <span class="math inline">\(m\)</span> (vector-valued) <em>data observations</em> into <span class="math inline">\(k\)</span> clusters. Where in general, the dimension of the data and the amount of observations is known, the number of clusters is often not known a priori.</p>
+<p>The general idea is, to label each observation as belonging to a cluster with the nearest mean (the <em>representative</em> of the cluster). The resulting clusters are called Voronoi cells, see <a href="https://en.wikipedia.org/wiki/Voronoi_diagram">Wikipedia - Voronoi diagram</a>.</p>
+<div class="callout callout-style-simple callout-none no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-kmeans" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1.1 (<span class="math inline">\(k\)</span>-Means Algorithm)</strong></span> For a given set of <span class="math inline">\(m\)</span> observations <span class="math inline">\((x_1, x_2, \ldots, x_m)\)</span>, with <span class="math inline">\(x_i\in \mathrm{R}^n\)</span> the algorithm strives to find <span class="math inline">\(k\)</span> sets <span class="math inline">\((S_1, S_2, \ldots, S_k)\)</span> such that the variance inside the cluster is minimized, i.e. <span class="math display">\[
+\underset{S}{\operatorname{argmin}} \sum_{i=1}^k \sum_{x\in S_i}\| x - \mu_i \|^2,
+\]</span> where <span class="math inline">\(\mu_i\)</span> denotes the mean of <span class="math inline">\(S_i\)</span>.</p>
+<p>The algorithm itself is recursive, for a given <span class="math inline">\(k\)</span></p>
+<ol type="1">
+<li>Randomly initialize <span class="math inline">\(k\)</span> points <span class="math inline">\(\mu_1, \mu_2, \ldots, \mu_k\)</span>, as the cluster centers,</li>
+<li>Label each observation <span class="math inline">\(x_i\)</span> by the nearest cluster center <span class="math inline">\(\mu_j\)</span>, all points with the same label form the set <span class="math inline">\(S_j\)</span>.</li>
+<li>Compute the mean of each cluster <span class="math inline">\(S_j\)</span> and replace the current <span class="math inline">\(\mu_j\)</span> by it.</li>
+<li>Repeat, starting from step 2, until the cluster centers stay stable up to some tolerance.</li>
+</ol>
+<p>This algorithm was first introduced in <span class="citation" data-cites="DBLP:journals/tit/Lloyd82">Lloyd (<a href="../references.html#ref-DBLP:journals/tit/Lloyd82" role="doc-biblioref">1982</a>)</span> and is therefore often called Lloyd algorithm.</p>
+<div id="2bf35a72" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Show the code for Lloyd algorithm</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lloyd(data, centers, steps):</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    classes <span class="op">=</span> np.zeros(data.shape[<span class="dv">0</span>])</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    centers_ <span class="op">=</span> np.copy(centers)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(steps):</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(data.shape[<span class="dv">0</span>]):</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>            classes[j] <span class="op">=</span> np.argmin(np.linalg.norm(centers_ <span class="op">-</span> np.tile(data[j, :],</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>                                   (centers.shape[<span class="dv">0</span>], <span class="dv">1</span>)), axis<span class="op">=</span><span class="dv">1</span>))</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(centers.shape[<span class="dv">0</span>]):</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>            centers_[j, :] <span class="op">=</span> np.mean(data[classes <span class="op">==</span> j, :], axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (classes, centers_)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In general <a href="#def-kmeans" class="quarto-xref">Definition&nbsp;<span>1.1</span></a> is NP-hard and therefore computationally not viable. Nevertheless, a number of heuristic algorithms exist to provide a good performance, despite having no guarantee for global convergence.</p>
+</div>
+</div>
+<p>We illustrate the proceedings with the help of some artificial observations in two dimensional space, and show how the clustering takes place.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The following data set and the basic structure of the code is from <span class="citation" data-cites="Brunton2022">(<a href="../references.html#ref-Brunton2022" role="doc-biblioref">Brunton and Kutz 2022</a>, Code 5.5 - 5.6)</span>. Also see <a href="https://github.com/dynamicslab/databook_python">GitHub</a>.</p>
+</div>
+</div>
+<details class="code-fold">
+<summary>Show the code for the figure</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">6020</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper for plotting</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_lloyd(data, centers, classes, ms<span class="op">=</span><span class="dv">500</span>):</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    plt.figure()</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(centers.shape[<span class="dv">0</span>]):</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        plt.scatter(data[classes<span class="op">==</span>i, <span class="dv">0</span>], data[classes<span class="op">==</span>i, <span class="dv">1</span>])</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        plt.scatter(centers[i, <span class="dv">0</span>], centers[i, <span class="dv">1</span>], c<span class="op">=</span><span class="st">"k"</span>, s<span class="op">=</span>ms, marker<span class="op">=</span><span class="st">"*"</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    plt.gca().set_aspect(<span class="dv">1</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Create data for illustration</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">200</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Random ellipse centred in (0, 0) and axis (1, 0.5)</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.random.randn(n, <span class="dv">2</span>) <span class="op">*</span> np.array([<span class="dv">1</span>, <span class="fl">0.5</span>])</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Random ellipse centred in (1, -2) and axis (1, 0.2)</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>X2 <span class="op">=</span> (np.random.randn(n, <span class="dv">2</span>) <span class="op">*</span> np.array([<span class="dv">1</span>, <span class="fl">0.2</span>])) <span class="op">+</span> np.array([<span class="dv">1</span>, <span class="op">-</span><span class="dv">2</span>])</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Rotate ellipse 2 by theta</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>theta <span class="op">=</span> np.pi <span class="op">/</span> <span class="dv">4</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>X2 <span class="op">=</span> X2 <span class="op">@</span> np.array([[np.cos(theta), <span class="op">-</span>np.sin(theta)],</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>                  [np.sin(theta), np.cos(theta)]] )</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>centers <span class="op">=</span> np.array([[<span class="fl">0.</span>, <span class="op">-</span><span class="fl">1.</span>], [<span class="op">-</span><span class="fl">1.</span>, <span class="fl">0.</span>]])</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> np.concatenate((X, X2))</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot initial step with theoretical assignment</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>classes <span class="op">=</span> np.concatenate((np.ones(X2.shape[<span class="dv">0</span>]), np.zeros(X.shape[<span class="dv">0</span>])))</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>plot_lloyd(data, centers, classes)</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute and plot consecutive steps of lloyds algorithm</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">5</span>]:</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    classes, centers_ <span class="op">=</span> lloyd(data, centers, i)</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    plot_lloyd(data, centers, classes)</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    centers <span class="op">=</span> centers_</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="fig-clustering-unsupervised_lloyd" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-clustering-unsupervised_lloyd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-clustering-unsupervised_lloyd" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-clustering-unsupervised_lloyd-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-clustering-unsupervised_lloyd-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="unsupervised_files/figure-html/fig-clustering-unsupervised_lloyd-output-1.svg" class="lightbox" data-gallery="fig-clustering-unsupervised_lloyd" title="Figure&nbsp;1.1&nbsp;(a): The original two classes and the initial guesses for the centers."><img src="unsupervised_files/figure-html/fig-clustering-unsupervised_lloyd-output-1.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-unsupervised_lloyd"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-unsupervised_lloyd-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) The original two classes and the initial guesses for the centers.
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-clustering-unsupervised_lloyd" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-clustering-unsupervised_lloyd-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-clustering-unsupervised_lloyd-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="unsupervised_files/figure-html/fig-clustering-unsupervised_lloyd-output-2.svg" class="lightbox" data-gallery="fig-clustering-unsupervised_lloyd" title="Figure&nbsp;1.1&nbsp;(b): Point association to the clusters in the first step."><img src="unsupervised_files/figure-html/fig-clustering-unsupervised_lloyd-output-2.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-unsupervised_lloyd"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-unsupervised_lloyd-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Point association to the clusters in the first step.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-clustering-unsupervised_lloyd" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-clustering-unsupervised_lloyd-3" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-clustering-unsupervised_lloyd-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="unsupervised_files/figure-html/fig-clustering-unsupervised_lloyd-output-3.svg" class="lightbox" data-gallery="fig-clustering-unsupervised_lloyd" title="Figure&nbsp;1.1&nbsp;(c): Point association to the clusters in the third step."><img src="unsupervised_files/figure-html/fig-clustering-unsupervised_lloyd-output-3.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-unsupervised_lloyd"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-unsupervised_lloyd-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(c) Point association to the clusters in the third step.
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-clustering-unsupervised_lloyd" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-clustering-unsupervised_lloyd-4" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-clustering-unsupervised_lloyd-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="unsupervised_files/figure-html/fig-clustering-unsupervised_lloyd-output-4.svg" class="lightbox" data-gallery="fig-clustering-unsupervised_lloyd" title="Figure&nbsp;1.1&nbsp;(d): Point association to the clusters in the eighth step."><img src="unsupervised_files/figure-html/fig-clustering-unsupervised_lloyd-output-4.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-unsupervised_lloyd"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-unsupervised_lloyd-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(d) Point association to the clusters in the eighth step.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-unsupervised_lloyd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.1: Lloyds algorithm in action for a generic set of two datasets generated with a Gaussian distribution.
+</figcaption>
+</figure>
+</div>
+<p>In <a href="#fig-clustering-unsupervised_lloyd-1" class="quarto-xref">Figure&nbsp;<span>1.1 (a)</span></a> we see the two <em>distinct</em> clusters and the initial guesses for the centers. In the successive plots, we see how the centers move and converge to the <em>final</em> position, as seen in <a href="#fig-clustering-unsupervised_lloyd-4" class="quarto-xref">Figure&nbsp;<span>1.1 (d)</span></a>. In this case the algorithm converges after the sixth step.</p>
+<p>Of course the algorithm is sensitive to the initial guess and therefore modern versions provide strategies to determine the initial guess, as well as the number of clusters.</p>
+<p>We can see this in action in the <a href="https://scikit-learn.org/1.5/modules/generated/sklearn.cluster.KMeans.html"><code>sklearn.cluster.KMeans</code></a> version.</p>
+<details class="code-fold">
+<summary>Show the code for the figure</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> KMeans</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">6020</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>kmeans <span class="op">=</span> KMeans(n_clusters<span class="op">=</span><span class="dv">2</span>, random_state<span class="op">=</span><span class="dv">6020</span>).fit(data)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>plot_lloyd(data, kmeans.cluster_centers_, kmeans.labels_)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>kmeans <span class="op">=</span> KMeans(n_clusters<span class="op">=</span><span class="dv">3</span>, random_state<span class="op">=</span><span class="dv">6020</span>).fit(data)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>plot_lloyd(data, kmeans.cluster_centers_, kmeans.labels_)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="fig-clustering-unsupervised_lloyd2" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-clustering-unsupervised_lloyd2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-clustering-unsupervised_lloyd2" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-clustering-unsupervised_lloyd2-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-clustering-unsupervised_lloyd2-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="unsupervised_files/figure-html/fig-clustering-unsupervised_lloyd2-output-1.svg" class="lightbox" data-gallery="fig-clustering-unsupervised_lloyd2" title="Figure&nbsp;1.2&nbsp;(a): Seeking two clusters."><img src="unsupervised_files/figure-html/fig-clustering-unsupervised_lloyd2-output-1.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-unsupervised_lloyd2"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-unsupervised_lloyd2-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Seeking two clusters.
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-clustering-unsupervised_lloyd2" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-clustering-unsupervised_lloyd2-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-clustering-unsupervised_lloyd2-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="unsupervised_files/figure-html/fig-clustering-unsupervised_lloyd2-output-2.svg" class="lightbox" data-gallery="fig-clustering-unsupervised_lloyd2" title="Figure&nbsp;1.2&nbsp;(b): Seeking three clusters."><img src="unsupervised_files/figure-html/fig-clustering-unsupervised_lloyd2-output-2.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-unsupervised_lloyd2"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-unsupervised_lloyd2-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Seeking three clusters.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-unsupervised_lloyd2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.2: KMeans algorithm in action for a generic set of two datasets generated with a Gaussian distribution.
+</figcaption>
+</figure>
+</div>
+<p>As can be seen in <a href="#fig-clustering-unsupervised_lloyd2-1" class="quarto-xref">Figure&nbsp;<span>1.2 (a)</span></a> the algorithm comes up with (almost) the same split between the two sets as our crude implementation. If we try for three clusters <a href="#fig-clustering-unsupervised_lloyd2-2" class="quarto-xref">Figure&nbsp;<span>1.2 (b)</span></a> the result is sensible as well.</p>
+<p>The major success, of this algorithm in general use, is based on the fast convergence, that requires no supervision. We can also see that it is not very accurate, compare <a href="#fig-clustering-unsupervised_lloyd-1" class="quarto-xref">Figure&nbsp;<span>1.1 (a)</span></a> and <a href="#fig-clustering-unsupervised_lloyd-4" class="quarto-xref">Figure&nbsp;<span>1.1 (d)</span></a>. This is no surprise, as the algorithm has not <em>all information</em> available.</p>
+<p>How can we determine how <em>accurate</em> the algorithm is? If we have no labels this is of course not easy to do but cross-validation is a good tool.</p>
+<p>In our case we can produce the labels and we can also split the data beforehand into a training set and a test set. Usually a so called <span class="math inline">\(80:20\)</span> split is used, i.e.&nbsp;<span class="math inline">\(80\%\)</span> training data and <span class="math inline">\(20\%\)</span> test data.</p>
+<div id="cell-fig-clustering-unsupervised_lloyd3" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Show the code for the figure</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> KMeans</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">6020</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Shuffle data</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>X_shuffle <span class="op">=</span> X[np.random.permutation(X.shape[<span class="dv">0</span>]), :]</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>X2_shuffle <span class="op">=</span> X2[np.random.permutation(X2.shape[<span class="dv">0</span>]), :]</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Split data into two parts</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>split <span class="op">=</span> n <span class="op">//</span> <span class="dv">5</span> <span class="op">*</span> <span class="dv">4</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> np.concatenate((X_shuffle[:split, :], X2_shuffle[:split, :]))</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>test <span class="op">=</span> np.concatenate((X_shuffle[split:, :], X2_shuffle[split:, :]))</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Create clustesr</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>kmeans <span class="op">=</span> KMeans(n_clusters<span class="op">=</span><span class="dv">2</span>, random_state<span class="op">=</span><span class="dv">6020</span>).fit(data)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>classes <span class="op">=</span> kmeans.predict(data)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>test_classes <span class="op">=</span> kmeans.predict(test)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Find wrong classifications</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>error <span class="op">=</span> test_classes <span class="op">!=</span> np.concatenate((np.zeros(n<span class="op">-</span>split), np.ones(n<span class="op">-</span>split)))</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>colour <span class="op">=</span> [<span class="st">"tab:orange"</span>, <span class="st">"tab:blue"</span>]</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>):</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    plt.scatter(data[classes<span class="op">==</span>i, <span class="dv">0</span>], data[classes<span class="op">==</span>i, <span class="dv">1</span>],</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>                c<span class="op">=</span>colour[i], alpha<span class="op">=</span><span class="fl">0.5</span>, label<span class="op">=</span><span class="st">"train"</span>)</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    plt.scatter(test[test_classes<span class="op">==</span>i, <span class="dv">0</span>], test[test_classes<span class="op">==</span>i, <span class="dv">1</span>],</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>                c<span class="op">=</span>colour[i], label<span class="op">=</span><span class="st">"test"</span>)</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>plt.scatter(test[error, <span class="dv">0</span>], test[error, <span class="dv">1</span>], marker<span class="op">=</span><span class="st">"x"</span>, c<span class="op">=</span><span class="st">"k"</span>, label<span class="op">=</span><span class="st">"error"</span>)</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>plt.gca().set_aspect(<span class="dv">1</span>)</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-clustering-unsupervised_lloyd3" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-clustering-unsupervised_lloyd3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="unsupervised_files/figure-html/fig-clustering-unsupervised_lloyd3-output-1.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Figure&nbsp;1.3: Validation against a test set."><img src="unsupervised_files/figure-html/fig-clustering-unsupervised_lloyd3-output-1.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-unsupervised_lloyd3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.3: Validation against a test set.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The result of this can be seen in <a href="#fig-clustering-unsupervised_lloyd3" class="quarto-xref">Figure&nbsp;<span>1.3</span></a> where we have two points wrongly classified to the opposite cluster.</p>
+<p>There exist several extensions of the basic <span class="math inline">\(k\)</span>-means algorithm to improve the results and overall performance. Two such versions are the <em>accelerated <span class="math inline">\(k\)</span>-means</em>, as well as <em>mini-batch <span class="math inline">\(k\)</span>-means</em>. Both can be found in <span class="citation" data-cites="Geron2022-xh">Geron (<a href="../references.html#ref-Geron2022-xh" role="doc-biblioref">2022</a>)</span>.</p>
+<div class="callout callout-style-simple callout-caution no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exr-kmean" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 1.1 (Apply the <span class="math inline">\(k\)</span>-means algorithm to other data sets)</strong></span> As an exercise, to get some practice for using <span class="math inline">\(k\)</span>-means, apply the algorithm to some other datasets to see how it performs.</p>
+<ol type="1">
+<li><p>We already looked at the Fischer Iris data set in <a href="index.html#sec-fischer-iris-data-set" class="quarto-xref"><span>Section 1.1</span></a> and discussed some basic features. Try with only two dimensional data, as well as four dimensional data to find the three clusters.</p></li>
+<li><p>For <a href="#fig-clustering-unsupervised_dbscan" class="quarto-xref">Figure&nbsp;<span>1.7</span></a> we will look at the moons data set. Try working out the clusters in this case.</p></li>
+<li><p>Apply the algorithm to the cats and dogs (in wavelet basis, see <a href="index.html#sec-clustering-cvd" class="quarto-xref"><span>Section 1.2</span></a>) for various principal components and find the two clusters.</p></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<section id="applications-of-k-means" class="level3" data-number="1.1.1">
+<h3 data-number="1.1.1" class="anchored" data-anchor-id="applications-of-k-means"><span class="header-section-number">1.1.1</span> Applications of <span class="math inline">\(k\)</span>-means</h3>
+<p>The <span class="math inline">\(k\)</span>-means algorithm is used in a multitude of applications, we list some here:</p>
+<ol type="1">
+<li><p><strong>Image segmentation</strong>: To decompose an image into different regions we can use <span class="math inline">\(k\)</span>-means. Applications range from robotics to surveillance, where one or more objects are separated from the rest of the image.</p></li>
+<li><p><strong>Customer segmentation/social network analysis</strong>: To segment customers along e.g.&nbsp;their purchase history/behaviour, preferences, demographic data, amount spent, search queries, social media interactions, etc. <span class="math inline">\(k\)</span>-means is used in marketing, retail, and advertising to personalize the experience.</p></li>
+<li><p><strong>Text clustering</strong>: In natural language processing (NLP) <span class="math inline">\(k\)</span>-means is often used to cluster similar documents or text to make analysing large volumes of text data feasible.</p></li>
+<li><p><strong>Fraud detection</strong>: <span class="math inline">\(k\)</span>-means is a crude tool for fraud detection in finance and banking. Transactions are clustered according to similarities and anomalies are detected. There exist more sophisticated methods in finance, but <span class="math inline">\(k\)</span>-means is an easy to understand start.</p></li>
+<li><p><strong>Anomaly detection</strong>: In medical (image) data <span class="math inline">\(k\)</span>-means is often used to detect anomalies by finding points that <em>fall outside of clusters</em>. The same works for cybersecurity and e.g.&nbsp;network traffic.</p></li>
+<li><p><strong>Recommendation systems</strong>: By grouping users together it is easier to recommend them new songs, items for shopping, and more.</p></li>
+<li><p><strong>Quality control</strong>: By grouping similar products we can detect quality issues and defects in production processes. If an issue is found the part can be checked and the process adjusted.</p></li>
+<li><p><strong>Traffic Analysis</strong>: In transport and logistics we can analyze traffic patterns and use the information for optimization and similar trips, routes, and vehicles.</p></li>
+</ol>
+<p>We want to highlight <em>image segmentation</em> as an application of <span class="math inline">\(k\)</span>-means. The example found here is first shown in <span class="citation" data-cites="Geron2022-xh">Geron (<a href="../references.html#ref-Geron2022-xh" role="doc-biblioref">2022</a>)</span>.</p>
+<p>The idea of image segmentation is to decompose an image into different segments. The following variants exist:</p>
+<ul>
+<li><p>Colour segmentation - pixels with similar colour get assigned the same cluster. An application of this is image satellite postprocessing to find areas of forest or sea, or finding object in robotics applications, and organs in medical images.</p></li>
+<li><p>Semantic segmentation - all pixels that are part of the same <em>object</em> get assigned to the same segment. An application of this is in autonomous driving to find pedestrians - one segment containing all pedestrians.</p></li>
+<li><p>Instance segmentation - similar to semantic segmentation but individual objects are assigned to the same segment. In the autonomous driving application we would find individual pedestrians.</p></li>
+</ul>
+<p>Here we show how to perform colour segmentation with <span class="math inline">\(k\)</span>-means.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The following data set and the basic structure of the code is from <span class="citation" data-cites="Geron2022-xh">Geron (<a href="../references.html#ref-Geron2022-xh" role="doc-biblioref">2022</a>)</span>, see <a href="https://github.com/ageron/handson-ml3/blob/main/09_unsupervised_learning.ipynb">GitHub</a>,</p>
+</div>
+</div>
+<details class="code-fold">
+<summary>Show the code for the figure</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> imageio.v3 <span class="im">as</span> iio</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> KMeans</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>im <span class="op">=</span> np.asarray(iio.imread(</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"https://github.com/ageron/handson-ml3/blob/main/images/"</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"unsupervised_learning/ladybug.png?raw=true"</span>))</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>plt.imshow(im)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>Z <span class="op">=</span> im.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">3</span>)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> colours <span class="kw">in</span> [<span class="dv">8</span>, <span class="dv">4</span>, <span class="dv">2</span>]:</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    kmeans <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>colours, n_init<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">6020</span>).fit(Z)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    plt.figure()</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    plt.imshow(kmeans.cluster_centers_[kmeans.labels_].reshape(im.shape) <span class="op">/</span> <span class="dv">255</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    plt.axis(<span class="st">"off"</span>)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="fig-clustering-unsupervised-img-seg" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-clustering-unsupervised-img-seg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-clustering-unsupervised-img-seg" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-clustering-unsupervised-img-seg-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-clustering-unsupervised-img-seg-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="unsupervised_files/figure-html/fig-clustering-unsupervised-img-seg-output-1.svg" class="lightbox" data-gallery="fig-clustering-unsupervised-img-seg" title="Figure&nbsp;1.4&nbsp;(a): Original image."><img src="unsupervised_files/figure-html/fig-clustering-unsupervised-img-seg-output-1.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-unsupervised-img-seg"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-unsupervised-img-seg-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Original image.
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-clustering-unsupervised-img-seg" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-clustering-unsupervised-img-seg-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-clustering-unsupervised-img-seg-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="unsupervised_files/figure-html/fig-clustering-unsupervised-img-seg-output-2.svg" class="lightbox" data-gallery="fig-clustering-unsupervised-img-seg" title="Figure&nbsp;1.4&nbsp;(b): Segmentation by 8 colours."><img src="unsupervised_files/figure-html/fig-clustering-unsupervised-img-seg-output-2.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-unsupervised-img-seg"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-unsupervised-img-seg-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Segmentation by 8 colours.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-clustering-unsupervised-img-seg" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-clustering-unsupervised-img-seg-3" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-clustering-unsupervised-img-seg-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="unsupervised_files/figure-html/fig-clustering-unsupervised-img-seg-output-3.svg" class="lightbox" data-gallery="fig-clustering-unsupervised-img-seg" title="Figure&nbsp;1.4&nbsp;(c): Segmentation by 4 colours."><img src="unsupervised_files/figure-html/fig-clustering-unsupervised-img-seg-output-3.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-unsupervised-img-seg"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-unsupervised-img-seg-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(c) Segmentation by 4 colours.
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-clustering-unsupervised-img-seg" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-clustering-unsupervised-img-seg-4" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-clustering-unsupervised-img-seg-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="unsupervised_files/figure-html/fig-clustering-unsupervised-img-seg-output-4.svg" class="lightbox" data-gallery="fig-clustering-unsupervised-img-seg" title="Figure&nbsp;1.4&nbsp;(d): Segmentation by 2 colours."><img src="unsupervised_files/figure-html/fig-clustering-unsupervised-img-seg-output-4.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-unsupervised-img-seg"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-unsupervised-img-seg-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(d) Segmentation by 2 colours.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-unsupervised-img-seg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.4: Colour segmentation for the image of a lady bug.
+</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="unsupervised-hierarchical-clustering---dendrogram" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="unsupervised-hierarchical-clustering---dendrogram"><span class="header-section-number">1.2</span> Unsupervised hierarchical clustering - Dendrogram</h2>
+<p>Similar to <span class="math inline">\(k\)</span>-means, a simple hierarchical algorithm is used to create a dendrogram. The resulting tree allows us to easily see if data is clustered without the need of labeling or supervision.</p>
+<p>We follow the example and discussion given in <span class="citation" data-cites="Brunton2022">(<a href="../references.html#ref-Brunton2022" role="doc-biblioref">Brunton and Kutz 2022, sec. 5.4</a>)</span>.</p>
+<p>There are two main approaches in creating the desired hierarchy: bottom-up often called <em>agglomerative</em>, top-down often called <em>divisive</em>.</p>
+<ul>
+<li><p>For the agglomerative approach each observation <span class="math inline">\(x_i\)</span> is initially its own cluster and in each step points are combined according to their distance. Eventually everything ends up in a single cluster and the algorithm stops.</p></li>
+<li><p>For the divisive approach we go the opposite direction and start with the super cluster containing all observations <span class="math inline">\(x_i\)</span> and we gradually split up into smaller and smaller clusters. The algorithm stops, when each observation is its own leave.</p></li>
+</ul>
+<p>Of course the norm<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> used has quite an influence as can be seen in <span class="citation" data-cites="Kandolf_GDM">(<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">Kandolf 2025, sec. 7.1</a>)</span> <a href="https://kandolfp.github.io/MECH-M-DUAL-1-DBM/regression/optimizers.html#over-determined-systems">Link</a> where we compared LASSO and RIDGE algorithms for our optimization problem.</p>
+<p>To illustrate the agglomerative approach and the difference in norms we use four points and construct the hierarchy by combining the two closest points.</p>
+<div id="fig-clustering-unsupervised-dendrogram-explained" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-clustering-unsupervised-dendrogram-explained-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div id="fig-clustering-unsupervised-dendrogram-explained-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-clustering-unsupervised-dendrogram-explained-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../_assets/clustering/dendrogram_euclidean.svg" class="lightbox" data-gallery="fig-clustering-unsupervised-dendrogram-explained" title="Figure&nbsp;1.5&nbsp;(a): Use two norm or euclidean norm to compute the distance - \| \cdot \|_2"><img src="../_assets/clustering/dendrogram_euclidean.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-unsupervised-dendrogram-explained"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-unsupervised-dendrogram-explained-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Use two norm or euclidean norm to compute the distance - <span class="math inline">\(\| \cdot \|_2\)</span>
+</figcaption>
+</figure>
+</div>
+<div id="fig-clustering-unsupervised-dendrogram-explained-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-clustering-unsupervised-dendrogram-explained-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../_assets/clustering/dendrogram_city.svg" class="lightbox" data-gallery="fig-clustering-unsupervised-dendrogram-explained" title="Figure&nbsp;1.5&nbsp;(b): Use one or cityblock norm to compute the distance - \| \cdot \|_1"><img src="../_assets/clustering/dendrogram_city.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-unsupervised-dendrogram-explained"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-unsupervised-dendrogram-explained-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Use one or cityblock norm to compute the distance - <span class="math inline">\(\| \cdot \|_1\)</span>
+</figcaption>
+</figure>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-unsupervised-dendrogram-explained-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.5: We always combine the two nearest points and replace them with the point in the middle. This iteration continues until only one point is left. The Dendrogram is build according to the order of points chosen. It can also include the distance.
+</figcaption>
+</figure>
+</div>
+<p>On a larger scale, with always the first 25 points of the two clusters above we get the results shown in <a href="#fig-clustering-unsupervised_dengrogram" class="quarto-xref">Figure&nbsp;<span>1.6</span></a></p>
+<details class="code-fold">
+<summary>Show the code for the figure</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.spatial.distance <span class="im">import</span> pdist</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.cluster <span class="im">import</span> hierarchy</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">6020</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>XX <span class="op">=</span> np.concatenate((X[:<span class="dv">25</span>, :], X2[:<span class="dv">25</span>, :]))</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>XX.shape</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> metric <span class="kw">in</span> [<span class="st">"euclidean"</span>, <span class="st">"cityblock"</span>]:</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    plt.figure()</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    Y <span class="op">=</span> pdist(XX, metric<span class="op">=</span>metric)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    Z <span class="op">=</span> hierarchy.linkage(Y, method<span class="op">=</span><span class="st">"average"</span>, metric<span class="op">=</span>metric)</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    thresh <span class="op">=</span> <span class="fl">0.90</span> <span class="op">*</span> np.<span class="bu">max</span>(Z[:, <span class="dv">2</span>])</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    dn <span class="op">=</span> hierarchy.dendrogram(Z, p<span class="op">=</span><span class="dv">100</span>, color_threshold<span class="op">=</span>thresh)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    plt.figure()</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    plt.bar(<span class="bu">range</span>(XX.shape[<span class="dv">0</span>]), dn[<span class="st">"leaves"</span>])</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    plt.plot(np.array([<span class="dv">0</span>, XX.shape[<span class="dv">0</span>]]),</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>             np.array([XX.shape[<span class="dv">0</span>] <span class="op">//</span> <span class="dv">2</span>, XX.shape[<span class="dv">0</span>] <span class="op">//</span> <span class="dv">2</span>]),</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>             <span class="st">"r:"</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    plt.plot(np.array([(XX.shape[<span class="dv">0</span>] <span class="op">//</span> <span class="dv">2</span>) <span class="op">+</span> <span class="dv">1</span><span class="op">/</span><span class="dv">2</span>, (XX.shape[<span class="dv">0</span>] <span class="op">//</span> <span class="dv">2</span>) <span class="op">+</span> <span class="dv">1</span><span class="op">/</span><span class="dv">2</span>]),</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>             np.array([<span class="dv">0</span>, XX.shape[<span class="dv">0</span>]]),</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>             <span class="st">'r:'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="fig-clustering-unsupervised_dengrogram" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-clustering-unsupervised_dengrogram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-clustering-unsupervised_dengrogram" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-clustering-unsupervised_dengrogram-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-clustering-unsupervised_dengrogram-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="unsupervised_files/figure-html/fig-clustering-unsupervised_dengrogram-output-1.svg" class="lightbox" data-gallery="fig-clustering-unsupervised_dengrogram" title="Figure&nbsp;1.6&nbsp;(a): Dendrogram for euclidean norm."><img src="unsupervised_files/figure-html/fig-clustering-unsupervised_dengrogram-output-1.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-unsupervised_dengrogram"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-unsupervised_dengrogram-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Dendrogram for euclidean norm.
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-clustering-unsupervised_dengrogram" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-clustering-unsupervised_dengrogram-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-clustering-unsupervised_dengrogram-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="unsupervised_files/figure-html/fig-clustering-unsupervised_dengrogram-output-2.svg" class="lightbox" data-gallery="fig-clustering-unsupervised_dengrogram" title="Figure&nbsp;1.6&nbsp;(b): Histogram showing the clustering for the euclidean norm."><img src="unsupervised_files/figure-html/fig-clustering-unsupervised_dengrogram-output-2.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-unsupervised_dengrogram"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-unsupervised_dengrogram-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Histogram showing the clustering for the euclidean norm.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-clustering-unsupervised_dengrogram" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-clustering-unsupervised_dengrogram-3" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-clustering-unsupervised_dengrogram-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="unsupervised_files/figure-html/fig-clustering-unsupervised_dengrogram-output-3.svg" class="lightbox" data-gallery="fig-clustering-unsupervised_dengrogram" title="Figure&nbsp;1.6&nbsp;(c): Dendrogram for cityblock norm."><img src="unsupervised_files/figure-html/fig-clustering-unsupervised_dengrogram-output-3.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-unsupervised_dengrogram"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-unsupervised_dengrogram-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(c) Dendrogram for cityblock norm.
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-clustering-unsupervised_dengrogram" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-clustering-unsupervised_dengrogram-4" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-clustering-unsupervised_dengrogram-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="unsupervised_files/figure-html/fig-clustering-unsupervised_dengrogram-output-4.svg" class="lightbox" data-gallery="fig-clustering-unsupervised_dengrogram" title="Figure&nbsp;1.6&nbsp;(d): Histogram showing the clustering for the cityblock norm."><img src="unsupervised_files/figure-html/fig-clustering-unsupervised_dengrogram-output-4.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-unsupervised_dengrogram"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-unsupervised_dengrogram-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(d) Histogram showing the clustering for the cityblock norm.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-unsupervised_dengrogram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.6: Construction a agglomerative hierarchy for our data set.
+</figcaption>
+</figure>
+</div>
+<p>The two dendrograms (<a href="#fig-clustering-unsupervised_dengrogram-1" class="quarto-xref">Figure&nbsp;<span>1.6 (a)</span></a> and <a href="#fig-clustering-unsupervised_dengrogram-3" class="quarto-xref">Figure&nbsp;<span>1.6 (c)</span></a>) show the hierarchical structure derived from the data set. The number of clusters can be influenced by the <code>thresh</code> parameter and it is also used to label the observation accordingly. It is quite similar to the number of clusters <span class="math inline">\(k\)</span> in the <span class="math inline">\(k\)</span>-means algorithm.</p>
+<p>The two bar graphs on the right (<a href="#fig-clustering-unsupervised_dengrogram-2" class="quarto-xref">Figure&nbsp;<span>1.6 (b)</span></a> and <a href="#fig-clustering-unsupervised_dengrogram-4" class="quarto-xref">Figure&nbsp;<span>1.6 (d)</span></a>) show how the observations is clustered in the dendrogram. The bars correspond to the distance metric produced by the algorithm. The red lines indicate the region of a perfect split for the separation if the algorithm works perfectly and places every point in the original cluster. If we recall, that the first 25 points are from set 1 and the next 25 from set 2 we can see that the euclidean distance and the <em>cityblock</em> norm place one point in the wrong cluster.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The function <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html#scipy.cluster.hierarchy.linkage"><code>scipy.cluste.hierarchy.linkage</code></a> allows to specify the method of computing the distance between two clusters. The used <code>average</code> corresponds to unweighted pair group method with arithmetic mean <a href="https://en.wikipedia.org/wiki/UPGMA">UPGMA</a> algorithm.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In <code>scikit-learn</code> this is supported via the <a href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.AgglomerativeClustering.html#sklearn.cluster.AgglomerativeClustering"><code>sklearn.cluster.AgglomerativeClustering</code></a> class.</p>
+</div>
+</div>
+<div class="callout callout-style-simple callout-caution no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exr-dendrogram" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 1.2 (Apply the agglomerative clustering to the Fischer Iris data set)</strong></span> &nbsp;</p>
+<ol type="1">
+<li><p>Work out how to use the <code>scikit-learn</code> alternative.</p></li>
+<li><p>We already looked at the Fischer Iris data set in <a href="index.html#sec-fischer-iris-data-set" class="quarto-xref"><span>Section 1.1</span></a> and discussed some basic features. Try with only two dimensional data, as well as four dimensional data, to find the three clusters.</p></li>
+<li><p>For <a href="#fig-clustering-unsupervised_dbscan" class="quarto-xref">Figure&nbsp;<span>1.7</span></a> we will look at the moons data set. Try working out the clusters in this case, look at the different possibilities with the <code>linkage</code> option as <code>{"ward", "complete", "average", "single"}</code>.</p></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="sec-clustering-ul-dbscan" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="sec-clustering-ul-dbscan"><span class="header-section-number">1.3</span> Density-based spatial clustering of applications with noise (DBSCAN)</h2>
+<p>The algorithm was introduced in <span class="citation" data-cites="DBSCAN">Ester et al. (<a href="../references.html#ref-DBSCAN" role="doc-biblioref">1996</a>)</span> and is an algorithm that finds areas of high density. The main idea behind the algorithm is as follows.</p>
+<p>Our observations (we will call them points here for consistency) form the basis and they can be in any space but as for all the algorithms presented here, there needs to exist some form to measure distance. Furthermore, DBSCAN relies on two parameters, <span class="math inline">\(\epsilon\)</span> describing the radius of neighbourhood of a point and <span class="math inline">\(minPts\)</span> the minimum of points needed to form a cluster. With these parameters we perform the following steps:</p>
+<ol type="1">
+<li><p>A point <span class="math inline">\(p\)</span> is called a <em>core point</em> if at least <span class="math inline">\(minPts\)</span> (including <span class="math inline">\(p\)</span>) are within distance <span class="math inline">\(\epsilon\)</span> of <span class="math inline">\(p\)</span>. This region is called the <span class="math inline">\(\epsilon\)</span>-neighbourhood of <span class="math inline">\(p\)</span>.</p></li>
+<li><p>A point <span class="math inline">\(q\)</span> is called <em>directly reachable</em> from a core point <span class="math inline">\(p\)</span> iff<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> <span class="math inline">\(q\)</span> is in the <span class="math inline">\(\epsilon\)</span>-neighbourhood of <span class="math inline">\(p\)</span>.</p></li>
+<li><p>A point <span class="math inline">\(p\)</span> is <em>reachable</em> from <span class="math inline">\(p\)</span>, if there exists a sequence of points (path) <span class="math inline">\(p=p_1, p_2,  \ldots, p_n=q\)</span> where each <span class="math inline">\(p_{i+1}\)</span> is directly reachable form <span class="math inline">\(p_i\)</span>. Consequently, all point on the path, except <span class="math inline">\(p\)</span>, need to be core points.</p></li>
+<li><p>A point that is not reachable from any other point is considered an <em>outlier</em> or <em>noise point</em>.</p></li>
+</ol>
+<p>Therefore, we get our definition of a cluster: a core point <span class="math inline">\(p\)</span> together with all points that are reachable from <span class="math inline">\(p\)</span>. This includes core points (at least one) and none-core points (boundary points) on the boundary as they can not be used to reach more points.</p>
+<p>In contrast to <span class="math inline">\(k\)</span>-means the algorithm we can find <em>non-linear</em> (i.e.&nbsp;curved) clusters. We illustrate this with the <em>moon data set</em>.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For the plotting function please see <a href="https://github.com/ageron/handson-ml3/blob/main/09_unsupervised_learning.ipynb">GitHub</a>, the accompanying repository to <span class="citation" data-cites="Geron2022-xh">Geron (<a href="../references.html#ref-Geron2022-xh" role="doc-biblioref">2022</a>)</span>, as it forms the basis.</p>
+</div>
+</div>
+<details class="code-fold">
+<summary>Show the code for the figure</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> DBSCAN</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> make_moons</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_dbscan(dbscan, X, size):</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    core_mask <span class="op">=</span> np.zeros_like(dbscan.labels_, dtype<span class="op">=</span><span class="bu">bool</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    core_mask[dbscan.core_sample_indices_] <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    anomalies_mask <span class="op">=</span> dbscan.labels_ <span class="op">==</span> <span class="op">-</span><span class="dv">1</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    non_core_mask <span class="op">=</span> <span class="op">~</span>(core_mask <span class="op">|</span> anomalies_mask)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    cores <span class="op">=</span> dbscan.components_</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    anomalies <span class="op">=</span> X[anomalies_mask]</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    non_cores <span class="op">=</span> X[non_core_mask]</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plotting the clusters</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    plt.scatter(cores[:, <span class="dv">0</span>], cores[:, <span class="dv">1</span>],</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>                c<span class="op">=</span>dbscan.labels_[core_mask],</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>                marker<span class="op">=</span><span class="st">"o"</span>, s<span class="op">=</span>size, cmap<span class="op">=</span><span class="st">"Paired"</span>)</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plotting the core points of the clusters</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    plt.scatter(cores[:, <span class="dv">0</span>], cores[:, <span class="dv">1</span>],</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>                c<span class="op">=</span>dbscan.labels_[core_mask],</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>                marker<span class="op">=</span><span class="st">"*"</span>, s<span class="op">=</span><span class="dv">20</span>,)</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plotting the anomalies</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    plt.scatter(anomalies[:, <span class="dv">0</span>], anomalies[:, <span class="dv">1</span>],</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>                c<span class="op">=</span><span class="st">"r"</span>, marker<span class="op">=</span><span class="st">"x"</span>, s<span class="op">=</span><span class="dv">100</span>)</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plotting the boundary points</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    plt.scatter(non_cores[:, <span class="dv">0</span>], non_cores[:, <span class="dv">1</span>],</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>                c<span class="op">=</span>dbscan.labels_[non_core_mask], marker<span class="op">=</span><span class="st">"."</span>)</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">"$x_1$"</span>)</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">"$x_2$"</span>, rotation<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>    plt.gca().set_aspect(<span class="dv">1</span>)</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">6020</span>)</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>M, M_y <span class="op">=</span> make_moons(n_samples<span class="op">=</span><span class="dv">1000</span>, noise<span class="op">=</span><span class="fl">0.05</span>, random_state<span class="op">=</span><span class="dv">6020</span>)</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>dbscan <span class="op">=</span> DBSCAN(eps<span class="op">=</span><span class="fl">0.05</span>, min_samples<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>dbscan.fit(M)</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>plot_dbscan(dbscan, M, size<span class="op">=</span><span class="dv">100</span>)</span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>dbscan <span class="op">=</span> DBSCAN(eps<span class="op">=</span><span class="fl">0.2</span>, min_samples<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>dbscan.fit(M)</span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>plot_dbscan(dbscan, M, size<span class="op">=</span><span class="dv">600</span>)</span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="fig-clustering-unsupervised_dbscan" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-clustering-unsupervised_dbscan-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-clustering-unsupervised_dbscan" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-clustering-unsupervised_dbscan-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-clustering-unsupervised_dbscan-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="unsupervised_files/figure-html/fig-clustering-unsupervised_dbscan-output-1.svg" class="lightbox" data-gallery="fig-clustering-unsupervised_dbscan" title="Figure&nbsp;1.7&nbsp;(a): Scikit-Learn’s DBSCAN with eps=0.05 and min_samples=5."><img src="unsupervised_files/figure-html/fig-clustering-unsupervised_dbscan-output-1.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-unsupervised_dbscan"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-unsupervised_dbscan-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Scikit-Learn’s DBSCAN with <code>eps=0.05</code> and <code>min_samples=5</code>.
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-clustering-unsupervised_dbscan" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-clustering-unsupervised_dbscan-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-clustering-unsupervised_dbscan-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="unsupervised_files/figure-html/fig-clustering-unsupervised_dbscan-output-2.svg" class="lightbox" data-gallery="fig-clustering-unsupervised_dbscan" title="Figure&nbsp;1.7&nbsp;(b): Scikit-Learn’s DBSCAN with eps=0.2 and min_samples=5."><img src="unsupervised_files/figure-html/fig-clustering-unsupervised_dbscan-output-2.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-unsupervised_dbscan"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-unsupervised_dbscan-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Scikit-Learn’s DBSCAN with <code>eps=0.2</code> and <code>min_samples=5</code>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-unsupervised_dbscan-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.7: DBSCAN illustrated with the moons dataset.
+</figcaption>
+</figure>
+</div>
+<p>The algorithm works best for clusters well separated by low density regions. As all algorithms depending on distance measures, it suffers from the curse of dimensionality<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
+<p>As can be seen in <a href="#fig-clustering-unsupervised_dbscan-1" class="quarto-xref">Figure&nbsp;<span>1.7 (a)</span></a> the algorithm produces quite a lot of clusters for a small <span class="math inline">\(\epsilon=0.05\)</span>. In total we get 10 clusters and quite a lot of outliers that are not all easy to retract by the naked eye.</p>
+<p>Nevertheless, if we increase <span class="math inline">\(\epsilon=0.2\)</span> we can see that the two clusters are neatly reproduced, <a href="#fig-clustering-unsupervised_dbscan-2" class="quarto-xref">Figure&nbsp;<span>1.7 (b)</span></a>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The <code>DBSCAN</code> class in Scikit-Learn does not provide a <code>.predict()</code> method like many other such classes. See <span class="citation" data-cites="Geron2022-xh">Geron (<a href="../references.html#ref-Geron2022-xh" role="doc-biblioref">2022</a>)</span> and <a href="https://github.com/ageron/handson-ml3/blob/main/09_unsupervised_learning.ipynb">GitHub</a> for how to train a <span class="math inline">\(k\)</span>-nearest neighbour (kNN) to perform this task.</p>
+</div>
+</div>
+<div class="callout callout-style-simple callout-caution no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exr-dbscan" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 1.3 (Application of DBSCAN)</strong></span> &nbsp;</p>
+<ol type="1">
+<li><p>Apply the DBSCAN algorithm to our toy example (the two ellipsoids from <a href="#sec-clustering-usl-kmeans" class="quarto-xref"><span>Section 1.1</span></a>) used through this section, to recover the two clusters as good as possible. Try different <span class="math inline">\(\epsilon\)</span> values as well as different norms (<code>metric</code> parameter).</p></li>
+<li><p>Additionally, for a higher dimensional problem, using DBSCAN to split the Fischer Iris data set (<a href="index.html#sec-fischer-iris-data-set" class="quarto-xref"><span>Section 1.1</span></a>) into its three clusters of flowers.</p></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="finite-mixtures-models" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="finite-mixtures-models"><span class="header-section-number">1.4</span> Finite Mixtures Models</h2>
+<p>Finite mixture models assume that the observations <span class="math inline">\(x_i\)</span> are mixtures of <span class="math inline">\(k\)</span> processes, which combine in the measurement. Each mixture is defined via a probability model with unknown parameters. The aim of the algorithm is to find the parameters such that the <span class="math inline">\(k\)</span> processes best describe the <span class="math inline">\(x_i\)</span> observations. The basis of the algorithm is the so called <em>expectation-maximization</em> (EM) algorithm of <span class="citation" data-cites="dempster1977maximum">Dempster, Laird, and Rubin (<a href="../references.html#ref-dempster1977maximum" role="doc-biblioref">1977</a>)</span>, that is designed to find the <em>maximum-likelihood</em> parameters of the defined statistical models.</p>
+<p>The most common choice for the probability models is the Gaussian distribution<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> and for this choice, the method is better known as <em>Gaussian mixture models</em> (GMM). This is often quite a sensible choice, if nothing more is known about the observations, and a Gaussian distribution is therefore a save bet. As a result each process can be described by two parameters, <em>mean</em> and <em>variance</em>. Each cluster in turn, will be described by an ellipsoidal shape where size, density, orientation, and semi-axis vary.</p>
+<p>Like <span class="math inline">\(k\)</span>-means, in the simplest version, GMM is provided with the number of clusters <span class="math inline">\(k\)</span> and starts from an initial guess of the means and corresponding variances. The parameters are than iteratively updated to find a (local) maximum. There are some problems with this approach, e.g.&nbsp;if we set one of the processes to have zero variance and mean equal to a point. To avoid such problems <em>cross-validation</em> can often help to avoid problems stemming from an initialization with a poor initial guess.</p>
+<p>As mentioned, the main idea of the mixture models is that the observations are a linear combination of probability density functions (PDF) <span class="math display">\[
+f(x_j, \Theta) = \sum_{p=1}^k \alpha_p f_p(x_j, \Theta_p),
+\]</span> where <span class="math inline">\(f\)</span> denotes the observed/measured PDF with parameters <span class="math inline">\(\Theta\)</span>, <span class="math inline">\(f_p\)</span> the PDF of mixture <span class="math inline">\(p\)</span> with parameters <span class="math inline">\(\Theta_p\)</span>, and <span class="math inline">\(k\)</span> denotes the number of mixtures. The weights <span class="math inline">\(\alpha_p\)</span> fulfil <span class="math inline">\(\sum_p \alpha_p = 1\)</span>.</p>
+<p>Overall we therefore can formulate the algorithm as:</p>
+<div class="callout callout-style-simple callout-none no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-ma" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1.2 (Mixture Models Algorithm)</strong></span> Given the observed PDF <span class="math inline">\(f(x_j, \Theta)\)</span>, estimate the mixture weights <span class="math inline">\(\alpha_p\)</span> and the parameters fo the distribution <span class="math inline">\(\Theta_p\)</span>.</p>
+<p><span class="citation" data-cites="Brunton2022">(see <a href="../references.html#ref-Brunton2022" role="doc-biblioref">Brunton and Kutz 2022</a>)</span></p>
+</div>
+</div>
+</div>
+</div>
+<p>Lets follow the derivative for the GMM method in <span class="citation" data-cites="Brunton2022">(<a href="../references.html#ref-Brunton2022" role="doc-biblioref">Brunton and Kutz 2022, sec. 5.5</a>)</span> to get a better idea what is happening.</p>
+<p>For GMM, <span class="math inline">\(f\)</span> reads as <span class="math display">\[
+f(x_j, \Theta) = \sum_{p=1}^k \alpha_p \mathcal{N}_p(x_j, \mu_p, \sigma_p),
+\]</span> and for a given <span class="math inline">\(k\)</span>, we need to find <span class="math inline">\(\alpha_p, \mu_p, \sigma_p\)</span>. We get <span class="math inline">\(\Theta\)</span> from the roots of <span class="math display">\[
+L(\Theta) = \sum_{j=1}^n\log f(x_j | \Theta).
+\]</span> <span class="math inline">\(L\)</span> is called the <em>log-likelihood</em> function and we sum over all observations <span class="math inline">\(x_j\)</span>. We transform it into an optimization problem by setting the derivative to zero <span class="math display">\[
+\frac{\partial L(\Theta)}{\partial \Theta} = 0,
+\]</span> and solve it via the EM algorithm. As the name suggests, there are two steps E and M.</p>
+<p>The E step uses the following posterior to establish memberships. Therefore, we start of by assuming an initial guess of the vector <span class="math inline">\(\Theta\)</span> and this leads to the _posterior probability of distribution <span class="math inline">\(p\)</span> of <span class="math inline">\(x_j\)</span> <span class="math display">\[
+\tau_p(x_j, \Theta) = \frac{\alpha_p f_p(x_j, \Theta_p)}{f(x_j, \Theta)}.
+\]</span> In other words, we try to figure out if <span class="math inline">\(x_j\)</span> is part of the <span class="math inline">\(p\)</span>th mixture. For GMM this becomes, <span class="math display">\[
+\tau_p^{(l)}(x_j) = \frac{\alpha_p^{(l)} \mathcal{N}_p(x_j, \mu_p^{(l)}, \sigma_p^{(l)})}{f(x_j, \Theta^{(l)})},
+\]</span> in the <span class="math inline">\(l\)</span> iteration.</p>
+<p>Now the M step starts to update the parameters and mixture weights as <span class="math display">\[
+\begin{align}
+\alpha_p^{(l+1)} &amp;= \frac1n \sum_{j=1}^n \tau_p^{(l)}(x_j), \\
+\mu_p^{(l+1)} &amp;= \frac{\sum_{j=1}^n x_j\tau_p^{(l)}(x_j)}{\sum_{j=1}^n \tau_p^{(l)}(x_j)}, \\
+\Sigma_p^{(l+1)} &amp;= \frac{\sum_{j=1}^n \tau_p^{(l)}(x_j)[(x_j - \mu_p^{(l+1)})(x_j - \mu_p^{(l+1)})^\mathrm{T}]}{\sum_{j=1}^n \tau_p^{(l)}(x_j)},
+\end{align}
+\]</span> with <span class="math inline">\(\Sigma_p^{(l+1)}\)</span> denotes the covariance matrix. The algorithm now alternates between E and M until convergence is reached.</p>
+<p>Let us try it with the cats and dogs images in wavelet basis from <a href="index.html#sec-clustering-cvd" class="quarto-xref"><span>Section 1.2</span></a> by fitting to the second and forth principal value of the SVD. Note, we directly load the images in wavelet basis and do not recompute them.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The following data set and the basic structure of the code is from <span class="citation" data-cites="Brunton2022">(<a href="../references.html#ref-Brunton2022" role="doc-biblioref">Brunton and Kutz 2022</a>, Code 5.8)</span>. Also see <a href="https://github.com/dynamicslab/databook_python">GitHub</a>.</p>
+</div>
+</div>
+<details class="code-fold">
+<summary>Show the code for the figure</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> io</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.mixture <span class="im">import</span> GaussianMixture</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> multivariate_normal</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://github.com/dynamicslab/databook_python/"</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"raw/refs/heads/master/DATA/catData_w.mat"</span>)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>cats <span class="op">=</span> scipy.io.loadmat(io.BytesIO(response.content))[<span class="st">"cat_wave"</span>]</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://github.com/dynamicslab/databook_python/"</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"raw/refs/heads/master/DATA/dogData_w.mat"</span>)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>dogs <span class="op">=</span> scipy.io.loadmat(io.BytesIO(response.content))[<span class="st">"dog_wave"</span>]</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>CD <span class="op">=</span> np.concatenate((dogs, cats), axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>U,S,VT <span class="op">=</span> np.linalg.svd(CD <span class="op">-</span> np.mean(CD), full_matrices<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>v <span class="op">=</span> VT.T</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>dogcat <span class="op">=</span> v[:,(<span class="dv">1</span>,<span class="dv">3</span>)]</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>GMModel <span class="op">=</span> GaussianMixture(n_components<span class="op">=</span><span class="dv">2</span>, n_init<span class="op">=</span><span class="dv">10</span>).fit(dogcat)</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>plt.scatter(v[:<span class="dv">80</span>,<span class="dv">1</span>], v[:<span class="dv">80</span>,<span class="dv">3</span>], label<span class="op">=</span><span class="st">"dogs"</span>)</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>plt.scatter(v[<span class="dv">80</span>:,<span class="dv">1</span>], v[<span class="dv">80</span>:,<span class="dv">3</span>], label<span class="op">=</span><span class="st">"cats"</span>)</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="vs">r"$PC_1$"</span>)</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="vs">r"$PC_4$"</span>)</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="fl">0.15</span>, <span class="fl">0.25</span>)</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.linspace(<span class="op">-</span><span class="fl">0.25</span>, <span class="fl">0.2</span>)</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>X, Y <span class="op">=</span> np.meshgrid(x, y)</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>XX <span class="op">=</span> np.array([X.ravel(), Y.ravel()]).T</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>Z <span class="op">=</span> np.exp(GMModel.score_samples(XX))</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>Z <span class="op">=</span> Z.reshape(X.shape)</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>CS <span class="op">=</span> plt.contour(X, Y, Z,</span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>                levels<span class="op">=</span>np.arange(<span class="dv">3</span>,<span class="dv">32</span>,<span class="dv">4</span>), colors<span class="op">=</span><span class="st">'k'</span>, linestyles<span class="op">=</span><span class="st">'solid'</span>)</span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>plt.gca().set_aspect(<span class="dv">1</span>)</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> plt.axes(projection<span class="op">=</span><span class="st">'3d'</span>)</span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(GMModel.weights_.shape[<span class="dv">0</span>]):</span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>    rv <span class="op">=</span> multivariate_normal(GMModel.means_[i], GMModel.covariances_[i])</span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>    z <span class="op">=</span> GMModel.weights_[i] <span class="op">*</span> rv.pdf(np.dstack((X, Y)))</span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>    ax.plot_surface(X, Y, z, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>ax.plot_wireframe(X, Y, Z, color<span class="op">=</span><span class="st">'black'</span>, rstride<span class="op">=</span><span class="dv">5</span>, cstride<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>ax.view_init(<span class="dv">30</span>, <span class="op">-</span><span class="dv">80</span>)</span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="vs">r"$PC_1$"</span>)</span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="vs">r"$PC_4$"</span>)</span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a>plt.legend([<span class="vs">r"$\mathcal</span><span class="sc">{N}</span><span class="vs">(\mu_1, \sigma_1)$"</span>,</span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a>            <span class="vs">r"$\mathcal</span><span class="sc">{N}</span><span class="vs">(\mu_2, \sigma_2)$"</span>])</span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="fig-clustering-gmm" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-clustering-gmm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-clustering-gmm" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-clustering-gmm-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-clustering-gmm-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="unsupervised_files/figure-html/fig-clustering-gmm-output-1.svg" class="lightbox" data-gallery="fig-clustering-gmm" title="Figure&nbsp;1.8&nbsp;(a): We can see a nice split along the tow animals via the Gaussian distributions."><img src="unsupervised_files/figure-html/fig-clustering-gmm-output-1.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-gmm"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-gmm-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) We can see a nice split along the tow animals via the Gaussian distributions.
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-clustering-gmm" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-clustering-gmm-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-clustering-gmm-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="unsupervised_files/figure-html/fig-clustering-gmm-output-2.svg" class="lightbox" data-gallery="fig-clustering-gmm" title="Figure&nbsp;1.8&nbsp;(b): The PDFs of the fitted distributions, weighted via the GMM algorithm."><img src="unsupervised_files/figure-html/fig-clustering-gmm-output-2.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-gmm"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-gmm-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) The PDFs of the fitted distributions, weighted via the GMM algorithm.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-gmm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.8: Fitting of the second and fourth principal value of the cats and dogs images in wavelet basis via the GMM method.
+</figcaption>
+</figure>
+</div>
+<p>As can be seen in <a href="#fig-clustering-gmm-1" class="quarto-xref">Figure&nbsp;<span>1.8 (a)</span></a> the two clusters are quite well captured by the GMM algorithm. The contour shows the linear combination of the two Gaussians. We see the two Gaussians on the right in <a href="#fig-clustering-gmm-2" class="quarto-xref">Figure&nbsp;<span>1.8 (b)</span></a> where we use the same colours as for the cats and dogs respectively. Note that the distributions are weight <span class="math inline">\(\alpha_p\)</span> from GMM but other than that there is no unit in the z direction.</p>
+<p>As discussed above, the algorithm is prone to problems during the initialization, therefore we use <code>n_init = 10</code> to initialize the algorithm 10 times and only keep the best result.</p>
+<p>We can draw new samples from the resulting object <code>.sample()</code> and we can also fit data to it and we can also perform hard and soft clustering. For hard clustering the model assigns each instance to the most likely cluster (<code>.predict()</code>), where for soft clustering (<code>.predict_proba()</code>) we get the probability of <em>membership</em> for each cluster.</p>
+<p>If the algorithm struggles to recover the clusters, we can help it by imposing the shape of the cluster via restricting the covariance matrix <span class="math inline">\(\Sigma_p\)</span>. This can be done via the parameter <code>covariance_type</code>, see <a href="https://scikit-learn.org/stable/modules/generated/sklearn.mixture.GaussianMixture.html">docs</a>.</p>
+<div class="callout callout-style-simple callout-caution no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exr-gmm" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 1.4 (Application of GMM)</strong></span> &nbsp;</p>
+<ol type="1">
+<li><p>Apply the GMM algorithm to our toy example (the two ellipsoids from <a href="#sec-clustering-usl-kmeans" class="quarto-xref"><span>Section 1.1</span></a>) used through this section to recover the two clusters as good as possible. This should be straight forward, as we constructed it via Gaussian distributions. Try constraining the algorithm by imposing the different values possible for <code>covariance_type</code>.</p></li>
+<li><p>Additionally, for a higher dimensional problem, split the Fischer Iris data set into its three clusters of flowers.</p></li>
+<li><p>Try to use GMM to get clusters for the moon data set used in <a href="#sec-clustering-ul-dbscan" class="quarto-xref"><span>Section 1.3</span></a>. Also try with the <code>BayesianGaussianMixture</code> class, where no amount of clusters needs to be specified.</p></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>GMM can also be used for anomaly detection. Simply assume every observation located in a low density region an anomaly. For this the threshold needs to be defined in accordance to our expected anomalies.</p>
+<p>E.g. to get about <span class="math inline">\(4\%\)</span> anomalies we can use the following snippet together with the above code:</p>
+<div id="cell-fig-clustering-gmm-ano" class="cell" data-execution_count="9">
+<details class="code-fold">
+<summary>Show the code for the figure</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>S <span class="op">=</span> GMModel.score_samples(dogcat)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>density_threshold <span class="op">=</span> np.percentile(S, <span class="dv">2</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>anomalies <span class="op">=</span> dogcat[S <span class="op">&lt;</span> density_threshold]</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>plt.scatter(dogcat[:<span class="dv">80</span>,<span class="dv">0</span>], dogcat[:<span class="dv">80</span>,<span class="dv">1</span>], alpha<span class="op">=</span><span class="fl">0.5</span>, label<span class="op">=</span><span class="st">"dogs"</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>plt.scatter(dogcat[<span class="dv">80</span>:,<span class="dv">0</span>], dogcat[<span class="dv">80</span>:,<span class="dv">1</span>], alpha<span class="op">=</span><span class="fl">0.5</span>, label<span class="op">=</span><span class="st">"cats"</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="vs">r"$PC_1$"</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="vs">r"$PC_4$"</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>plt.scatter(anomalies[:, <span class="dv">0</span>], anomalies[:, <span class="dv">1</span>], color<span class="op">=</span><span class="st">"k"</span>, marker<span class="op">=</span><span class="st">"x"</span>,</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>            label<span class="op">=</span><span class="st">"anomaly"</span>)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-clustering-gmm-ano" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-clustering-gmm-ano-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="unsupervised_files/figure-html/fig-clustering-gmm-ano-output-1.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-22" title="Figure&nbsp;1.9: Fitting of the second and fourth principal value of the cats and dogs images in wavelet basis via the GMM method."><img src="unsupervised_files/figure-html/fig-clustering-gmm-ano-output-1.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-gmm-ano-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.9: Fitting of the second and fourth principal value of the cats and dogs images in wavelet basis via the GMM method.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>See <span class="citation" data-cites="Geron2022-xh">Geron (<a href="../references.html#ref-Geron2022-xh" role="doc-biblioref">2022</a>)</span> and the corresponding <a href="https://github.com/ageron/handson-ml3/blob/main/09_unsupervised_learning.ipynb">GitHub repository</a>.</p>
+</div>
+</div>
+</section>
+<section id="sec-clustering-ul-me" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="sec-clustering-ul-me"><span class="header-section-number">1.5</span> Motivational example</h2>
+<p>Before we make the leap to supervised learning, we we introduce a new data set and see how our unsupervised approach works in this case.</p>
+<p>We do this with the (in)famous MNIST data set of hand written digits. Lets start by looking at the data set and establishing some basic properties.</p>
+<p>We load the data set and look at its description</p>
+<div id="b24299ee" class="cell styled-output" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_openml</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>mnist <span class="op">=</span> fetch_openml(<span class="st">'mnist_784'</span>, as_frame<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mnist.DESCR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>**Author**: Yann LeCun, Corinna Cortes, Christopher J.C. Burges  
+**Source**: [MNIST Website](http://yann.lecun.com/exdb/mnist/) - Date unknown  
+**Please cite**:  
+
+The MNIST database of handwritten digits with 784 features, raw data available at: http://yann.lecun.com/exdb/mnist/. It can be split in a training set of the first 60,000 examples, and a test set of 10,000 examples  
+
+It is a subset of a larger set available from NIST. The digits have been size-normalized and centered in a fixed-size image. It is a good database for people who want to try learning techniques and pattern recognition methods on real-world data while spending minimal efforts on preprocessing and formatting. The original black and white (bilevel) images from NIST were size normalized to fit in a 20x20 pixel box while preserving their aspect ratio. The resulting images contain grey levels as a result of the anti-aliasing technique used by the normalization algorithm. the images were centered in a 28x28 image by computing the center of mass of the pixels, and translating the image so as to position this point at the center of the 28x28 field.  
+
+With some classification methods (particularly template-based methods, such as SVM and K-nearest neighbors), the error rate improves when the digits are centered by bounding box rather than center of mass. If you do this kind of pre-processing, you should report it in your publications. The MNIST database was constructed from NIST's NIST originally designated SD-3 as their training set and SD-1 as their test set. However, SD-3 is much cleaner and easier to recognize than SD-1. The reason for this can be found on the fact that SD-3 was collected among Census Bureau employees, while SD-1 was collected among high-school students. Drawing sensible conclusions from learning experiments requires that the result be independent of the choice of training set and test among the complete set of samples. Therefore it was necessary to build a new database by mixing NIST's datasets.  
+
+The MNIST training set is composed of 30,000 patterns from SD-3 and 30,000 patterns from SD-1. Our test set was composed of 5,000 patterns from SD-3 and 5,000 patterns from SD-1. The 60,000 pattern training set contained examples from approximately 250 writers. We made sure that the sets of writers of the training set and test set were disjoint. SD-1 contains 58,527 digit images written by 500 different writers. In contrast to SD-3, where blocks of data from each writer appeared in sequence, the data in SD-1 is scrambled. Writer identities for SD-1 is available and we used this information to unscramble the writers. We then split SD-1 in two: characters written by the first 250 writers went into our new training set. The remaining 250 writers were placed in our test set. Thus we had two sets with nearly 30,000 examples each. The new training set was completed with enough examples from SD-3, starting at pattern # 0, to make a full set of 60,000 training patterns. Similarly, the new test set was completed with SD-3 examples starting at pattern # 35,000 to make a full set with 60,000 test patterns. Only a subset of 10,000 test images (5,000 from SD-1 and 5,000 from SD-3) is available on this site. The full 60,000 sample training set is available.
+
+Downloaded from openml.org.</code></pre>
+</div>
+</div>
+<p>The images are stored in <code>.data</code> and the label in <code>.target</code>. We can look at the first 100 digits</p>
+<div id="cell-fig-clustering-usl-mnist" class="cell" data-execution_count="11">
+<details class="code-fold">
+<summary>Show the code for the figure</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_openml</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>mnist <span class="op">=</span> fetch_openml(<span class="st">'mnist_784'</span>, as_frame<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>im <span class="op">=</span> np.zeros((<span class="dv">10</span> <span class="op">*</span> <span class="dv">28</span>, <span class="dv">10</span> <span class="op">*</span> <span class="dv">28</span>), <span class="bu">int</span>)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>        im[<span class="dv">28</span><span class="op">*</span>i:<span class="dv">28</span><span class="op">*</span>(i<span class="op">+</span><span class="dv">1</span>), <span class="dv">28</span><span class="op">*</span>j:<span class="dv">28</span><span class="op">*</span>(j<span class="op">+</span><span class="dv">1</span>)] <span class="op">=</span> mnist.data[i<span class="op">*</span><span class="dv">10</span> <span class="op">+</span> j].reshape(<span class="dv">28</span>, <span class="dv">28</span>)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>plt.imshow(im, cmap<span class="op">=</span><span class="st">"binary"</span>)</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-clustering-usl-mnist" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-clustering-usl-mnist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="unsupervised_files/figure-html/fig-clustering-usl-mnist-output-1.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-23" title="Figure&nbsp;1.10: First 100 digits from the MNIST data set."><img src="unsupervised_files/figure-html/fig-clustering-usl-mnist-output-1.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-usl-mnist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.10: First 100 digits from the MNIST data set.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>As can be seen from <a href="#fig-clustering-usl-mnist" class="quarto-xref">Figure&nbsp;<span>1.10</span></a>, most digits are easy to distinguish for us, but there are some nasty things included. Especially, there are <code>1</code>s with the english style (just one straight line) of writing (1st row, 7th column), but also as a diagonal line (1st row, 4th column), and finally also the german style (connecting line at base and top) of writing (3rd row, 5th column).</p>
+<p>Also the <code>2</code> digit comes in various forms, with loop (1st row, 6th column) and without (3rd row, 6th column). Finally we all know that a <code>3</code> can hide in an <code>8</code>, same as a <code>7</code> and <code>1</code> can hide in a <code>9</code> and much more.</p>
+<p>Now, before we go any further in the investigation we split up the data set into a training and a test set, we will not use this here but we should establish some way of working right from the start.</p>
+<div id="71b41a6a" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>X_train, X_test <span class="op">=</span> mnist.data[:<span class="dv">60000</span>], mnist.data[<span class="dv">60000</span>:]</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>y_train, y_test <span class="op">=</span> mnist.target[:<span class="dv">60000</span>], mnist.target[<span class="dv">60000</span>:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now let us try with <span class="math inline">\(k\)</span>-means to find the ten digits by finding <span class="math inline">\(10\)</span> clusters.</p>
+<div id="cell-fig-clustering-usl-mnist2" class="cell" data-execution_count="13">
+<details class="code-fold">
+<summary>Show the code for the figure</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_openml</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> KMeans</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>kmeans <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>k, n_init<span class="op">=</span><span class="dv">1</span>, random_state<span class="op">=</span><span class="dv">6020</span>).fit(X_train)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>im <span class="op">=</span> np.zeros((<span class="dv">1</span> <span class="op">*</span> <span class="dv">28</span>, <span class="dv">10</span> <span class="op">*</span> <span class="dv">28</span>), <span class="bu">int</span>)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>):</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>        im[<span class="dv">28</span><span class="op">*</span>i:<span class="dv">28</span><span class="op">*</span>(i<span class="op">+</span><span class="dv">1</span>), <span class="dv">28</span><span class="op">*</span>j:<span class="dv">28</span><span class="op">*</span>(j<span class="op">+</span><span class="dv">1</span>)] <span class="op">=</span> <span class="op">\</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>                kmeans.cluster_centers_[i<span class="op">*</span><span class="dv">10</span> <span class="op">+</span> j].reshape(<span class="dv">28</span>, <span class="dv">28</span>)</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>plt.imshow(im, cmap<span class="op">=</span><span class="st">"binary"</span>)</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="fig-clustering-usl-mnist2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-clustering-usl-mnist2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="unsupervised_files/figure-html/fig-clustering-usl-mnist2-output-1.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-24" title="Figure&nbsp;1.11: The cluster means of k-means for 10 clusters."><img src="unsupervised_files/figure-html/fig-clustering-usl-mnist2-output-1.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-usl-mnist2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1.11: The cluster means of <span class="math inline">\(k\)</span>-means for 10 clusters.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>As can be seen from <a href="#fig-clustering-usl-mnist2" class="quarto-xref">Figure&nbsp;<span>1.11</span></a>, the cluster centers do not recover our ten digits. In general, they are, as expected, smudged as they do not represent an actual image. It looks like <span class="math inline">\(0, 1, 2, 3, 6, 8, 9\)</span> are <em>easy</em> to discover but <span class="math inline">\(4, 5, 7\)</span> not. If we look closely, we can see <span class="math inline">\(4, 5, 7\)</span> represented in our clusters but not as separate digits. Obviously this is not a good way to proceed and to find our digits. We will discuss methods to perform this task in the next section <a href="supervised.html" class="quarto-xref"><span>Chapter 2</span></a>. Furthermore, keep this part in mind, as we will come back to how this can still be helpful in a different aspect as semi-supervised learning <a href="semisupervised.html" class="quarto-xref"><span>Chapter 3</span></a>.</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-Brunton2022" class="csl-entry" role="listitem">
+Brunton, Steven L., and J. Nathan Kutz. 2022. <em>Data-Driven Science and Engineering - Machine Learning, Dynamical Systems, and Control</em>. 2nd ed. Cambridge: Cambridge University Press.
+</div>
+<div id="ref-dempster1977maximum" class="csl-entry" role="listitem">
+Dempster, Arthur P, Nan M Laird, and Donald B Rubin. 1977. <span>“Maximum Likelihood from Incomplete Data via the EM Algorithm.”</span> <em>Journal of the Royal Statistical Society: Series B (Methodological)</em> 39 (1): 1–22.
+</div>
+<div id="ref-DBSCAN" class="csl-entry" role="listitem">
+Ester, Martin, Hans-Peter Kriegel, Jörg Sander, and Xiaowei Xu. 1996. <span>“A Density-Based Algorithm for Discovering Clusters in Large Spatial Databases with Noise.”</span> In <em>Proceedings of the Second International Conference on Knowledge Discovery and Data Mining</em>, 226–31. KDD’96. Portland, Oregon: AAAI Press.
+</div>
+<div id="ref-Geron2022-xh" class="csl-entry" role="listitem">
+Geron, Aurelien. 2022. <em>Hands-on Machine Learning with Scikit-Learn, Keras, and <span>TensorFlow</span> 3e</em>. 3rd ed. Sebastopol, CA: O’Reilly Media.
+</div>
+<div id="ref-Kandolf_GDM" class="csl-entry" role="listitem">
+Kandolf, Peter. 2025. <span>“MECH-m-DUAL-1-DBM - Grundlagen Datenbasierter Methoden.”</span> <em>Management Center Innsbruck, Course Material</em>. <a href="https://doi.org/10.5281/zenodo.14671708">https://doi.org/10.5281/zenodo.14671708</a>.
+</div>
+<div id="ref-DBLP:journals/tit/Lloyd82" class="csl-entry" role="listitem">
+Lloyd, Stuart P. 1982. <span>“Least Squares Quantization in <span>PCM</span>.”</span> <em><span>IEEE</span> Trans. Inf. Theory</em> 28 (2): 129–36. <a href="https://doi.org/10.1109/TIT.1982.1056489">https://doi.org/10.1109/TIT.1982.1056489</a>.
+</div>
+</div>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>see <span class="citation" data-cites="Kandolf_GDM">Kandolf (<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">2025</a>)</span>, Section 1.2 or follow the direct <a href="https://kandolfp.github.io/MECH-M-DUAL-1-DBM/basics/linearalgebra.html#norms">link</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>short for <em>if and only if</em><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Problems occurring for higher dimensional data and distance measures, see <a href="https://en.wikipedia.org/wiki/Curse_of_dimensionality#Distance_functions">WikiPedia</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>see <span class="citation" data-cites="Kandolf_GDM">Kandolf (<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">2025</a>)</span>, Example 14.6 or for a direct <a href="https://kandolfp.github.io/MECH-M-DUAL-1-DBM/statistics/bayesian.html#exm-statistics-normal_dist">Link</a><a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/kandolfp\.github\.io\/MECH-M-DUAL-2-MLB\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../clustering/index.html" class="pagination-link" aria-label="Clustering and Classification">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Clustering and Classification</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../clustering/supervised.html" class="pagination-link" aria-label="Supervised learning">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Supervised learning</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Machine Learning in Industrial Image Processing SS 2025 (MECH-M-DUAL-2-MLB)</p>
+</div>   
+    <div class="nav-footer-center">
+<p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> Peter Kandolf</p>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/edit/main/clustering/unsupervised.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>This book was built with <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
+
+
+
+
+</body></html>

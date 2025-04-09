@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>4&nbsp; Model persistence – Machine Learning in Industrial Image Processing</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../data/code.html" rel="next">
+<link href="../data/index.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-60c12469a02addc16ece3c92f73823bb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-de1eb42f17741db2ad7a825f871af34a.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../data/index.html">Data management and data engineering</a></li><li class="breadcrumb-item"><a href="../data/model.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Model persistence</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Machine Learning in Industrial Image Processing</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../clustering/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Clustering and Classification</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../clustering/unsupervised.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Unsupervised learning</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../clustering/supervised.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Supervised learning</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../clustering/semisupervised.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Semi-Supervised learning</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../data/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data management and data engineering</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../data/model.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Model persistence</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../data/code.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Code persistence</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../data/data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Data persistence</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../nn/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Neural Networks and Deep Learning</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nn/nn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Neural Networks</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Summary</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/explanations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">More detailed explanations</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/keras.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Our first Neural Network in <code>tensorflow.keras</code></span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-data-model-onnx" id="toc-sec-data-model-onnx" class="nav-link active" data-scroll-target="#sec-data-model-onnx"><span class="header-section-number">4.1</span> Open Neural Network Exchange - ONNX</a></li>
+  <li><a href="#sec-data-model-pickle" id="toc-sec-data-model-pickle" class="nav-link" data-scroll-target="#sec-data-model-pickle"><span class="header-section-number">4.2</span> <code>pickle</code> - Python object serialization</a></li>
+  <li><a href="#skops.io---the-more-secure-python-alternative" id="toc-skops.io---the-more-secure-python-alternative" class="nav-link" data-scroll-target="#skops.io---the-more-secure-python-alternative"><span class="header-section-number">4.3</span> <code>skops.io</code> - the more secure Python alternative</a></li>
+  <li><a href="#comparison-of-the-different-approaches" id="toc-comparison-of-the-different-approaches" class="nav-link" data-scroll-target="#comparison-of-the-different-approaches"><span class="header-section-number">4.4</span> Comparison of the different approaches</a></li>
+  <li><a href="#further-considerations" id="toc-further-considerations" class="nav-link" data-scroll-target="#further-considerations"><span class="header-section-number">4.5</span> Further considerations</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/edit/main/data/model.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../data/index.html">Data management and data engineering</a></li><li class="breadcrumb-item"><a href="../data/model.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Model persistence</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-data-mp" class="quarto-section-identifier"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Model persistence</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>So far, we either loaded a data set or generated it on the fly. Therefore, we start by looking into ways to persist the models we generated.</p>
+<p>The general idea is to simply store the object we generate and load it at some later time. Nevertheless, this can be quite tricky as we will see in the following.</p>
+<p>For example it might be that we do our training in a different environment than the <em>inference or prediction</em>. It might even be the case, that we switch programming language for these tasks to extract the best performance.</p>
+<p>As we mainly work with <code>scikit-learn</code> we introduce the concepts with it. Our first step is to check the documentation <a href="https://scikit-learn.org/stable/model_persistence.html">docs - model persistence</a> and we can use it as reference for this introduction. We introduce different possibilities, all of them have strengths and weaknesses, unfortunately there is no gold standard.</p>
+<p>Let us use the following toy example with our cats and dogs as reference, see <a href="../clustering/index.html#sec-clustering-cvd" class="quarto-xref"><span>Section 1.2</span></a>.</p>
+<div id="c5cf0cc3" class="cell styled-output" data-execution_count="1">
+<div id="lst-data-mp-toyexample" class="python cell-code listing quarto-float quarto-figure quarto-figure-left anchored">
+<figure class="quarto-float quarto-float-lst figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-data-mp-toyexample-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Listing&nbsp;4.1: Code for the toy example
+</figcaption>
+<div aria-describedby="lst-data-mp-toyexample-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode cell-code" id="lst-data-mp-toyexample"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="lst-data-mp-toyexample-1"><a href="#lst-data-mp-toyexample-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="lst-data-mp-toyexample-2"><a href="#lst-data-mp-toyexample-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy</span>
+<span id="lst-data-mp-toyexample-3"><a href="#lst-data-mp-toyexample-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="lst-data-mp-toyexample-4"><a href="#lst-data-mp-toyexample-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> io</span>
+<span id="lst-data-mp-toyexample-5"><a href="#lst-data-mp-toyexample-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sklearn</span>
+<span id="lst-data-mp-toyexample-6"><a href="#lst-data-mp-toyexample-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA</span>
+<span id="lst-data-mp-toyexample-7"><a href="#lst-data-mp-toyexample-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> make_pipeline</span>
+<span id="lst-data-mp-toyexample-8"><a href="#lst-data-mp-toyexample-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier, VotingClassifier </span>
+<span id="lst-data-mp-toyexample-9"><a href="#lst-data-mp-toyexample-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.discriminant_analysis <span class="im">import</span> LinearDiscriminantAnalysis</span>
+<span id="lst-data-mp-toyexample-10"><a href="#lst-data-mp-toyexample-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.svm <span class="im">import</span> SVC</span>
+<span id="lst-data-mp-toyexample-11"><a href="#lst-data-mp-toyexample-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="lst-data-mp-toyexample-12"><a href="#lst-data-mp-toyexample-12" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(</span>
+<span id="lst-data-mp-toyexample-13"><a href="#lst-data-mp-toyexample-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://github.com/dynamicslab/databook_python/"</span></span>
+<span id="lst-data-mp-toyexample-14"><a href="#lst-data-mp-toyexample-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"raw/refs/heads/master/DATA/catData_w.mat"</span>)</span>
+<span id="lst-data-mp-toyexample-15"><a href="#lst-data-mp-toyexample-15" aria-hidden="true" tabindex="-1"></a>cats_w <span class="op">=</span> scipy.io.loadmat(io.BytesIO(response.content))[<span class="st">"cat_wave"</span>]</span>
+<span id="lst-data-mp-toyexample-16"><a href="#lst-data-mp-toyexample-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="lst-data-mp-toyexample-17"><a href="#lst-data-mp-toyexample-17" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(</span>
+<span id="lst-data-mp-toyexample-18"><a href="#lst-data-mp-toyexample-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://github.com/dynamicslab/databook_python/"</span></span>
+<span id="lst-data-mp-toyexample-19"><a href="#lst-data-mp-toyexample-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"raw/refs/heads/master/DATA/dogData_w.mat"</span>)</span>
+<span id="lst-data-mp-toyexample-20"><a href="#lst-data-mp-toyexample-20" aria-hidden="true" tabindex="-1"></a>dogs_w <span class="op">=</span> scipy.io.loadmat(io.BytesIO(response.content))[<span class="st">"dog_wave"</span>]</span>
+<span id="lst-data-mp-toyexample-21"><a href="#lst-data-mp-toyexample-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="lst-data-mp-toyexample-22"><a href="#lst-data-mp-toyexample-22" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> np.concatenate((cats_w[:<span class="dv">60</span>, :], dogs_w[:<span class="dv">60</span>, :]))</span>
+<span id="lst-data-mp-toyexample-23"><a href="#lst-data-mp-toyexample-23" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> np.repeat(np.array([<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>]), <span class="dv">60</span>)</span>
+<span id="lst-data-mp-toyexample-24"><a href="#lst-data-mp-toyexample-24" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> np.concatenate((cats_w[<span class="dv">60</span>:<span class="dv">80</span>, :], dogs_w[<span class="dv">60</span>:<span class="dv">80</span>, :]))</span>
+<span id="lst-data-mp-toyexample-25"><a href="#lst-data-mp-toyexample-25" aria-hidden="true" tabindex="-1"></a>y_test <span class="op">=</span> np.repeat(np.array([<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>]), <span class="dv">20</span>)</span>
+<span id="lst-data-mp-toyexample-26"><a href="#lst-data-mp-toyexample-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="lst-data-mp-toyexample-27"><a href="#lst-data-mp-toyexample-27" aria-hidden="true" tabindex="-1"></a>voting_clf <span class="op">=</span> make_pipeline(</span>
+<span id="lst-data-mp-toyexample-28"><a href="#lst-data-mp-toyexample-28" aria-hidden="true" tabindex="-1"></a>    PCA(n_components<span class="op">=</span><span class="dv">41</span>),</span>
+<span id="lst-data-mp-toyexample-29"><a href="#lst-data-mp-toyexample-29" aria-hidden="true" tabindex="-1"></a>    VotingClassifier(</span>
+<span id="lst-data-mp-toyexample-30"><a href="#lst-data-mp-toyexample-30" aria-hidden="true" tabindex="-1"></a>        estimators<span class="op">=</span>[</span>
+<span id="lst-data-mp-toyexample-31"><a href="#lst-data-mp-toyexample-31" aria-hidden="true" tabindex="-1"></a>            (<span class="st">"lda"</span>, LinearDiscriminantAnalysis()),</span>
+<span id="lst-data-mp-toyexample-32"><a href="#lst-data-mp-toyexample-32" aria-hidden="true" tabindex="-1"></a>            (<span class="st">"rf"</span>, RandomForestClassifier(</span>
+<span id="lst-data-mp-toyexample-33"><a href="#lst-data-mp-toyexample-33" aria-hidden="true" tabindex="-1"></a>                n_estimators<span class="op">=</span><span class="dv">500</span>,</span>
+<span id="lst-data-mp-toyexample-34"><a href="#lst-data-mp-toyexample-34" aria-hidden="true" tabindex="-1"></a>                max_leaf_nodes<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="lst-data-mp-toyexample-35"><a href="#lst-data-mp-toyexample-35" aria-hidden="true" tabindex="-1"></a>                random_state<span class="op">=</span><span class="dv">6020</span>)),</span>
+<span id="lst-data-mp-toyexample-36"><a href="#lst-data-mp-toyexample-36" aria-hidden="true" tabindex="-1"></a>            (<span class="st">"svc"</span>, SVC(</span>
+<span id="lst-data-mp-toyexample-37"><a href="#lst-data-mp-toyexample-37" aria-hidden="true" tabindex="-1"></a>                kernel<span class="op">=</span><span class="st">"linear"</span>,</span>
+<span id="lst-data-mp-toyexample-38"><a href="#lst-data-mp-toyexample-38" aria-hidden="true" tabindex="-1"></a>                probability<span class="op">=</span><span class="va">True</span>,</span>
+<span id="lst-data-mp-toyexample-39"><a href="#lst-data-mp-toyexample-39" aria-hidden="true" tabindex="-1"></a>                random_state<span class="op">=</span><span class="dv">6020</span>)),</span>
+<span id="lst-data-mp-toyexample-40"><a href="#lst-data-mp-toyexample-40" aria-hidden="true" tabindex="-1"></a>        ],</span>
+<span id="lst-data-mp-toyexample-41"><a href="#lst-data-mp-toyexample-41" aria-hidden="true" tabindex="-1"></a>        flatten_transform<span class="op">=</span><span class="va">False</span>,</span>
+<span id="lst-data-mp-toyexample-42"><a href="#lst-data-mp-toyexample-42" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="lst-data-mp-toyexample-43"><a href="#lst-data-mp-toyexample-43" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="lst-data-mp-toyexample-44"><a href="#lst-data-mp-toyexample-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="lst-data-mp-toyexample-45"><a href="#lst-data-mp-toyexample-45" aria-hidden="true" tabindex="-1"></a>voting_clf.fit(X_train, y_train)</span>
+<span id="lst-data-mp-toyexample-46"><a href="#lst-data-mp-toyexample-46" aria-hidden="true" tabindex="-1"></a>score <span class="op">=</span> voting_clf.score(X_test, y_test)</span>
+<span id="lst-data-mp-toyexample-47"><a href="#lst-data-mp-toyexample-47" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"We have a hard voting score of </span><span class="sc">{</span>score<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</figure>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>We have a hard voting score of 0.8</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In the next couple of exercises we create different version of our model and persist it to storage. Try to keep track of what model version corresponds to which exercise/code block.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We need to install several packages for the following exercises.</p>
+<p>All of them can be installed via:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pdm</span> add skl2onnx onnxruntime skops</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<section id="sec-data-model-onnx" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="sec-data-model-onnx"><span class="header-section-number">4.1</span> Open Neural Network Exchange - ONNX</h2>
+<blockquote class="blockquote">
+<p>ONNX is an open format built to represent machine learning models. ONNX defines a common set of operators - the building blocks of machine learning and deep learning models - and a common file format to enable AI developers to use models with a variety of frameworks, tools, runtimes, and compilers. <a href="https://onnx.ai/about.html">LEARN MORE</a></p>
+<p>Source: <a href="https://onnx.ai/">https://onnx.ai/</a>, accessed 07.03.2025.</p>
+</blockquote>
+<p>The use-case for ONNX is to persist a model without necessarily using the Python object itself. This is especially useful, when the runtime for distributing the model is not Python or a very restricted Python environment.</p>
+<p>Now let us see how we can persist the model of <a href="#lst-data-mp-toyexample" class="quarto-xref">Listing&nbsp;<span>4.1</span></a> via ONNX.</p>
+<div id="a0faed5f" class="cell styled-output" data-execution_count="2">
+<div class="sourceCode cell-code" id="annotated-cell-1"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-1-1"><a href="#annotated-cell-1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> skl2onnx <span class="im">import</span> to_onnx</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-1-2" class="code-annotation-target"><a href="#annotated-cell-1-2" aria-hidden="true" tabindex="-1"></a>onx <span class="op">=</span> to_onnx(voting_clf, X_train[:<span class="dv">1</span>].astype(np.int64))</span>
+<span id="annotated-cell-1-3"><a href="#annotated-cell-1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"model.onnx"</span>, <span class="st">"wb"</span>) <span class="im">as</span> f:</span>
+<span id="annotated-cell-1-4"><a href="#annotated-cell-1-4" aria-hidden="true" tabindex="-1"></a>    f.write(onx.SerializeToString())</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-1" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="2" data-code-annotation="1">Not all data types are supported, so we need to convert our reference training sample to <code>int64</code> (potentially increasing storage demands).</span>
+</dd>
+</dl>
+</div>
+</div>
+<p>As mentioned, the file format is binary so it does not make a lot of sense to actually read the resulting file in plain text but we can have a look at the size.</p>
+<div id="f51a8c07" class="cell styled-output" data-execution_count="3">
+<div class="cell-output cell-output-stdout">
+<pre><code>80K model.onnx</code></pre>
+</div>
+</div>
+<p>Unfortunately, there is no method to convert back to our <code>scikit-learn</code>. What we can do is to use the <code>onnxruntime</code> and see if we still get the same score as before.</p>
+<div id="518435c7" class="cell styled-output" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> onnxruntime <span class="im">as</span> ort</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> ort.InferenceSession(<span class="st">"model.onnx"</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>input_name <span class="op">=</span> model.get_inputs()[<span class="dv">0</span>].name</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> model.run(<span class="va">None</span>, {input_name: X_test.astype(np.int64)})</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>score <span class="op">=</span> sklearn.metrics.accuracy_score(y_test, predictions[<span class="dv">0</span>])</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"We have a test_score of for </span><span class="sc">{</span>score<span class="sc">}</span><span class="ss"> for the recovered model."</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> model.run(<span class="va">None</span>, {input_name: X_train.astype(np.int64)})</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>score <span class="op">=</span> sklearn.metrics.accuracy_score(y_train, predictions[<span class="dv">0</span>])</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"We have a train_score of for </span><span class="sc">{</span>score<span class="sc">}</span><span class="ss"> for the recovered model."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>We have a test_score of for 0.825 for the recovered model.
+We have a train_score of for 1.0 for the recovered model.</code></pre>
+</div>
+</div>
+<p>As we can see, the score is actually better than before, which is odd and definitely not intended.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This is due to the fact, that <code>skl2onnx</code> is not able to convert all <code>scikit-learn</code> models exactly. This is especially true for the <code>SVC</code> class included in our composite model. Therefore, the class is stored with the same weights but slightly different parameters.</p>
+</div>
+</div>
+<p>Furthermore, if we inspect our predictions output from above a bit more it looks like we have switched to soft voting.</p>
+<p>Overall, we can see that ONNX is a way to persist a model such that we can make predictions with it but we do no longer have the Python object. Of course it is possible that we can write our own provided and persist our required models to a better state, see <a href="https://onnx.ai/sklearn-onnx/tutorial_2_new_converter.html"><code>sklearn-onnx</code> docs</a> Regarding file size, we can already say it is efficient and it provides some independence from our training environment.</p>
+<div class="callout callout-style-simple callout-caution no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exr-data-mp-onnx" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 4.1 (Test how the recovery works for SVC)</strong></span> Try to rewrite the model and check the resulting score after recovery vs.&nbsp;the original score for the following modifications.</p>
+<ol type="1">
+<li>Remove the <code>probability=True</code> for <code>SVC</code>.</li>
+<li>Replace <code>SVC</code> by <code>LinearSVC</code>.</li>
+<li>Remove the <code>SVC</code> all together and replace it with a <code>LogisticRegression</code> classifier.</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="sec-data-model-pickle" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="sec-data-model-pickle"><span class="header-section-number">4.2</span> <code>pickle</code> - Python object serialization</h2>
+<p>We can also swing the pendulum in the other direction and use the Python standard library <a href="https://docs.python.org/3/library/pickle.html#module-pickle"><code>pickle</code></a> to persist our model.</p>
+<p>Before we go into more details, we should emphasise the potential security problem we introduce with <code>pickle</code> as stated in its own docs:</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+The <code>pickle</code> module is not secure. Only <em>unpickle</em> data you trust.
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>It is possible to construct malicious pickle data which will <strong>execute arbitrary code during unpickling</strong>. Never unpickle data that could have come from an untrusted source, or that could have been tampered with.</p>
+<p>Consider signing data with <a href="https://docs.python.org/3/library/hmac.html#module-hmac"><code>hmac</code></a> if you need to ensure that it has not been tampered with.</p>
+<p>Safer serialization formats such as <a href="https://docs.python.org/3/library/json.html#module-json"><code>json</code></a> may be more appropriate if you are processing untrusted data, see <a href="https://docs.python.org/3/library/pickle.html#comparison-with-json">Comparison with json</a>.</p>
+</div>
+</div>
+<p>As <code>pickle</code> is the native implementation in Python. It is easy to use and works for (almost) all models and configurations. The downside is, that we need to absolutely trust the source of our model. We need to trust all steps from the storage provider, through the network to our own infrastructure.</p>
+<p>Furthermore, the environment we load the model into needs to be the same as the one we stored it from. As we have already seen how the <em>dependency hell</em><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> influences our development, we bring import these issues together with the <code>pickle</code> file.</p>
+<p>This notably implies, it is not guaranteed that a model can be loaded with a different <code>scikit-learn</code> version or let alone a different <code>numpy</code> version, that is only a sub-dependency of <code>scikit-learn</code>. Furthermore, if a different hardware is involved there might be problems as well, e.g.&nbsp;a different architecture of an integer or float. As a consequence, if we use <code>pickle</code> a thorough version control with package management is key!</p>
+<p>If we have a model that moves around different processes via the disc or is restored frequently from storage but can not be permanently in storage and therefore performance for loading and storing is of interest we can also use <a href="https://joblib.readthedocs.io/en/latest/index.html#module-joblib"><code>joblib</code></a> as a more performant alternative.</p>
+<p>Now let us see how we can persist the model of <a href="#lst-data-mp-toyexample" class="quarto-xref">Listing&nbsp;<span>4.1</span></a> as a <code>pickle</code> file.</p>
+<div id="77e25681" class="cell styled-output" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pickle <span class="im">import</span> dump</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"model.pkl"</span>, <span class="st">"wb"</span>) <span class="im">as</span> f:</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    dump(voting_clf, f, protocol<span class="op">=</span><span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Again, the file format is binary so it does not make a lot of sense to actually read the file in plain text but we can have a look at the size</p>
+<div id="72127ec9" class="cell styled-output" data-execution_count="7">
+<div class="cell-output cell-output-stdout">
+<pre><code>304K    model.pkl</code></pre>
+</div>
+</div>
+<p>and we can see that the storage demands are higher than for ONNX.</p>
+<p>We restore the model via</p>
+<div id="cfa10a0d" class="cell styled-output" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pickle <span class="im">import</span> load</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"model.pkl"</span>, <span class="st">"rb"</span>) <span class="im">as</span> f:</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    clf <span class="op">=</span> load(f)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>score <span class="op">=</span> clf.score(X_test, y_test)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"We have test_score of </span><span class="sc">{</span>score<span class="sc">}</span><span class="ss"> after loading the object again."</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>score <span class="op">=</span> clf.score(X_train, y_train)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"We have train_score of </span><span class="sc">{</span>score<span class="sc">}</span><span class="ss"> after loading the object again."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>We have test_score of 0.8 after loading the object again.
+We have train_score of 1.0 after loading the object again.</code></pre>
+</div>
+</div>
+<p>As we can see, the score stays the same and we can deal with the loaded object in the same way as with the original.</p>
+<div class="callout callout-style-simple callout-caution no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exr-data-mp-pickle" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 4.2 (Further investigations for <code>pickle</code>)</strong></span> &nbsp;</p>
+<ol type="1">
+<li><p>For the loaded model, switch to soft voting by calling</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>clf[<span class="dv">1</span>].voting <span class="op">=</span> <span class="st">"soft"</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>clf[<span class="dv">1</span>].named_estimators[<span class="st">"svc"</span>].probability <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>clf.fit(X_train, y_train)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>clf.score(X_test, y_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Use <a href="https://joblib.readthedocs.io/en/latest/index.html#module-joblib"><code>joblib</code></a> to persist and load the module, also check the file size.</p></li>
+<li><p>Switch for the <code>SVC</code> to a <code>"rbf"</code> kernel and see if you can fully recover the object.</p></li>
+<li><p>Some user defined functions can cause problems for <code>pickle</code> try persisting the model with <a href="https://github.com/cloudpipe/cloudpickle"><code>cloudpickle</code></a> and test with the user defined kernel function <code>rbf = lambda x, y: np.exp(1e-2 * np.abs(x@y.T))</code>.</p></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="skops.io---the-more-secure-python-alternative" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="skops.io---the-more-secure-python-alternative"><span class="header-section-number">4.3</span> <code>skops.io</code> - the more secure Python alternative</h2>
+<p>As an alternative to <code>pickle</code> we can use <a href="https://skops.readthedocs.io/en/stable/persistence.html#persistence"><code>skops.io</code></a>. It is developed as a secure alternative for <code>pickle</code> and therefore supports a wide range of objects. The main idea is, that only <em>trusted functions</em> are loaded and not everything included in the file. It is also possible to verify our data before loading it into our program, increasing the security further. Still, it returns the Python object, if it can be loaded, and we can manipulate it in the same fashion as with <code>pickle</code>.</p>
+<p>As a downside, the process is slower and some user defined functions/object might not work as desired. This also implies, that we need to have the same environment for loading as we had for storing the Python object, similar to <code>pickle</code>.</p>
+<p>The interface itself is simple and follows <code>pickle</code>.</p>
+<div id="d5ed4213" class="cell styled-output" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> skops.io <span class="im">as</span> sio</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>obj <span class="op">=</span> sio.dump(voting_clf, <span class="st">"model.skops"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>For comparison, we show the size of the file</p>
+<div id="02cc5222" class="cell styled-output" data-execution_count="11">
+<div class="cell-output cell-output-stdout">
+<pre><code>26M model.skops</code></pre>
+</div>
+</div>
+<p>and we can see that this format has a significant higher overhead as the other formats.</p>
+<p>Retrieving the model is a two step process, first loading the <em>untrusted types</em> and than loading the verified objects.</p>
+<div id="9ef34a30" class="cell styled-output" data-execution_count="12">
+<div class="sourceCode cell-code" id="annotated-cell-6"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-6-1" class="code-annotation-target"><a href="#annotated-cell-6-1" aria-hidden="true" tabindex="-1"></a>unknown_types <span class="op">=</span> sio.get_untrusted_types(<span class="bu">file</span><span class="op">=</span><span class="st">"model.skops"</span>)</span>
+<span id="annotated-cell-6-2"><a href="#annotated-cell-6-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, a <span class="kw">in</span> <span class="bu">enumerate</span>(unknown_types):</span>
+<span id="annotated-cell-6-3"><a href="#annotated-cell-6-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Unknown type at </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss"> is </span><span class="sc">{</span>a<span class="sc">}</span><span class="ss">."</span>)</span>
+<span id="annotated-cell-6-4"><a href="#annotated-cell-6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-6-5"><a href="#annotated-cell-6-5" aria-hidden="true" tabindex="-1"></a>clf <span class="op">=</span> sio.load(<span class="st">"model.skops"</span>, trusted<span class="op">=</span>unknown_types)</span>
+<span id="annotated-cell-6-6"><a href="#annotated-cell-6-6" aria-hidden="true" tabindex="-1"></a>score <span class="op">=</span> clf.score(X_test, y_test)</span>
+<span id="annotated-cell-6-7"><a href="#annotated-cell-6-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"We have test_score of </span><span class="sc">{</span>score<span class="sc">}</span><span class="ss"> after loading the object again."</span>)</span>
+<span id="annotated-cell-6-8"><a href="#annotated-cell-6-8" aria-hidden="true" tabindex="-1"></a>score <span class="op">=</span> clf.score(X_train, y_train)</span>
+<span id="annotated-cell-6-9"><a href="#annotated-cell-6-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"We have train_score of </span><span class="sc">{</span>score<span class="sc">}</span><span class="ss"> after loading the object again."</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-6" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-6" data-code-lines="1" data-code-annotation="1">We should investigate the contents of <code>unknown_types</code>, and only load if we trust everything we see.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Unknown type at 0 is sklearn.utils._bunch.Bunch.
+We have test_score of 0.8 after loading the object again.
+We have train_score of 1.0 after loading the object again.</code></pre>
+</div>
+</div>
+<div class="callout callout-style-simple callout-caution no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exr-data-mp-skops.io" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 4.3 (Further investigations for <code>skops.io</code>)</strong></span> &nbsp;</p>
+<ol type="1">
+<li><p>The included PCA works with <code>float64</code>, this is not necessary, can we reduce the file size by switching to <code>float16</code>? Hint: look at <code>voting_clf[0].components_</code>.</p></li>
+<li><p>Apply the self defined kernel from <a href="#exr-data-mp-pickle" class="quarto-xref">Exercise&nbsp;<span>4.2</span></a> and test the load/recover cycle.</p></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="comparison-of-the-different-approaches" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="comparison-of-the-different-approaches"><span class="header-section-number">4.4</span> Comparison of the different approaches</h2>
+<p>The <a href="https://scikit-learn.org/stable/model_persistence.html#summarizing-the-key-points">docs</a> are doing an excellent job in summarizing the key differences.</p>
+<blockquote class="blockquote">
+<p>Based on the different approaches for model persistence, the key points for each approach can be summarized as follows:</p>
+<ol type="1">
+<li><p>ONNX: It provides a uniform format for persisting any machine learning or deep learning model (other than <code>scikit-learn</code>) and is useful for model inference (predictions). It can however, result in compatibility issues with different frameworks.</p></li>
+<li><p><code>skops.io</code>: Trained <code>scikit-learn</code> models can be easily shared and put into production using <code>skops.io</code>. It is more secure compared to alternate approaches based on <code>pickle</code> because it does not load arbitrary code unless explicitly asked for by the user. Such code needs to be packaged and importable in the target Python environment.</p></li>
+<li><p><code>joblib</code>: Efficient memory mapping techniques make it faster when using the same persisted model in multiple Python processes when using <code>mmap_mode="r"</code>. It also gives easy shortcuts to compress and decompress the persisted object without the need for extra code. However, it may trigger the execution of malicious code when loading a model from an untrusted source as any other <code>pickle</code>-based persistence mechanism.</p></li>
+<li><p><code>pickle</code>: It is native to Python and most Python objects can be serialized and deserialized using <code>pickle</code>, including custom Python classes and functions as long as they are defined in a package that can be imported in the target environment. While <code>pickle</code> can be used to easily save and load <code>scikit-learn</code> models, it may trigger the execution of malicious code while loading a model from an untrusted source. <code>pickle</code> can also be very efficient memorywise if the model was persisted with protocol=5 but it does not support memory mapping.</p></li>
+<li><p><code>cloudpickle</code>: It has comparable loading efficiency as <code>pickle</code> and <code>joblib</code> (without memory mapping), but offers additional flexibility to serialize custom Python code such as <code>lambda</code> expressions and interactively defined functions and classes. It might be a last resort to persist pipelines with custom Python components such as a <code>sklearn.preprocessing.FunctionTransformer</code> that wraps a function defined in the training script itself or more generally outside of any importable Python package. Note that <code>cloudpickle</code> offers no forward compatibility guarantees and you might need the same version of <code>cloudpickle</code> to load the persisted model along with the same version of all the libraries used to define the model. As the other pickle-based persistence mechanisms, it may trigger the execution of malicious code while loading a model from an untrusted source.</p></li>
+</ol>
+<p>Source: <a href="https://scikit-learn.org/stable/model_persistence.html#summarizing-the-key-points">scikit-learn.org</a>, accessed 07.03.2025.</p>
+</blockquote>
+</section>
+<section id="further-considerations" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="further-considerations"><span class="header-section-number">4.5</span> Further considerations</h2>
+<p>Now that we know how to persist our models, or at least hope to do so, we need to talk about how we keep track of our different model versions (parameters, training data, random seeds, etc.).</p>
+<p>In the previous exercises we created multiple versions of <em>our model</em> and stored them to disc. If we now look at the different files, do we still know which version corresponds to which code block?</p>
+<p>As we experiment with different parameters for our composite method - in pursuit of better results - we’ll likely generate even more model variations. To ensure reproducibility, we need a way to track our models alongside the code and parameters that produces them. This is what we are going to look into in the next section.</p>
+
+
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>see <a href="https://kandolfp.github.io/MECH-M-DUAL-1-SWD/basics/epilogue.html#sec-intro-pm-reproducibility">MECH-M-DUAL-1-SWD, Section 4.1</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/kandolfp\.github\.io\/MECH-M-DUAL-2-MLB\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../data/index.html" class="pagination-link" aria-label="Data management and data engineering">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Data management and data engineering</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../data/code.html" class="pagination-link" aria-label="Code persistence">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Code persistence</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Machine Learning in Industrial Image Processing SS 2025 (MECH-M-DUAL-2-MLB)</p>
+</div>   
+    <div class="nav-footer-center">
+<p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> Peter Kandolf</p>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/edit/main/data/model.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>This book was built with <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
