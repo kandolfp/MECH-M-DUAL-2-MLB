@@ -556,36 +556,38 @@ $$
 $$
 for $y_0$ being the ground truth or correct result.
 In order to minimize the error according to $a$ and $b$ we need to compute the derivatives
-$$
-\begin{align}
-\frac{\partial\, \mathscr{L}}{\partial\, a} &= \frac{\partial\, }{\partial\, a}\frac12 (y_0 - y)^2 = \frac{\partial\, }{\partial\, y}\frac12(y_0 - y)^2 \frac{\partial\, y}{\partial\, a} = \\ 
-&= - \frac22 (y_0 - y) \frac{\partial\, y}{\partial\, a} = - (y_0 - y) \frac{\partial\, g(z, b)}{\partial\, a} = \\
-&= - (y_0 - y) \frac{\partial\, g}{\partial\, z}\frac{\partial\, z}{\partial\, a} = - (y_0 - y) \frac{\partial\, g}{\partial\, z}\frac{\partial\, f(x, a)}{\partial\, a} = \\
-&= - (y_0 - y) \frac{\partial\, g}{\partial\, z}\frac{\partial\, f}{\partial\, a}
-\end{align}
-$$
-and 
-$$
-\begin{align}
-\frac{\partial\, \mathscr{L}}{\partial\, b} &= \frac{\partial\, }{\partial\, b}\frac12 (y_0 - y)^2 = \\ 
-&= - \frac22 (y_0 - y) \frac{\partial\, y}{\partial\, b} = - (y_0 - y) \frac{\partial\, g(z, b)}{\partial\, b} = \\
-&= - (y_0 - y) \frac{\partial\, g}{\partial\, b},
-\end{align}
-$$
-For a particular $g$ and $f$ we can compute it explicitly, e.g. $g(z,b) = b z$, and  $f(x,a) = \tanh(a x)$
 
 $$
 \begin{align}
-\frac{\partial\, \mathscr{L}}{\partial\, a} &= - (y_0 - y) \frac{\partial\, g}{\partial\, z}\frac{\partial\, f}{\partial\, a} &=& - (y_0 - y) \cdot b \cdot x \cdot (1 - \tanh^2(a x)),\\
-\frac{\partial\, \mathscr{L}}{\partial\, b} &= - (y_0 - y) \frac{\partial\, g}{\partial\, b} &=& - (y_0 - y) \cdot \tanh(a x).
+\frac{\partial\, \mathscr{L}}{\partial\, a} 
+&= \frac{\partial\, \mathscr{L}}{\partial\, y} \cdot \frac{\partial\, y}{\partial\, a} &=& \big[y = g(z, b)\big]\\
+&= \frac{\partial\, \mathscr{L}}{\partial\, y}\cdot \frac{\partial\, g}{\partial\, z} \cdot \frac{\partial\, z}{\partial\, a} &=& \big[z = f(x, a)\big]\\
+&= \frac{\partial\, \mathscr{L}}{\partial\, y}\cdot \frac{\partial\, g}{\partial\, z} \cdot \frac{\partial\, f}{\partial\, a}
+\end{align}
+$$
+
+$$
+\begin{align}
+\frac{\partial\, \mathscr{L}}{\partial\, b} 
+&= \frac{\partial\, \mathscr{L}}{\partial\, y} \cdot \frac{\partial\, y}{\partial\, b} &=& \big[y = g(z,b)\big] \\
+&= \frac{\partial\, \mathscr{L}}{\partial\, y}\cdot \frac{\partial\, g}{\partial\, b} \phantom{ \cdot \frac{\partial\, f}{\partial\, a}}
+\end{align}
+$$
+
+For a particular $\mathscr{L}$, $g$, and $f$ we can compute it explicitly, e.g. $\mathscr{L}=\tfrac12(y_0 - y)^2$, $g(z,b) = b z$, and  $f(x,a) = \tanh(a x)$
+
+$$
+\begin{align}
+\frac{\partial\, \mathscr{L}}{\partial\, a} &=  \frac{\partial\, \mathscr{L}}{\partial\, y} \frac{\partial\, g}{\partial\, z}\frac{\partial\, f}{\partial\, a} &=& - (y_0 - y) \cdot b \cdot x \cdot (1 - \tanh^2(a x)),\\
+\frac{\partial\, \mathscr{L}}{\partial\, b} &=  \frac{\partial\, \mathscr{L}}{\partial\, y} \frac{\partial\, g}{\partial\, b} &=& - (y_0 - y) \cdot \tanh(a x).
 \end{align}
 $$
 
 With this information we can define the gradient descent update
 $$
 \begin{align}
-a^{(k+1)} &= a^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, a},\\
-b^{(k+1)} &= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b}.
+a^{(k+1)} &= a^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, a} = a^{(k)} - \delta \left(- (y_0 - y) \cdot b^{(k)} \cdot (1 - \tanh^2(a^{(k)} x))\right), \\
+b^{(k+1)} &= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b} = b^{(k)} - \delta \left( - (y_0 - y) \cdot \tanh(a^{(k)} x)\right).
 \end{align}
 $$
 ::::
@@ -600,7 +602,6 @@ Now that we have a better understanding we can define the backdrop procedure, se
     i. For a given learning rate $\delta$ update the NN parameters via the gradient method.
 
 We can see this reflected in our code for the NN above.
-
 
 ::: {.callout-caution appearance="simple" icon=false}
 :::: {#exr-nn-nn-backproü}
@@ -638,7 +639,6 @@ $$
 1. Write down the components showing up for the chain rule for $\frac{\partial\, \mathscr{L}}{\partial \, A_{k,1}}$ (similar as above).
 ::::
 :::
-
 
 [^ibm]: Access on 4th April 2025.
 
