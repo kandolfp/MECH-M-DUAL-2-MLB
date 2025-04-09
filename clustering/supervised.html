@@ -390,7 +390,7 @@ Important
 <p>The following introduction and illustrational data set, as well as the basic structure of the code is from <span class="citation" data-cites="Brunton2022">(<a href="../references.html#ref-Brunton2022" role="doc-biblioref">Brunton and Kutz 2022</a>, Code 5.9)</span>. Also see <a href="https://github.com/dynamicslab/databook_python">GitHub</a>.</p>
 </div>
 </div>
-<p>The idea if LDA is to find a linear combination of features that optimally separates two or more classes. The crucial part in the algorithm is that it is guided by labelled observations. At its core, the algorithm aims to solve an optimization problem: find an optimal low-dimensional embedding of the data that shows a clear separation between their point distribution, or maximize the distance between the inter-class data and minimize the intra-class data distance.</p>
+<p>The idea of LDA is to find a linear combination of features that optimally separates two or more classes. The crucial part in the algorithm is that it is guided by labelled observations. At its core, the algorithm aims to solve an optimization problem: find an optimal low-dimensional embedding of the data that shows a clear separation between their point distribution, or maximize the distance between the inter-class data and minimize the intra-class data distance.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -412,7 +412,7 @@ Tip
 </div>
 <div class="callout-body-container">
 <div id="def-crossvalidation" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 2.1 (<span class="math inline">\(k\)</span>-folds cross-validation)</strong></span> The <span class="math inline">\(k\)</span>-folds cross-validation technique is a method to allow better <em>hyperparameter tuning</em>, especially for smaller data sets where training and validation data is small. The main idea is that we split our iterate over different validation sets by splitting up our training set. Lets say we use <span class="math inline">\(5\)</span>-fold cross-validation we split the training set into 5 parts. Train with 4 parts and validate against the 5th. We than rotate and select a different validation fold. At the end we average over the 5 iterations to get our final parameters.</p>
+<p><span class="theorem-title"><strong>Definition 2.1 (<span class="math inline">\(k\)</span>-folds cross-validation)</strong></span> The <span class="math inline">\(k\)</span>-folds cross-validation technique is a method to allow better <em>hyperparameter tuning</em>, especially for smaller data sets where training and validation data is small. The main idea is that we split our iterate over different validation sets by splitting up our training set. Lets say we use <span class="math inline">\(5\)</span>-fold cross-validation we split the training set into 5 parts. Therefore, we train the model with four parts and validate against the fifth. We then rotate the folds and select a different one for validation. At the end, we average over the five iterations to get our final parameters.</p>
 <p>This looks something like this:</p>
 <div id="fig-clustering-sl-5foldcrossvalidation" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -753,7 +753,7 @@ Note
 </div>
 </div>
 <p>First we load the MNIST data set again and split it into a training and testing section, see <a href="unsupervised.html#sec-clustering-ul-me" class="quarto-xref"><span>Section 1.5</span></a>.</p>
-<div id="2cd61131" class="cell" data-execution_count="4">
+<div id="d24e9f59" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Show the code for loading and splitting the dataset</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -770,7 +770,7 @@ Note
 </details>
 </div>
 <p>Next, as we only want a binary classifier, we select one number, in our case <code>5</code> and relabel our data. With the new labels we can train our classifier, compare <a href="#def-multiclass-ovr" class="quarto-xref">Definition&nbsp;<span>2.9</span></a>.</p>
-<div id="3dc32f70" class="cell" data-execution_count="5">
+<div id="e217a040" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>y_train_5 <span class="op">=</span> (y_train <span class="op">==</span> <span class="st">"5"</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>y_test_5 <span class="op">=</span> (y_test <span class="op">==</span> <span class="st">"5"</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -778,11 +778,11 @@ Note
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>SGD.fit(X_train, y_train_5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In order to get a score for our method, we use <span class="math inline">\(k\)</span>-folds cross-validation <a href="#def-crossvalidation" class="quarto-xref">Definition&nbsp;<span>2.1</span></a> and the corresponding <code>scikit-learn</code> function <a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_score.html"><code>cross_val_score</code></a> to perform this task for our model.</p>
-<div id="9f83a17f" class="cell" data-execution_count="6">
+<div id="c833b73f" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> sklearn.model_selection.cross_val_score(</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    SGD, X_train, y_train_5, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">"accuracy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="320b112a" class="cell" data-execution_count="7">
+<div id="3dc315b1" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display" data-execution_count="7">
 <div>
 
@@ -813,14 +813,14 @@ Note
 </div>
 </div>
 </div>
-<p>With scores in the high <span class="math inline">\(90\%\)</span> range the results look promession if not great, but are they really that good? In order to get a better idea just always guess that we do not see a <code>5</code> that should be the most common class in our case. To simulate this we use the <code>DummyClassifier</code> class.</p>
-<div id="e4a0a9d3" class="cell" data-execution_count="8">
+<p>With scores in the high <span class="math inline">\(90\%\)</span> range the results look promising, if not great, but are they really that good? In order to get a better idea just always guess that we do not see a <code>5</code> that should be the most common class in our case. To simulate this we use the <code>DummyClassifier</code> class.</p>
+<div id="b68f597b" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>dummy <span class="op">=</span> sklearn.dummy.DummyClassifier()</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>dummy.fit(X_train, y_train_5)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>scores_dummy <span class="op">=</span> sklearn.model_selection.cross_val_score(</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    dummy, X_train, y_train_5, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">"accuracy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="e56e81f4" class="cell" data-execution_count="9">
+<div id="60c47ed0" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-display" data-execution_count="9">
 <div>
 
@@ -879,12 +879,12 @@ Figure&nbsp;2.6: Names and abbreviations for a <span class="math inline">\(2\tim
 </div>
 <p>To compute the confusion matrix we first need predictions. This can be achieved by <a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_predict.html"><code>cross_val_predict</code></a> instead of <code>cross_val_score</code> and than we use <a href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html"><code>sklearn.metrics.confusion_matrix</code></a>.</p>
 <p>Combined, for our example, this reads as:</p>
-<div id="d773904d" class="cell" data-execution_count="10">
+<div id="f6731f50" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>y_train_pred <span class="op">=</span> sklearn.model_selection.cross_val_predict(</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                    SGD, X_train, y_train_5, cv<span class="op">=</span><span class="dv">3</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> sklearn.metrics.confusion_matrix(y_train_5, y_train_pred)                   </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="8dc44db8" class="cell" data-execution_count="11">
+<div id="015eb0b0" class="cell" data-execution_count="11">
 <div class="cell-output cell-output-display" data-execution_count="11">
 <div>
 
@@ -948,7 +948,7 @@ F_1 = \frac{2 TP}{2 TP + FP + FN}
 \]</span></p></li>
 </ol>
 <p>In the <a href="https://scikit-learn.org/stable/api/sklearn.metrics.html"><code>sklearn.metrics</code></a> most of these values have a corresponding function. If we look at <em>precission</em>, <em>recall</em>, and the <span class="math inline">\(F_1\)</span> score, for our example we see that our performance is viewed under a different light:</p>
-<div id="f8f2269d" class="cell styled-output" data-execution_count="12">
+<div id="420608c9" class="cell styled-output" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>precision <span class="op">=</span> sklearn.metrics.precision_score(y_train_5, y_train_pred)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>recall <span class="op">=</span> sklearn.metrics.recall_score(y_train_5, y_train_pred)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>f1_score <span class="op">=</span> sklearn.metrics.f1_score(y_train_5, y_train_pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1129,7 +1129,7 @@ Pipeline
 <li>apply a scaler to our observations</li>
 <li>apply the Linear SVM</li>
 </ul>
-<div id="1645536d" class="cell" data-execution_count="14">
+<div id="f8a75cad" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>composit_svm <span class="op">=</span> sklearn.pipeline.make_pipeline(</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    sklearn.preprocessing.PolynomialFeatures(<span class="dv">2</span>),</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    sklearn.preprocessing.StandardScaler(),</span>
@@ -1369,7 +1369,7 @@ Figure&nbsp;2.11: Training a SVM with an RBF kernel for the singular vectors 2 t
 </div>
 </div>
 <p>We get a confusion matrix for our test set as</p>
-<div id="8bac798f" class="cell" data-execution_count="18">
+<div id="4be44e2d" class="cell" data-execution_count="18">
 <div class="cell-output cell-output-display" data-execution_count="18">
 <div>
 
@@ -1421,7 +1421,7 @@ Figure&nbsp;2.11: Training a SVM with an RBF kernel for the singular vectors 2 t
 <div class="callout-body-container">
 <div id="exr-nonlinear-SVM-regression" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise 2.5 (Nonlinear SVM for regression)</strong></span> We can use SVM for regression. Have a look at <a href="https://scikit-learn.org/stable/auto_examples/svm/plot_svm_regression.html#sphx-glr-auto-examples-svm-plot-svm-regression-py">docs</a> and use the findings to fit the following observations with various degrees and kernel functions.</p>
-<div id="f2853ccc" class="cell" data-execution_count="19">
+<div id="99bd3ff7" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
@@ -1468,7 +1468,7 @@ Figure&nbsp;2.11: Training a SVM with an RBF kernel for the singular vectors 2 t
 <li>Proceed with the two new branches in the same fashion.</li>
 </ol>
 <p>Let us apply it to the Fischer Iris data set to better understand what is happening.</p>
-<div id="8cfa6138" class="cell" data-execution_count="20">
+<div id="93bc2310" class="cell" data-execution_count="20">
 <details class="code-fold">
 <summary>Show the code for the figure</summary>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -1654,7 +1654,7 @@ Figure&nbsp;2.13: Splits for the Fischer Iris data set with the first two split 
 </div>
 <p>In <a href="#fig-clustering-sl-tree-iris-split" class="quarto-xref">Figure&nbsp;<span>2.13</span></a> we can see the the first two splits and the next split if we would increase the tree. With the first split, we immediately separate <em>setosa</em> with <span class="math inline">\(100\%\)</span> accuracy. The two other classes are a bit tricky and we can not classify everything correct right away. In total <span class="math inline">\(6\)</span> out of <span class="math inline">\(150\)</span> observations are wrongly classified with this simple tree.</p>
 <p>Let us also apply the tree classification to our cats and dogs example.</p>
-<div id="29b3ccbd" class="cell" data-execution_count="22">
+<div id="267ca3a8" class="cell" data-execution_count="22">
 <details class="code-fold">
 <summary>Show the code for the figure</summary>
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -1836,7 +1836,7 @@ Figure&nbsp;2.14: Decision tree for the Fischer iris data set and depth 2.
 </div>
 </div>
 </div>
-<div id="a4dad2fb" class="cell" data-execution_count="23">
+<div id="29577ea0" class="cell" data-execution_count="23">
 <div class="cell-output cell-output-display" data-execution_count="23">
 <div>
 
