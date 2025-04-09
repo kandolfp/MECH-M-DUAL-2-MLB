@@ -83,7 +83,6 @@ plt.gca().set_aspect(8 / (1.2 * 3))
 plt.show()
 ```
 
-
 ## The trainable parameters of a Neural Network
 
 Before we build our first NN in the next section we need to get a better understanding on the dimensions and available parameters for our optimization involved in training a NN.
