@@ -628,15 +628,15 @@ In order to make the computation of the derivates easier we use the variables as
 Therefore we get
 $p = g(z)=\sigma(B v)$ (softmax), and $v = f(u)= \tanh(A x)$.
 
-Overall we want to compute the change in the 
+Overall we want to compute the change in $B_{i, j}$ (for some fixed indices $i$, and $j$).
 $$
-\frac{\partial\, \mathscr{L}}{\partial \, B_{k,1}} = \frac{\partial\, \mathscr{L}}{\partial \, p} \cdot \frac{\partial\, p}{\partial \, z} \cdot \frac{\partial\, z}{\partial \, B_{k, 1}}
+\frac{\partial\, \mathscr{L}}{\partial \, B_{i, j}} = \frac{\partial\, \mathscr{L}}{\partial \, p} \cdot \frac{\partial\, p}{\partial \, z} \cdot \frac{\partial\, z}{\partial \, B_{i, j}}
 $$
 
 1. Compute $\partial_{p_i} \mathscr{L}$.
-1. The computation of the Jacobian of $\sigma(z)$ is tricky but together with the cross-entropy loss it is straight forward, therefore compute $\partial_{z} \mathscr{L}(\sigma(z))$.
-1. Compute $\partial_{B_{k,1}} z$.
-1. Write down the components showing up for the chain rule for $\frac{\partial\, \mathscr{L}}{\partial \, A_{k,1}}$ (similar as above).
+1. The computation of the Jacobian of $\sigma(z)$ is tricky but together with the cross-entropy loss it is straight forward, therefore compute $\partial_{z_i} \mathscr{L}(\sigma(z))$.
+1. Compute $\partial_{B_{i, j}} z$.
+1. Write down the components showing up for the chain rule for $\frac{\partial\, \mathscr{L}}{\partial \, A_{i, j}}$ (similar as above).
 ::::
 :::
 
