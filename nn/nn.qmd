@@ -89,7 +89,7 @@ plt.show()
 Before we build our first NN in the next section we need to get a better understanding on the dimensions and available parameters for our optimization involved in training a NN.
 As discussed, these parameters are the matrices consisting on the weights, the biases and are of course related to the neurons. 
 
-![First weight matrix for a generic NN, where no connection is present a 0 is inserted.](../_assets/nn/generic_nn_get_dim){#fig-nn-nn-get_dim}
+![Generic linear NN with weights and biases.](../_assets/nn/generic_nn_get_dim){#fig-nn-nn-get_dim}
 
 
 ::: {.callout-caution appearance="simple" icon=false}
