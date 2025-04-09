@@ -197,25 +197,21 @@ class MyFirstNN(torch.nn.Module):                       # <1>
     def __init__(self, input_params):                   # <2>
         super(MyFirstNN, self).__init__()               # <3>
         self.model = torch.nn.Sequential(               # <4>
-            torch.nn.Linear(input_params, 2),           # <5>
-            torch.nn.Tanh(),                            # <6>
-            torch.nn.Linear(2, 2),                      # <7>
-            torch.nn.Softmax(dim=1),                    # <8>
+            torch.nn.Linear(input_params, 2),           
+            torch.nn.Tanh(),                            
+            torch.nn.Linear(2, 2),                      
+            torch.nn.Softmax(dim=1),                    
         )                                               # <4>
                                                         # <2>
-    def forward(self, x):                               # <9>
-        y = self.model(x)                               # <9>
-        return y                                        # <9>
+    def forward(self, x):                               # <5>
+        y = self.model(x)                               # <5>
+        return y                                        # <5>
                                                         # <1>
 ```
 1. Create a class inheriting from `torch.nn.Module`.
 1. The layers of the NN are defined in the initialization of the class. 
 1. Do not forget to initialize the super class.
-1. We define a sequential model, this reflects best our desired structure.
-1. We define our first neurons that take in our input vector and reduce them to 2.
-1. Our activation function for this layer is `tanh`.
-1. Definition of the next layer (optional but reflects the structure better).
-1. Activation function for the second layer.
+1. We define a sequential model, this reflects best our desired structure, the first layer that reduces down to two neurons and applies the function $\tanh$, and a second for `softmax`.
 1. In `forward` we define how data moves through the network.
 
 
