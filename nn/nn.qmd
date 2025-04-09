@@ -495,3 +495,156 @@ It is also possible to export the model in the ONNX format, see @sec-data-model-
 :::
 
 [^1]: Install it via `pdm add lightning`.
+
+## Backward Propagation of Error - Backpropagation
+
+Our first NN is a success, but how did it learn the necessary parameters to perform its task? 
+
+The answer is a technique called _Backward Propagation of Error_ or in short _Backpropagation_. 
+This essential component of for machine learning helps us to work out how the loss we compute translates into changes of the weights in our network.
+In our training loop `train_model` the lines
+```{.python}
+y_pred = model(X_batch)            # Forward pass through the model
+loss = loss_fn(y_pred, y_batch)    # Compute the loss
+loss.backward()                    # Backpropagation
+optimizer.step()                   # Update the model parameters
+optimizer.zero_grad()              # Reset the gradients
+```
+are what we are focusing on in this section.
+
+::: {.callout-important}
+A very nice and structured introduction by IBM can be found [here](https://www.ibm.com/think/topics/backpropagation#:~:text=Backpropagation%20ist%20die%20Abk%C3%BCrzung%20f%C3%BCr,die%20Genauigkeit%20von%20Modellvorhersagen%20auswirken.)[^ibm].
+
+An introduction closer to the mathematics is shown in [@Brunton2022, Chapter 6.3].
+:::
+
+The introduction of the technique is contributed to the paper @Rumelhart1986.
+As usual, predecessors and independent similar proposals go back to the 1960s.
+As we have seen, our NN can mathematically be described by nested functions, that are called inside the loss function, $\mathscr{L}(\Theta)$, for $\Theta$ being all trainable parameters.
+
+During the training we can now compute the _change_ between the NN output and the provided label and use it in a gradient method[^gradient].
+Resulting in the iteration 
+$$
+\Theta^{(n+1)} = \Theta^{(n)} - \delta \nabla \mathscr{L}\left(\Theta^{(n)}\right),
+$$
+where $\delta$ is called the _learning rate_ in this context. 
+
+To compute the derivative we can use the chain rule as this _propagates the error backwards_ through the network. For $h(x) = g(f(x))$ the derivative $h'(x)$ is computed as
+$$
+h'(x) = g'(f(x))f'(x) \quad \Leftrightarrow \quad
+\frac{\partial\, h}{\partial\, x} (x) = \frac{\partial\, g}{\partial\, x}(f(x)) \cdot \frac{\partial\, f}{\partial\, x}(x),
+$$
+or in Leibniz notation for a variable $z$ that depends on $y$, which itself depends on $x$ we get
+$$
+\frac{\mathrm{d}\, z}{\mathrm{d}\, x} = \frac{\mathrm{d}\, z}{\mathrm{d}\, y} \cdot \frac{\mathrm{d}\, y}{\mathrm{d}\, x}.
+$$
+
+To get a better idea on how this works, let us look a the following simple example. 
+
+::: {.callout-tip appearance="simple" collapse="true" icon=false}
+:::: {#exm-nn-nn-backpropagaion}
+
+## A simple case
+
+To illustrate the procedure we start with the simplest example, illustrated in @fig-nn-nn-backprop_simple.
+
+![One node, one layer model for illustration of the backpropagation algorithm.](../_assets/nn/backprop_simple){#fig-nn-nn-backprop_simple}
+
+To get the output $y$ from $x$ the following computation is required
+$$
+y = g(z, b) = g(f(x, a), b).
+$$
+
+If we now assume a means square error for the final loss, we get an error, depending on the weights $a$ and $b$
+$$
+\mathscr{L} = \frac12 (y_0 - y)^2,
+$$
+for $y_0$ being the ground truth or correct result.
+In order to minimize the error according to $a$ and $b$ we need to compute the derivatives
+$$
+\begin{align}
+\frac{\partial\, \mathscr{L}}{\partial\, a} &= \frac{\partial\, }{\partial\, a}\frac12 (y_0 - y)^2 = \frac{\partial\, }{\partial\, y}\frac12(y_0 - y)^2 \frac{\partial\, y}{\partial\, a} = \\ 
+&= - \frac22 (y_0 - y) \frac{\partial\, y}{\partial\, a} = - (y_0 - y) \frac{\partial\, g(z, b)}{\partial\, a} = \\
+&= - (y_0 - y) \frac{\partial\, g}{\partial\, z}\frac{\partial\, z}{\partial\, a} = - (y_0 - y) \frac{\partial\, g}{\partial\, z}\frac{\partial\, f(x, a)}{\partial\, a} = \\
+&= - (y_0 - y) \frac{\partial\, g}{\partial\, z}\frac{\partial\, f}{\partial\, a}
+\end{align}
+$$
+and 
+$$
+\begin{align}
+\frac{\partial\, \mathscr{L}}{\partial\, b} &= \frac{\partial\, }{\partial\, b}\frac12 (y_0 - y)^2 = \\ 
+&= - \frac22 (y_0 - y) \frac{\partial\, y}{\partial\, b} = - (y_0 - y) \frac{\partial\, g(z, b)}{\partial\, b} = \\
+&= - (y_0 - y) \frac{\partial\, g}{\partial\, b},
+\end{align}
+$$
+For a particular $g$ and $f$ we can compute it explicitly, e.g. $g(z,b) = b z$, and  $f(x,a) = \tanh(a x)$
+
+$$
+\begin{align}
+\frac{\partial\, \mathscr{L}}{\partial\, a} &= - (y_0 - y) \frac{\partial\, g}{\partial\, z}\frac{\partial\, f}{\partial\, a} &=& - (y_0 - y) \cdot b \cdot x \cdot (1 - \tanh^2(a x)),\\
+\frac{\partial\, \mathscr{L}}{\partial\, b} &= - (y_0 - y) \frac{\partial\, g}{\partial\, b} &=& - (y_0 - y) \cdot \tanh(a x).
+\end{align}
+$$
+
+With this information we can define the gradient descent update
+$$
+\begin{align}
+a^{(k+1)} &= a^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, a},\\
+b^{(k+1)} &= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b}.
+\end{align}
+$$
+::::
+:::
+
+Now that we have a better understanding we can define the backdrop procedure, see @Brunton2022
+
+1. Specify the NN along with the labeled training data.
+1. Initialize the weights and biases of the NN with random values. If they are initialized with zero the gradient method will update all of them in the same fashion which is not what we are looking for.
+1. In a loop until convergence or a maximum of iterations is achieved:
+    i. Run the training data through the NN to compute $y$. Compute the according loss and its derivatives with respect to each weight and bias.
+    i. For a given learning rate $\delta$ update the NN parameters via the gradient method.
+
+We can see this reflected in our code for the NN above.
+
+
+::: {.callout-caution appearance="simple" icon=false}
+:::: {#exr-nn-nn-backproü}
+
+## Our dogs and cats example.
+
+Let us translate this findings to our example visualized in @fig-nn-cvd-nl.
+In order to do so, we need to specify our variables in more detail.
+To simplify it a bit we set the biases to the zero vector. 
+
+First, we call our output $p = [p_1, p_2]$ and our labels are encoded in one-hot encoding $y = [y_1, y_2]$ where $y_1=1$ and $y_2=0$ if the image is a dog, and vice versa if the image is a cat.
+To simplify it a bit more we do not use any bias.
+
+As our loss function we use cross-entropy
+$$
+\mathscr{L}(\Theta) = - \frac12 \sum_{i=1}^2 y_i \log(p_i) = \frac{y_1 \log(p_1) + y_2 \log(p_2)}{2},
+$$
+for a single sample with the above notation.
+
+In order to make the computation of the derivates easier we use the variables as described in @fig-nn-nn-cvd_comp.
+
+![One node, one layer model for illustration of the backpropagation algorithm.](../_assets/nn/cats_vs_dogs_comp){#fig-nn-nn-cvd_comp}
+
+Therefore we get
+$p = g(z)=\sigma(B v)$ (softmax), and $v = f(u)= \tanh(A x)$.
+
+Overall we want to compute the change in the 
+$$
+\frac{\partial\, \mathscr{L}}{\partial \, B_{k,1}} = \frac{\partial\, \mathscr{L}}{\partial \, p} \cdot \frac{\partial\, p}{\partial \, z} \cdot \frac{\partial\, z}{\partial \, B_{k, 1}}
+$$
+
+1. Compute $\partial_{p_i} \mathscr{L}$.
+1. The computation of the Jacobian of $\sigma(z)$ is tricky but together with the cross-entropy loss it is straight forward, therefore compute $\partial_{z} \mathscr{L}(\sigma(z))$.
+1. Compute $\partial_{B_{k,1}} z$.
+1. Write down the components showing up for the chain rule for $\frac{\partial\, \mathscr{L}}{\partial \, A_{k,1}}$ (similar as above).
+::::
+:::
+
+
+[^ibm]: Access on 4th April 2025.
+
+[^gradient]: see @Kandolf_GDM, Section 6.1 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/regression/nonlinear.html#sec-regression-nonlinear-gd).
