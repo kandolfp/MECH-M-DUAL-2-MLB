@@ -456,7 +456,7 @@ With the _Lightning in 15 minutes_ (or any other tutorial) rewrite your code to 
 :::
 
 
-## How to save a `pytroch` model
+## How to save a `pytorch` model
 
 Of course we can save a `pytorch` model with the methods discussed in @sec-data-mp but it is more convenient to use the dedicated functions, see [docs](https://pytorch.org/tutorials/beginner/saving_loading_models.html).
 
