@@ -336,8 +336,8 @@ window.Quarto = {
    
   <ul>
   <li><a href="#the-trainable-parameters-of-a-neural-network" id="toc-the-trainable-parameters-of-a-neural-network" class="nav-link active" data-scroll-target="#the-trainable-parameters-of-a-neural-network"><span class="header-section-number">7.1</span> The trainable parameters of a Neural Network</a></li>
-  <li><a href="#our-first-neural-network" id="toc-our-first-neural-network" class="nav-link" data-scroll-target="#our-first-neural-network"><span class="header-section-number">7.2</span> Our first Neural Network</a></li>
-  <li><a href="#how-to-save-a-pytroch-model" id="toc-how-to-save-a-pytroch-model" class="nav-link" data-scroll-target="#how-to-save-a-pytroch-model"><span class="header-section-number">7.3</span> How to save a <code>pytroch</code> model</a></li>
+  <li><a href="#a-neural-network-with-pytorch" id="toc-a-neural-network-with-pytorch" class="nav-link" data-scroll-target="#a-neural-network-with-pytorch"><span class="header-section-number">7.2</span> A Neural Network with <code>pytorch</code></a></li>
+  <li><a href="#how-to-save-a-pytorch-model" id="toc-how-to-save-a-pytorch-model" class="nav-link" data-scroll-target="#how-to-save-a-pytorch-model"><span class="header-section-number">7.3</span> How to save a <code>pytorch</code> model</a></li>
   <li><a href="#backward-propagation-of-error---backpropagation" id="toc-backward-propagation-of-error---backpropagation" class="nav-link" data-scroll-target="#backward-propagation-of-error---backpropagation"><span class="header-section-number">7.4</span> Backward Propagation of Error - Backpropagation</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/edit/main/nn/nn.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -364,7 +364,7 @@ window.Quarto = {
 </header>
 
 
-<p>Now that we constructed one of the simplest NNs possible we build on this and extend our model. The first step is to introduce some (non-linear) activation functions or transfer functions <span class="math display">\[
+<p>Now that we constructed one of the simplest NNs possible (if we can even call it a NN), we build on this and extend our model. The first step is to introduce some (non-linear) activation functions or transfer functions <span class="math display">\[
 y = f(A, b, x).
 \]</span></p>
 <p>Some common functions are:</p>
@@ -464,7 +464,7 @@ Figure&nbsp;7.1: Different activation functions and their derivatives.
 </div>
 <section id="the-trainable-parameters-of-a-neural-network" class="level2" data-number="7.1">
 <h2 data-number="7.1" class="anchored" data-anchor-id="the-trainable-parameters-of-a-neural-network"><span class="header-section-number">7.1</span> The trainable parameters of a Neural Network</h2>
-<p>Before we build our first NN in the next section we need to get a better understanding on the dimensions and available parameters for our optimization involved in training a NN. As discussed, these parameters are the matrices consisting on the weights, the biases and are of course related to the neurons.</p>
+<p>Before we build our first NN in the next section, we need to get a better understanding on the dimensions and available parameters for our optimization involved in training a NN. As discussed, these parameters are the matrices combining the weights and the biases. Of course they are related to the neurons.</p>
 <div id="fig-nn-nn-get_dim" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-nn-nn-get_dim-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -484,81 +484,21 @@ Figure&nbsp;7.2: Generic linear NN with weights and biases.
 <div id="exr-nn-nn-params" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise 7.1 (Compute the parameters of the Neural Network)</strong></span> For the NN display in <a href="#fig-nn-nn-get_dim" class="quarto-xref">Figure&nbsp;<span>7.2</span></a> answer the following questions:</p>
 <ol type="1">
-<li>What is the shape of <span class="math inline">\(A_1, A_2, A_3, A_4\)</span>?</li>
-<li>Which of the matrices is sparse?</li>
-<li>What is the shape of <span class="math inline">\(b_1, b_2, b_3, b_4\)</span>?</li>
-<li>Write down the (expanded) formula for the output <span class="math inline">\(y\)</span> with respect to the input <span class="math inline">\(x\)</span> resulting from the composition of the different layers for <span class="math inline">\(f(x) = x\)</span> in each layer.</li>
+<li>What are the shapes of the matrices <span class="math inline">\(A_1, A_2, A_3, A_4\)</span>?</li>
+<li>Which of these matrices are sparse (have multiple zeros)?</li>
+<li>What are the shapes of the biases <span class="math inline">\(b_1, b_2, b_3, b_4\)</span>?</li>
+<li>Write down the (expanded) formula for the output <span class="math inline">\(y\)</span> with respect to the input <span class="math inline">\(x\)</span> resulting from the composition of the different layers for <span class="math inline">\(f(x) = x\)</span> in each layer (as seen in <a href="#fig-nn-nn-get_dim" class="quarto-xref">Figure&nbsp;<span>7.2</span></a>).</li>
 <li>Is this formulation a good option to compute <span class="math inline">\(y\)</span> from <span class="math inline">\(x\)</span> (provide some reasoning)?</li>
 </ol>
 </div>
 </div>
 </div>
 </div>
-<p>In <a href="#fig-nn-nn-get_dim" class="quarto-xref">Figure&nbsp;<span>7.2</span></a> we also used the formulation of <em>hidden layers</em> for all the layers <em>inside</em> the NN. This is a common formulation reflecting the nature of the NN that their <em>activations</em> (transfer from their specific input to output <span class="math inline">\(f_j(A_j, b_j, x^{j-1})\)</span>) are not exposed to the user and can not be observed directly.</p>
+<p>In <a href="#fig-nn-nn-get_dim" class="quarto-xref">Figure&nbsp;<span>7.2</span></a> we also used the formulation of <em>hidden layers</em> for all the layers <em>inside</em> the NN. This is a common formulation reflecting the nature of the NN. Their <em>activations</em> (transfer from their specific input to output <span class="math inline">\(f_j(A_j, b_j, x^{(j-1)})\)</span>) are not exposed to the user and can’t be observed by the user directly.</p>
 <p>Now let us build our first NN.</p>
 </section>
-<section id="our-first-neural-network" class="level2" data-number="7.2">
-<h2 data-number="7.2" class="anchored" data-anchor-id="our-first-neural-network"><span class="header-section-number">7.2</span> Our first Neural Network</h2>
-<p>First we split our data into a training and test set. It is important, that we scale our image data. This wa not necessary for the other methods but will make sure we get feasible results in this case. We scale by <span class="math inline">\(255\)</span> our theoretical maximum in an image.</p>
-<div id="8b12ba5a" class="cell" data-execution_count="2">
-<details class="code-fold">
-<summary>Show the code for loading, splitting and scaling the images.</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> io</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://github.com/dynamicslab/databook_python/"</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"raw/refs/heads/master/DATA/catData_w.mat"</span>)</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>cats_w <span class="op">=</span> scipy.io.loadmat(io.BytesIO(response.content))[<span class="st">"cat_wave"</span>]</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://github.com/dynamicslab/databook_python/"</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"raw/refs/heads/master/DATA/dogData_w.mat"</span>)</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>dogs_w <span class="op">=</span> scipy.io.loadmat(io.BytesIO(response.content))[<span class="st">"dog_wave"</span>]</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> np.concatenate((dogs_w[:, :<span class="dv">40</span>], cats_w[:, :<span class="dv">40</span>]), axis<span class="op">=</span><span class="dv">1</span>).T <span class="op">/</span> <span class="fl">255.0</span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> np.repeat(np.array([<span class="dv">0</span>, <span class="dv">1</span>]), <span class="dv">40</span>)</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> np.concatenate((dogs_w[:, <span class="dv">40</span>:], cats_w[:, <span class="dv">40</span>:]), axis<span class="op">=</span><span class="dv">1</span>).T <span class="op">/</span> <span class="fl">255.0</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>y_test <span class="op">=</span> np.repeat(np.array([<span class="dv">0</span>, <span class="dv">1</span>]), <span class="dv">40</span>)</span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> myplot(y):</span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    plt.figure()</span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> y.shape[<span class="dv">0</span>]</span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    plt.bar(<span class="bu">range</span>(n), y)</span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    plt.plot([<span class="op">-</span><span class="fl">0.5</span>, n <span class="op">-</span> <span class="fl">0.5</span>], [<span class="dv">0</span>, <span class="dv">0</span>], <span class="st">"k"</span>, linewidth<span class="op">=</span><span class="fl">1.0</span>)</span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    plt.plot([n <span class="op">//</span> <span class="dv">2</span> <span class="op">-</span> <span class="fl">0.5</span>, y.shape[<span class="dv">0</span>] <span class="op">//</span> <span class="dv">2</span> <span class="op">-</span> <span class="fl">0.5</span>], [<span class="op">-</span><span class="fl">1.1</span>, <span class="fl">1.1</span>], <span class="st">"r-."</span>, linewidth<span class="op">=</span><span class="dv">3</span>)</span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    plt.yticks([<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span>], [<span class="st">"cats"</span>, <span class="st">"dogs"</span>], rotation<span class="op">=</span><span class="dv">90</span>, va<span class="op">=</span><span class="st">"center"</span>)</span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    plt.text(n <span class="op">//</span> <span class="dv">4</span>, <span class="fl">1.05</span>, <span class="st">"dogs"</span>)</span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    plt.text(n <span class="op">//</span> <span class="dv">4</span> <span class="op">*</span> <span class="dv">3</span>, <span class="fl">1.05</span>, <span class="st">"cats"</span>)</span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    plt.gca().set_aspect(n <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<p>Now we can build our model. In order to do so we need to slightly modify our output. Instead of having a single neuron that is zero or one we will have two neurons, i.e.&nbsp;<span class="math inline">\(y\in\mathbb{R^2}\)</span> <span class="math display">\[
-y = \left[\begin{array}{c}1 \\ 0\end{array}\right] = \text{dog},
-\quad\text{and}\quad
-y = \left[\begin{array}{c}0 \\ 1\end{array}\right] = \text{cat}.
-\]</span></p>
-<p>The model will provide us with the probability of the image being a dog on <span class="math inline">\(y_1\)</span> and a cat on <span class="math inline">\(y_2\)</span>.</p>
-<p>Next, we define our activation function in the first layer by the non-linear function <span class="math inline">\(f_1 = \tanh\)</span>, the rest stays the same as before with our weights (combined to matrix <span class="math inline">\(A_1\)</span> and our bias vector <span class="math inline">\(b_1\)</span>). The result needs to be translated into probabilities, this is done via the <code>softmax</code> function <span class="math inline">\(\sigma\)</span> (see <a href="../appendices/explanations.html#sec-appendix-softmax" class="quarto-xref"><span>Section A.3</span></a> for a more detailed explanation and example) <span class="math display">\[
-\sigma: \mathbb{R^n} \to (0, 1)^n, \quad \sigma(x)_i = \frac{\exp(x_i)}{\sum_j{\exp(x_j)}}.
-\]</span></p>
-<p>We visualized the network in <a href="#fig-nn-cvd-nl" class="quarto-xref">Figure&nbsp;<span>7.3</span></a>.</p>
-<div id="fig-nn-cvd-nl" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-nn-cvd-nl-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../_assets/nn/cats_vs_dogs_nonlinear.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Figure&nbsp;7.3: A two layer structure for the cats vs.&nbsp;dogs classification with a non-linear model."><img src="../_assets/nn/cats_vs_dogs_nonlinear.svg" class="img-fluid figure-img"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn-cvd-nl-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;7.3: A two layer structure for the cats vs.&nbsp;dogs classification with a non-linear model.
-</figcaption>
-</figure>
-</div>
+<section id="a-neural-network-with-pytorch" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="a-neural-network-with-pytorch"><span class="header-section-number">7.2</span> A Neural Network with <code>pytorch</code></h2>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -569,56 +509,151 @@ Important
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>There are multiple frameworks available for NN. We will focus on <a href="https://pytorch.org/"><code>pytorch</code></a>.</p>
+<p>There are multiple frameworks available for NNs in <code>Python</code>. We will focus on <a href="https://pytorch.org/"><code>pytorch</code></a> for these notes.</p>
+<p>Nevertheless, see <a href="../appendices/keras.html" class="quarto-xref"><span>Appendix B</span></a> for an implementation of the <em>same</em> NN with an alternative framework.</p>
 </div>
 </div>
-<p>The following couple of code sections translate <a href="#fig-nn-cvd-nl" class="quarto-xref">Figure&nbsp;<span>7.3</span></a> into a <code>pytorch</code> model. The main idea is that we create a model class that inherits from <code>torch.nn.Module</code>.</p>
-<div id="f8eb27e9" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="annotated-cell-3"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-3-1"><a href="#annotated-cell-3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
-<span id="annotated-cell-3-2"><a href="#annotated-cell-3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-3-3"><a href="#annotated-cell-3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize everything for reproducibility</span></span>
-<span id="annotated-cell-3-4"><a href="#annotated-cell-3-4" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">6020</span>)</span>
-<span id="annotated-cell-3-5"><a href="#annotated-cell-3-5" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">6020</span>)</span>
-<span id="annotated-cell-3-6"><a href="#annotated-cell-3-6" aria-hidden="true" tabindex="-1"></a></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-3-7" class="code-annotation-target"><a href="#annotated-cell-3-7" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MyFirstNN(torch.nn.Module):</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-3-8" class="code-annotation-target"><a href="#annotated-cell-3-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, input_params):</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-3-9" class="code-annotation-target"><a href="#annotated-cell-3-9" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>(MyFirstNN, <span class="va">self</span>).<span class="fu">__init__</span>()</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-3-10" class="code-annotation-target"><a href="#annotated-cell-3-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.model <span class="op">=</span> torch.nn.Sequential(</span>
-<span id="annotated-cell-3-11"><a href="#annotated-cell-3-11" aria-hidden="true" tabindex="-1"></a>            torch.nn.Linear(input_params, <span class="dv">2</span>),           </span>
-<span id="annotated-cell-3-12"><a href="#annotated-cell-3-12" aria-hidden="true" tabindex="-1"></a>            torch.nn.Tanh(),                            </span>
-<span id="annotated-cell-3-13"><a href="#annotated-cell-3-13" aria-hidden="true" tabindex="-1"></a>            torch.nn.Linear(<span class="dv">2</span>, <span class="dv">2</span>),                      </span>
-<span id="annotated-cell-3-14"><a href="#annotated-cell-3-14" aria-hidden="true" tabindex="-1"></a>            torch.nn.Softmax(dim<span class="op">=</span><span class="dv">1</span>),                    </span>
-<span id="annotated-cell-3-15"><a href="#annotated-cell-3-15" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="annotated-cell-3-16"><a href="#annotated-cell-3-16" aria-hidden="true" tabindex="-1"></a></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="5" onclick="event.preventDefault();">5</a><span id="annotated-cell-3-17" class="code-annotation-target"><a href="#annotated-cell-3-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x):</span>
-<span id="annotated-cell-3-18"><a href="#annotated-cell-3-18" aria-hidden="true" tabindex="-1"></a>        y <span class="op">=</span> <span class="va">self</span>.model(x)</span>
-<span id="annotated-cell-3-19"><a href="#annotated-cell-3-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> y</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>There are a couple of steps required and some foreshadow later decisions. We tried to make the split to provide better understanding and an easy way to follow the material.</p>
+</div>
+</div>
+<p>Let us start with the input and how to prepare our data for for the model to-be. Before we load everything into the <code>pytorch</code> specific structures, we split our data into a training and test set. This time it is important that we rescale scale our image to <span class="math inline">\([0, 1]\)</span>, otherwise the optimization algorithms perform poorly. We scale by <span class="math inline">\(255\)</span>, our theoretical maximum in a generic image.</p>
+<div id="6fb5ec34" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="annotated-cell-2"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-2-1"><a href="#annotated-cell-2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="annotated-cell-2-2"><a href="#annotated-cell-2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy</span>
+<span id="annotated-cell-2-3"><a href="#annotated-cell-2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="annotated-cell-2-4"><a href="#annotated-cell-2-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> io</span>
+<span id="annotated-cell-2-5"><a href="#annotated-cell-2-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="annotated-cell-2-6"><a href="#annotated-cell-2-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="annotated-cell-2-7"><a href="#annotated-cell-2-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch.utils.data <span class="im">import</span> TensorDataset</span>
+<span id="annotated-cell-2-8"><a href="#annotated-cell-2-8" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
+<span id="annotated-cell-2-9"><a href="#annotated-cell-2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize everything for reproducibility</span></span>
+<span id="annotated-cell-2-10"><a href="#annotated-cell-2-10" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">6020</span>)</span>
+<span id="annotated-cell-2-11"><a href="#annotated-cell-2-11" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">6020</span>)</span>
+<span id="annotated-cell-2-12"><a href="#annotated-cell-2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-2-13"><a href="#annotated-cell-2-13" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(</span>
+<span id="annotated-cell-2-14"><a href="#annotated-cell-2-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://github.com/dynamicslab/databook_python/"</span></span>
+<span id="annotated-cell-2-15"><a href="#annotated-cell-2-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"raw/refs/heads/master/DATA/catData_w.mat"</span>)</span>
+<span id="annotated-cell-2-16"><a href="#annotated-cell-2-16" aria-hidden="true" tabindex="-1"></a>cats_w <span class="op">=</span> scipy.io.loadmat(io.BytesIO(response.content))[<span class="st">"cat_wave"</span>]</span>
+<span id="annotated-cell-2-17"><a href="#annotated-cell-2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-2-18"><a href="#annotated-cell-2-18" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(</span>
+<span id="annotated-cell-2-19"><a href="#annotated-cell-2-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://github.com/dynamicslab/databook_python/"</span></span>
+<span id="annotated-cell-2-20"><a href="#annotated-cell-2-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"raw/refs/heads/master/DATA/dogData_w.mat"</span>)</span>
+<span id="annotated-cell-2-21"><a href="#annotated-cell-2-21" aria-hidden="true" tabindex="-1"></a>dogs_w <span class="op">=</span> scipy.io.loadmat(io.BytesIO(response.content))[<span class="st">"dog_wave"</span>]</span>
+<span id="annotated-cell-2-22"><a href="#annotated-cell-2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-2-23"><a href="#annotated-cell-2-23" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> <span class="dv">40</span></span>
+<span id="annotated-cell-2-24"><a href="#annotated-cell-2-24" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> np.concatenate((dogs_w[:, :s], cats_w[:, :s]), axis<span class="op">=</span><span class="dv">1</span>).T <span class="op">/</span> <span class="fl">255.0</span></span>
+<span id="annotated-cell-2-25"><a href="#annotated-cell-2-25" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> np.repeat(np.array([<span class="dv">0</span>, <span class="dv">1</span>]), s)</span>
+<span id="annotated-cell-2-26"><a href="#annotated-cell-2-26" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> np.concatenate((dogs_w[:, s:], cats_w[:, s:]), axis<span class="op">=</span><span class="dv">1</span>).T <span class="op">/</span> <span class="fl">255.0</span></span>
+<span id="annotated-cell-2-27"><a href="#annotated-cell-2-27" aria-hidden="true" tabindex="-1"></a>y_test <span class="op">=</span> np.repeat(np.array([<span class="dv">0</span>, <span class="dv">1</span>]), <span class="dv">80</span> <span class="op">-</span> s)</span>
+<span id="annotated-cell-2-28"><a href="#annotated-cell-2-28" aria-hidden="true" tabindex="-1"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-2-29" class="code-annotation-target"><a href="#annotated-cell-2-29" aria-hidden="true" tabindex="-1"></a>X_train_tensor <span class="op">=</span> torch.tensor(X_train, dtype<span class="op">=</span>torch.float32)</span>
+<span id="annotated-cell-2-30"><a href="#annotated-cell-2-30" aria-hidden="true" tabindex="-1"></a>y_train_tensor <span class="op">=</span> torch.tensor(y_train, dtype<span class="op">=</span>torch.uint8)</span>
+<span id="annotated-cell-2-31"><a href="#annotated-cell-2-31" aria-hidden="true" tabindex="-1"></a>X_test_tensor <span class="op">=</span> torch.tensor(X_test, dtype<span class="op">=</span>torch.float32)</span>
+<span id="annotated-cell-2-32"><a href="#annotated-cell-2-32" aria-hidden="true" tabindex="-1"></a>y_test_tensor <span class="op">=</span> torch.tensor(y_test, dtype<span class="op">=</span>torch.uint8)</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-2-33" class="code-annotation-target"><a href="#annotated-cell-2-33" aria-hidden="true" tabindex="-1"></a>dataset <span class="op">=</span> TensorDataset(X_train_tensor, y_train_tensor)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-3" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-3" data-code-lines="7,20" data-code-annotation="1">Create a class inheriting from <code>torch.nn.Module</code>.</span>
+<span data-code-cell="annotated-cell-2" data-code-lines="29,30,31,32" data-code-annotation="1">We need to convert the training data to <em>PyTorch tensors</em> unfortionalty, this might result in larger data if we are not careful, <code>uint8</code> works for the loss computation we aim for (see later).</span>
 </dd>
-<dt data-target-cell="annotated-cell-3" data-target-annotation="2">2</dt>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-3" data-code-lines="8,16" data-code-annotation="2">The layers of the NN are defined in the initialization of the class.</span>
-</dd>
-<dt data-target-cell="annotated-cell-3" data-target-annotation="3">3</dt>
-<dd>
-<span data-code-cell="annotated-cell-3" data-code-lines="9" data-code-annotation="3">Do not forget to initialize the super class.</span>
-</dd>
-<dt data-target-cell="annotated-cell-3" data-target-annotation="4">4</dt>
-<dd>
-<span data-code-cell="annotated-cell-3" data-code-lines="10,15" data-code-annotation="4">We define a sequential model, this reflects best our desired structure, the first layer that reduces down to two neurons and applies the function <span class="math inline">\(\tanh\)</span>, and a second for <code>softmax</code>.</span>
-</dd>
-<dt data-target-cell="annotated-cell-3" data-target-annotation="5">5</dt>
-<dd>
-<span data-code-cell="annotated-cell-3" data-code-lines="17,18,19" data-code-annotation="5">In <code>forward</code> we define how data moves through the network.</span>
+<span data-code-cell="annotated-cell-2" data-code-lines="33" data-code-annotation="2">Combine <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> such that it can easily be used for a <code>DataLoader</code>.</span>
 </dd>
 </dl>
 </div>
 </div>
-<div id="31f0449c" class="cell styled-output" data-execution_count="4">
+<p>The easiest way to provide data for training is to use the mentioned <code>DataLoader</code> class. As we have only a very limited number of training data, we split our available data into a training and validation. We do so new and random in each epoch (optimization step). To provide a better overview, we use a dedicated function for this procedure. This function will be called during each optimization step in our training.</p>
+<div id="d2b6c497" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch.utils.data <span class="im">import</span> DataLoader, random_split</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_dataset(dataset: TensorDataset, val_split: <span class="bu">float</span>, batch_size: <span class="bu">int</span>):</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    val_size <span class="op">=</span> <span class="bu">int</span>(val_split <span class="op">*</span> <span class="bu">len</span>(dataset))</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    train_size <span class="op">=</span> <span class="bu">len</span>(dataset) <span class="op">-</span> val_size</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    train_ds, val_ds <span class="op">=</span> random_split(dataset, [train_size, val_size])</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create a dataset</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    train <span class="op">=</span> DataLoader(train_ds, batch_size<span class="op">=</span>batch_size, shuffle<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    val <span class="op">=</span> DataLoader(val_ds, batch_size<span class="op">=</span>batch_size, shuffle<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> train, val</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now that we have taken care of our input, we need to discuss the output of our model. Instead of having a single neuron that is zero or one, we will have two neurons, i.e.&nbsp;<span class="math inline">\(y\in\mathbb{R^2}\)</span> using a so called <em>one-hot encoding</em> for our two classes. <span class="math display">\[
+y = \left[\begin{array}{c}1 \\ 0\end{array}\right] = \text{dog},
+\quad\text{and}\quad
+y = \left[\begin{array}{c}0 \\ 1\end{array}\right] = \text{cat}.
+\]</span></p>
+<p>The idea is, that the model will provide us with the probability, that an image shows a dog on <span class="math inline">\(y_1\)</span> or a cat on <span class="math inline">\(y_2\)</span> (the sum of both will be <span class="math inline">\(1\)</span>).</p>
+<p>Next, we define our activation function in the first layer by the non-linear function <span class="math inline">\(f_1 = \tanh\)</span>. The idea is to use a more <em>complicated</em> function the reflect the nature of our images. The rest remains unchanged, with the weights aggregated to matrix <span class="math inline">\(A_1\)</span> and the bias to the vector <span class="math inline">\(b_1\)</span>. In a the next layer we have a linear transform to provide some more freedom and than use the <code>softmax</code> function <span class="math inline">\(\sigma\)</span> (see <a href="../appendices/explanations.html#sec-appendix-softmax" class="quarto-xref"><span>Section A.3</span></a> for a more detailed explanation and example) to translate the result into a probability <span class="math display">\[
+\sigma: \mathbb{R^n} \to (0, 1)^n, \quad \sigma(x)_i = \frac{\exp(x_i)}{\sum_j{\exp(x_j)}}.
+\]</span></p>
+<p>We visualized the resulting network in <a href="#fig-nn-cvd-nl" class="quarto-xref">Figure&nbsp;<span>7.3</span></a>.</p>
+<div id="fig-nn-cvd-nl" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-nn-cvd-nl-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../_assets/nn/cats_vs_dogs_nonlinear.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Figure&nbsp;7.3: A two layer structure for the cats vs.&nbsp;dogs classification with a non-linear model."><img src="../_assets/nn/cats_vs_dogs_nonlinear.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn-cvd-nl-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.3: A two layer structure for the cats vs.&nbsp;dogs classification with a non-linear model.
+</figcaption>
+</figure>
+</div>
+<p>The following couple of code sections translate <a href="#fig-nn-cvd-nl" class="quarto-xref">Figure&nbsp;<span>7.3</span></a> into a <code>pytorch</code> model. The main idea is that we create a model class that inherits from <code>torch.nn.Module</code> and than perform our training on this class, benefiting from the inherited capabilities.</p>
+<div id="13b8598f" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="annotated-cell-4"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-4-1"><a href="#annotated-cell-4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="annotated-cell-4-2"><a href="#annotated-cell-4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-4-3"><a href="#annotated-cell-4-3" aria-hidden="true" tabindex="-1"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-4-4" class="code-annotation-target"><a href="#annotated-cell-4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MyFirstNN(torch.nn.Module):</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-4-5" class="code-annotation-target"><a href="#annotated-cell-4-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, input_params):</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-4-6" class="code-annotation-target"><a href="#annotated-cell-4-6" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>(MyFirstNN, <span class="va">self</span>).<span class="fu">__init__</span>()</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-4-7" class="code-annotation-target"><a href="#annotated-cell-4-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.model <span class="op">=</span> torch.nn.Sequential(</span>
+<span id="annotated-cell-4-8"><a href="#annotated-cell-4-8" aria-hidden="true" tabindex="-1"></a>            torch.nn.Linear(input_params, <span class="dv">2</span>),           </span>
+<span id="annotated-cell-4-9"><a href="#annotated-cell-4-9" aria-hidden="true" tabindex="-1"></a>            torch.nn.Tanh(),                            </span>
+<span id="annotated-cell-4-10"><a href="#annotated-cell-4-10" aria-hidden="true" tabindex="-1"></a>            torch.nn.Linear(<span class="dv">2</span>, <span class="dv">2</span>),                      </span>
+<span id="annotated-cell-4-11"><a href="#annotated-cell-4-11" aria-hidden="true" tabindex="-1"></a>            torch.nn.Softmax(dim<span class="op">=</span><span class="dv">1</span>),                    </span>
+<span id="annotated-cell-4-12"><a href="#annotated-cell-4-12" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="annotated-cell-4-13"><a href="#annotated-cell-4-13" aria-hidden="true" tabindex="-1"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="5" onclick="event.preventDefault();">5</a><span id="annotated-cell-4-14" class="code-annotation-target"><a href="#annotated-cell-4-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x):</span>
+<span id="annotated-cell-4-15"><a href="#annotated-cell-4-15" aria-hidden="true" tabindex="-1"></a>        y <span class="op">=</span> <span class="va">self</span>.model(x)</span>
+<span id="annotated-cell-4-16"><a href="#annotated-cell-4-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> y</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-4" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="4,17" data-code-annotation="1">Create a class inheriting from <code>torch.nn.Module</code>.</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="5,13" data-code-annotation="2">The layers of the NN are defined in the initialization of the class.</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="6" data-code-annotation="3">Do not forget to initialize the super class.</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="7,12" data-code-annotation="4">We define a sequential model, this reflects best our desired structure, the first layer that reduces down to two neurons and applies the function <span class="math inline">\(\tanh\)</span>, and a second for <code>softmax</code>.</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="5">5</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="14,15,16" data-code-annotation="5">In <code>forward</code> we define how data moves through the network.</span>
+</dd>
+</dl>
+</div>
+</div>
+<p>Of course it is important to check if the code corresponds to the model we have in mind. For this <a href="https://github.com/TylerYep/torchinfo"><code>torchinfo</code></a> is quite a useful tool. It provides a tabular overview.</p>
+<div id="c20d7cb5" class="cell styled-output" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torchinfo</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> MyFirstNN(X_train.shape[<span class="dv">1</span>])</span>
@@ -650,212 +685,6 @@ Estimated Total Size (MB): 0.04
 ================================================================</code></pre>
 </div>
 </div>
-<p>It is often also quite useful to export the model as an image. In our case we can work again with a <code>dot</code> file rendered as <a href="../appendices/keras.html#fig-nn-nn-model-visual" class="quarto-xref">Figure&nbsp;<span>B.1</span></a>.</p>
-<div id="682af5ce" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torchviz</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> torch.randn(<span class="dv">1</span>, X_train.shape[<span class="dv">1</span>])</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> model(x)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>dot <span class="op">=</span> torchviz.make_dot(y, params<span class="op">=</span><span class="bu">dict</span>(model.named_parameters()))</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>dot.save(<span class="st">"model.dot"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell" data-file="model.dot" data-layout-align="default">
-<div class="cell-output-display">
-<div id="fig-nn-nn-model-visual" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-nn-nn-model-visual-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div>
-<svg width="672" height="480" viewbox="0.00 0.00 299.30 480.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none">
-<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 476)">
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-476 295.3,-476 295.3,4 -4,4"></polygon>
-<!-- 140148836407632 -->
-<g id="node1" class="node">
-<title>140148836407632</title>
-<polygon fill="#caff70" stroke="black" points="170.15,-32 116.15,-32 116.15,0 170.15,0 170.15,-32"></polygon>
-<text text-anchor="middle" x="143.15" y="-7" font-family="monospace" font-size="10.00"> (1, 2)</text>
-</g>
-<!-- 140146451325200 -->
-<g id="node2" class="node">
-<title>140146451325200</title>
-<polygon fill="lightgrey" stroke="black" points="191.08,-88 95.23,-88 95.23,-68 191.08,-68 191.08,-88"></polygon>
-<text text-anchor="middle" x="143.15" y="-75" font-family="monospace" font-size="10.00">SoftmaxBackward0</text>
-</g>
-<!-- 140146451325200&#45;&gt;140148836407632 -->
-<g id="edge14" class="edge">
-<title>140146451325200-&gt;140148836407632</title>
-<path fill="none" stroke="black" d="M143.15,-67.89C143.15,-61.1 143.15,-51.48 143.15,-42.44"></path>
-<polygon fill="black" stroke="black" points="146.65,-42.28 143.15,-32.28 139.65,-42.28 146.65,-42.28"></polygon>
-</g>
-<!-- 140148835796880 -->
-<g id="node3" class="node">
-<title>140148835796880</title>
-<polygon fill="lightgrey" stroke="black" points="190.47,-144 95.83,-144 95.83,-124 190.47,-124 190.47,-144"></polygon>
-<text text-anchor="middle" x="143.15" y="-131" font-family="monospace" font-size="10.00">AddmmBackward0</text>
-</g>
-<!-- 140148835796880&#45;&gt;140146451325200 -->
-<g id="edge1" class="edge">
-<title>140148835796880-&gt;140146451325200</title>
-<path fill="none" stroke="black" d="M143.15,-123.59C143.15,-116.7 143.15,-107.1 143.15,-98.57"></path>
-<polygon fill="black" stroke="black" points="146.65,-98.3 143.15,-88.3 139.65,-98.3 146.65,-98.3"></polygon>
-</g>
-<!-- 140145587629952 -->
-<g id="node4" class="node">
-<title>140145587629952</title>
-<polygon fill="lightgrey" stroke="black" points="84.45,-200 -0.15,-200 -0.15,-180 84.45,-180 84.45,-200"></polygon>
-<text text-anchor="middle" x="42.15" y="-187" font-family="monospace" font-size="10.00">AccumulateGrad</text>
-</g>
-<!-- 140145587629952&#45;&gt;140148835796880 -->
-<g id="edge2" class="edge">
-<title>140145587629952-&gt;140148835796880</title>
-<path fill="none" stroke="black" d="M59.28,-179.84C75.2,-171.33 99.11,-158.55 117.33,-148.8"></path>
-<polygon fill="black" stroke="black" points="119.1,-151.83 126.27,-144.03 115.8,-145.65 119.1,-151.83"></polygon>
-</g>
-<!-- 140145832981312 -->
-<g id="node5" class="node">
-<title>140145832981312</title>
-<polygon fill="lightblue" stroke="black" points="75.75,-268 8.55,-268 8.55,-236 75.75,-236 75.75,-268"></polygon>
-<text text-anchor="middle" x="42.15" y="-255" font-family="monospace" font-size="10.00">model.2.bias</text>
-<text text-anchor="middle" x="42.15" y="-243" font-family="monospace" font-size="10.00"> (2)</text>
-</g>
-<!-- 140145832981312&#45;&gt;140145587629952 -->
-<g id="edge3" class="edge">
-<title>140145832981312-&gt;140145587629952</title>
-<path fill="none" stroke="black" d="M42.15,-235.86C42.15,-228.13 42.15,-218.63 42.15,-210.37"></path>
-<polygon fill="black" stroke="black" points="45.65,-210.15 42.15,-200.15 38.65,-210.15 45.65,-210.15"></polygon>
-</g>
-<!-- 140145587662048 -->
-<g id="node6" class="node">
-<title>140145587662048</title>
-<polygon fill="lightgrey" stroke="black" points="184.23,-200 102.07,-200 102.07,-180 184.23,-180 184.23,-200"></polygon>
-<text text-anchor="middle" x="143.15" y="-187" font-family="monospace" font-size="10.00">TanhBackward0</text>
-</g>
-<!-- 140145587662048&#45;&gt;140148835796880 -->
-<g id="edge4" class="edge">
-<title>140145587662048-&gt;140148835796880</title>
-<path fill="none" stroke="black" d="M143.15,-179.59C143.15,-172.7 143.15,-163.1 143.15,-154.57"></path>
-<polygon fill="black" stroke="black" points="146.65,-154.3 143.15,-144.3 139.65,-154.3 146.65,-154.3"></polygon>
-</g>
-<!-- 140145588126144 -->
-<g id="node7" class="node">
-<title>140145588126144</title>
-<polygon fill="lightgrey" stroke="black" points="189.47,-262 94.83,-262 94.83,-242 189.47,-242 189.47,-262"></polygon>
-<text text-anchor="middle" x="142.15" y="-249" font-family="monospace" font-size="10.00">AddmmBackward0</text>
-</g>
-<!-- 140145588126144&#45;&gt;140145587662048 -->
-<g id="edge5" class="edge">
-<title>140145588126144-&gt;140145587662048</title>
-<path fill="none" stroke="black" d="M142.3,-241.89C142.44,-233.52 142.65,-220.84 142.83,-210.23"></path>
-<polygon fill="black" stroke="black" points="146.33,-210.26 143,-200.2 139.33,-210.14 146.33,-210.26"></polygon>
-</g>
-<!-- 140145588126624 -->
-<g id="node8" class="node">
-<title>140145588126624</title>
-<polygon fill="lightgrey" stroke="black" points="98.45,-330 13.85,-330 13.85,-310 98.45,-310 98.45,-330"></polygon>
-<text text-anchor="middle" x="56.15" y="-317" font-family="monospace" font-size="10.00">AccumulateGrad</text>
-</g>
-<!-- 140145588126624&#45;&gt;140145588126144 -->
-<g id="edge6" class="edge">
-<title>140145588126624-&gt;140145588126144</title>
-<path fill="none" stroke="black" d="M68.11,-309.82C82.1,-299.09 105.48,-281.14 122.23,-268.29"></path>
-<polygon fill="black" stroke="black" points="124.49,-270.96 130.29,-262.1 120.23,-265.41 124.49,-270.96"></polygon>
-</g>
-<!-- 140145832980352 -->
-<g id="node9" class="node">
-<title>140145832980352</title>
-<polygon fill="lightblue" stroke="black" points="89.75,-404 22.55,-404 22.55,-372 89.75,-372 89.75,-404"></polygon>
-<text text-anchor="middle" x="56.15" y="-391" font-family="monospace" font-size="10.00">model.0.bias</text>
-<text text-anchor="middle" x="56.15" y="-379" font-family="monospace" font-size="10.00"> (2)</text>
-</g>
-<!-- 140145832980352&#45;&gt;140145588126624 -->
-<g id="edge7" class="edge">
-<title>140145832980352-&gt;140145588126624</title>
-<path fill="none" stroke="black" d="M56.15,-371.69C56.15,-362.4 56.15,-350.44 56.15,-340.47"></path>
-<polygon fill="black" stroke="black" points="59.65,-340.32 56.15,-330.32 52.65,-340.32 59.65,-340.32"></polygon>
-</g>
-<!-- 140145588128544 -->
-<g id="node10" class="node">
-<title>140145588128544</title>
-<polygon fill="lightgrey" stroke="black" points="183.8,-330 116.5,-330 116.5,-310 183.8,-310 183.8,-330"></polygon>
-<text text-anchor="middle" x="150.15" y="-317" font-family="monospace" font-size="10.00">TBackward0</text>
-</g>
-<!-- 140145588128544&#45;&gt;140145588126144 -->
-<g id="edge8" class="edge">
-<title>140145588128544-&gt;140145588126144</title>
-<path fill="none" stroke="black" d="M149.04,-309.82C147.87,-300.17 145.99,-284.69 144.49,-272.32"></path>
-<polygon fill="black" stroke="black" points="147.93,-271.61 143.25,-262.1 140.98,-272.45 147.93,-271.61"></polygon>
-</g>
-<!-- 140145588136464 -->
-<g id="node11" class="node">
-<title>140145588136464</title>
-<polygon fill="lightgrey" stroke="black" points="192.45,-398 107.85,-398 107.85,-378 192.45,-378 192.45,-398"></polygon>
-<text text-anchor="middle" x="150.15" y="-385" font-family="monospace" font-size="10.00">AccumulateGrad</text>
-</g>
-<!-- 140145588136464&#45;&gt;140145588128544 -->
-<g id="edge9" class="edge">
-<title>140145588136464-&gt;140145588128544</title>
-<path fill="none" stroke="black" d="M150.15,-377.82C150.15,-368.17 150.15,-352.69 150.15,-340.32"></path>
-<polygon fill="black" stroke="black" points="153.65,-340.1 150.15,-330.1 146.65,-340.1 153.65,-340.1"></polygon>
-</g>
-<!-- 140145832980032 -->
-<g id="node12" class="node">
-<title>140145832980032</title>
-<polygon fill="lightblue" stroke="black" points="189.36,-472 110.94,-472 110.94,-440 189.36,-440 189.36,-472"></polygon>
-<text text-anchor="middle" x="150.15" y="-459" font-family="monospace" font-size="10.00">model.0.weight</text>
-<text text-anchor="middle" x="150.15" y="-447" font-family="monospace" font-size="10.00"> (2, 1024)</text>
-</g>
-<!-- 140145832980032&#45;&gt;140145588136464 -->
-<g id="edge10" class="edge">
-<title>140145832980032-&gt;140145588136464</title>
-<path fill="none" stroke="black" d="M150.15,-439.69C150.15,-430.4 150.15,-418.44 150.15,-408.47"></path>
-<polygon fill="black" stroke="black" points="153.65,-408.32 150.15,-398.32 146.65,-408.32 153.65,-408.32"></polygon>
-</g>
-<!-- 140145587683232 -->
-<g id="node13" class="node">
-<title>140145587683232</title>
-<polygon fill="lightgrey" stroke="black" points="275.8,-200 208.5,-200 208.5,-180 275.8,-180 275.8,-200"></polygon>
-<text text-anchor="middle" x="242.15" y="-187" font-family="monospace" font-size="10.00">TBackward0</text>
-</g>
-<!-- 140145587683232&#45;&gt;140148835796880 -->
-<g id="edge11" class="edge">
-<title>140145587683232-&gt;140148835796880</title>
-<path fill="none" stroke="black" d="M225.36,-179.84C209.9,-171.41 186.75,-158.78 168.95,-149.07"></path>
-<polygon fill="black" stroke="black" points="170.15,-145.74 159.7,-144.03 166.8,-151.89 170.15,-145.74"></polygon>
-</g>
-<!-- 140145588126288 -->
-<g id="node14" class="node">
-<title>140145588126288</title>
-<polygon fill="lightgrey" stroke="black" points="291.45,-262 206.85,-262 206.85,-242 291.45,-242 291.45,-262"></polygon>
-<text text-anchor="middle" x="249.15" y="-249" font-family="monospace" font-size="10.00">AccumulateGrad</text>
-</g>
-<!-- 140145588126288&#45;&gt;140145587683232 -->
-<g id="edge12" class="edge">
-<title>140145588126288-&gt;140145587683232</title>
-<path fill="none" stroke="black" d="M248.09,-241.89C247.11,-233.52 245.63,-220.84 244.39,-210.23"></path>
-<polygon fill="black" stroke="black" points="247.86,-209.73 243.22,-200.2 240.91,-210.54 247.86,-209.73"></polygon>
-</g>
-<!-- 140145832981232 -->
-<g id="node15" class="node">
-<title>140145832981232</title>
-<polygon fill="lightblue" stroke="black" points="288.36,-336 209.94,-336 209.94,-304 288.36,-304 288.36,-336"></polygon>
-<text text-anchor="middle" x="249.15" y="-323" font-family="monospace" font-size="10.00">model.2.weight</text>
-<text text-anchor="middle" x="249.15" y="-311" font-family="monospace" font-size="10.00"> (2, 2)</text>
-</g>
-<!-- 140145832981232&#45;&gt;140145588126288 -->
-<g id="edge13" class="edge">
-<title>140145832981232-&gt;140145588126288</title>
-<path fill="none" stroke="black" d="M249.15,-303.69C249.15,-294.4 249.15,-282.44 249.15,-272.47"></path>
-<polygon fill="black" stroke="black" points="252.65,-272.32 249.15,-262.32 245.65,-272.32 252.65,-272.32"></polygon>
-</g>
-</g>
-</svg>
-</div>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn-nn-model-visual-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;7.4: Model with all its parameters visualized.
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
 <div class="callout callout-style-simple callout-caution no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -863,19 +692,22 @@ Figure&nbsp;7.4: Model with all its parameters visualized.
 </div>
 <div class="callout-body-container">
 <div id="exr-nn-nn-params" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 7.2 (Explain the output of <code>.summary()</code>)</strong></span> For the (extended) output of <code>.summary()</code></p>
-<div id="b6fd1141" class="cell styled-output" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torchinfo</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> MyFirstNN(X_train.shape[<span class="dv">1</span>])</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>batch_size <span class="op">=</span> <span class="dv">8</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>info <span class="op">=</span> torchinfo.summary(model, (batch_size, X_train.shape[<span class="dv">1</span>]),</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>                  col_names<span class="op">=</span>[<span class="st">"input_size"</span>, <span class="st">"output_size"</span>, <span class="st">"num_params"</span>],</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>                  col_width<span class="op">=</span><span class="dv">12</span>)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>info.layer_name_width<span class="op">=</span><span class="dv">15</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(info)</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"The estimated total size in KB </span><span class="sc">{</span>info<span class="sc">.</span>total_param_bytes <span class="op">/</span> <span class="dv">1024</span><span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><span class="theorem-title"><strong>Exercise 7.2 (Explain the output of <code>.summary()</code>)</strong></span> For the (extended) output of <code>.summary()</code> in the following listing answer the questions below.</p>
+<div id="b931badd" class="cell styled-output" data-execution_count="6">
+<details class="code-fold">
+<summary>Show the code for the slightly extended summary.</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torchinfo</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> MyFirstNN(X_train.shape[<span class="dv">1</span>])</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>batch_size <span class="op">=</span> <span class="dv">8</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>info <span class="op">=</span> torchinfo.summary(model, (batch_size, X_train.shape[<span class="dv">1</span>]),</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                  col_names<span class="op">=</span>[<span class="st">"input_size"</span>, <span class="st">"output_size"</span>, <span class="st">"num_params"</span>],</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                  col_width<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>info.layer_name_width<span class="op">=</span><span class="dv">15</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(info)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n\n</span><span class="ss">The estimated total size in KB </span><span class="sc">{</span>info<span class="sc">.</span>total_param_bytes <span class="op">/</span> <span class="dv">1024</span><span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>============================================================================
 Layer (type:depth-idx)                   Input Shape  Output Shape Param #
@@ -897,10 +729,11 @@ Forward/backward pass size (MB): 0.00
 Params size (MB): 0.01
 Estimated Total Size (MB): 0.04
 ============================================================================
+
+
 The estimated total size in KB 8.03125</code></pre>
 </div>
 </div>
-<p>answer the following questions.</p>
 <ol type="1">
 <li>Explain how the <code>Param #</code> column is computed and retrace the details.</li>
 <li>If we expand the <code>Params size</code> to (KB) we get 8.03, what does this imply on the data type of the parameters?</li>
@@ -909,25 +742,218 @@ The estimated total size in KB 8.03125</code></pre>
 </div>
 </div>
 </div>
-<p>Next, we need to prepare our data for for the model. The easiest way is to use the provided <code>DataLoader</code> class. As we have only a very limited number of training data we split our available data into a training and validation set in each epoch. To provide a better overview, we use a separate function for this procedure.</p>
-<div id="a4a2ac0d" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch.utils.data <span class="im">import</span> DataLoader, TensorDataset, random_split</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_dataset(dataset, validation_split, batch_size):</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    val_size <span class="op">=</span> <span class="bu">int</span>(validation_split <span class="op">*</span> <span class="bu">len</span>(dataset))</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    train_size <span class="op">=</span> <span class="bu">len</span>(dataset) <span class="op">-</span> val_size</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    train_ds, val_ds <span class="op">=</span> random_split(dataset, [train_size, val_size])</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create a dataset</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    train <span class="op">=</span> DataLoader(train_ds, batch_size<span class="op">=</span>batch_size, shuffle<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    val <span class="op">=</span> DataLoader(val_ds, batch_size<span class="op">=</span>batch_size, shuffle<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> train, val</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>It is often also quite useful to export the model as an image. Here the <a href="https://github.com/szagoruyko/pytorchviz"><code>torchviz</code></a> package comes in handy. In our case we can work again with a <code>dot</code> file, that is rendered as <a href="#fig-nn-nn-model-visual" class="quarto-xref">Figure&nbsp;<span>7.4</span></a>.</p>
+<div id="d401fa14" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torchviz</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">eval</span>()</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>x_viz <span class="op">=</span> X_train_tensor[<span class="dv">0</span>, :].reshape([<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>y_viz <span class="op">=</span> model(x_viz)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>dot <span class="op">=</span> torchviz.make_dot(y_viz, params<span class="op">=</span><span class="bu">dict</span>(model.named_parameters()))</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>dot.save(<span class="st">"model.dot"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-file="model.dot" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-nn-nn-model-visual" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-nn-nn-model-visual-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<svg width="672" height="480" viewbox="0.00 0.00 299.30 480.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 476)">
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-476 295.3,-476 295.3,4 -4,4"></polygon>
+<!-- 140402942877664 -->
+<g id="node1" class="node">
+<title>140402942877664</title>
+<polygon fill="#caff70" stroke="black" points="170.15,-32 116.15,-32 116.15,0 170.15,0 170.15,-32"></polygon>
+<text text-anchor="middle" x="143.15" y="-7" font-family="monospace" font-size="10.00"> (1, 2)</text>
+</g>
+<!-- 140402942743968 -->
+<g id="node2" class="node">
+<title>140402942743968</title>
+<polygon fill="lightgrey" stroke="black" points="191.08,-88 95.23,-88 95.23,-68 191.08,-68 191.08,-88"></polygon>
+<text text-anchor="middle" x="143.15" y="-75" font-family="monospace" font-size="10.00">SoftmaxBackward0</text>
+</g>
+<!-- 140402942743968&#45;&gt;140402942877664 -->
+<g id="edge14" class="edge">
+<title>140402942743968-&gt;140402942877664</title>
+<path fill="none" stroke="black" d="M143.15,-67.89C143.15,-61.1 143.15,-51.48 143.15,-42.44"></path>
+<polygon fill="black" stroke="black" points="146.65,-42.28 143.15,-32.28 139.65,-42.28 146.65,-42.28"></polygon>
+</g>
+<!-- 140402698849392 -->
+<g id="node3" class="node">
+<title>140402698849392</title>
+<polygon fill="lightgrey" stroke="black" points="190.47,-144 95.83,-144 95.83,-124 190.47,-124 190.47,-144"></polygon>
+<text text-anchor="middle" x="143.15" y="-131" font-family="monospace" font-size="10.00">AddmmBackward0</text>
+</g>
+<!-- 140402698849392&#45;&gt;140402942743968 -->
+<g id="edge1" class="edge">
+<title>140402698849392-&gt;140402942743968</title>
+<path fill="none" stroke="black" d="M143.15,-123.59C143.15,-116.7 143.15,-107.1 143.15,-98.57"></path>
+<polygon fill="black" stroke="black" points="146.65,-98.3 143.15,-88.3 139.65,-98.3 146.65,-98.3"></polygon>
+</g>
+<!-- 140402698913152 -->
+<g id="node4" class="node">
+<title>140402698913152</title>
+<polygon fill="lightgrey" stroke="black" points="84.45,-200 -0.15,-200 -0.15,-180 84.45,-180 84.45,-200"></polygon>
+<text text-anchor="middle" x="42.15" y="-187" font-family="monospace" font-size="10.00">AccumulateGrad</text>
+</g>
+<!-- 140402698913152&#45;&gt;140402698849392 -->
+<g id="edge2" class="edge">
+<title>140402698913152-&gt;140402698849392</title>
+<path fill="none" stroke="black" d="M59.28,-179.84C75.2,-171.33 99.11,-158.55 117.33,-148.8"></path>
+<polygon fill="black" stroke="black" points="119.1,-151.83 126.27,-144.03 115.8,-145.65 119.1,-151.83"></polygon>
+</g>
+<!-- 140402942876304 -->
+<g id="node5" class="node">
+<title>140402942876304</title>
+<polygon fill="lightblue" stroke="black" points="75.75,-268 8.55,-268 8.55,-236 75.75,-236 75.75,-268"></polygon>
+<text text-anchor="middle" x="42.15" y="-255" font-family="monospace" font-size="10.00">model.2.bias</text>
+<text text-anchor="middle" x="42.15" y="-243" font-family="monospace" font-size="10.00"> (2)</text>
+</g>
+<!-- 140402942876304&#45;&gt;140402698913152 -->
+<g id="edge3" class="edge">
+<title>140402942876304-&gt;140402698913152</title>
+<path fill="none" stroke="black" d="M42.15,-235.86C42.15,-228.13 42.15,-218.63 42.15,-210.37"></path>
+<polygon fill="black" stroke="black" points="45.65,-210.15 42.15,-200.15 38.65,-210.15 45.65,-210.15"></polygon>
+</g>
+<!-- 140402698913536 -->
+<g id="node6" class="node">
+<title>140402698913536</title>
+<polygon fill="lightgrey" stroke="black" points="184.23,-200 102.07,-200 102.07,-180 184.23,-180 184.23,-200"></polygon>
+<text text-anchor="middle" x="143.15" y="-187" font-family="monospace" font-size="10.00">TanhBackward0</text>
+</g>
+<!-- 140402698913536&#45;&gt;140402698849392 -->
+<g id="edge4" class="edge">
+<title>140402698913536-&gt;140402698849392</title>
+<path fill="none" stroke="black" d="M143.15,-179.59C143.15,-172.7 143.15,-163.1 143.15,-154.57"></path>
+<polygon fill="black" stroke="black" points="146.65,-154.3 143.15,-144.3 139.65,-154.3 146.65,-154.3"></polygon>
+</g>
+<!-- 140402698913776 -->
+<g id="node7" class="node">
+<title>140402698913776</title>
+<polygon fill="lightgrey" stroke="black" points="189.47,-262 94.83,-262 94.83,-242 189.47,-242 189.47,-262"></polygon>
+<text text-anchor="middle" x="142.15" y="-249" font-family="monospace" font-size="10.00">AddmmBackward0</text>
+</g>
+<!-- 140402698913776&#45;&gt;140402698913536 -->
+<g id="edge5" class="edge">
+<title>140402698913776-&gt;140402698913536</title>
+<path fill="none" stroke="black" d="M142.3,-241.89C142.44,-233.52 142.65,-220.84 142.83,-210.23"></path>
+<polygon fill="black" stroke="black" points="146.33,-210.26 143,-200.2 139.33,-210.14 146.33,-210.26"></polygon>
+</g>
+<!-- 140402698917856 -->
+<g id="node8" class="node">
+<title>140402698917856</title>
+<polygon fill="lightgrey" stroke="black" points="98.45,-330 13.85,-330 13.85,-310 98.45,-310 98.45,-330"></polygon>
+<text text-anchor="middle" x="56.15" y="-317" font-family="monospace" font-size="10.00">AccumulateGrad</text>
+</g>
+<!-- 140402698917856&#45;&gt;140402698913776 -->
+<g id="edge6" class="edge">
+<title>140402698917856-&gt;140402698913776</title>
+<path fill="none" stroke="black" d="M68.11,-309.82C82.1,-299.09 105.48,-281.14 122.23,-268.29"></path>
+<polygon fill="black" stroke="black" points="124.49,-270.96 130.29,-262.1 120.23,-265.41 124.49,-270.96"></polygon>
+</g>
+<!-- 140402942876144 -->
+<g id="node9" class="node">
+<title>140402942876144</title>
+<polygon fill="lightblue" stroke="black" points="89.75,-404 22.55,-404 22.55,-372 89.75,-372 89.75,-404"></polygon>
+<text text-anchor="middle" x="56.15" y="-391" font-family="monospace" font-size="10.00">model.0.bias</text>
+<text text-anchor="middle" x="56.15" y="-379" font-family="monospace" font-size="10.00"> (2)</text>
+</g>
+<!-- 140402942876144&#45;&gt;140402698917856 -->
+<g id="edge7" class="edge">
+<title>140402942876144-&gt;140402698917856</title>
+<path fill="none" stroke="black" d="M56.15,-371.69C56.15,-362.4 56.15,-350.44 56.15,-340.47"></path>
+<polygon fill="black" stroke="black" points="59.65,-340.32 56.15,-330.32 52.65,-340.32 59.65,-340.32"></polygon>
+</g>
+<!-- 140402698914544 -->
+<g id="node10" class="node">
+<title>140402698914544</title>
+<polygon fill="lightgrey" stroke="black" points="183.8,-330 116.5,-330 116.5,-310 183.8,-310 183.8,-330"></polygon>
+<text text-anchor="middle" x="150.15" y="-317" font-family="monospace" font-size="10.00">TBackward0</text>
+</g>
+<!-- 140402698914544&#45;&gt;140402698913776 -->
+<g id="edge8" class="edge">
+<title>140402698914544-&gt;140402698913776</title>
+<path fill="none" stroke="black" d="M149.04,-309.82C147.87,-300.17 145.99,-284.69 144.49,-272.32"></path>
+<polygon fill="black" stroke="black" points="147.93,-271.61 143.25,-262.1 140.98,-272.45 147.93,-271.61"></polygon>
+</g>
+<!-- 140402698914256 -->
+<g id="node11" class="node">
+<title>140402698914256</title>
+<polygon fill="lightgrey" stroke="black" points="192.45,-398 107.85,-398 107.85,-378 192.45,-378 192.45,-398"></polygon>
+<text text-anchor="middle" x="150.15" y="-385" font-family="monospace" font-size="10.00">AccumulateGrad</text>
+</g>
+<!-- 140402698914256&#45;&gt;140402698914544 -->
+<g id="edge9" class="edge">
+<title>140402698914256-&gt;140402698914544</title>
+<path fill="none" stroke="black" d="M150.15,-377.82C150.15,-368.17 150.15,-352.69 150.15,-340.32"></path>
+<polygon fill="black" stroke="black" points="153.65,-340.1 150.15,-330.1 146.65,-340.1 153.65,-340.1"></polygon>
+</g>
+<!-- 140402942875984 -->
+<g id="node12" class="node">
+<title>140402942875984</title>
+<polygon fill="lightblue" stroke="black" points="189.36,-472 110.94,-472 110.94,-440 189.36,-440 189.36,-472"></polygon>
+<text text-anchor="middle" x="150.15" y="-459" font-family="monospace" font-size="10.00">model.0.weight</text>
+<text text-anchor="middle" x="150.15" y="-447" font-family="monospace" font-size="10.00"> (2, 1024)</text>
+</g>
+<!-- 140402942875984&#45;&gt;140402698914256 -->
+<g id="edge10" class="edge">
+<title>140402942875984-&gt;140402698914256</title>
+<path fill="none" stroke="black" d="M150.15,-439.69C150.15,-430.4 150.15,-418.44 150.15,-408.47"></path>
+<polygon fill="black" stroke="black" points="153.65,-408.32 150.15,-398.32 146.65,-408.32 153.65,-408.32"></polygon>
+</g>
+<!-- 140402698913440 -->
+<g id="node13" class="node">
+<title>140402698913440</title>
+<polygon fill="lightgrey" stroke="black" points="275.8,-200 208.5,-200 208.5,-180 275.8,-180 275.8,-200"></polygon>
+<text text-anchor="middle" x="242.15" y="-187" font-family="monospace" font-size="10.00">TBackward0</text>
+</g>
+<!-- 140402698913440&#45;&gt;140402698849392 -->
+<g id="edge11" class="edge">
+<title>140402698913440-&gt;140402698849392</title>
+<path fill="none" stroke="black" d="M225.36,-179.84C209.9,-171.41 186.75,-158.78 168.95,-149.07"></path>
+<polygon fill="black" stroke="black" points="170.15,-145.74 159.7,-144.03 166.8,-151.89 170.15,-145.74"></polygon>
+</g>
+<!-- 140402698916800 -->
+<g id="node14" class="node">
+<title>140402698916800</title>
+<polygon fill="lightgrey" stroke="black" points="291.45,-262 206.85,-262 206.85,-242 291.45,-242 291.45,-262"></polygon>
+<text text-anchor="middle" x="249.15" y="-249" font-family="monospace" font-size="10.00">AccumulateGrad</text>
+</g>
+<!-- 140402698916800&#45;&gt;140402698913440 -->
+<g id="edge12" class="edge">
+<title>140402698916800-&gt;140402698913440</title>
+<path fill="none" stroke="black" d="M248.09,-241.89C247.11,-233.52 245.63,-220.84 244.39,-210.23"></path>
+<polygon fill="black" stroke="black" points="247.86,-209.73 243.22,-200.2 240.91,-210.54 247.86,-209.73"></polygon>
+</g>
+<!-- 140402942876224 -->
+<g id="node15" class="node">
+<title>140402942876224</title>
+<polygon fill="lightblue" stroke="black" points="288.36,-336 209.94,-336 209.94,-304 288.36,-304 288.36,-336"></polygon>
+<text text-anchor="middle" x="249.15" y="-323" font-family="monospace" font-size="10.00">model.2.weight</text>
+<text text-anchor="middle" x="249.15" y="-311" font-family="monospace" font-size="10.00"> (2, 2)</text>
+</g>
+<!-- 140402942876224&#45;&gt;140402698916800 -->
+<g id="edge13" class="edge">
+<title>140402942876224-&gt;140402698916800</title>
+<path fill="none" stroke="black" d="M249.15,-303.69C249.15,-294.4 249.15,-282.44 249.15,-272.47"></path>
+<polygon fill="black" stroke="black" points="252.65,-272.32 249.15,-262.32 245.65,-272.32 252.65,-272.32"></polygon>
+</g>
+</g>
+</svg>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn-nn-model-visual-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.4: Model with all its parameters visualized.
+</figcaption>
+</figure>
+</div>
+</div>
 </div>
 <p>In <code>pytorch</code> we are responsible for our training function. This allows for a lot of flexibility. The structure is always quite similar.</p>
-<div id="8c71239d" class="cell" data-execution_count="8">
+<div id="d476baaf" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="annotated-cell-7"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-7-1"><a href="#annotated-cell-7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> train_model(model, dataset, loss_fn, optimizer,</span>
-<span id="annotated-cell-7-2"><a href="#annotated-cell-7-2" aria-hidden="true" tabindex="-1"></a>                epochs<span class="op">=</span><span class="dv">130</span>, validation_split<span class="op">=</span><span class="fl">0.1</span>, </span>
+<span id="annotated-cell-7-2"><a href="#annotated-cell-7-2" aria-hidden="true" tabindex="-1"></a>                epochs<span class="op">=</span><span class="dv">250</span>, validation_split<span class="op">=</span><span class="fl">0.1</span>, </span>
 <span id="annotated-cell-7-3"><a href="#annotated-cell-7-3" aria-hidden="true" tabindex="-1"></a>                batch_size<span class="op">=</span><span class="dv">8</span>):</span>
 <span id="annotated-cell-7-4"><a href="#annotated-cell-7-4" aria-hidden="true" tabindex="-1"></a></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-7-5" class="code-annotation-target"><a href="#annotated-cell-7-5" aria-hidden="true" tabindex="-1"></a>    met <span class="op">=</span> {</span>
@@ -999,77 +1025,75 @@ The estimated total size in KB 8.03125</code></pre>
 </div>
 </div>
 <p>Now all parts are available and we can finally train our model.</p>
-<div id="e8bd5e2a" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="annotated-cell-8"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-8-1"><a href="#annotated-cell-8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch.utils.data <span class="im">import</span> TensorDataset</span>
-<span id="annotated-cell-8-2"><a href="#annotated-cell-8-2" aria-hidden="true" tabindex="-1"></a></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-8-3" class="code-annotation-target"><a href="#annotated-cell-8-3" aria-hidden="true" tabindex="-1"></a>X_train_tensor <span class="op">=</span> torch.tensor(X_train, dtype<span class="op">=</span>torch.float32)</span>
-<span id="annotated-cell-8-4"><a href="#annotated-cell-8-4" aria-hidden="true" tabindex="-1"></a>y_train_tensor <span class="op">=</span> torch.tensor(y_train, dtype<span class="op">=</span>torch.<span class="bu">long</span>)</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-8-5" class="code-annotation-target"><a href="#annotated-cell-8-5" aria-hidden="true" tabindex="-1"></a>dataset <span class="op">=</span> TensorDataset(X_train_tensor, y_train_tensor)</span>
-<span id="annotated-cell-8-6"><a href="#annotated-cell-8-6" aria-hidden="true" tabindex="-1"></a></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-8-7" class="code-annotation-target"><a href="#annotated-cell-8-7" aria-hidden="true" tabindex="-1"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss()</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-8-8" class="code-annotation-target"><a href="#annotated-cell-8-8" aria-hidden="true" tabindex="-1"></a>optimizer <span class="op">=</span> torch.optim.SGD(model.parameters(), lr<span class="op">=</span><span class="fl">1e-2</span>)</span>
-<span id="annotated-cell-8-9"><a href="#annotated-cell-8-9" aria-hidden="true" tabindex="-1"></a></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="5" onclick="event.preventDefault();">5</a><span id="annotated-cell-8-10" class="code-annotation-target"><a href="#annotated-cell-8-10" aria-hidden="true" tabindex="-1"></a>history <span class="op">=</span> train_model(model, dataset, loss_fn, optimizer,</span>
-<span id="annotated-cell-8-11"><a href="#annotated-cell-8-11" aria-hidden="true" tabindex="-1"></a>                      epochs<span class="op">=</span><span class="dv">130</span>,</span>
-<span id="annotated-cell-8-12"><a href="#annotated-cell-8-12" aria-hidden="true" tabindex="-1"></a>                      validation_split<span class="op">=</span><span class="fl">0.1</span>,</span>
-<span id="annotated-cell-8-13"><a href="#annotated-cell-8-13" aria-hidden="true" tabindex="-1"></a>                      batch_size<span class="op">=</span>batch_size)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="71c00448" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="annotated-cell-8"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-8-1" class="code-annotation-target"><a href="#annotated-cell-8-1" aria-hidden="true" tabindex="-1"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss()</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-8-2" class="code-annotation-target"><a href="#annotated-cell-8-2" aria-hidden="true" tabindex="-1"></a>optimizer <span class="op">=</span> torch.optim.SGD(model.parameters(), lr<span class="op">=</span><span class="fl">1e-2</span>)</span>
+<span id="annotated-cell-8-3"><a href="#annotated-cell-8-3" aria-hidden="true" tabindex="-1"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-8-4" class="code-annotation-target"><a href="#annotated-cell-8-4" aria-hidden="true" tabindex="-1"></a>history <span class="op">=</span> train_model(model, dataset, loss_fn, optimizer,</span>
+<span id="annotated-cell-8-5"><a href="#annotated-cell-8-5" aria-hidden="true" tabindex="-1"></a>                      epochs<span class="op">=</span><span class="dv">250</span>,</span>
+<span id="annotated-cell-8-6"><a href="#annotated-cell-8-6" aria-hidden="true" tabindex="-1"></a>                      validation_split<span class="op">=</span><span class="fl">0.1</span>,</span>
+<span id="annotated-cell-8-7"><a href="#annotated-cell-8-7" aria-hidden="true" tabindex="-1"></a>                      batch_size<span class="op">=</span>batch_size)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-8" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-8" data-code-lines="3,4" data-code-annotation="1">We need to convert the training data to <em>PyTorch tensors</em> unfortinatly, this might result in larger data if we are not careful, <code>long</code> is required for the loss computation.</span>
+<span data-code-cell="annotated-cell-8" data-code-lines="1" data-code-annotation="1">Define the loss function.</span>
 </dd>
 <dt data-target-cell="annotated-cell-8" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-8" data-code-lines="5" data-code-annotation="2">Combine <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> such that it can easily be used for a <code>DataLoader</code>.</span>
+<span data-code-cell="annotated-cell-8" data-code-lines="2" data-code-annotation="2">Define the optimizer.</span>
 </dd>
 <dt data-target-cell="annotated-cell-8" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="annotated-cell-8" data-code-lines="7" data-code-annotation="3">Define the loss function.</span>
-</dd>
-<dt data-target-cell="annotated-cell-8" data-target-annotation="4">4</dt>
-<dd>
-<span data-code-cell="annotated-cell-8" data-code-lines="8" data-code-annotation="4">Define the optimizer.</span>
-</dd>
-<dt data-target-cell="annotated-cell-8" data-target-annotation="5">5</dt>
-<dd>
-<span data-code-cell="annotated-cell-8" data-code-lines="10,13" data-code-annotation="5">Call the training loop.</span>
+<span data-code-cell="annotated-cell-8" data-code-lines="4,7" data-code-annotation="3">Call the training loop.</span>
 </dd>
 </dl>
 </div>
 </div>
-<p>This looks like a lot but actually it is boiler plate code if needed and allows for quite a lot of flexibility if required.</p>
+<p>This looks like a lot, but actually it is boiler plate code if needed and allows for quite a lot of flexibility if required.</p>
 <p>Now that training is complete we can have a look at the performance.</p>
 <div class="cell" data-execution_count="10">
 <details class="code-fold">
 <summary>Show the code for the figure</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">eval</span>()</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    y_proba <span class="op">=</span> model(torch.tensor(X_test, dtype<span class="op">=</span>torch.float32))</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>y_predict <span class="op">=</span> y_proba.argmax(axis<span class="op">=-</span><span class="dv">1</span>)</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>myplot(y_predict <span class="op">*</span> (<span class="op">-</span><span class="dv">2</span>) <span class="op">+</span> <span class="dv">1</span>)</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>acc <span class="op">=</span> (y_predict <span class="op">==</span> torch.tensor(y_test)).<span class="bu">sum</span>().item() <span class="op">/</span> <span class="bu">len</span>(y_test)</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> y_proba.shape[<span class="dv">0</span>]</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>plt.bar(<span class="bu">range</span>(n), y_proba[:, <span class="dv">0</span>], color<span class="op">=</span><span class="st">'y'</span>, label<span class="op">=</span><span class="vs">r"p(dog)"</span>)</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>plt.bar(<span class="bu">range</span>(n), y_proba[:, <span class="dv">1</span>], color<span class="op">=</span><span class="st">'b'</span>, label<span class="op">=</span><span class="vs">r"p(cat)"</span>, </span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>        bottom<span class="op">=</span>y_proba[:, <span class="dv">0</span>])</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>plt.plot([<span class="op">-</span><span class="fl">0.5</span>, n <span class="op">-</span> <span class="fl">0.5</span>], [<span class="fl">0.5</span>, <span class="fl">0.5</span>], <span class="st">"r"</span>, linewidth<span class="op">=</span><span class="fl">1.0</span>)</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>plt.gca().set_aspect(n <span class="op">/</span> (<span class="dv">1</span> <span class="op">*</span> <span class="dv">3</span>))</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>epochs <span class="op">=</span> <span class="bu">range</span>(<span class="bu">len</span>(history[<span class="st">"train_acc"</span>]))</span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>plt_list <span class="op">=</span> [[<span class="st">"train_acc"</span>, <span class="st">"-"</span>], [<span class="st">"train_loss"</span>, <span class="st">":"</span>],</span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>            [<span class="st">"val_acc"</span>, <span class="st">"--"</span>], [<span class="st">"val_loss"</span>, <span class="st">"-."</span>]]</span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, style <span class="kw">in</span> plt_list:</span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    plt.plot(epochs, history[name], style, label<span class="op">=</span>name)</span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>plt.legend(loc<span class="op">=</span><span class="st">"lower right"</span>)</span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>plt.gca().set_aspect(<span class="dv">130</span> <span class="op">/</span> (<span class="dv">1</span> <span class="op">*</span> <span class="dv">3</span>))</span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> myplot(y):</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    plt.figure()</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> y.shape[<span class="dv">0</span>]</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    plt.bar(<span class="bu">range</span>(n), y)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    plt.plot([<span class="op">-</span><span class="fl">0.5</span>, n <span class="op">-</span> <span class="fl">0.5</span>], [<span class="dv">0</span>, <span class="dv">0</span>], <span class="st">"k"</span>, linewidth<span class="op">=</span><span class="fl">1.0</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    plt.plot([n <span class="op">//</span> <span class="dv">2</span> <span class="op">-</span> <span class="fl">0.5</span>, y.shape[<span class="dv">0</span>] <span class="op">//</span> <span class="dv">2</span> <span class="op">-</span> <span class="fl">0.5</span>], [<span class="op">-</span><span class="fl">1.1</span>, <span class="fl">1.1</span>], <span class="st">"r-."</span>, linewidth<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    plt.yticks([<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span>], [<span class="st">"cats"</span>, <span class="st">"dogs"</span>], rotation<span class="op">=</span><span class="dv">90</span>, va<span class="op">=</span><span class="st">"center"</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    plt.text(n <span class="op">//</span> <span class="dv">4</span>, <span class="fl">1.05</span>, <span class="st">"dogs"</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    plt.text(n <span class="op">//</span> <span class="dv">4</span> <span class="op">*</span> <span class="dv">3</span>, <span class="fl">1.05</span>, <span class="st">"cats"</span>)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    plt.gca().set_aspect(n <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> <span class="dv">3</span>))</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">eval</span>()</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    y_proba <span class="op">=</span> model(X_test_tensor)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>y_predict <span class="op">=</span> y_proba.argmax(axis<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>myplot(y_predict <span class="op">*</span> (<span class="op">-</span><span class="dv">2</span>) <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>acc <span class="op">=</span> (y_predict <span class="op">==</span> y_test_tensor).<span class="bu">sum</span>().item() <span class="op">/</span> <span class="bu">len</span>(y_test)</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> y_proba.shape[<span class="dv">0</span>]</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>plt.bar(<span class="bu">range</span>(n), y_proba[:, <span class="dv">0</span>], color<span class="op">=</span><span class="st">'y'</span>, label<span class="op">=</span><span class="vs">r"p(dog)"</span>)</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>plt.bar(<span class="bu">range</span>(n), y_proba[:, <span class="dv">1</span>], color<span class="op">=</span><span class="st">'b'</span>, label<span class="op">=</span><span class="vs">r"p(cat)"</span>, </span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>        bottom<span class="op">=</span>y_proba[:, <span class="dv">0</span>])</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>plt.plot([<span class="op">-</span><span class="fl">0.5</span>, n <span class="op">-</span> <span class="fl">0.5</span>], [<span class="fl">0.5</span>, <span class="fl">0.5</span>], <span class="st">"r"</span>, linewidth<span class="op">=</span><span class="fl">1.0</span>)</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>plt.gca().set_aspect(n <span class="op">/</span> (<span class="dv">1</span> <span class="op">*</span> <span class="dv">3</span>))</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>epochs <span class="op">=</span> <span class="bu">range</span>(<span class="bu">len</span>(history[<span class="st">"train_acc"</span>]))</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>plt_list <span class="op">=</span> [[<span class="st">"train_acc"</span>, <span class="st">"-"</span>], [<span class="st">"train_loss"</span>, <span class="st">":"</span>],</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>            [<span class="st">"val_acc"</span>, <span class="st">"--"</span>], [<span class="st">"val_loss"</span>, <span class="st">"-."</span>]]</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, style <span class="kw">in</span> plt_list:</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>    plt.plot(epochs, history[name], style, label<span class="op">=</span>name)</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>plt.legend(loc<span class="op">=</span><span class="st">"lower right"</span>)</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>plt.gca().set_aspect(<span class="dv">250</span> <span class="op">/</span> (<span class="dv">1</span> <span class="op">*</span> <span class="dv">3</span>))</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div id="fig-nn-nn-dvc-non-linear" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="10">
 <figure class="quarto-float quarto-float-fig figure">
@@ -1117,7 +1141,8 @@ Figure&nbsp;7.5: Performance of our model.
 </figure>
 </div>
 </div>
-<p>Overall, we have an accuracy of 83.75% for our test set, better than with our linear models.</p>
+<p>In <a href="#fig-nn-nn-dvc-non-linear-1" class="quarto-xref">Figure&nbsp;<span>7.5 (a)</span></a> we can see the final classification of our model with regards to the test set. For 11 dogs our model is convinced they are not <em>good dogs</em> but cats, and 3 cats are classified as dogs. If we look at the probabilities <a href="#fig-nn-nn-dvc-non-linear-2" class="quarto-xref">Figure&nbsp;<span>7.5 (b)</span></a>, we can see that we have a couple of close calls, but in general our model is quite sure about the classification. Regarding the history of our optimization, we can see three phases, first our accuracy stays constant, right about for the first 80 iterations. Than the network starts learning up to 120 and after that only the loss function declines, but accuracy stays high.</p>
+<p>At the end, we have an accuracy of 82.5% for our test set, a bit better than with our linear models <a href="#fig-nn-singlelayer" class="quarto-xref">Figure&nbsp;<span>7.1</span></a>.</p>
 <div class="callout callout-style-simple callout-caution no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -1128,7 +1153,7 @@ Figure&nbsp;7.5: Performance of our model.
 <p><span class="theorem-title"><strong>Exercise 7.3 (Learning rate and momentum)</strong></span> The used optimizer <a href="https://pytorch.org/docs/stable/generated/torch.optim.SGD.html#torch.optim.SGD"><code>SGD</code></a> has two options we want to investigate further. The learning rate <code>lr</code> and the <code>momentum</code>.</p>
 <ol type="1">
 <li>Change the learning rate and see how this influences performance, you might want to increase <code>epochs</code> as well. Try <span class="math inline">\(lr \in [10^{-1}, 10^{-4}]\)</span>.</li>
-<li>Change the momentum between <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span>, can this <em>improve</em> the predictions for different learning rates and such that the NN is <em>more sure</em> of its decision (in <a href="../appendices/keras.html#fig-nn-nn-dvc-non-linear-2" class="quarto-xref">Figure&nbsp;<span>B.2 (b)</span></a> the bars are not almost equal but lean to one side).</li>
+<li>Change the momentum between <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span>, can this <em>improve</em> the predictions for different learning rates and such that the NN is <em>more sure</em> of its decision (in <a href="#fig-nn-nn-dvc-non-linear-2" class="quarto-xref">Figure&nbsp;<span>7.5 (b)</span></a> the bars are not almost equal but lean to one side).</li>
 </ol>
 </div>
 </div>
@@ -1181,13 +1206,13 @@ Figure&nbsp;7.5: Performance of our model.
 </div>
 </div>
 </section>
-<section id="how-to-save-a-pytroch-model" class="level2" data-number="7.3">
-<h2 data-number="7.3" class="anchored" data-anchor-id="how-to-save-a-pytroch-model"><span class="header-section-number">7.3</span> How to save a <code>pytroch</code> model</h2>
+<section id="how-to-save-a-pytorch-model" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="how-to-save-a-pytorch-model"><span class="header-section-number">7.3</span> How to save a <code>pytorch</code> model</h2>
 <p>Of course we can save a <code>pytorch</code> model with the methods discussed in <a href="../data/model.html" class="quarto-xref"><span>Chapter 4</span></a> but it is more convenient to use the dedicated functions, see <a href="https://pytorch.org/tutorials/beginner/saving_loading_models.html">docs</a>.</p>
 <p>In short, we only need to call <code>torch.save(model.state_dict(), file)</code> to save in the default format using <code>pickle</code>, be careful when using it, see <a href="../data/model.html#sec-data-model-pickle" class="quarto-xref"><span>Section 4.2</span></a>.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>torch.save(<span class="st">"model.pt"</span>)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>loaded_model <span class="op">=</span> model <span class="op">=</span> MyFirstNN(X_train.shape[<span class="dv">1</span>])</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>loaded_model.load_state_dict(torch.load(<span class="st">"model.pt"</span>, weights_only<span class="op">=</span><span class="va">True</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>torch.save(<span class="st">"model.pt"</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>loaded_model <span class="op">=</span> model <span class="op">=</span> MyFirstNN(X_train.shape[<span class="dv">1</span>])</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>loaded_model.load_state_dict(torch.load(<span class="st">"model.pt"</span>, weights_only<span class="op">=</span><span class="va">True</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>It is also possible to implement continuous checkpoints during training, see <a href="https://pytorch.org/tutorials/beginner/saving_loading_models.html#saving-loading-a-general-checkpoint-for-inference-and-or-resuming-training">docs</a>. This allows us to resume training after an interrupt or simply store the model at the end of the training.</p>
 <p>All of this can be done via the already discussed <code>dvclive</code> interface, the implementation is defined as an exercise (if your module uses <code>lightning</code> this is even easier).</p>
 <div class="callout callout-style-simple callout-caution no-icon">
@@ -1220,11 +1245,11 @@ Store the model as <code>ONNX</code>
 <h2 data-number="7.4" class="anchored" data-anchor-id="backward-propagation-of-error---backpropagation"><span class="header-section-number">7.4</span> Backward Propagation of Error - Backpropagation</h2>
 <p>Our first NN is a success, but how did it learn the necessary parameters to perform its task?</p>
 <p>The answer is a technique called <em>Backward Propagation of Error</em> or in short <em>Backpropagation</em>. This essential component of for machine learning helps us to work out how the loss we compute translates into changes of the weights in our network. In our training loop <code>train_model</code> the lines</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> model(X_batch)            <span class="co"># Forward pass through the model</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>loss <span class="op">=</span> loss_fn(y_pred, y_batch)    <span class="co"># Compute the loss</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>loss.backward()                    <span class="co"># Backpropagation</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>optimizer.step()                   <span class="co"># Update the model parameters</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>optimizer.zero_grad()              <span class="co"># Reset the gradients</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> model(X_batch)            <span class="co"># Forward pass through the model</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>loss <span class="op">=</span> loss_fn(y_pred, y_batch)    <span class="co"># Compute the loss</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>loss.backward()                    <span class="co"># Backpropagation</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>optimizer.step()                   <span class="co"># Update the model parameters</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>optimizer.zero_grad()              <span class="co"># Reset the gradients</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>are what we are focusing on in this section.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
