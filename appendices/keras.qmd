@@ -1,4 +1,4 @@
-# Our first Neural Network in `tensorflow.keras`
+# Our first Neural Network in `tensorflow.keras` {#sec-appendix-keras}
 
 As mentioned there are multiple frameworks to work neural networks (NNs) and we focus on `pytorch`. 
 Nevertheless, `tensorflow.keras` is often used in industry and to give an idea how it works we also implemented the first model in this framework.
@@ -78,7 +78,7 @@ model.summary(line_length=60)                                              # <5>
 1. Print the summary of the model.
 
 It is often also quite useful to export the model as an image.
-In our case we can work again with a `dot` file rendered as @fig-nn-nn-model-visual.
+In our case we can work again with a `dot` file rendered as @fig-appendix-keras-model-visual.
 ```{python}
 dot = tf.keras.utils.model_to_dot(model, show_shapes=True,
                                   show_layer_activations=True, dpi=False)
@@ -86,13 +86,13 @@ with open("model.dot", "w") as f:
     f.write(dot.to_string())
 ```
 ```{dot}
-//| label: fig-nn-nn-model-visual
+//| label: fig-appendix-keras-model-visual
 //| fig-cap: "Model with all its parameters visualized."
 //|file: model.dot
 ```
 
 ::: {.callout-caution appearance="simple" icon=false}
-:::: {#exr-nn-nn-params}
+:::: {#exr-appendix-keras-params}
 
 ## Explain the output of `.summary()`
 
@@ -142,7 +142,7 @@ history = model.fit(X_train,                            # <1>
 
 Now that training is complete we can have a look at the performance.
 ```{python}
-#| label: fig-nn-nn-dvc-non-linear
+#| label: fig-appendix-keras-dvc-non-linear
 #| fig-cap: "Performance of our model."
 #| fig-subcap: 
 #|   - "Classification for our test set."
@@ -178,7 +178,7 @@ plt.show()
 Overall, we have an accuracy of `{python} float(np.round(model.evaluate(X_test, y_test)[1] * 100, 2))`% for our test set, better than with our linear models.
 
 ::: {.callout-caution appearance="simple" icon=false}
-:::: {#exr-nn-nn-dvc-one_hot}
+:::: {#exr-appendix-keras-dvc-one_hot}
 
 ## Switch to `one_hot` representation
 
@@ -194,7 +194,7 @@ Often a so called _one_hot_ vector is more appropriate, this is supported via `c
 :::
 
 ::: {.callout-caution appearance="simple" icon=false}
-:::: {#exr-nn-nn-dvc-adam}
+:::: {#exr-appendix-keras-dvc-adam}
 
 ## Change the optimizer
 
@@ -226,7 +226,7 @@ This allows us to resume training after an interrupt or simply store the model a
 All of this can be done via the already discussed `dvclive` interface, the implementation is defined as an exercise. 
 
 ::: {.callout-caution appearance="simple" icon=false}
-:::: {#exr-nn-nn-dvc-dvc}
+:::: {#exr-appendix-keras-dvc-dvc}
 
 ## `dvclive` integration into the `keras` training
 
