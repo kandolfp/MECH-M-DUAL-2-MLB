@@ -1,6 +1,6 @@
 # Neural Networks {#sec-nn-nn}
 
-Now that we constructed one of the simplest NNs possible we build on this and extend our model.
+Now that we constructed one of the simplest NNs possible (if we can even call it a NN), we build on this and extend our model.
 The first step is to introduce some (non-linear) activation functions or transfer functions
 $$
 y = f(A, b, x).
@@ -85,8 +85,9 @@ plt.show()
 
 ## The trainable parameters of a Neural Network
 
-Before we build our first NN in the next section we need to get a better understanding on the dimensions and available parameters for our optimization involved in training a NN.
-As discussed, these parameters are the matrices consisting on the weights, the biases and are of course related to the neurons. 
+Before we build our first NN in the next section, we need to get a better understanding on the dimensions and available parameters for our optimization involved in training a NN.
+As discussed, these parameters are the matrices combining the weights and the biases. 
+Of course they are related to the neurons. 
 
 ![Generic linear NN with weights and biases.](../_assets/nn/generic_nn_get_dim){#fig-nn-nn-get_dim}
 
@@ -98,36 +99,53 @@ As discussed, these parameters are the matrices consisting on the weights, the b
 
 For the NN display in @fig-nn-nn-get_dim answer the following questions:
 
-1. What is the shape of $A_1, A_2, A_3, A_4$?
-1. Which of the matrices is sparse?
-1. What is the shape of $b_1, b_2, b_3, b_4$?
-1. Write down the (expanded) formula for the output $y$ with respect to the input $x$ resulting from the composition of the different layers for $f(x) = x$ in each layer.
+1. What are the shapes of the matrices $A_1, A_2, A_3, A_4$?
+1. Which of these matrices are sparse (have multiple zeros)?
+1. What are the shapes of the biases $b_1, b_2, b_3, b_4$?
+1. Write down the (expanded) formula for the output $y$ with respect to the input $x$ resulting from the composition of the different layers for $f(x) = x$ in each layer (as seen in @fig-nn-nn-get_dim).
 1. Is this formulation a good option to compute $y$ from $x$ (provide some reasoning)?
 ::::
 :::
 
 In @fig-nn-nn-get_dim we also used the formulation of _hidden layers_ for all the layers _inside_ the NN.
-This is a common formulation reflecting the nature of the NN that their _activations_ (transfer from their specific input to output $f_j(A_j, b_j, x^{j-1})$) are not exposed to the user and can not be observed directly.
+This is a common formulation reflecting the nature of the NN.
+Their _activations_ (transfer from their specific input to output $f_j(A_j, b_j, x^{(j-1)})$) are not exposed to the user and can't be observed by the user directly.
 
 Now let us build our first NN.
 
-## Our first Neural Network
+## A Neural Network with `pytorch`
 
-First we split our data into a training and test set.
-It is important, that we scale our image data.
-This wa not necessary for the other methods but will make sure we get feasible results in this case. 
-We scale by $255$ our theoretical maximum in an image. 
+::: {.callout-important}
+There are multiple frameworks available for NNs in `Python`.
+We will focus on [`pytorch`](https://pytorch.org/) for these notes. 
+
+Nevertheless, see @sec-appendix-keras for an implementation of the _same_ NN with an alternative framework.
+:::
+
+::: {.callout-note}
+There are a couple of steps required and some foreshadow later decisions.
+We tried to make the split to provide better understanding and an easy way to follow the material.  
+:::
+
+Let us start with the input and how to prepare our data for for the model to-be.
+Before we load everything into the `pytorch` specific structures, we split our data into a training and test set.
+This time it is important that we rescale scale our image to $[0, 1]$, otherwise the optimization algorithms perform poorly.
+We scale by $255$, our theoretical maximum in a generic image. 
 
 ```{python}
-#| code-fold: true
+#| code-fold: false
 #| code-summary: "Show the code for loading, splitting and scaling the images."
 import numpy as np
 import scipy
 import requests
 import io
 import matplotlib.pyplot as plt
+import torch
+from torch.utils.data import TensorDataset
 %config InlineBackend.figure_formats = ["svg"]
-
+# Initialize everything for reproducibility
+torch.manual_seed(6020)
+np.random.seed(6020)
 
 response = requests.get(
     "https://github.com/dynamicslab/databook_python/"
@@ -139,58 +157,70 @@ response = requests.get(
     "raw/refs/heads/master/DATA/dogData_w.mat")
 dogs_w = scipy.io.loadmat(io.BytesIO(response.content))["dog_wave"]
 
-X_train = np.concatenate((dogs_w[:, :40], cats_w[:, :40]), axis=1).T / 255.0
-y_train = np.repeat(np.array([0, 1]), 40)
-X_test = np.concatenate((dogs_w[:, 40:], cats_w[:, 40:]), axis=1).T / 255.0
-y_test = np.repeat(np.array([0, 1]), 40)
+s = 40
+X_train = np.concatenate((dogs_w[:, :s], cats_w[:, :s]), axis=1).T / 255.0
+y_train = np.repeat(np.array([0, 1]), s)
+X_test = np.concatenate((dogs_w[:, s:], cats_w[:, s:]), axis=1).T / 255.0
+y_test = np.repeat(np.array([0, 1]), 80 - s)
+
+X_train_tensor = torch.tensor(X_train, dtype=torch.float32)                # <1>
+y_train_tensor = torch.tensor(y_train, dtype=torch.uint8)                  # <1>
+X_test_tensor = torch.tensor(X_test, dtype=torch.float32)                  # <1>
+y_test_tensor = torch.tensor(y_test, dtype=torch.uint8)                    # <1>
+dataset = TensorDataset(X_train_tensor, y_train_tensor)                    # <2>
+```
+1. We need to convert the training data to _PyTorch tensors_ unfortionalty, this might result in larger data if we are not careful, `uint8` works for the loss computation we aim for (see later).
+1. Combine $X$ and $Y$ such that it can easily be used for a `DataLoader`.
+
+The easiest way to provide data for training is to use the mentioned `DataLoader` class.
+As we have only a very limited number of training data, we split our available data into a training and validation. 
+We do so new and random in each epoch (optimization step).
+To provide a better overview, we use a dedicated function for this procedure.
+This function will be called during each optimization step in our training.
+
+```{python}
+from torch.utils.data import DataLoader, random_split
 
 
-def myplot(y):
-    plt.figure()
-    n = y.shape[0]
-    plt.bar(range(n), y)
-    plt.plot([-0.5, n - 0.5], [0, 0], "k", linewidth=1.0)
-    plt.plot([n // 2 - 0.5, y.shape[0] // 2 - 0.5], [-1.1, 1.1], "r-.", linewidth=3)
-    plt.yticks([-0.5, 0.5], ["cats", "dogs"], rotation=90, va="center")
-    plt.text(n // 4, 1.05, "dogs")
-    plt.text(n // 4 * 3, 1.05, "cats")
-    plt.gca().set_aspect(n / (2 * 3))
+def get_dataset(dataset: TensorDataset, val_split: float, batch_size: int):
+    val_size = int(val_split * len(dataset))
+    train_size = len(dataset) - val_size
+    train_ds, val_ds = random_split(dataset, [train_size, val_size])
+
+    # Create a dataset
+    train = DataLoader(train_ds, batch_size=batch_size, shuffle=True)
+    val = DataLoader(val_ds, batch_size=batch_size, shuffle=True)
+    return train, val
 ```
 
-Now we can build our model.
-In order to do so we need to slightly modify our output.
-Instead of having a single neuron that is zero or one we will have two neurons, i.e. $y\in\mathbb{R^2}$
+Now that we have taken care of our input, we need to discuss the output of our model. 
+Instead of having a single neuron that is zero or one, we will have two neurons, i.e. $y\in\mathbb{R^2}$ using a so called _one-hot encoding_ for our two classes.
 $$
 y = \left[\begin{array}{c}1 \\ 0\end{array}\right] = \text{dog},
 \quad\text{and}\quad
 y = \left[\begin{array}{c}0 \\ 1\end{array}\right] = \text{cat}.
 $$
 
-The model will provide us with the probability of the image being a dog on $y_1$ and a cat on $y_2$.
+The idea is, that the model will provide us with the probability, that an image shows a dog on $y_1$ or a cat on $y_2$ (the sum of both will be $1$).
 
-Next, we define our activation function in the first layer by the non-linear function $f_1 = \tanh$, the rest stays the same as before with our weights (combined to matrix $A_1$ and our bias vector $b_1$).
-The result needs to be translated into probabilities, this is done via the `softmax` function $\sigma$ (see @sec-appendix-softmax for a more detailed explanation and example)
+Next, we define our activation function in the first layer by the non-linear function $f_1 = \tanh$.
+The idea is to use a more _complicated_ function the reflect the nature of our images.
+The rest remains unchanged, with the weights aggregated to matrix $A_1$ and the bias to the vector $b_1$.
+In a the next layer we have a linear transform to provide some more freedom and than 
+use the `softmax` function $\sigma$ (see @sec-appendix-softmax for a more detailed explanation and example) to translate the result into a probability
 $$
 \sigma: \mathbb{R^n} \to (0, 1)^n, \quad \sigma(x)_i = \frac{\exp(x_i)}{\sum_j{\exp(x_j)}}.
 $$
 
-We visualized the network in @fig-nn-cvd-nl.
+We visualized the resulting network in @fig-nn-cvd-nl.
 
 ![A two layer structure for the cats vs. dogs classification with a non-linear model.](../_assets/nn/cats_vs_dogs_nonlinear){#fig-nn-cvd-nl}
 
-::: {.callout-important}
-There are multiple frameworks available for NN.
-We will focus on [`pytorch`](https://pytorch.org/).
-:::
-
 The following couple of code sections translate @fig-nn-cvd-nl into a `pytorch` model.
-The main idea is that we create a model class that inherits from `torch.nn.Module`.
+The main idea is that we create a model class that inherits from `torch.nn.Module` and than perform our training on this class, benefiting from the inherited capabilities.
 ```{python}
 import torch
 
-# Initialize everything for reproducibility
-torch.manual_seed(6020)
-np.random.seed(6020)
 
 class MyFirstNN(torch.nn.Module):                       # <1>
     def __init__(self, input_params):                   # <2>
@@ -213,7 +243,9 @@ class MyFirstNN(torch.nn.Module):                       # <1>
 1. We define a sequential model, this reflects best our desired structure, the first layer that reduces down to two neurons and applies the function $\tanh$, and a second for `softmax`.
 1. In `forward` we define how data moves through the network.
 
-
+Of course it is important to check if the code corresponds to the model we have in mind.
+For this [`torchinfo`](https://github.com/TylerYep/torchinfo) is quite a useful tool.
+It provides a tabular overview.
 ```{python}
 #| classes: styled-output
 import torchinfo
@@ -225,30 +257,17 @@ info = torchinfo.summary(model, (batch_size, X_train.shape[1]), col_width=12)
 info.layer_name_width=15
 print(info)
 ```
-It is often also quite useful to export the model as an image.
-In our case we can work again with a `dot` file rendered as @fig-nn-nn-model-visual.
-```{python}
-#| output: false
-import torchviz
-x = torch.randn(1, X_train.shape[1])
-y = model(x)
-dot = torchviz.make_dot(y, params=dict(model.named_parameters()))
-dot.save("model.dot")
-```
-```{dot}
-//| label: fig-nn-nn-model-visual
-//| fig-cap: "Model with all its parameters visualized."
-//|file: model.dot
-```
 
 ::: {.callout-caution appearance="simple" icon=false}
 :::: {#exr-nn-nn-params}
 
 ## Explain the output of `.summary()`
 
-For the (extended) output of `.summary()`
+For the (extended) output of `.summary()` in the following listing answer the questions below.
 ```{python}
 #| classes: styled-output
+#| code-fold: true
+#| code-summary: "Show the code for the slightly extended summary."
 import torchinfo
 
 model = MyFirstNN(X_train.shape[1])
@@ -259,33 +278,31 @@ info = torchinfo.summary(model, (batch_size, X_train.shape[1]),
 info.layer_name_width=15
 print(info)
 
-print(f"The estimated total size in KB {info.total_param_bytes / 1024}")
+print(f"\n\nThe estimated total size in KB {info.total_param_bytes / 1024}")
 ```
-answer the following questions.
 
 1. Explain how the `Param #` column is computed and retrace the details.
 1. If we expand the `Params size` to (KB) we get `{python} float(np.round(info.total_param_bytes / 1024, 2))`, what does this imply on the data type of the parameters?
 ::::
 :::
 
-Next, we need to prepare our data for for the model.
-The easiest way is to use the provided `DataLoader` class.
-As we have only a very limited number of training data we split our available data into a training and validation set in each epoch.
-To provide a better overview, we use a separate function for this procedure. 
-
+It is often also quite useful to export the model as an image.
+Here the [`torchviz`](https://github.com/szagoruyko/pytorchviz) package comes in handy.
+In our case we can work again with a `dot` file, that is rendered as @fig-nn-nn-model-visual.
 ```{python}
-from torch.utils.data import DataLoader, TensorDataset, random_split
+#| output: false
+import torchviz
+model.eval()
 
-
-def get_dataset(dataset, validation_split, batch_size):
-    val_size = int(validation_split * len(dataset))
-    train_size = len(dataset) - val_size
-    train_ds, val_ds = random_split(dataset, [train_size, val_size])
-
-    # Create a dataset
-    train = DataLoader(train_ds, batch_size=batch_size, shuffle=True)
-    val = DataLoader(val_ds, batch_size=batch_size, shuffle=False)
-    return train, val
+x_viz = X_train_tensor[0, :].reshape([1, -1])
+y_viz = model(x_viz)
+dot = torchviz.make_dot(y_viz, params=dict(model.named_parameters()))
+dot.save("model.dot")
+```
+```{dot}
+//| label: fig-nn-nn-model-visual
+//| fig-cap: "Model with all its parameters visualized."
+//|file: model.dot
 ```
 
 In `pytorch` we are responsible for our training function.
@@ -293,10 +310,10 @@ This allows for a lot of flexibility.
 The structure is always quite similar.
 ```{python}
 def train_model(model, dataset, loss_fn, optimizer,
-                epochs=130, validation_split=0.1, 
+                epochs=250, validation_split=0.1, 
                 batch_size=8):
 
-    met = {                                                            # <1>
+    met = {                                                                # <1>
         "train_loss": [],
         "val_loss": [],
         "train_acc": [],
@@ -342,27 +359,20 @@ def train_model(model, dataset, loss_fn, optimizer,
 
 Now all parts are available and we can finally train our model.
 ```{python}
-from torch.utils.data import TensorDataset
+loss_fn = torch.nn.CrossEntropyLoss()                                      # <1>
+optimizer = torch.optim.SGD(model.parameters(), lr=1e-2)                   # <2>
 
-X_train_tensor = torch.tensor(X_train, dtype=torch.float32)                # <1>
-y_train_tensor = torch.tensor(y_train, dtype=torch.long)                   # <1>
-dataset = TensorDataset(X_train_tensor, y_train_tensor)                    # <2>
-
-loss_fn = torch.nn.CrossEntropyLoss()                                      # <3>
-optimizer = torch.optim.SGD(model.parameters(), lr=1e-2)                   # <4>
-
-history = train_model(model, dataset, loss_fn, optimizer,                  # <5>
-                      epochs=130,
+history = train_model(model, dataset, loss_fn, optimizer,                  # <3>
+                      epochs=250,
                       validation_split=0.1,
-                      batch_size=batch_size)                               # <5>
+                      batch_size=batch_size)                               # <3>
 ```
-1. We need to convert the training data to _PyTorch tensors_ unfortinatly, this might result in larger data if we are not careful, `long` is required for the loss computation.
-1. Combine $X$ and $Y$ such that it can easily be used for a `DataLoader`.
+
 1. Define the loss function.
 1. Define the optimizer.
 1. Call the training loop.
 
-This looks like a lot but actually it is boiler plate code if needed and allows for quite a lot of flexibility if required. 
+This looks like a lot, but actually it is boiler plate code if needed and allows for quite a lot of flexibility if required. 
 
 Now that training is complete we can have a look at the performance.
 ```{python}
@@ -374,12 +384,24 @@ Now that training is complete we can have a look at the performance.
 #|   - "Summary of the key metrics of the model training."
 #| code-fold: true
 #| code-summary: "Show the code for the figure"
+def myplot(y):
+    plt.figure()
+    n = y.shape[0]
+    plt.bar(range(n), y)
+    plt.plot([-0.5, n - 0.5], [0, 0], "k", linewidth=1.0)
+    plt.plot([n // 2 - 0.5, y.shape[0] // 2 - 0.5], [-1.1, 1.1], "r-.", linewidth=3)
+    plt.yticks([-0.5, 0.5], ["cats", "dogs"], rotation=90, va="center")
+    plt.text(n // 4, 1.05, "dogs")
+    plt.text(n // 4 * 3, 1.05, "cats")
+    plt.gca().set_aspect(n / (2 * 3))
+
+
 model.eval()
 with torch.no_grad():
-    y_proba = model(torch.tensor(X_test, dtype=torch.float32))
+    y_proba = model(X_test_tensor)
 y_predict = y_proba.argmax(axis=-1)
 myplot(y_predict * (-2) + 1)
-acc = (y_predict == torch.tensor(y_test)).sum().item() / len(y_test)
+acc = (y_predict == y_test_tensor).sum().item() / len(y_test)
 
 n = y_proba.shape[0]
 plt.figure()
@@ -399,10 +421,16 @@ plt_list = [["train_acc", "-"], ["train_loss", ":"],
 for name, style in plt_list:
     plt.plot(epochs, history[name], style, label=name)
 plt.legend(loc="lower right")
-plt.gca().set_aspect(130 / (1 * 3))
+plt.gca().set_aspect(250 / (1 * 3))
 plt.show()
 ```
-Overall, we have an accuracy of `{python} float(np.round(acc  * 100, 2))`% for our test set, better than with our linear models.
+In @fig-nn-nn-dvc-non-linear-1 we can see the final classification of our model with regards to the test set.
+For 11 dogs our model is convinced they are not _good dogs_ but cats, and 3 cats are classified as dogs.
+If we look at the probabilities @fig-nn-nn-dvc-non-linear-2, we can see that we have a couple of close calls, but in general our model is quite sure about the classification.
+Regarding the history of our optimization, we can see three phases, first our accuracy stays constant, right about for the first 80 iterations.
+Than the network starts learning up to 120 and after that only the loss function declines, but accuracy stays high. 
+
+At the end, we have an accuracy of `{python} float(np.round(acc  * 100, 2))`% for our test set, a bit better than with our linear models @fig-nn-singlelayer.
 
 ::: {.callout-caution appearance="simple" icon=false}
 :::: {#exr-nn-nn-dvc-lr}
