@@ -119,10 +119,11 @@ response = requests.get(
     "raw/refs/heads/master/DATA/dogData_w.mat")
 dogs_w = scipy.io.loadmat(io.BytesIO(response.content))["dog_wave"]
 
-X_train = np.concatenate((dogs_w[:, :60], cats_w[:, :60]), axis=1).T
-y_train = np.repeat(np.array([1, -1]), 60)
-X_test = np.concatenate((dogs_w[:, 60:], cats_w[:, 60:]), axis=1).T
-y_test = np.repeat(np.array([1, -1]), 20)
+s=40
+X_train = np.concatenate((dogs_w[:, :s], cats_w[:, :s]), axis=1).T
+y_train = np.repeat(np.array([1, -1]), s)
+X_test = np.concatenate((dogs_w[:, s:], cats_w[:, s:]), axis=1).T
+y_test = np.repeat(np.array([1, -1]), 80-s)
 
 A = y_train @ np.linalg.pinv(X_train.T)
 y_test_pinv = np.sign(A @ X_test.T)
