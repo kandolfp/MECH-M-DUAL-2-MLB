@@ -1379,6 +1379,6 @@ Nevertheless, there exist dedicated classes for the task as well [`sklearn.multi
 
 1. Use SVM for the Fischer Iris data set and test it.
 1. Compare with a random forest.
-1. Create a convolution matrix for more than two classes with your results and interpret the results.
+1. Create a confusion matrix for more than two classes with your results and interpret the results.
 ::::
 :::
