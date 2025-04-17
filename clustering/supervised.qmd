@@ -1201,7 +1201,7 @@ All of the below discussed methods and approaches can be found in the [`sklearn.
 ## Voting classifiers
 
 If we have a set of classifiers $C=\{c_1, \ldots, c_n\}$ of various kinds (even another ensemble classifier like a random forest is welcome), we can simple make a prediction with each resulting in $r_1, \ldots, r_n$.
-Now we select the class witch occurs most often, i.e. the _mode_ of the predictions, we get a new classifier.
+Now we select the class which occurs most often, i.e. the _mode_ of the predictions, we get a new classifier.
 This is called _hard voting_.
 
 If all our classifiers can not only produce a prediction but a probability for our prediction, we can also create a _soft voting_ classifier. 
