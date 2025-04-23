@@ -203,12 +203,11 @@ For the input on the left we compute two different pooling functions. First max 
 ::: {.callout-caution appearance="simple" icon=false}
 :::: {#exr-nn-cnn-pooling-cat}
 
-## Applying pooling to an image
+## Applying pooling to images
 
 Implement max and mean pooling (or find an appropriate library function) for an image and apply it to the cat from above.
 
 Explain what features the different pooling methods conserve and which are lost.
-
 ::::
 :::
 
