@@ -172,7 +172,7 @@ Convolution is an efficient mechanism for applying a consistent linear transform
 [^fourier]: see @Kandolf_GDM, Section 8.2 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/signal/fourier.html#fourier-transform)
 [^wavelets]: see @Kandolf_GDM, Section 10 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/signal/wavelet.html)
 [^pdf]: see @Kandolf_GDM, Section 14.2 for some examples or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/statistics/bayesian.html#probability-distributions)
-[^fourier]: see @Kandolf_GDM, Section 11 for a similar concept regarding the two dimensional Wavelet or Fourier transform, or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/signal/twodim.html)
+[^fourier2]: see @Kandolf_GDM, Section 11 for a similar concept regarding the two dimensional Wavelet or Fourier transform, or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/signal/twodim.html)
 
 ## Pooling
 
