@@ -34,6 +34,7 @@ book:
     - part: nn/index.qmd
       chapters:
         - nn/nn.qmd
+        - nn/cnn.qmd
     - summary.qmd
     - references.qmd
   appendices:

@@ -1,0 +1,421 @@
+# Convolutional Neural Networks {#sec-nn-cnn}
+
+Convolutional neural networks CNNs (often also called deep convolution neural nets DCNNs), are a specialized NN for processing _grid like data_.
+This especially includes image data (a 2D grid) but also time-series (1D grid) data.
+They have seen a tremendous success in many applications and are now often synomenouse with NNs.
+
+::: {.callout-important}
+For an in dept investigation of CNNs see [@Goodfellow-et-al-2016, Section 9], this introduction is partially based on this chapter.
+:::
+
+As the name suggest, CNNs are nothing else than a NN with at least one _convolution_ layer, with some more techniques.
+
+## The Convolution Operation
+
+Convolution is a specialized linear operation that we apply instead of the matrix multiplication _between_ two layers of a NN.
+
+::: {.callout appearance="simple"}
+:::: {#def-nn-cnn-convolution}
+
+## Convolution
+
+From a pure mathematical point of view, **convolution** is defined for two functions and produces a third
+$$
+h(t) = (f \ast g)(t) = \int f(\tau)g(t-\tau)\, \mathrm{d}\tau.
+$$
+
+This concept popped up when discussing the properties of the Fourier, and Laplace transform[^fourier], nevertheless it is more similar to Wavelets[^wavelets].
+If $g$ is a probability density function[^pdf] the convolution can be understood as the weighted average of $f$ by $g$.
+
+If $f$ and $g$ are discrete functions, like in our application an image with discrete pixel values or a time series with a measurement every second we get the **discrete convolution** as
+$$
+h(i) = (f \ast g)(i) = \sum_{m = -\infty}^{\infty} f(m)g(i - m).
+$$
+
+In the context of CNNs the function $f$ is called _input_, $g$ _kernel_, and $h$ the _feature map_.
+
+Quite often, convolution is not only applied in one dimension but along multiple dimensions[^fourier2].
+In a discrete setting this looks like
+$$
+h(i, j) = (f \ast g)(i, j) = \sum_m \sum_n f(m, n) g(i - m, j - n).
+$$
+
+Note, convolution is _commutative_, a quite useful property for the implementation.
+This is due to the fact, that the _kernel is flipped_ with regards to the input (the minus sign), i.e.
+$$
+h(i, j) = (g \ast f)(i, j) = \sum_m \sum_n f(i - m, j - n) g(m, n).
+$$
+::::
+:::
+
+Unfortionalty, in many frameworks the term _convolution_ is used for the related function _cross-correlation_ (as e.g. [`torch.nn.Conv2d`](https://pytorch.org/docs/stable/generated/torch.nn.Conv2d.html))
+
+::: {.callout appearance="simple"}
+:::: {#def-nn-cnn-cross-correlation}
+
+## Cross-correlation
+
+The related function cross-correlation is the same as convolution but without flipping the kernel, i.e.
+
+$$
+h(i, j) = (g \ast f)(i, j) = \sum_m \sum_n f(i + m, j + n) g(m, n).
+$$
+
+and therefore it is not commutative.
+::::
+:::
+
+::: {.callout-note}
+A CNN will either learn the values for a flipped or not-flipped kernel.
+Depending on how the function is defined but both work.
+:::
+
+Let us walk through a 2D example, for an input of size $5 \times 5$ and for an averaging kernel (no flipping) of size $2 \times 3$, illustrated in @fig-nn-cnn-convolution.
+
+::: {#fig-nn-cnn-convolution}
+![](../_assets/nn/convolution)
+
+Without any _padding_ and _stride_ equal to $1$ we simply move the kernel over the input starting from the top left.
+Make an element wise multiplication and a summation of all elements.
+By moving to the right, we move along a row, by moving down we change column.
+:::
+
+::: {.callout-caution appearance="simple" icon=false}
+:::: {#exr-nn-cnn-convolution-shape}
+
+## Output shape per input and kernel shape
+
+Let us assume we have an input of size $(a \times b)$ and kernel of size $(c \times d)$. 
+
+We call **padding** the process of extending the input by a boundary of (usual constant - zero) values.
+For $p=1$ we extend at the left, right, upper, and lower boundary by 1 column and row.
+
+Furthermore, **stride** or _step size_ is how much the kernel is moved in each step.
+
+1. Write down the general formula for the size of the output for no padding and $s=1$.
+1. Extend the formula to include padding but keep $s=1$.
+1. Extend the formula to include stride without padding.
+1. Extend the formula to include a stride and padding.
+1. How large does the padding need to be to have the same output size as input size (for $s=1$).
+
+**Note**: Have a look at @dumoulin2016guide and the corresponding GitHub Repo [Link](https://github.com/vdumoulin/conv_arithmetic?tab=readme-ov-file) for a nice visual and computational explanation.
+
+::::
+:::
+
+The main idea behind including convolution into a NN is to allow for _sparse interactions_, _parameter sharing_, and _equivalent representations_.
+These concepts allow for a more efficient implementation, both in perms of storage and computation time.
+We follow the descriptions in @Goodfellow-et-al-2016 fro these terms.
+
+The idea of _spares interaction_ is, that we do not have fully connected neurons.
+In particular, by performing convolution with a kernel with a smaller size we can reduce the input size drastically.
+For example, a kernel that detects edges only needs to look at a couple of pixels.
+This allows for a more efficient and memory optimized implementation.
+It can also be used to downsample an image in case the input size is not homogeneous for all images.
+
+Next, _parameter sharing_ refers to the process of using the same parameter (weight) for more than one function and input.
+In particular, the kernel weights are applied to all the different positions in the input.
+As a result, the CNN only learns one set of parameters (for the kernel) and not different sets for each of the positions, reducing the storage (but not the runtime) demands.
+
+Finally, _equivalence representations_ means that input features transform in a _predictable_ fashion under certain transformations.
+In particular, it should not mather if we first apply convolution and than said transform or the other way round.
+For CNNs the most important of these is translation.
+If we shift a parameter and than perform convolution or reverse the order, we see no change in the output.
+This allow the CNNs to recognize patterns and features consistently, even when we see a transform of the input, e.g. the cat sits 10 pixels to the left.
+
+To illustrate the power of convolution we use it to detect the (vertical) edges of a cat via the simple difference of two neighbouring pixels (the first discrete derivative), see @fig-nn-cnn-edge.
+```{python}
+#| label: fig-nn-cnn-edge
+#| fig-cap: "Application of a simple one dimensional kernel to an image. The right image has one pixel less per row."
+#| fig-subcap:
+#|   - "The original image of cat zero."
+#|   - "Edges detected via the first derivative (order 1)"
+#| layout-ncol: 2
+#| code-fold: true
+#| code-summary: "Show the code for the figure"
+import numpy as np
+import scipy
+import requests
+import io
+import matplotlib.pyplot as plt
+%config InlineBackend.figure_formats = ["svg"]
+
+response = requests.get(
+    "https://github.com/dynamicslab/databook_python/"
+    "raw/refs/heads/master/DATA/catData.mat")
+cats = scipy.io.loadmat(io.BytesIO(response.content))["cat"]
+
+plt.figure()
+plt.imshow(np.reshape(cats[:, 0], (64, 64)).T, cmap=plt.get_cmap("gray"))
+plt.axis("off")
+
+plt.figure()
+edge = np.zeros((64, 63))
+for i, c in enumerate(np.reshape(cats[:, 0], (64, 64)).T):
+    edge[i, :] = np.convolve(c, [-1, 1], mode="valid")
+plt.imshow(edge, cmap=plt.get_cmap("gray"))
+plt.axis("off")
+```
+This feature is often use for object detection.
+
+::: {.callout-note}
+
+We can express convolution via matrix-matrix multiplication.
+The resulting matrices are sparse, highly structured and repeat the same element quite often.
+
+In @fig-nn-cnn-edge we need $64 \times 63 \times 3 = 12,096$ operations to compute the right image from the left.
+If we would implement this with a dense matrix-matrix computation this would mean $64 \times 64 \times 64 \times 63 = 16,515,072$ operations.
+
+Convolution is an efficient mechanism for applying a consistent linear transformation to localized regions across the entire input domain.
+:::
+
+[^fourier]: see @Kandolf_GDM, Section 8.2 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/signal/fourier.html#fourier-transform)
+[^wavelets]: see @Kandolf_GDM, Section 10 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/signal/wavelet.html)
+[^pdf]: see @Kandolf_GDM, Section 14.2 for some examples or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/statistics/bayesian.html#probability-distributions)
+[^fourier]: see @Kandolf_GDM, Section 11 for a similar concept regarding the two dimensional Wavelet or Fourier transform, or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/signal/twodim.html)
+
+## Pooling
+
+Convolution layers are often followed by _pooling_ layers.
+They are designed to progressively reduce the _spatial_ size in order to reduce the number of parameters.
+They make the representation invariant to small translations.
+This is an efficient strategy to reduce overfitting and to reduce storage demands.
+Furthermore, it is great if we do not so much care where a feature is but more if it is present or not.
+In our default example we do not care where the dogs/cats are but only which is present.
+
+If we do not simply pool over spatial properties but different convolutions we can become invariant over more complicated transformations like rotation.
+
+The most common pooling function are:
+
+- max pooling, returning the maximum over a rectangular neighbourhood,
+- averaging, compute the average of a neighbourhood,
+- weighted averaging, compute the weighted average where the weights decrease with the distance to the middle,
+- $L^2$ norm of a rectangular neighbourhood.
+
+In image processing the most common form of max pooling is with a $2\times 2$ filter with a stride of $2$, effectively downsampling to $\frac14$ parameters, see @fig-nn-cnn-pooling.
+
+::: {#fig-nn-cnn-pooling}
+![](../_assets/nn/pooling)
+
+For the input on the left we compute two different pooling functions. First max pooling with a $2\times 2$ kernel and stride $2$, second mean with a $2\times2$ kernel and stride $2$.
+:::
+
+::: {.callout-caution appearance="simple" icon=false}
+:::: {#exr-nn-cnn-pooling-cat}
+
+## Applying pooling to an image
+
+Implement max and mean pooling (or find an appropriate library function) for an image and apply it to the cat from above.
+
+Explain what features the different pooling methods conserve and which are lost.
+
+::::
+:::
+
+## Dropout
+
+CNNs often suffer from overfitting and therefore are not good at generalizing.
+One way to work against this is by introducing dropout.
+The key idea is to _randomly_ drop (set to zero) some nodes in the network, during the backward propagation.
+This has shown to have favourable affects on overfitting and has therefore become a stable in CNNs.
+
+## Implementation
+
+Now that we have discussed the basic structure of a CNN we want to implement it. 
+Luckily we can recycle most of the code.
+In the following we only show where we needed to make some changes.
+```{python}
+#| echo: false
+import numpy as np
+import scipy
+import requests
+import io
+import matplotlib.pyplot as plt
+import torch
+from torch.utils.data import TensorDataset
+from torch.utils.data import DataLoader, random_split
+%config InlineBackend.figure_formats = ["svg"]
+
+
+def get_dataset(dataset: TensorDataset, val_split: float, batch_size: int):
+    val_size = int(val_split * len(dataset))
+    train_size = len(dataset) - val_size
+    train_ds, val_ds = random_split(dataset, [train_size, val_size])
+
+    # Create a dataset
+    train = DataLoader(train_ds, batch_size=batch_size, shuffle=True)
+    val = DataLoader(val_ds, batch_size=batch_size, shuffle=False)
+    return train, val
+
+
+def train_model(model, dataset, loss_fn, optimizer,
+                epochs=250, validation_split=0.1, 
+                batch_size=8):
+
+    met = {
+        "train_loss": [],
+        "val_loss": [],
+        "train_acc": [],
+        "val_acc": []}
+
+    for epoch in range(epochs):
+        model.train()
+        train_loss, train_corr = 0, 0
+        train_dl, val_dl = get_dataset(dataset, validation_split, batch_size)
+
+        for X_batch, y_batch in train_dl:
+            y_pred = model(X_batch)            # Forward pass through the model
+            loss = loss_fn(y_pred, y_batch)    # Compute the loss
+            loss.backward()                    # Backpropagation
+            optimizer.step()                   # Update the model parameters
+            optimizer.zero_grad()              # Reset the gradients
+
+            train_loss += loss.item()
+            train_corr += (y_pred.argmax(1) == y_batch).sum().item()
+
+        model.eval()
+        val_loss, val_corr = 0, 0                                       
+        with torch.no_grad():                   # No gradient calculation
+            for X_val, y_val in val_dl:
+                y_val_pred = model(X_val)
+                val_loss += loss_fn(y_val_pred, y_val).item()
+                val_corr += (y_val_pred.argmax(1) == y_val).sum().item()
+
+        met["train_loss"].append(train_loss / len(train_dl))
+        met["val_loss"].append(val_loss / len(val_dl))
+        met["train_acc"].append(train_corr / len(train_dl.dataset))
+        met["val_acc"].append(val_corr / len(val_dl.dataset))
+
+    return met
+
+
+def myplot(y):
+    plt.figure()
+    n = y.shape[0]
+    plt.bar(range(n), y)
+    plt.plot([-0.5, n - 0.5], [0, 0], "k", linewidth=1.0)
+    plt.plot([n // 2 - 0.5, y.shape[0] // 2 - 0.5], [-1.1, 1.1], "r-.", linewidth=3)
+    plt.yticks([-0.5, 0.5], ["cats", "dogs"], rotation=90, va="center")
+    plt.text(n // 4, 1.05, "dogs")
+    plt.text(n // 4 * 3, 1.05, "cats")
+    plt.gca().set_aspect(n / (2 * 3))
+
+
+response = requests.get(
+    "https://github.com/dynamicslab/databook_python/"
+    "raw/refs/heads/master/DATA/catData_w.mat")
+cats_w = scipy.io.loadmat(io.BytesIO(response.content))["cat_wave"]
+
+response = requests.get(
+    "https://github.com/dynamicslab/databook_python/"
+    "raw/refs/heads/master/DATA/dogData_w.mat")
+dogs_w = scipy.io.loadmat(io.BytesIO(response.content))["dog_wave"]
+
+size = int(np.sqrt(dogs_w.shape[0]))
+s = 40
+X_train = np.concatenate((dogs_w[:, :s], cats_w[:, :s]), axis=1).T / 255.0
+y_train = np.repeat(np.array([0, 1]), s)
+X_test = np.concatenate((dogs_w[:, s:], cats_w[:, s:]), axis=1).T / 255.0
+y_test = np.repeat(np.array([0, 1]), 80 - s)
+```
+```{python}
+X_train_tensor = torch.tensor(X_train.reshape(-1, 1, size, size),       # <1>
+                              dtype=torch.float32)
+y_train_tensor = torch.tensor(y_train, dtype=torch.uint8)
+X_test_tensor = torch.tensor(X_test.reshape(-1, 1, size, size),         # <1>
+                              dtype=torch.float32)
+y_test_tensor = torch.tensor(y_test, dtype=torch.uint8)
+dataset = TensorDataset(X_train_tensor, y_train_tensor)
+
+class MyFirstCNN(torch.nn.Module):
+    def __init__(self, conv_out_channels, size):
+        super(MyFirstCNN, self).__init__()
+        self.model = torch.nn.Sequential(                               # <2>
+            torch.nn.Conv2d(1, conv_out_channels, 5, padding=2),        # <2>
+            torch.nn.ReLU(),                                            # <2>
+            torch.nn.MaxPool2d(2),                                      # <2>
+            torch.nn.Dropout(p=0.2),                                    # <2>
+            torch.nn.Flatten(),                                         # <3>
+            torch.nn.Linear(conv_out_channels * size // 2 * size // 2, 2),# <3>       
+        )
+
+
+    def forward(self, x):
+        return self.model(x)
+```
+1. We need to reshape our image to a square and inflate the dimensions to allow processing for [`Conv2d`](https://pytorch.org/docs/stable/generated/torch.nn.Conv2d.html).
+1. The Convolution part of our model, this could be repeated with different `out_channel` sizes.
+1. Classification step at the end of the model to break everything down to two classes.
+
+```{python}
+#| label: fig-nn-cnn-dvc
+#| fig-cap: "Performance of our model."
+#| fig-subcap: 
+#|   - "Classification for our test set."
+#|   - "Probabilities of the two classes - softmax on the model output."
+#|   - "Summary of the key metrics of the model training."
+#| code-fold: true
+#| code-summary: "Show the code for the figure"
+# Initialize everything for reproducibility
+torch.manual_seed(6020)
+np.random.seed(6020)
+
+batch_size = 8
+model = MyFirstCNN(8, size)
+loss_fn = torch.nn.CrossEntropyLoss()
+optimizer = torch.optim.SGD(model.parameters(), lr=1e-2)
+
+epochs = 40
+history = train_model(model, dataset, loss_fn, optimizer,
+                      epochs=epochs,
+                      validation_split=0.1,
+                      batch_size=batch_size)
+
+model.eval()
+with torch.no_grad():
+    y_proba = torch.nn.Softmax(dim=1)(model(X_test_tensor))
+y_predict = y_proba.argmax(axis=-1)
+myplot(y_predict * (-2) + 1)
+acc = (y_predict == y_test_tensor).sum().item() / len(y_test)
+
+n = y_proba.shape[0]
+plt.figure()
+plt.bar(range(n), y_proba[:, 0], color='y', label=r"p(dog)")
+plt.bar(range(n), y_proba[:, 1], color='b', label=r"p(cat)", 
+        bottom=y_proba[:, 0])
+plt.plot([-0.5, n - 0.5], [0.5, 0.5], "r", linewidth=1.0)
+plt.gca().set_aspect(n / (1 * 3))
+plt.legend()
+
+
+epochs_range = range(len(history["train_acc"]))
+plt_list = [["train_acc", "-"], ["train_loss", ":"],
+            ["val_acc", "--"], ["val_loss", "-."]]
+plt.figure()
+for name, style in plt_list:
+    plt.plot(epochs_range, history[name], style, label=name)
+plt.legend(loc="lower right")
+plt.gca().set_aspect(epochs / (1 * 3))
+plt.show()
+```
+
+In @fig-nn-cnn-dvc-1 we can see the final classification of our model with regards to the test set.
+For 10 dogs our model is convinced they are not _good dogs_ but cats, and 3 cats are classified as dogs, in comparison to @fig-nn-nn-dvc-non-linear-1 we gained one correct classified dog.
+If we look at the probabilities @fig-nn-cnn-dvc-2, we can see that we have a couple of close calls, but in general our model is quite sure about the classification.
+Regarding the history of our optimization, we can see learning happen right away with a saturation starting to manifest after about 36 iterations.
+
+At the end, we have an accuracy of `{python} float(np.round(acc  * 100, 2))`% for our test set, slightly better than our NN from before @fig-nn-nn-dvc-non-linear.
+
+::: {.callout-caution appearance="simple" icon=false}
+:::: {#exr-nn-cnn-dvc-original}
+
+## CNN for original cats and dogs images
+
+In the above example we used the wavelet representation of our images.
+As mentioned before, CNNs are quite capable in finding edges and therefore this step should not be required. 
+
+Therefore, implement a version of the above CNN with the original images (note they have a different size of $64\times 64$ pixels).
+
+It might be beneficial to implement multiple convolution stages with different sizes to get good performance, try to find a good architecture.
+::::
+:::
