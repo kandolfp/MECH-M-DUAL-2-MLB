@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>8&nbsp; Convolutional Neural Networks – Machine Learning in Industrial Image Processing</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../summary.html" rel="next">
+<link href="../nn/nn.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-60c12469a02addc16ece3c92f73823bb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-de1eb42f17741db2ad7a825f871af34a.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../nn/index.html">Neural Networks and Deep Learning</a></li><li class="breadcrumb-item"><a href="../nn/cnn.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Convolutional Neural Networks</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Machine Learning in Industrial Image Processing</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../clustering/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Clustering and Classification</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../clustering/unsupervised.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Unsupervised learning</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../clustering/supervised.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Supervised learning</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../clustering/semisupervised.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Semi-Supervised learning</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../data/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data management and data engineering</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../data/model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Model persistence</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../data/code.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Code persistence</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../data/data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Data persistence</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../nn/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Neural Networks and Deep Learning</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nn/nn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Neural Networks</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nn/cnn.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Convolutional Neural Networks</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Summary</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/explanations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">More detailed explanations</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/keras.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Our first Neural Network in <code>tensorflow.keras</code></span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#the-convolution-operation" id="toc-the-convolution-operation" class="nav-link active" data-scroll-target="#the-convolution-operation"><span class="header-section-number">8.1</span> The Convolution Operation</a></li>
+  <li><a href="#pooling" id="toc-pooling" class="nav-link" data-scroll-target="#pooling"><span class="header-section-number">8.2</span> Pooling</a></li>
+  <li><a href="#dropout" id="toc-dropout" class="nav-link" data-scroll-target="#dropout"><span class="header-section-number">8.3</span> Dropout</a></li>
+  <li><a href="#implementation" id="toc-implementation" class="nav-link" data-scroll-target="#implementation"><span class="header-section-number">8.4</span> Implementation</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/edit/main/nn/cnn.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../nn/index.html">Neural Networks and Deep Learning</a></li><li class="breadcrumb-item"><a href="../nn/cnn.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Convolutional Neural Networks</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-nn-cnn" class="quarto-section-identifier"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Convolutional Neural Networks</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Convolutional neural networks CNNs (often also called deep convolution neural nets DCNNs), are a specialized NN for processing <em>grid like data</em>. This especially includes image data (a 2D grid) but also time-series (1D grid) data. They have seen a tremendous success in many applications and are now often synomenouse with NNs.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For an in dept investigation of CNNs see <span class="citation" data-cites="Goodfellow-et-al-2016">(<a href="../references.html#ref-Goodfellow-et-al-2016" role="doc-biblioref">Goodfellow, Bengio, and Courville 2016, sec. 9</a>)</span>, this introduction is partially based on this chapter.</p>
+</div>
+</div>
+<p>As the name suggest, CNNs are nothing else than a NN with at least one <em>convolution</em> layer, with some more techniques.</p>
+<section id="the-convolution-operation" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="the-convolution-operation"><span class="header-section-number">8.1</span> The Convolution Operation</h2>
+<p>Convolution is a specialized linear operation that we apply instead of the matrix multiplication <em>between</em> two layers of a NN.</p>
+<div class="callout callout-style-simple callout-none no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-nn-cnn-convolution" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 8.1 (Convolution)</strong></span> From a pure mathematical point of view, <strong>convolution</strong> is defined for two functions and produces a third <span class="math display">\[
+h(t) = (f \ast g)(t) = \int f(\tau)g(t-\tau)\, \mathrm{d}\tau.
+\]</span></p>
+<p>This concept popped up when discussing the properties of the Fourier, and Laplace transform<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, nevertheless it is more similar to Wavelets<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. If <span class="math inline">\(g\)</span> is a probability density function<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> the convolution can be understood as the weighted average of <span class="math inline">\(f\)</span> by <span class="math inline">\(g\)</span>.</p>
+<p>If <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span> are discrete functions, like in our application an image with discrete pixel values or a time series with a measurement every second we get the <strong>discrete convolution</strong> as <span class="math display">\[
+h(i) = (f \ast g)(i) = \sum_{m = -\infty}^{\infty} f(m)g(i - m).
+\]</span></p>
+<p>In the context of CNNs the function <span class="math inline">\(f\)</span> is called <em>input</em>, <span class="math inline">\(g\)</span> <em>kernel</em>, and <span class="math inline">\(h\)</span> the <em>feature map</em>.</p>
+<p>Quite often, convolution is not only applied in one dimension but along multiple dimensions[^fourier2]. In a discrete setting this looks like <span class="math display">\[
+h(i, j) = (f \ast g)(i, j) = \sum_m \sum_n f(m, n) g(i - m, j - n).
+\]</span></p>
+<p>Note, convolution is <em>commutative</em>, a quite useful property for the implementation. This is due to the fact, that the <em>kernel is flipped</em> with regards to the input (the minus sign), i.e. <span class="math display">\[
+h(i, j) = (g \ast f)(i, j) = \sum_m \sum_n f(i - m, j - n) g(m, n).
+\]</span></p>
+</div>
+</div>
+</div>
+</div>
+<p>Unfortionalty, in many frameworks the term <em>convolution</em> is used for the related function <em>cross-correlation</em> (as e.g.&nbsp;<a href="https://pytorch.org/docs/stable/generated/torch.nn.Conv2d.html"><code>torch.nn.Conv2d</code></a>)</p>
+<div class="callout callout-style-simple callout-none no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="def-nn-cnn-cross-correlation" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 8.2 (Cross-correlation)</strong></span> The related function cross-correlation is the same as convolution but without flipping the kernel, i.e.</p>
+<p><span class="math display">\[
+h(i, j) = (g \ast f)(i, j) = \sum_m \sum_n f(i + m, j + n) g(m, n).
+\]</span></p>
+<p>and therefore it is not commutative.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A CNN will either learn the values for a flipped or not-flipped kernel. Depending on how the function is defined but both work.</p>
+</div>
+</div>
+<p>Let us walk through a 2D example, for an input of size <span class="math inline">\(5 \times 5\)</span> and for an averaging kernel (no flipping) of size <span class="math inline">\(2 \times 3\)</span>, illustrated in <a href="#fig-nn-cnn-convolution" class="quarto-xref">Figure&nbsp;<span>8.1</span></a>.</p>
+<div id="fig-nn-cnn-convolution" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-nn-cnn-convolution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../_assets/nn/convolution.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;8.1: Without any padding and stride equal to 1 we simply move the kernel over the input starting from the top left. Make an element wise multiplication and a summation of all elements. By moving to the right, we move along a row, by moving down we change column."><img src="../_assets/nn/convolution.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn-cnn-convolution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8.1: Without any <em>padding</em> and <em>stride</em> equal to <span class="math inline">\(1\)</span> we simply move the kernel over the input starting from the top left. Make an element wise multiplication and a summation of all elements. By moving to the right, we move along a row, by moving down we change column.
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-simple callout-caution no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exr-nn-cnn-convolution-shape" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 8.1 (Output shape per input and kernel shape)</strong></span> Let us assume we have an input of size <span class="math inline">\((a \times b)\)</span> and kernel of size <span class="math inline">\((c \times d)\)</span>.</p>
+<p>We call <strong>padding</strong> the process of extending the input by a boundary of (usual constant - zero) values. For <span class="math inline">\(p=1\)</span> we extend at the left, right, upper, and lower boundary by 1 column and row.</p>
+<p>Furthermore, <strong>stride</strong> or <em>step size</em> is how much the kernel is moved in each step.</p>
+<ol type="1">
+<li>Write down the general formula for the size of the output for no padding and <span class="math inline">\(s=1\)</span>.</li>
+<li>Extend the formula to include padding but keep <span class="math inline">\(s=1\)</span>.</li>
+<li>Extend the formula to include stride without padding.</li>
+<li>Extend the formula to include a stride and padding.</li>
+<li>How large does the padding need to be to have the same output size as input size (for <span class="math inline">\(s=1\)</span>).</li>
+</ol>
+<p><strong>Note</strong>: Have a look at <span class="citation" data-cites="dumoulin2016guide">Dumoulin and Visin (<a href="../references.html#ref-dumoulin2016guide" role="doc-biblioref">2016</a>)</span> and the corresponding GitHub Repo <a href="https://github.com/vdumoulin/conv_arithmetic?tab=readme-ov-file">Link</a> for a nice visual and computational explanation.</p>
+</div>
+</div>
+</div>
+</div>
+<p>The main idea behind including convolution into a NN is to allow for <em>sparse interactions</em>, <em>parameter sharing</em>, and <em>equivalent representations</em>. These concepts allow for a more efficient implementation, both in perms of storage and computation time. We follow the descriptions in <span class="citation" data-cites="Goodfellow-et-al-2016">Goodfellow, Bengio, and Courville (<a href="../references.html#ref-Goodfellow-et-al-2016" role="doc-biblioref">2016</a>)</span> fro these terms.</p>
+<p>The idea of <em>spares interaction</em> is, that we do not have fully connected neurons. In particular, by performing convolution with a kernel with a smaller size we can reduce the input size drastically. For example, a kernel that detects edges only needs to look at a couple of pixels. This allows for a more efficient and memory optimized implementation. It can also be used to downsample an image in case the input size is not homogeneous for all images.</p>
+<p>Next, <em>parameter sharing</em> refers to the process of using the same parameter (weight) for more than one function and input. In particular, the kernel weights are applied to all the different positions in the input. As a result, the CNN only learns one set of parameters (for the kernel) and not different sets for each of the positions, reducing the storage (but not the runtime) demands.</p>
+<p>Finally, <em>equivalence representations</em> means that input features transform in a <em>predictable</em> fashion under certain transformations. In particular, it should not mather if we first apply convolution and than said transform or the other way round. For CNNs the most important of these is translation. If we shift a parameter and than perform convolution or reverse the order, we see no change in the output. This allow the CNNs to recognize patterns and features consistently, even when we see a transform of the input, e.g.&nbsp;the cat sits 10 pixels to the left.</p>
+<p>To illustrate the power of convolution we use it to detect the (vertical) edges of a cat via the simple difference of two neighbouring pixels (the first discrete derivative), see <a href="#fig-nn-cnn-edge" class="quarto-xref">Figure&nbsp;<span>8.2</span></a>.</p>
+<details class="code-fold">
+<summary>Show the code for the figure</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> io</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://github.com/dynamicslab/databook_python/"</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"raw/refs/heads/master/DATA/catData.mat"</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>cats <span class="op">=</span> scipy.io.loadmat(io.BytesIO(response.content))[<span class="st">"cat"</span>]</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>plt.imshow(np.reshape(cats[:, <span class="dv">0</span>], (<span class="dv">64</span>, <span class="dv">64</span>)).T, cmap<span class="op">=</span>plt.get_cmap(<span class="st">"gray"</span>))</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>edge <span class="op">=</span> np.zeros((<span class="dv">64</span>, <span class="dv">63</span>))</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, c <span class="kw">in</span> <span class="bu">enumerate</span>(np.reshape(cats[:, <span class="dv">0</span>], (<span class="dv">64</span>, <span class="dv">64</span>)).T):</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    edge[i, :] <span class="op">=</span> np.convolve(c, [<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>], mode<span class="op">=</span><span class="st">"valid"</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>plt.imshow(edge, cmap<span class="op">=</span>plt.get_cmap(<span class="st">"gray"</span>))</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="fig-nn-cnn-edge" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-nn-cnn-edge-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-nn-cnn-edge" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-nn-cnn-edge-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-nn-cnn-edge-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="cnn_files/figure-html/fig-nn-cnn-edge-output-1.svg" class="lightbox" data-gallery="fig-nn-cnn-edge" title="Figure&nbsp;8.2&nbsp;(a): The original image of cat zero."><img src="cnn_files/figure-html/fig-nn-cnn-edge-output-1.svg" class="img-fluid figure-img" data-ref-parent="fig-nn-cnn-edge"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-nn-cnn-edge-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) The original image of cat zero.
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-nn-cnn-edge" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-nn-cnn-edge-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-nn-cnn-edge-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="cnn_files/figure-html/fig-nn-cnn-edge-output-2.svg" class="lightbox" data-gallery="fig-nn-cnn-edge" title="Figure&nbsp;8.2&nbsp;(b): Edges detected via the first derivative (order 1)"><img src="cnn_files/figure-html/fig-nn-cnn-edge-output-2.svg" class="img-fluid figure-img" data-ref-parent="fig-nn-cnn-edge"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-nn-cnn-edge-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Edges detected via the first derivative (order 1)
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn-cnn-edge-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8.2: Application of a simple one dimensional kernel to an image. The right image has one pixel less per row.
+</figcaption>
+</figure>
+</div>
+<p>This feature is often use for object detection.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We can express convolution via matrix-matrix multiplication. The resulting matrices are sparse, highly structured and repeat the same element quite often.</p>
+<p>In <a href="#fig-nn-cnn-edge" class="quarto-xref">Figure&nbsp;<span>8.2</span></a> we need <span class="math inline">\(64 \times 63 \times 3 = 12,096\)</span> operations to compute the right image from the left. If we would implement this with a dense matrix-matrix computation this would mean <span class="math inline">\(64 \times 64 \times 64 \times 63 = 16,515,072\)</span> operations.</p>
+<p>Convolution is an efficient mechanism for applying a consistent linear transformation to localized regions across the entire input domain.</p>
+</div>
+</div>
+</section>
+<section id="pooling" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="pooling"><span class="header-section-number">8.2</span> Pooling</h2>
+<p>Convolution layers are often followed by <em>pooling</em> layers. They are designed to progressively reduce the <em>spatial</em> size in order to reduce the number of parameters. They make the representation invariant to small translations. This is an efficient strategy to reduce overfitting and to reduce storage demands. Furthermore, it is great if we do not so much care where a feature is but more if it is present or not. In our default example we do not care where the dogs/cats are but only which is present.</p>
+<p>If we do not simply pool over spatial properties but different convolutions we can become invariant over more complicated transformations like rotation.</p>
+<p>The most common pooling function are:</p>
+<ul>
+<li>max pooling, returning the maximum over a rectangular neighbourhood,</li>
+<li>averaging, compute the average of a neighbourhood,</li>
+<li>weighted averaging, compute the weighted average where the weights decrease with the distance to the middle,</li>
+<li><span class="math inline">\(L^2\)</span> norm of a rectangular neighbourhood.</li>
+</ul>
+<p>In image processing the most common form of max pooling is with a <span class="math inline">\(2\times 2\)</span> filter with a stride of <span class="math inline">\(2\)</span>, effectively downsampling to <span class="math inline">\(\frac14\)</span> parameters, see <a href="#fig-nn-cnn-pooling" class="quarto-xref">Figure&nbsp;<span>8.3</span></a>.</p>
+<div id="fig-nn-cnn-pooling" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-nn-cnn-pooling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="../_assets/nn/pooling.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Figure&nbsp;8.3: For the input on the left we compute two different pooling functions. First max pooling with a 2\times 2 kernel and stride 2, second mean with a 2\times2 kernel and stride 2."><img src="../_assets/nn/pooling.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn-cnn-pooling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8.3: For the input on the left we compute two different pooling functions. First max pooling with a <span class="math inline">\(2\times 2\)</span> kernel and stride <span class="math inline">\(2\)</span>, second mean with a <span class="math inline">\(2\times2\)</span> kernel and stride <span class="math inline">\(2\)</span>.
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-simple callout-caution no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exr-nn-cnn-pooling-cat" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 8.2 (Applying pooling to an image)</strong></span> Implement max and mean pooling (or find an appropriate library function) for an image and apply it to the cat from above.</p>
+<p>Explain what features the different pooling methods conserve and which are lost.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="dropout" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="dropout"><span class="header-section-number">8.3</span> Dropout</h2>
+<p>CNNs often suffer from overfitting and therefore are not good at generalizing. One way to work against this is by introducing dropout. The key idea is to <em>randomly</em> drop (set to zero) some nodes in the network, during the backward propagation. This has shown to have favourable affects on overfitting and has therefore become a stable in CNNs.</p>
+</section>
+<section id="implementation" class="level2" data-number="8.4">
+<h2 data-number="8.4" class="anchored" data-anchor-id="implementation"><span class="header-section-number">8.4</span> Implementation</h2>
+<p>Now that we have discussed the basic structure of a CNN we want to implement it. Luckily we can recycle most of the code. In the following we only show where we needed to make some changes.</p>
+<div id="c24f0707" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="annotated-cell-2"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-2-1" class="code-annotation-target"><a href="#annotated-cell-2-1" aria-hidden="true" tabindex="-1"></a>X_train_tensor <span class="op">=</span> torch.tensor(X_train.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>, size, size),</span>
+<span id="annotated-cell-2-2"><a href="#annotated-cell-2-2" aria-hidden="true" tabindex="-1"></a>                              dtype<span class="op">=</span>torch.float32)</span>
+<span id="annotated-cell-2-3"><a href="#annotated-cell-2-3" aria-hidden="true" tabindex="-1"></a>y_train_tensor <span class="op">=</span> torch.tensor(y_train, dtype<span class="op">=</span>torch.uint8)</span>
+<span id="annotated-cell-2-4"><a href="#annotated-cell-2-4" aria-hidden="true" tabindex="-1"></a>X_test_tensor <span class="op">=</span> torch.tensor(X_test.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>, size, size),</span>
+<span id="annotated-cell-2-5"><a href="#annotated-cell-2-5" aria-hidden="true" tabindex="-1"></a>                              dtype<span class="op">=</span>torch.float32)</span>
+<span id="annotated-cell-2-6"><a href="#annotated-cell-2-6" aria-hidden="true" tabindex="-1"></a>y_test_tensor <span class="op">=</span> torch.tensor(y_test, dtype<span class="op">=</span>torch.uint8)</span>
+<span id="annotated-cell-2-7"><a href="#annotated-cell-2-7" aria-hidden="true" tabindex="-1"></a>dataset <span class="op">=</span> TensorDataset(X_train_tensor, y_train_tensor)</span>
+<span id="annotated-cell-2-8"><a href="#annotated-cell-2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-2-9"><a href="#annotated-cell-2-9" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MyFirstCNN(torch.nn.Module):</span>
+<span id="annotated-cell-2-10"><a href="#annotated-cell-2-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, conv_out_channels, size):</span>
+<span id="annotated-cell-2-11"><a href="#annotated-cell-2-11" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>(MyFirstCNN, <span class="va">self</span>).<span class="fu">__init__</span>()</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-2-12" class="code-annotation-target"><a href="#annotated-cell-2-12" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.model <span class="op">=</span> torch.nn.Sequential(</span>
+<span id="annotated-cell-2-13"><a href="#annotated-cell-2-13" aria-hidden="true" tabindex="-1"></a>            torch.nn.Conv2d(<span class="dv">1</span>, conv_out_channels, <span class="dv">5</span>, padding<span class="op">=</span><span class="dv">2</span>),</span>
+<span id="annotated-cell-2-14"><a href="#annotated-cell-2-14" aria-hidden="true" tabindex="-1"></a>            torch.nn.ReLU(),</span>
+<span id="annotated-cell-2-15"><a href="#annotated-cell-2-15" aria-hidden="true" tabindex="-1"></a>            torch.nn.MaxPool2d(<span class="dv">2</span>),</span>
+<span id="annotated-cell-2-16"><a href="#annotated-cell-2-16" aria-hidden="true" tabindex="-1"></a>            torch.nn.Dropout(p<span class="op">=</span><span class="fl">0.2</span>),</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-2-17" class="code-annotation-target"><a href="#annotated-cell-2-17" aria-hidden="true" tabindex="-1"></a>            torch.nn.Flatten(),</span>
+<span id="annotated-cell-2-18"><a href="#annotated-cell-2-18" aria-hidden="true" tabindex="-1"></a>            torch.nn.Linear(conv_out_channels <span class="op">*</span> size <span class="op">//</span> <span class="dv">2</span> <span class="op">*</span> size <span class="op">//</span> <span class="dv">2</span>, <span class="dv">2</span>),</span>
+<span id="annotated-cell-2-19"><a href="#annotated-cell-2-19" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="annotated-cell-2-20"><a href="#annotated-cell-2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-2-21"><a href="#annotated-cell-2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-2-22"><a href="#annotated-cell-2-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x):</span>
+<span id="annotated-cell-2-23"><a href="#annotated-cell-2-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.model(x)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-2" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-2" data-code-lines="1,4" data-code-annotation="1">We need to reshape our image to a square and inflate the dimensions to allow processing for <a href="https://pytorch.org/docs/stable/generated/torch.nn.Conv2d.html"><code>Conv2d</code></a>.</span>
+</dd>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-2" data-code-lines="12,13,14,15,16" data-code-annotation="2">The Convolution part of our model, this could be repeated with different <code>out_channel</code> sizes.</span>
+</dd>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-2" data-code-lines="17,18" data-code-annotation="3">Classification step at the end of the model to break everything down to two classes.</span>
+</dd>
+</dl>
+</div>
+</div>
+<div class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Show the code for the figure</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize everything for reproducibility</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">6020</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">6020</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>batch_size <span class="op">=</span> <span class="dv">8</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> MyFirstCNN(<span class="dv">8</span>, size)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss()</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>optimizer <span class="op">=</span> torch.optim.SGD(model.parameters(), lr<span class="op">=</span><span class="fl">1e-2</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>epochs <span class="op">=</span> <span class="dv">40</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>history <span class="op">=</span> train_model(model, dataset, loss_fn, optimizer,</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>                      epochs<span class="op">=</span>epochs,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>                      validation_split<span class="op">=</span><span class="fl">0.1</span>,</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>                      batch_size<span class="op">=</span>batch_size)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">eval</span>()</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    y_proba <span class="op">=</span> torch.nn.Softmax(dim<span class="op">=</span><span class="dv">1</span>)(model(X_test_tensor))</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>y_predict <span class="op">=</span> y_proba.argmax(axis<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>myplot(y_predict <span class="op">*</span> (<span class="op">-</span><span class="dv">2</span>) <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>acc <span class="op">=</span> (y_predict <span class="op">==</span> y_test_tensor).<span class="bu">sum</span>().item() <span class="op">/</span> <span class="bu">len</span>(y_test)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> y_proba.shape[<span class="dv">0</span>]</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>plt.bar(<span class="bu">range</span>(n), y_proba[:, <span class="dv">0</span>], color<span class="op">=</span><span class="st">'y'</span>, label<span class="op">=</span><span class="vs">r"p(dog)"</span>)</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>plt.bar(<span class="bu">range</span>(n), y_proba[:, <span class="dv">1</span>], color<span class="op">=</span><span class="st">'b'</span>, label<span class="op">=</span><span class="vs">r"p(cat)"</span>, </span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>        bottom<span class="op">=</span>y_proba[:, <span class="dv">0</span>])</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>plt.plot([<span class="op">-</span><span class="fl">0.5</span>, n <span class="op">-</span> <span class="fl">0.5</span>], [<span class="fl">0.5</span>, <span class="fl">0.5</span>], <span class="st">"r"</span>, linewidth<span class="op">=</span><span class="fl">1.0</span>)</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>plt.gca().set_aspect(n <span class="op">/</span> (<span class="dv">1</span> <span class="op">*</span> <span class="dv">3</span>))</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>epochs_range <span class="op">=</span> <span class="bu">range</span>(<span class="bu">len</span>(history[<span class="st">"train_acc"</span>]))</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>plt_list <span class="op">=</span> [[<span class="st">"train_acc"</span>, <span class="st">"-"</span>], [<span class="st">"train_loss"</span>, <span class="st">":"</span>],</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>            [<span class="st">"val_acc"</span>, <span class="st">"--"</span>], [<span class="st">"val_loss"</span>, <span class="st">"-."</span>]]</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, style <span class="kw">in</span> plt_list:</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    plt.plot(epochs_range, history[name], style, label<span class="op">=</span>name)</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>plt.legend(loc<span class="op">=</span><span class="st">"lower right"</span>)</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>plt.gca().set_aspect(epochs <span class="op">/</span> (<span class="dv">1</span> <span class="op">*</span> <span class="dv">3</span>))</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="fig-nn-cnn-dvc" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="4">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-nn-cnn-dvc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display">
+<div id="fig-nn-cnn-dvc-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-nn-cnn-dvc-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="cnn_files/figure-html/fig-nn-cnn-dvc-output-1.svg" class="lightbox" data-gallery="fig-nn-cnn-dvc" title="Figure&nbsp;8.4&nbsp;(a): Classification for our test set."><img src="cnn_files/figure-html/fig-nn-cnn-dvc-output-1.svg" class="img-fluid figure-img" data-ref-parent="fig-nn-cnn-dvc"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-nn-cnn-dvc-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Classification for our test set.
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-nn-cnn-dvc-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-nn-cnn-dvc-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="cnn_files/figure-html/fig-nn-cnn-dvc-output-2.svg" class="lightbox" data-gallery="fig-nn-cnn-dvc" title="Figure&nbsp;8.4&nbsp;(b): Probabilities of the two classes - softmax on the model output."><img src="cnn_files/figure-html/fig-nn-cnn-dvc-output-2.svg" class="img-fluid figure-img" data-ref-parent="fig-nn-cnn-dvc"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-nn-cnn-dvc-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Probabilities of the two classes - softmax on the model output.
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-nn-cnn-dvc-3" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-nn-cnn-dvc-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="cnn_files/figure-html/fig-nn-cnn-dvc-output-3.svg" class="lightbox" data-gallery="fig-nn-cnn-dvc" title="Figure&nbsp;8.4&nbsp;(c): Summary of the key metrics of the model training."><img src="cnn_files/figure-html/fig-nn-cnn-dvc-output-3.svg" class="img-fluid figure-img" data-ref-parent="fig-nn-cnn-dvc"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-nn-cnn-dvc-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(c) Summary of the key metrics of the model training.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn-cnn-dvc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8.4: Performance of our model.
+</figcaption>
+</figure>
+</div>
+</div>
+<p>In <a href="#fig-nn-cnn-dvc-1" class="quarto-xref">Figure&nbsp;<span>8.4 (a)</span></a> we can see the final classification of our model with regards to the test set. For 10 dogs our model is convinced they are not <em>good dogs</em> but cats, and 3 cats are classified as dogs, in comparison to <a href="nn.html#fig-nn-nn-dvc-non-linear-1" class="quarto-xref">Figure&nbsp;<span>7.5 (a)</span></a> we gained one correct classified dog. If we look at the probabilities <a href="#fig-nn-cnn-dvc-2" class="quarto-xref">Figure&nbsp;<span>8.4 (b)</span></a>, we can see that we have a couple of close calls, but in general our model is quite sure about the classification. Regarding the history of our optimization, we can see learning happen right away with a saturation starting to manifest after about 36 iterations.</p>
+<p>At the end, we have an accuracy of 83.75% for our test set, slightly better than our NN from before <a href="nn.html#fig-nn-nn-dvc-non-linear" class="quarto-xref">Figure&nbsp;<span>7.5</span></a>.</p>
+<div class="callout callout-style-simple callout-caution no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exr-nn-cnn-dvc-original" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 8.3 (CNN for original cats and dogs images)</strong></span> In the above example we used the wavelet representation of our images. As mentioned before, CNNs are quite capable in finding edges and therefore this step should not be required.</p>
+<p>Therefore, implement a version of the above CNN with the original images (note they have a different size of <span class="math inline">\(64\times 64\)</span> pixels).</p>
+<p>It might be beneficial to implement multiple convolution stages with different sizes to get good performance, try to find a good architecture.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-dumoulin2016guide" class="csl-entry" role="listitem">
+Dumoulin, Vincent, and Francesco Visin. 2016. <span>“<span class="nocase">A guide to convolution arithmetic for deep learning</span>.”</span> <em>ArXiv e-Prints</em>, March.
+</div>
+<div id="ref-Goodfellow-et-al-2016" class="csl-entry" role="listitem">
+Goodfellow, Ian, Yoshua Bengio, and Aaron Courville. 2016. <em>Deep Learning</em>. MIT Press.
+</div>
+<div id="ref-Kandolf_GDM" class="csl-entry" role="listitem">
+Kandolf, Peter. 2025. <span>“MECH-m-DUAL-1-DBM - Grundlagen Datenbasierter Methoden.”</span> <em>Management Center Innsbruck, Course Material</em>. <a href="https://doi.org/10.5281/zenodo.14671708">https://doi.org/10.5281/zenodo.14671708</a>.
+</div>
+</div>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>see <span class="citation" data-cites="Kandolf_GDM">Kandolf (<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">2025</a>)</span>, Section 11 for a similar concept regarding the two dimensional Wavelet or Fourier transform, or follow the direct <a href="https://kandolfp.github.io/MECH-M-DUAL-1-DBM/signal/twodim.html">link</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>see <span class="citation" data-cites="Kandolf_GDM">Kandolf (<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">2025</a>)</span>, Section 10 or follow the direct <a href="https://kandolfp.github.io/MECH-M-DUAL-1-DBM/signal/wavelet.html">link</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>see <span class="citation" data-cites="Kandolf_GDM">Kandolf (<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">2025</a>)</span>, Section 14.2 for some examples or follow the direct <a href="https://kandolfp.github.io/MECH-M-DUAL-1-DBM/statistics/bayesian.html#probability-distributions">link</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/kandolfp\.github\.io\/MECH-M-DUAL-2-MLB\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../nn/nn.html" class="pagination-link" aria-label="Neural Networks">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Neural Networks</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../summary.html" class="pagination-link" aria-label="Summary">
+        <span class="nav-page-text">Summary</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Machine Learning in Industrial Image Processing SS 2025 (MECH-M-DUAL-2-MLB)</p>
+</div>   
+    <div class="nav-footer-center">
+<p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> Peter Kandolf</p>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/edit/main/nn/cnn.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>This book was built with <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
+
+
+
+
+</body></html>
