@@ -218,6 +218,14 @@ We visualized the resulting network in @fig-nn-cvd-nl.
 
 The following couple of code sections translate @fig-nn-cvd-nl into a `pytorch` model.
 The main idea is that we create a model class that inherits from `torch.nn.Module` and than perform our training on this class, benefiting from the inherited capabilities.
+
+::: {.callout-tip}
+As we will see in @exr-nn-nn-dvc-backprop, `softmax` and our loss function can be combined in a numerical stable way.
+Therefore, it is often advised not to include `softmax` during training but for inference.
+
+For the following code snippet, we keep it in as a comment to show where it would be included.
+:::
+
 ```{python}
 import torch
 
@@ -229,7 +237,7 @@ class MyFirstNN(torch.nn.Module):                       # <1>
             torch.nn.Linear(input_params, 2),           
             torch.nn.Tanh(),                            
             torch.nn.Linear(2, 2),                      
-            torch.nn.Softmax(dim=1),                    
+            #torch.nn.Softmax(dim=1),                    
         )                                               # <4>
                                                         # <2>
     def forward(self, x):                               # <5>
@@ -362,7 +370,7 @@ Now all parts are available and we can finally train our model.
 loss_fn = torch.nn.CrossEntropyLoss()                                      # <1>
 optimizer = torch.optim.SGD(model.parameters(), lr=1e-2)                   # <2>
 
-epochs = 250
+epochs = 120
 history = train_model(model, dataset, loss_fn, optimizer,                  # <3>
                       epochs=epochs,
                       validation_split=0.1,
@@ -399,7 +407,7 @@ def myplot(y):
 
 model.eval()
 with torch.no_grad():
-    y_proba = model(X_test_tensor)
+    y_proba = torch.nn.Softmax(dim=1)(model(X_test_tensor))
 y_predict = y_proba.argmax(axis=-1)
 myplot(y_predict * (-2) + 1)
 acc = (y_predict == y_test_tensor).sum().item() / len(y_test)
@@ -468,6 +476,16 @@ Change this such that the split is done once per call of the training.
 
 1. What is the influence on the training?
 1. How is the performance for different optimizers?
+::::
+:::
+
+::: {.callout-caution appearance="simple" icon=false}
+:::: {#exr-nn-nn-dvc-train-softmax}
+
+## Train with `softmax`
+
+Include `softmax` into to model for training and see how the performance is influenced.
+
 ::::
 :::
 
@@ -563,7 +581,7 @@ $$
 $$
 
 ::: {.callout-tip appearance="simple" collapse="true" icon=false}
-:::: {#exm-nn-nn-backpropagaion}
+:::: {#exm-nn-nn-backpropagation}
 
 ## A simple case
 
@@ -636,7 +654,7 @@ Now that we have a better understanding we can define the backdrop procedure, se
 We can see this reflected in our code for the NN above.
 
 ::: {.callout-caution appearance="simple" icon=false}
-:::: {#exr-nn-nn-backproü}
+:::: {#exr-nn-nn-dvc-backprop}
 
 ## Dogs and cats
 
