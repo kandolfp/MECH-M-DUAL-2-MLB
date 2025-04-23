@@ -362,8 +362,9 @@ Now all parts are available and we can finally train our model.
 loss_fn = torch.nn.CrossEntropyLoss()                                      # <1>
 optimizer = torch.optim.SGD(model.parameters(), lr=1e-2)                   # <2>
 
+epochs = 250
 history = train_model(model, dataset, loss_fn, optimizer,                  # <3>
-                      epochs=250,
+                      epochs=epochs,
                       validation_split=0.1,
                       batch_size=batch_size)                               # <3>
 ```
@@ -414,14 +415,14 @@ plt.legend()
 
 plt.figure()
 
-epochs = range(len(history["train_acc"]))
+epochs_range = range(len(history["train_acc"]))
 plt_list = [["train_acc", "-"], ["train_loss", ":"],
             ["val_acc", "--"], ["val_loss", "-."]]
 
 for name, style in plt_list:
-    plt.plot(epochs, history[name], style, label=name)
+    plt.plot(epochs_range, history[name], style, label=name)
 plt.legend(loc="lower right")
-plt.gca().set_aspect(250 / (1 * 3))
+plt.gca().set_aspect(epochs / (1 * 3))
 plt.show()
 ```
 In @fig-nn-nn-dvc-non-linear-1 we can see the final classification of our model with regards to the test set.
