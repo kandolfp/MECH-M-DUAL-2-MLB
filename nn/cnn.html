@@ -84,7 +84,7 @@ div.csl-indent {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../summary.html" rel="next">
+<link href="../nn/autoencoder.html" rel="next">
 <link href="../nn/nn.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -292,6 +292,12 @@ window.Quarto = {
   <div class="sidebar-item-container"> 
   <a href="../nn/cnn.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Convolutional Neural Networks</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nn/autoencoder.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Autoencoders</span></span></a>
   </div>
 </li>
       </ul>
@@ -601,7 +607,7 @@ Figure&nbsp;8.3: For the input on the left we compute two different pooling func
 <section id="implementation" class="level2" data-number="8.4">
 <h2 data-number="8.4" class="anchored" data-anchor-id="implementation"><span class="header-section-number">8.4</span> Implementation</h2>
 <p>Now that we have discussed the basic structure of a CNN we want to implement it. Luckily we can recycle most of the code. In the following we only show where we needed to make some changes.</p>
-<div id="04b128be" class="cell" data-execution_count="3">
+<div id="aa4468f9" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="annotated-cell-2"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-2-1" class="code-annotation-target"><a href="#annotated-cell-2-1" aria-hidden="true" tabindex="-1"></a>X_train_tensor <span class="op">=</span> torch.tensor(X_train.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>, size, size),</span>
 <span id="annotated-cell-2-2"><a href="#annotated-cell-2-2" aria-hidden="true" tabindex="-1"></a>                              dtype<span class="op">=</span>torch.float32)</span>
 <span id="annotated-cell-2-3"><a href="#annotated-cell-2-3" aria-hidden="true" tabindex="-1"></a>y_train_tensor <span class="op">=</span> torch.tensor(y_train, dtype<span class="op">=</span>torch.uint8)</span>
@@ -1342,8 +1348,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../summary.html" class="pagination-link" aria-label="Summary">
-        <span class="nav-page-text">Summary</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../nn/autoencoder.html" class="pagination-link" aria-label="Autoencoders">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Autoencoders</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
