@@ -95,8 +95,8 @@ div.csl-indent {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-60c12469a02addc16ece3c92f73823bb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-de1eb42f17741db2ad7a825f871af34a.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-d3d4d1eae387a6e9deb6a52c96ceddf1.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-bf224785ad4c3f9b7bbdd05ed05d0153.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
@@ -403,7 +403,7 @@ h(t) = (f \ast g)(t) = \int f(\tau)g(t-\tau)\, \mathrm{d}\tau.
 h(i) = (f \ast g)(i) = \sum_{m = -\infty}^{\infty} f(m)g(i - m).
 \]</span></p>
 <p>In the context of CNNs the function <span class="math inline">\(f\)</span> is called <em>input</em>, <span class="math inline">\(g\)</span> <em>kernel</em>, and <span class="math inline">\(h\)</span> the <em>feature map</em>.</p>
-<p>Quite often, convolution is not only applied in one dimension but along multiple dimensions[^fourier2]. In a discrete setting this looks like <span class="math display">\[
+<p>Quite often, convolution is not only applied in one dimension but along multiple dimensions<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. In a discrete setting this looks like <span class="math display">\[
 h(i, j) = (f \ast g)(i, j) = \sum_m \sum_n f(m, n) g(i - m, j - n).
 \]</span></p>
 <p>Note, convolution is <em>commutative</em>, a quite useful property for the implementation. This is due to the fact, that the <em>kernel is flipped</em> with regards to the input (the minus sign), i.e. <span class="math display">\[
@@ -587,7 +587,7 @@ Figure&nbsp;8.3: For the input on the left we compute two different pooling func
 </div>
 <div class="callout-body-container">
 <div id="exr-nn-cnn-pooling-cat" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 8.2 (Applying pooling to an image)</strong></span> Implement max and mean pooling (or find an appropriate library function) for an image and apply it to the cat from above.</p>
+<p><span class="theorem-title"><strong>Exercise 8.2 (Applying pooling to images)</strong></span> Implement max and mean pooling (or find an appropriate library function) for an image and apply it to the cat from above.</p>
 <p>Explain what features the different pooling methods conserve and which are lost.</p>
 </div>
 </div>
@@ -601,7 +601,7 @@ Figure&nbsp;8.3: For the input on the left we compute two different pooling func
 <section id="implementation" class="level2" data-number="8.4">
 <h2 data-number="8.4" class="anchored" data-anchor-id="implementation"><span class="header-section-number">8.4</span> Implementation</h2>
 <p>Now that we have discussed the basic structure of a CNN we want to implement it. Luckily we can recycle most of the code. In the following we only show where we needed to make some changes.</p>
-<div id="c24f0707" class="cell" data-execution_count="3">
+<div id="04b128be" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="annotated-cell-2"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-2-1" class="code-annotation-target"><a href="#annotated-cell-2-1" aria-hidden="true" tabindex="-1"></a>X_train_tensor <span class="op">=</span> torch.tensor(X_train.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>, size, size),</span>
 <span id="annotated-cell-2-2"><a href="#annotated-cell-2-2" aria-hidden="true" tabindex="-1"></a>                              dtype<span class="op">=</span>torch.float32)</span>
 <span id="annotated-cell-2-3"><a href="#annotated-cell-2-3" aria-hidden="true" tabindex="-1"></a>y_train_tensor <span class="op">=</span> torch.tensor(y_train, dtype<span class="op">=</span>torch.uint8)</span>
@@ -766,9 +766,10 @@ Kandolf, Peter. 2025. <span>“MECH-m-DUAL-1-DBM - Grundlagen Datenbasierter Met
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p>see <span class="citation" data-cites="Kandolf_GDM">Kandolf (<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">2025</a>)</span>, Section 11 for a similar concept regarding the two dimensional Wavelet or Fourier transform, or follow the direct <a href="https://kandolfp.github.io/MECH-M-DUAL-1-DBM/signal/twodim.html">link</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>see <span class="citation" data-cites="Kandolf_GDM">Kandolf (<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">2025</a>)</span>, Section 8.2 or follow the direct <a href="https://kandolfp.github.io/MECH-M-DUAL-1-DBM/signal/fourier.html#fourier-transform">link</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>see <span class="citation" data-cites="Kandolf_GDM">Kandolf (<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">2025</a>)</span>, Section 10 or follow the direct <a href="https://kandolfp.github.io/MECH-M-DUAL-1-DBM/signal/wavelet.html">link</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p>see <span class="citation" data-cites="Kandolf_GDM">Kandolf (<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">2025</a>)</span>, Section 14.2 for some examples or follow the direct <a href="https://kandolfp.github.io/MECH-M-DUAL-1-DBM/statistics/bayesian.html#probability-distributions">link</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>see <span class="citation" data-cites="Kandolf_GDM">Kandolf (<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">2025</a>)</span>, Section 11 for a similar concept regarding the two dimensional Wavelet or Fourier transform, or follow the direct <a href="https://kandolfp.github.io/MECH-M-DUAL-1-DBM/signal/twodim.html">link</a><a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 

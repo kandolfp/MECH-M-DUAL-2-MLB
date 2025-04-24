@@ -95,8 +95,8 @@ div.csl-indent {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-60c12469a02addc16ece3c92f73823bb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-de1eb42f17741db2ad7a825f871af34a.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-d3d4d1eae387a6e9deb6a52c96ceddf1.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-bf224785ad4c3f9b7bbdd05ed05d0153.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
@@ -416,7 +416,7 @@ Tip
 <li>Repeat, starting from step 2, until the cluster centers stay stable up to some tolerance.</li>
 </ol>
 <p>This algorithm was first introduced in <span class="citation" data-cites="DBLP:journals/tit/Lloyd82">Lloyd (<a href="../references.html#ref-DBLP:journals/tit/Lloyd82" role="doc-biblioref">1982</a>)</span> and is therefore often called Lloyd algorithm.</p>
-<div id="68158d79" class="cell" data-execution_count="1">
+<div id="5e24545d" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code for Lloyd algorithm</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lloyd(data, centers, steps):</span>
@@ -1349,7 +1349,7 @@ Figure&nbsp;1.9: Fitting of the second and fourth principal value of the cats an
 <p>Before we make the leap to supervised learning, we we introduce a new data set and see how our unsupervised approach works in this case.</p>
 <p>We do this with the (in)famous MNIST data set of hand written digits. Lets start by looking at the data set and establishing some basic properties.</p>
 <p>We load the data set and look at its description</p>
-<div id="0c65bc71" class="cell styled-output" data-execution_count="10">
+<div id="f4e1ba63" class="cell styled-output" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_openml</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>mnist <span class="op">=</span> fetch_openml(<span class="st">'mnist_784'</span>, as_frame<span class="op">=</span><span class="va">False</span>)</span>
@@ -1407,7 +1407,7 @@ Figure&nbsp;1.10: First 100 digits from the MNIST data set.
 <p>As can be seen from <a href="#fig-clustering-usl-mnist" class="quarto-xref">Figure&nbsp;<span>1.10</span></a>, most digits are easy to distinguish for us, but there are some nasty things included. Especially, there are <code>1</code>s with the english style (just one straight line) of writing (1st row, 7th column), but also as a diagonal line (1st row, 4th column), and finally also the german style (connecting line at base and top) of writing (3rd row, 5th column).</p>
 <p>Also the <code>2</code> digit comes in various forms, with loop (1st row, 6th column) and without (3rd row, 6th column). Finally we all know that a <code>3</code> can hide in an <code>8</code>, same as a <code>7</code> and <code>1</code> can hide in a <code>9</code> and much more.</p>
 <p>Now, before we go any further in the investigation we split up the data set into a training and a test set, we will not use this here but we should establish some way of working right from the start.</p>
-<div id="66e75df6" class="cell" data-execution_count="12">
+<div id="d2058b53" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>X_train, X_test <span class="op">=</span> mnist.data[:<span class="dv">60000</span>], mnist.data[<span class="dv">60000</span>:]</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>y_train, y_test <span class="op">=</span> mnist.target[:<span class="dv">60000</span>], mnist.target[<span class="dv">60000</span>:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
