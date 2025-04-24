@@ -1,0 +1,210 @@
+# Autoencoders {#sec-nn-autoenc}
+
+Another class of neural networks that exploit low-dimensional structure in high-dimensional data is called _autoencoders_. 
+Autoencoders can be understood to generalize the linear subspace embedding of _singular value decomposition_/_principal component analysis_[^1] to a nonlinear manifold embedding.
+
+The main idea, as stated in [@Goodfellow-et-al-2016, Chapter 14], is to train a NN to _copy_ its input $x$ via the _latent space_ $y$ to the output $z$.
+Crucially, $z$ is usually a low dimensional space, represents the output of the encoding and the input of the decoding part of the NN.
+This will force the latent space to reveal some useful properties that we can study.
+
+::: {#fig-nn-autoenc-image}
+![](../_assets/nn/autoencoder)
+
+General structure of an _autoencoder_ with the _encoder_ network on the left and the _decoder_ network on the right (they don't need to be looking the same).
+:::
+
+During the training the weights of the (two) neural networks are learned by minimizing a loss function that measures the difference between the input $x$ and the reconstruction $z$, e.g. $\operatorname{argmin}\|z - x\|^2$.
+
+::: {.callout-note}
+We can use this to span the same space as PCA.
+For a linear encoder/decoder and a latent space smaller than the input with the loss function being the mean least square, the autoencoder will learn the principal components of the data.
+For nonlinear functions $f$ and $g$ a more general form than PCA is learned.
+:::
+
+To connect this concept back to what we discussed in the _Eigenfaces Example_[^eigenface], where we used truncated SVD to project into a low dimensional space and than back to reconstruct the image, we formulate it in a more mathematical fashion. 
+
+We call the encode $y=f_\Theta(x)$ and the decoder $z=g_\Theta(y)$. 
+Therefore, $z=(g \circ f)(x) = g(f(x))$ and
+$$
+\begin{align}
+f : \mathcal{X} \to \mathcal{Y}\\
+g : \mathcal{Y} \to \mathcal{Z}\\
+\end{align}
+$$
+and the loss is computed as 
+$$
+\mathscr{L}(x, g(f(x))),
+$$
+with an appropriate loss function $\mathscr{L}$. 
+
+This loss function is most of the time including some more general constraints to enforce something like sparsity, similar as LASSO or RIDGE, this is often referred to _regularized autoencoders_.
+
+[^1]: see @Kandolf_GDM, Section 4 for SVD and 4.2 for PCA or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/matrixdc/svd.html).
+
+[^eigenface]: see @Kandolf_GDM, Section 4.2.2 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/matrixdc/svd.html#sec-matrixcd-svd-eigenfaces).
+
+## Applications
+
+We can use Autoencoders for various different applications:
+
+1. Image denoising: In this case the autoencoder is trained with noisy images and learns how to reconstruct clean images from them.
+1. Anomaly detection: An autoencoder that is trained with _normal_ images can detect anomalies by identifying inputs that result in a high reconstruction loss, this indicated a deviation from the learned images.
+1. Image generation: After training an autoencoder it is possible to use the decoder part to generate images for manipulated values in the latent space.
+1. Feature extraction: The latent representation of the trained autoencoder can provide a compact informative feature for image classification and retrieval.
+1. Image compression: By storing only the latent space representation an image can be compressed and reconstructed by inferring through the decoder.
+1. Image enhancement: By providing a low resolution images and their high resolution counterparts images can learn to enhance certain features of images.
+
+To illustrate this we construct an autoencoder for denoising the MNIST dataset we have seen before.
+
+The first part is the data preparation.
+```{python}
+from sklearn.datasets import fetch_openml
+import torch
+import torch.nn as nn
+import numpy as np
+from torch.utils.data import TensorDataset, DataLoader, random_split
+import torchvision.transforms.v2 as transforms
+torch.manual_seed(6020)
+np.random.seed(6020)
+
+def transform(X, noise=0.4):
+    X_org = torch.tensor(X / 255.0).to(torch.float)
+    X_noise = torch.tensor(np.random.normal(0.5, noise, X_org.shape)).to(torch.float) + X_org
+    return X_noise, X_org
+
+mnist = fetch_openml("mnist_784", as_frame=False)
+size = 60000
+X_train, X_test = mnist.data[:size], mnist.data[60000:]
+
+trainset = TensorDataset(*transform(X_train))
+testset = TensorDataset(*transform(X_test))
+
+val_size = int(0.1 * len(trainset))
+train_size = len(trainset) - val_size
+train, val = random_split(trainset, [train_size, val_size])
+
+trainLoader = DataLoader(train, batch_size=32, shuffle=True)
+valLoader = DataLoader(val, batch_size=32, shuffle=True)
+testLoader = DataLoader(testset, batch_size=32, shuffle=False)
+```
+
+Next we slightly modify our training function to suit our new task.
+```{python}
+def train_model(model, train_dl, val_dl, loss_fn, optimizer,
+                epochs=10):
+
+    met = {
+        "train_loss": [],
+        "val_loss": []}
+
+    for epoch in range(epochs):
+        model.train()
+        train_loss, train_corr = 0, 0
+
+        for X_batch, y_batch in train_dl:
+            y_pred = model(X_batch)            # Forward pass through the model
+            loss = loss_fn(y_pred, y_batch)    # Compute the loss
+            loss.backward()                    # Backpropagation
+            optimizer.step()                   # Update the model parameters
+            optimizer.zero_grad()              # Reset the gradients
+
+            train_loss += loss.item()
+
+        model.eval()
+        val_loss, val_corr = 0, 0                                       
+        with torch.no_grad():                   # No gradient calculation
+            for X_val, y_val in val_dl:
+                y_val_pred = model(X_val)
+                val_loss += loss_fn(y_val_pred, y_val).item()
+
+        met["val_loss"].append(val_loss / len(val_dl))
+        met["train_loss"].append(train_loss / len(train_dl))
+    return met
+```
+
+Our autoencoder is quite simple with just 3 stages per encoder.
+
+```{python}
+class AutoEncoder(nn.Module):
+    def __init__(self):
+        super(AutoEncoder, self).__init__()
+        
+        self.encoder = torch.nn.Sequential(
+            nn.Linear(784, 128),
+            nn.LeakyReLU(),
+            nn.Linear(128, 64),
+            nn.LeakyReLU(),
+            nn.Linear(64, 32),            
+        )
+
+        self.decoder = torch.nn.Sequential(
+            nn.Linear(32, 64),
+            nn.LeakyReLU(),
+            nn.Linear(64, 128),
+            nn.LeakyReLU(),
+            nn.Linear(128, 784),
+            nn.Sigmoid(),
+        )
+        
+    def forward(self, x):
+        y = self.encoder(x)
+        z = self.decoder(y)
+        return z
+```
+
+Finally we need to train our model.
+```{python}
+model = AutoEncoder()
+loss_fn = torch.nn.MSELoss()
+optimizer = torch.optim.Adam(model.parameters())
+
+epochs = 5
+history = train_model(model, trainLoader, valLoader, loss_fn, optimizer,
+                      epochs=epochs)
+```
+
+```{python}
+#| echo: false
+import warnings
+warnings.filterwarnings('ignore')
+```
+```{python}
+#| label: fig-nn-autoencoder
+#| fig-cap: "Some of the test images denoised via the model. Top row shows the original image, second with noise and last row after calling the model."
+#| code-fold: true
+#| code-summary: "Show the code for the figure"
+import matplotlib.pyplot as plt
+%config InlineBackend.figure_formats = ["svg"]
+
+x, y = next(iter(testLoader))
+model.eval()
+z = model(x).detach().numpy()
+
+length = 10
+im = np.zeros((3 * 28, length * 28), float)
+for j in range(length):
+    im[0:28, 28*j:28*(j+1)] = y[j].reshape(28, 28)
+    im[28:28*2, 28*j:28*(j+1)] = x[j].reshape(28, 28)
+    im[28*2:28*3, 28*j:28*(j+1)] = z[j].reshape(28, 28)
+
+plt.figure()
+plt.imshow(im, cmap=plt.get_cmap("gray"))
+plt.axis("off")
+
+plt.show()
+```
+
+::: {.callout-caution appearance="simple" icon=false}
+:::: {#exr-nn-auto-shuffle}
+
+## Add more transformations
+
+Rework the `transform` function to make it more complicated.
+In addition to the noise add:
+
+1. Shuffle the pixels of the image with a fixed permutation.
+1. Rotate the image with a fixed rotation angle, extend the image first, rotate and than crop it again.
+
+Retrain the autoencoder with these training sets and see how it performs.
+::::
+:::

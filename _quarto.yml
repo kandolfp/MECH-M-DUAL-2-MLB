@@ -35,6 +35,7 @@ book:
       chapters:
         - nn/nn.qmd
         - nn/cnn.qmd
+        - nn/autoencoder.qmd
     - summary.qmd
     - references.qmd
   appendices:
