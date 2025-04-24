@@ -22,6 +22,8 @@ This also means some of the code included below is not interactively created but
 To emphasise that we are in the context of this reference repository the prompt for the terminal will always start with `MLB-DATA$`.
 
 The code is called with respect to the root director of the project as seen in the next output block.
+
+If you decide not to write your own code but rather use the reference repository for the following exercise, it is advisable to implement the exercise at the same SHA mentioned prior to the exercise, in order to avoid getting ahead of yourself.
 :::
 
 After the redesign we get a structure looking something like the following, see [`22788a6`](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/22788a608b76d0b3180728c36c0351cc531b1def) for reference and file content:
@@ -646,7 +648,7 @@ Experiment sural-cyma is up to date on Git remote 'origin'.
 Pushed experiment sappy-corm and mesic-beep to Git remote 'origin'.
 ```
 
-::: {.callout-caution}
+::: {.callout-warning}
 
 ## Warning: Be careful with changed `git` SHAs
 
