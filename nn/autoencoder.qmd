@@ -67,10 +67,12 @@ import torchvision.transforms.v2 as transforms
 torch.manual_seed(6020)
 np.random.seed(6020)
 
-def transform(X, noise=0.4):
-    X_org = torch.tensor(X / 255.0).to(torch.float)
-    X_noise = torch.tensor(np.random.normal(0.5, noise, X_org.shape)).to(torch.float) + X_org
-    return X_noise, X_org
+def transform(X, noise=0.4):                                        # <1>
+    X_org = torch.tensor(X / 255.0).to(torch.float)                 
+    X_noise = torch.tensor(                                         
+                    np.random.normal(0.5, noise, X_org.shape)       
+                ).to(torch.float) + X_org                           
+    return X_noise, X_org                                           # <1>
 
 mnist = fetch_openml("mnist_784", as_frame=False)
 size = 60000
@@ -87,9 +89,12 @@ trainLoader = DataLoader(train, batch_size=32, shuffle=True)
 valLoader = DataLoader(val, batch_size=32, shuffle=True)
 testLoader = DataLoader(testset, batch_size=32, shuffle=False)
 ```
+1. Transform the images and return the original as ground truth.
 
 Next we slightly modify our training function to suit our new task.
 ```{python}
+#| code-fold: true
+#| code-summary: "Show the code for the training loop"
 def train_model(model, train_dl, val_dl, loss_fn, optimizer,
                 epochs=10):
 
@@ -102,17 +107,17 @@ def train_model(model, train_dl, val_dl, loss_fn, optimizer,
         train_loss, train_corr = 0, 0
 
         for X_batch, y_batch in train_dl:
-            y_pred = model(X_batch)            # Forward pass through the model
-            loss = loss_fn(y_pred, y_batch)    # Compute the loss
-            loss.backward()                    # Backpropagation
-            optimizer.step()                   # Update the model parameters
-            optimizer.zero_grad()              # Reset the gradients
+            y_pred = model(X_batch)
+            loss = loss_fn(y_pred, y_batch)
+            loss.backward()
+            optimizer.step()
+            optimizer.zero_grad()
 
             train_loss += loss.item()
 
         model.eval()
         val_loss, val_corr = 0, 0                                       
-        with torch.no_grad():                   # No gradient calculation
+        with torch.no_grad():
             for X_val, y_val in val_dl:
                 y_val_pred = model(X_val)
                 val_loss += loss_fn(y_val_pred, y_val).item()
@@ -147,10 +152,11 @@ class AutoEncoder(nn.Module):
         )
         
     def forward(self, x):
-        y = self.encoder(x)
+        y = self.encoder(x)                             # <1>
         z = self.decoder(y)
         return z
 ```
+1. Intermediate - latent space - representation
 
 Finally we need to train our model.
 ```{python}
@@ -164,11 +170,6 @@ history = train_model(model, trainLoader, valLoader, loss_fn, optimizer,
 ```
 
 ```{python}
-#| echo: false
-import warnings
-warnings.filterwarnings('ignore')
-```
-```{python}
 #| label: fig-nn-autoencoder
 #| fig-cap: "Some of the test images denoised via the model. Top row shows the original image, second with noise and last row after calling the model."
 #| code-fold: true
@@ -178,14 +179,15 @@ import matplotlib.pyplot as plt
 
 x, y = next(iter(testLoader))
 model.eval()
-z = model(x).detach().numpy()
+with torch.no_grad():
+    z = model(x)
 
 length = 10
 im = np.zeros((3 * 28, length * 28), float)
 for j in range(length):
-    im[0:28, 28*j:28*(j+1)] = y[j].reshape(28, 28)
-    im[28:28*2, 28*j:28*(j+1)] = x[j].reshape(28, 28)
-    im[28*2:28*3, 28*j:28*(j+1)] = z[j].reshape(28, 28)
+    im[0:28, 28*j:28*(j+1)] = y[j].reshape(28, 28).numpy()
+    im[28:28*2, 28*j:28*(j+1)] = x[j].reshape(28, 28).numpy()
+    im[28*2:28*3, 28*j:28*(j+1)] = z[j].reshape(28, 28).numpy()
 
 plt.figure()
 plt.imshow(im, cmap=plt.get_cmap("gray"))
@@ -204,7 +206,21 @@ In addition to the noise add:
 
 1. Shuffle the pixels of the image with a fixed permutation.
 1. Rotate the image with a fixed rotation angle, extend the image first, rotate and than crop it again.
+1. Flip the image - mirror with respect to the middle.
 
-Retrain the autoencoder with these training sets and see how it performs.
+Retrain the autoencoder with these training sets and see how it performs (can it handle all of them?).
+::::
+:::
+
+::: {.callout-caution appearance="simple" icon=false}
+:::: {#exr-nn-auto-explore}
+
+## Explore the latent space and generate numbers
+
+Rework the above autoencoder in such a fashion that the encoder an decoder can be accessed individually.
+If for the later tasks reworking the model such that the laten space is smaller is beneficial, feel free to do so.
+
+1. Explore the latent space (e.g. similar to what was done in @sec-clustering-cvd) and see how well the clusters of numbers can be seen.
+1. Use the knowledge of the previous task to create a number generator by providing different self generated elements from the latent space to the decoder part of our autoencoder.
 ::::
 :::
