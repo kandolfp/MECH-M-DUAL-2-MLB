@@ -36,7 +36,7 @@ It build on the so called _data engineering lifecycle_ illustrated in @fig-data-
 
 ![](../_assets/data/data_eng_lifecycle)
 
-Illustration of a common data engineering lifecycle in data processing. The _related topics_ are often referred as _undercurrents_.
+Illustration of a common data engineering lifecycle in data processing. The _related topics_ are often referred to as _undercurrents_.
 ::::
 
 In this chapter we will see some aspects of the lifecycle in action. 
