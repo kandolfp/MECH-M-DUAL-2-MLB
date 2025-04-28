@@ -1,14 +1,15 @@
 # Convolutional Neural Networks {#sec-nn-cnn}
 
-Convolutional neural networks CNNs (often also called deep convolution neural nets DCNNs), are a specialized NN for processing _grid like data_.
-This especially includes image data (a 2D grid) but also time-series (1D grid) data.
+Convolutional neural networks CNNs (often also called deep convolution neural nets DCNNs), are specialized neural networks for processing _grid like data_.
+This especially includes image data (a 2D grid) but also time-series (1D grid) data or grids with more dimensions.
 They have seen a tremendous success in many applications and are now often synomenouse with NNs.
 
 ::: {.callout-important}
 For an in dept investigation of CNNs see [@Goodfellow-et-al-2016, Section 9], this introduction is partially based on this chapter.
 :::
 
-As the name suggest, CNNs are nothing else than a NN with at least one _convolution_ layer, with some more techniques.
+As the name suggest, CNNs are nothing else than a NN with at least one _convolution_ layer.
+Nevertheless some more techniques are usually employed along side convolution, the main ones are discussed in this section.
 
 ## The Convolution Operation
 
@@ -27,7 +28,7 @@ $$
 This concept popped up when discussing the properties of the Fourier, and Laplace transform[^fourier], nevertheless it is more similar to Wavelets[^wavelets].
 If $g$ is a probability density function[^pdf] the convolution can be understood as the weighted average of $f$ by $g$.
 
-If $f$ and $g$ are discrete functions, like in our application an image with discrete pixel values or a time series with a measurement every second we get the **discrete convolution** as
+If $f$ and $g$ are discrete functions, like in our application an image with discrete pixel values or a time series with a measurement every second, we get the **discrete convolution** as
 $$
 h(i) = (f \ast g)(i) = \sum_{m = -\infty}^{\infty} f(m)g(i - m).
 $$
@@ -58,7 +59,7 @@ Unfortionalty, in many frameworks the term _convolution_ is used for the related
 The related function cross-correlation is the same as convolution but without flipping the kernel, i.e.
 
 $$
-h(i, j) = (g \ast f)(i, j) = \sum_m \sum_n f(i + m, j + n) g(m, n).
+h(i, j) = (g \ast f)(i, j) = \sum_m \sum_n f(i + m, j + n) g(m, n)
 $$
 
 and therefore it is not commutative.
@@ -67,7 +68,8 @@ and therefore it is not commutative.
 
 ::: {.callout-note}
 A CNN will either learn the values for a flipped or not-flipped kernel.
-Depending on how the function is defined but both work.
+Depending on how the function is defined.
+Therefore, from the point of view of a CNN but functions work.
 :::
 
 Let us walk through a 2D example, for an input of size $5 \times 5$ and for an averaging kernel (no flipping) of size $2 \times 3$, illustrated in @fig-nn-cnn-convolution.
@@ -77,6 +79,7 @@ Let us walk through a 2D example, for an input of size $5 \times 5$ and for an a
 
 Without any _padding_ and _stride_ equal to $1$ we simply move the kernel over the input starting from the top left.
 Make an element wise multiplication and a summation of all elements.
+E.g. the top left entry is computed as $2 \tfrac18 + 6 \tfrac14 + 8 \tfrac18 + 2 \tfrac18 + 7 \tfrac14 + 2 \tfrac18 = 5$.
 By moving to the right, we move along a row, by moving down we change column.
 :::
 
@@ -85,7 +88,7 @@ By moving to the right, we move along a row, by moving down we change column.
 
 ## Output shape per input and kernel shape
 
-Let us assume we have an input of size $(a \times b)$ and kernel of size $(c \times d)$. 
+Let us assume we have an input of size $(a \times b)$ and kernel of size $(c \times d)$, in @fig-nn-cnn-convolution this would be $a=b=5$ and $c=2$, $d=3$.
 
 We call **padding** the process of extending the input by a boundary of (usual constant - zero) values.
 For $p=1$ we extend at the left, right, upper, and lower boundary by 1 column and row.
@@ -103,21 +106,21 @@ Furthermore, **stride** or _step size_ is how much the kernel is moved in each s
 ::::
 :::
 
-The main idea behind including convolution into a NN is to allow for _sparse interactions_, _parameter sharing_, and _equivalent representations_.
+The main ideas behind convolution in NN is to allow for _sparse interactions_, _parameter sharing_, and _equivalent representations_.
 These concepts allow for a more efficient implementation, both in perms of storage and computation time.
-We follow the descriptions in @Goodfellow-et-al-2016 fro these terms.
+We follow the descriptions in @Goodfellow-et-al-2016 for these terms.
 
-The idea of _spares interaction_ is, that we do not have fully connected neurons.
-In particular, by performing convolution with a kernel with a smaller size we can reduce the input size drastically.
-For example, a kernel that detects edges only needs to look at a couple of pixels.
+The idea of _**sparse interaction**_ is, that we do not have fully connected neurons.
+In particular, by performing convolution with a smaller kernel size, we can reduce the input size drastically.
+For example, a kernel that detects edges only needs to look at a couple of pixels at once to detect an edge.
 This allows for a more efficient and memory optimized implementation.
 It can also be used to downsample an image in case the input size is not homogeneous for all images.
 
-Next, _parameter sharing_ refers to the process of using the same parameter (weight) for more than one function and input.
+Next, _**parameter sharing**_ refers to the process of using the same parameter (weight) for more than one function and input.
 In particular, the kernel weights are applied to all the different positions in the input.
-As a result, the CNN only learns one set of parameters (for the kernel) and not different sets for each of the positions, reducing the storage (but not the runtime) demands.
+As a result, the CNN only learns one set of parameters (for the kernel) and not different sets for each of the positions, reducing the storage (but not necessarily the runtime) demands.
 
-Finally, _equivalence representations_ means that input features transform in a _predictable_ fashion under certain transformations.
+Finally, if we talk about _**equivalence representations**_ we mean that input features transform in a _predictable_ fashion under certain transformations.
 In particular, it should not mather if we first apply convolution and than said transform or the other way round.
 For CNNs the most important of these is translation.
 If we shift a parameter and than perform convolution or reverse the order, we see no change in the output.
@@ -126,7 +129,7 @@ This allow the CNNs to recognize patterns and features consistently, even when w
 To illustrate the power of convolution we use it to detect the (vertical) edges of a cat via the simple difference of two neighbouring pixels (the first discrete derivative), see @fig-nn-cnn-edge.
 ```{python}
 #| label: fig-nn-cnn-edge
-#| fig-cap: "Application of a simple one dimensional kernel to an image. The right image has one pixel less per row."
+#| fig-cap: "Application of a simple one dimensional kernel [-1, 1] to an image. The right image has one pixel less per row as a result of the convolution."
 #| fig-subcap:
 #|   - "The original image of cat zero."
 #|   - "Edges detected via the first derivative (order 1)"
@@ -146,7 +149,8 @@ response = requests.get(
 cats = scipy.io.loadmat(io.BytesIO(response.content))["cat"]
 
 plt.figure()
-plt.imshow(np.reshape(cats[:, 0], (64, 64)).T, cmap=plt.get_cmap("gray"))
+plt.imshow(np.reshape(cats[:, 0], (64, 64)).T,
+            cmap=plt.get_cmap("gray"))
 plt.axis("off")
 
 plt.figure()
@@ -207,7 +211,7 @@ For the input on the left we compute two different pooling functions. First max 
 
 Implement max and mean pooling (or find an appropriate library function) for an image and apply it to the cat from above.
 
-Explain what features the different pooling methods conserve and which are lost.
+Explain which features the different pooling methods conserve and which are lost.
 ::::
 :::
 
@@ -401,7 +405,7 @@ plt.show()
 In @fig-nn-cnn-dvc-1 we can see the final classification of our model with regards to the test set.
 For 10 dogs our model is convinced they are not _good dogs_ but cats, and 3 cats are classified as dogs, in comparison to @fig-nn-nn-dvc-non-linear-1 we gained one correct classified dog.
 If we look at the probabilities @fig-nn-cnn-dvc-2, we can see that we have a couple of close calls, but in general our model is quite sure about the classification.
-Regarding the history of our optimization, we can see learning happen right away with a saturation starting to manifest after about 36 iterations.
+Regarding the history of our optimization, we can see learning happen right away with a saturation starting to manifest after about 30 iterations.
 
 At the end, we have an accuracy of `{python} float(np.round(acc  * 100, 2))`% for our test set, slightly better than our NN from before @fig-nn-nn-dvc-non-linear.
 
@@ -413,8 +417,8 @@ At the end, we have an accuracy of `{python} float(np.round(acc  * 100, 2))`% fo
 In the above example we used the wavelet representation of our images.
 As mentioned before, CNNs are quite capable in finding edges and therefore this step should not be required. 
 
-Therefore, implement a version of the above CNN with the original images (note they have a different size of $64\times 64$ pixels).
+Implement a version of the above CNN with the original images (note, they have a different size of $64\times 64$ pixels).
 
-It might be beneficial to implement multiple convolution stages with different sizes to get good performance, try to find a good architecture.
+It might be beneficial to implement multiple convolution stages with different sizes to get good performance, try to find a good architecture, this include some imagination and tests.
 ::::
 :::
