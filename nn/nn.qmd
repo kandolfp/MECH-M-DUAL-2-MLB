@@ -113,7 +113,7 @@ Their _activations_ (transfer from their specific input to output $f_j(A_j, b_j,
 
 Now let us build our first NN.
 
-## A Neural Network with `pytorch`
+## A Neural Network with `pytorch` {#sec-nn-nn-firstnn}
 
 ::: {.callout-important}
 There are multiple frameworks available for NNs in `Python`.

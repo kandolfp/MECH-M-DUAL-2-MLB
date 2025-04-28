@@ -221,7 +221,7 @@ This has shown to have favourable affects on overfitting and has therefore becom
 ## Implementation
 
 Now that we have discussed the basic structure of a CNN we want to implement it. 
-Luckily we can recycle most of the code.
+Luckily we can recycle most of the code from @sec-nn-nn-firstnn.
 In the following we only show where we needed to make some changes.
 ```{python}
 #| echo: false
