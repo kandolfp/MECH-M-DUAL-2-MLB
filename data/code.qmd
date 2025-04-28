@@ -307,7 +307,7 @@ In all its facets this is quite advanced and can be introduced when our project 
 `dvclive` works best with the big ML Frameworks like `keras` or `pytorch` but we can also utilize it for our example project.
 The introduction to the experiment management from the `dvc` perspective can be found in the [docs](https://dvc.org/doc/start/experiments).
 
-To show some of the `dvclive` features we reworked to code, see commit [7f407b](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/7f407bab7bfcc191014eeb3b939bb2fe0456fb58) for the changes (including `pdm add dvclive`).
+To show some of the `dvclive` features we reworked to code, see commit [519a85](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/519a8544c82667cec5356f92ddde77993f0a0e76) for the changes (including `pdm add dvclive`).
 Now, when we run our job once more it will create the `dvclive` directory with a couple of subdirectories containing our metrics, looking like the following output.
 
 ```bash
