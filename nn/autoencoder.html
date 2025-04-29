@@ -373,19 +373,29 @@ window.Quarto = {
 </header>
 
 
-<p>Another class of neural networks that exploit low-dimensional structure in high-dimensional data is called <em>autoencoders</em>. Autoencoders can be understood to generalize the linear subspace embedding of <em>singular value decomposition</em>/<em>principal component analysis</em><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> to a nonlinear manifold embedding.</p>
-<p>The main idea, as stated in <span class="citation" data-cites="Goodfellow-et-al-2016">(<a href="../references.html#ref-Goodfellow-et-al-2016" role="doc-biblioref">Goodfellow, Bengio, and Courville 2016, chap. 14</a>)</span>, is to train a NN to <em>copy</em> its input <span class="math inline">\(x\)</span> via the <em>latent space</em> <span class="math inline">\(y\)</span> to the output <span class="math inline">\(z\)</span>. Crucially, <span class="math inline">\(z\)</span> is usually a low dimensional space, represents the output of the encoding and the input of the decoding part of the NN. This will force the latent space to reveal some useful properties that we can study.</p>
+<p>Another class of neural networks, that exploit low-dimensional structure in high-dimensional data, is called <em>autoencoders</em>. Autoencoders can be seen as a generalization of linear subspace embedding of <em>singular value decomposition</em>/<em>principal component analysis</em><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> to a nonlinear manifold embedding.</p>
+<p>The main idea, as stated in <span class="citation" data-cites="Goodfellow-et-al-2016">(<a href="../references.html#ref-Goodfellow-et-al-2016" role="doc-biblioref">Goodfellow, Bengio, and Courville 2016, chap. 14</a>)</span>, is to train a NN to <em>copy</em> its input <span class="math inline">\(x\)</span> via the <em>latent space</em> <span class="math inline">\(y\)</span> to the output <span class="math inline">\(z\)</span>. Crucially, <span class="math inline">\(y\)</span> is usually a low dimensional space, represents the output of the encoding and the input of the decoding part of the NN. This will force the latent space to reveal some useful properties that we can studied and exploited, same as PCA.</p>
 <div id="fig-nn-autoenc-image" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-nn-autoenc-image-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../_assets/nn/autoencoder.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;9.1: General structure of an autoencoder with the encoder network on the left and the decoder network on the right (they don’t need to be looking the same)."><img src="../_assets/nn/autoencoder.svg" class="img-fluid figure-img"></a>
+<a href="../_assets/nn/autoencoder.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;9.1: General structure of an autoencoder with the encoder network on the left and the decoder network on the right. Note: they are not necessarily identical or just the reverse."><img src="../_assets/nn/autoencoder.svg" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn-autoenc-image-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9.1: General structure of an <em>autoencoder</em> with the <em>encoder</em> network on the left and the <em>decoder</em> network on the right (they don’t need to be looking the same).
+Figure&nbsp;9.1: General structure of an <em>autoencoder</em> with the <em>encoder</em> network on the left and the <em>decoder</em> network on the right. Note: they are not necessarily identical or just the reverse.
 </figcaption>
 </figure>
 </div>
 <p>During the training the weights of the (two) neural networks are learned by minimizing a loss function that measures the difference between the input <span class="math inline">\(x\)</span> and the reconstruction <span class="math inline">\(z\)</span>, e.g.&nbsp;<span class="math inline">\(\operatorname{argmin}\|z - x\|^2\)</span>.</p>
+<p>To connect this concept back to PCA and what we discussed in the <em>Eigenfaces Example</em><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, where we used truncated SVD to project into a low dimensional space and than back to reconstruct the image, we formulate it in a more mathematical fashion.</p>
+<p>We call the encoder <span class="math inline">\(y=f_\Theta(x)\)</span> and the decoder <span class="math inline">\(z=g_\Theta(y)\)</span>. Therefore, <span class="math inline">\(z=(g \circ f)(x) = g(f(x))\)</span> and <span class="math display">\[
+\begin{align}
+f : \mathcal{X} \to \mathcal{Y}\\
+g : \mathcal{Y} \to \mathcal{Z}\\
+\end{align}
+\]</span> and the loss is computed as <span class="math display">\[
+\mathscr{L}(x, g(f(x))),
+\]</span> with an appropriate loss function <span class="math inline">\(\mathscr{L}\)</span>.</p>
+<p>This loss function is most of the time including some more general constraints to enforce something like sparsity, similar as LASSO<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> or RIDGE<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>, this is often referred to <em>regularized autoencoders</em>.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -396,19 +406,9 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>We can use this to span the same space as PCA. For a linear encoder/decoder and a latent space smaller than the input with the loss function being the mean least square, the autoencoder will learn the principal components of the data. For nonlinear functions <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span> a more general form than PCA is learned.</p>
+<p>We can use the concept of an autoencoder to span the same space as a PCA. For a linear encoder/decoder and a latent space smaller than the input with the loss function being the mean least square, the autoencoder will learn the principal components of the data. For nonlinear functions <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span> a more general form is learned.</p>
 </div>
 </div>
-<p>To connect this concept back to what we discussed in the <em>Eigenfaces Example</em><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, where we used truncated SVD to project into a low dimensional space and than back to reconstruct the image, we formulate it in a more mathematical fashion.</p>
-<p>We call the encode <span class="math inline">\(y=f_\Theta(x)\)</span> and the decoder <span class="math inline">\(z=g_\Theta(y)\)</span>. Therefore, <span class="math inline">\(z=(g \circ f)(x) = g(f(x))\)</span> and <span class="math display">\[
-\begin{align}
-f : \mathcal{X} \to \mathcal{Y}\\
-g : \mathcal{Y} \to \mathcal{Z}\\
-\end{align}
-\]</span> and the loss is computed as <span class="math display">\[
-\mathscr{L}(x, g(f(x))),
-\]</span> with an appropriate loss function <span class="math inline">\(\mathscr{L}\)</span>.</p>
-<p>This loss function is most of the time including some more general constraints to enforce something like sparsity, similar as LASSO or RIDGE, this is often referred to <em>regularized autoencoders</em>.</p>
 <section id="applications" class="level2" data-number="9.1">
 <h2 data-number="9.1" class="anchored" data-anchor-id="applications"><span class="header-section-number">9.1</span> Applications</h2>
 <p>We can use Autoencoders for various different applications:</p>
@@ -420,9 +420,9 @@ g : \mathcal{Y} \to \mathcal{Z}\\
 <li>Image compression: By storing only the latent space representation an image can be compressed and reconstructed by inferring through the decoder.</li>
 <li>Image enhancement: By providing a low resolution images and their high resolution counterparts images can learn to enhance certain features of images.</li>
 </ol>
-<p>To illustrate this we construct an autoencoder for denoising the MNIST dataset we have seen before.</p>
-<p>The first part is the data preparation.</p>
-<div id="d0d2482a" class="cell" data-execution_count="1">
+<p>To illustrate this we construct an autoencoder for denoising the MNIST dataset we have seen before (<a href="../clustering/unsupervised.html#sec-clustering-ul-me" class="quarto-xref"><span>Section 1.5</span></a>).</p>
+<p>First, we need to prepare and augment the data with some noise.</p>
+<div id="76112cce" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="annotated-cell-1"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-1-1"><a href="#annotated-cell-1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_openml</span>
 <span id="annotated-cell-1-2"><a href="#annotated-cell-1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
 <span id="annotated-cell-1-3"><a href="#annotated-cell-1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn <span class="im">as</span> nn</span>
@@ -463,7 +463,7 @@ g : \mathcal{Y} \to \mathcal{Z}\\
 </div>
 </div>
 <p>Next we slightly modify our training function to suit our new task.</p>
-<div id="e1b1f57a" class="cell" data-execution_count="2">
+<div id="18909cf0" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Show the code for the training loop</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> train_model(model, train_dl, val_dl, loss_fn, optimizer,</span>
@@ -499,7 +499,7 @@ g : \mathcal{Y} \to \mathcal{Z}\\
 </details>
 </div>
 <p>Our autoencoder is quite simple with just 3 stages per encoder.</p>
-<div id="d1c6cf31" class="cell" data-execution_count="3">
+<div id="3469ba9f" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="annotated-cell-3"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-3-1"><a href="#annotated-cell-3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> AutoEncoder(nn.Module):</span>
 <span id="annotated-cell-3-2"><a href="#annotated-cell-3-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
 <span id="annotated-cell-3-3"><a href="#annotated-cell-3-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>(AutoEncoder, <span class="va">self</span>).<span class="fu">__init__</span>()</span>
@@ -535,7 +535,7 @@ g : \mathcal{Y} \to \mathcal{Z}\\
 </div>
 </div>
 <p>Finally we need to train our model.</p>
-<div id="00b6289c" class="cell" data-execution_count="4">
+<div id="b98d49d2" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> AutoEncoder()</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>loss_fn <span class="op">=</span> torch.nn.MSELoss()</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>optimizer <span class="op">=</span> torch.optim.Adam(model.parameters())</span>
@@ -544,6 +544,7 @@ g : \mathcal{Y} \to \mathcal{Z}\\
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>history <span class="op">=</span> train_model(model, trainLoader, valLoader, loss_fn, optimizer,</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>                      epochs<span class="op">=</span>epochs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Note, we only used 5 epochs for the following results and this time we used <code>Adam</code> as optimizer.</p>
 <div id="cell-fig-nn-autoencoder" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Show the code for the figure</summary>
@@ -588,13 +589,13 @@ Figure&nbsp;9.2: Some of the test images denoised via the model. Top row shows t
 </div>
 <div class="callout-body-container">
 <div id="exr-nn-auto-shuffle" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 9.1 (Add more transformations)</strong></span> Rework the <code>transform</code> function to make it more complicated. In addition to the noise add:</p>
+<p><span class="theorem-title"><strong>Exercise 9.1 (Add more transformations)</strong></span> Rework the <code>transform</code> function to include the following additions.</p>
 <ol type="1">
 <li>Shuffle the pixels of the image with a fixed permutation.</li>
 <li>Rotate the image with a fixed rotation angle, extend the image first, rotate and than crop it again.</li>
 <li>Flip the image - mirror with respect to the middle.</li>
 </ol>
-<p>Retrain the autoencoder with these training sets and see how it performs (can it handle all of them?).</p>
+<p>Retrain the autoencoder with these training sets and see how it performs (can it handle all of them at the same time?).</p>
 </div>
 </div>
 </div>
@@ -606,7 +607,7 @@ Figure&nbsp;9.2: Some of the test images denoised via the model. Top row shows t
 </div>
 <div class="callout-body-container">
 <div id="exr-nn-auto-explore" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 9.2 (Explore the latent space and generate numbers)</strong></span> Rework the above autoencoder in such a fashion that the encoder an decoder can be accessed individually. If for the later tasks reworking the model such that the laten space is smaller is beneficial, feel free to do so.</p>
+<p><span class="theorem-title"><strong>Exercise 9.2 (Explore the latent space and generate numbers)</strong></span> Rework the above autoencoder in such a fashion that the encoder an decoder can be accessed individually. If for the later tasks reworking the model such that the latent space is smaller is beneficial, feel free to do so, e.g.&nbsp;only 2 dimensions.</p>
 <ol type="1">
 <li>Explore the latent space (e.g.&nbsp;similar to what was done in <a href="../clustering/index.html#sec-clustering-cvd" class="quarto-xref"><span>Section 1.2</span></a>) and see how well the clusters of numbers can be seen.</li>
 <li>Use the knowledge of the previous task to create a number generator by providing different self generated elements from the latent space to the decoder part of our autoencoder.</li>
@@ -631,6 +632,8 @@ Kandolf, Peter. 2025. <span>“MECH-m-DUAL-1-DBM - Grundlagen Datenbasierter Met
 <ol>
 <li id="fn1"><p>see <span class="citation" data-cites="Kandolf_GDM">Kandolf (<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">2025</a>)</span>, Section 4 for SVD and 4.2 for PCA or follow the direct <a href="https://kandolfp.github.io/MECH-M-DUAL-1-DBM/matrixdc/svd.html">link</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>see <span class="citation" data-cites="Kandolf_GDM">Kandolf (<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">2025</a>)</span>, Section 4.2.2 or follow the direct <a href="https://kandolfp.github.io/MECH-M-DUAL-1-DBM/matrixdc/svd.html#sec-matrixcd-svd-eigenfaces">link</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>see <span class="citation" data-cites="Kandolf_GDM">Kandolf (<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">2025</a>)</span>, Section 7.1.1 or follow the direct <a href="https://kandolfp.github.io/MECH-M-DUAL-1-DBM/regression/optimizers.html#sec-regression-optimizers-lasso">link</a>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>see <span class="citation" data-cites="Kandolf_GDM">Kandolf (<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">2025</a>)</span>, Section 7.1.2 or follow the direct <a href="https://kandolfp.github.io/MECH-M-DUAL-1-DBM/regression/optimizers.html#ridge">link</a>.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 

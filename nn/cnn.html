@@ -376,7 +376,7 @@ window.Quarto = {
 </header>
 
 
-<p>Convolutional neural networks CNNs (often also called deep convolution neural nets DCNNs), are a specialized NN for processing <em>grid like data</em>. This especially includes image data (a 2D grid) but also time-series (1D grid) data. They have seen a tremendous success in many applications and are now often synomenouse with NNs.</p>
+<p>Convolutional neural networks CNNs (often also called deep convolution neural nets DCNNs), are specialized neural networks for processing <em>grid like data</em>. This especially includes image data (a 2D grid) but also time-series (1D grid) data or grids with more dimensions. They have seen a tremendous success in many applications and are now often synomenouse with NNs.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -390,7 +390,7 @@ Important
 <p>For an in dept investigation of CNNs see <span class="citation" data-cites="Goodfellow-et-al-2016">(<a href="../references.html#ref-Goodfellow-et-al-2016" role="doc-biblioref">Goodfellow, Bengio, and Courville 2016, sec. 9</a>)</span>, this introduction is partially based on this chapter.</p>
 </div>
 </div>
-<p>As the name suggest, CNNs are nothing else than a NN with at least one <em>convolution</em> layer, with some more techniques.</p>
+<p>As the name suggest, CNNs are nothing else than a NN with at least one <em>convolution</em> layer. Nevertheless some more techniques are usually employed along side convolution, the main ones are discussed in this section.</p>
 <section id="the-convolution-operation" class="level2" data-number="8.1">
 <h2 data-number="8.1" class="anchored" data-anchor-id="the-convolution-operation"><span class="header-section-number">8.1</span> The Convolution Operation</h2>
 <p>Convolution is a specialized linear operation that we apply instead of the matrix multiplication <em>between</em> two layers of a NN.</p>
@@ -405,7 +405,7 @@ Important
 h(t) = (f \ast g)(t) = \int f(\tau)g(t-\tau)\, \mathrm{d}\tau.
 \]</span></p>
 <p>This concept popped up when discussing the properties of the Fourier, and Laplace transform<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, nevertheless it is more similar to Wavelets<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. If <span class="math inline">\(g\)</span> is a probability density function<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> the convolution can be understood as the weighted average of <span class="math inline">\(f\)</span> by <span class="math inline">\(g\)</span>.</p>
-<p>If <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span> are discrete functions, like in our application an image with discrete pixel values or a time series with a measurement every second we get the <strong>discrete convolution</strong> as <span class="math display">\[
+<p>If <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span> are discrete functions, like in our application an image with discrete pixel values or a time series with a measurement every second, we get the <strong>discrete convolution</strong> as <span class="math display">\[
 h(i) = (f \ast g)(i) = \sum_{m = -\infty}^{\infty} f(m)g(i - m).
 \]</span></p>
 <p>In the context of CNNs the function <span class="math inline">\(f\)</span> is called <em>input</em>, <span class="math inline">\(g\)</span> <em>kernel</em>, and <span class="math inline">\(h\)</span> the <em>feature map</em>.</p>
@@ -429,7 +429,7 @@ h(i, j) = (g \ast f)(i, j) = \sum_m \sum_n f(i - m, j - n) g(m, n).
 <div id="def-nn-cnn-cross-correlation" class="theorem definition">
 <p><span class="theorem-title"><strong>Definition 8.2 (Cross-correlation)</strong></span> The related function cross-correlation is the same as convolution but without flipping the kernel, i.e.</p>
 <p><span class="math display">\[
-h(i, j) = (g \ast f)(i, j) = \sum_m \sum_n f(i + m, j + n) g(m, n).
+h(i, j) = (g \ast f)(i, j) = \sum_m \sum_n f(i + m, j + n) g(m, n)
 \]</span></p>
 <p>and therefore it is not commutative.</p>
 </div>
@@ -446,17 +446,17 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>A CNN will either learn the values for a flipped or not-flipped kernel. Depending on how the function is defined but both work.</p>
+<p>A CNN will either learn the values for a flipped or not-flipped kernel. Depending on how the function is defined. Therefore, from the point of view of a CNN but functions work.</p>
 </div>
 </div>
 <p>Let us walk through a 2D example, for an input of size <span class="math inline">\(5 \times 5\)</span> and for an averaging kernel (no flipping) of size <span class="math inline">\(2 \times 3\)</span>, illustrated in <a href="#fig-nn-cnn-convolution" class="quarto-xref">Figure&nbsp;<span>8.1</span></a>.</p>
 <div id="fig-nn-cnn-convolution" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-nn-cnn-convolution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../_assets/nn/convolution.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;8.1: Without any padding and stride equal to 1 we simply move the kernel over the input starting from the top left. Make an element wise multiplication and a summation of all elements. By moving to the right, we move along a row, by moving down we change column."><img src="../_assets/nn/convolution.svg" class="img-fluid figure-img"></a>
+<a href="../_assets/nn/convolution.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;8.1: Without any padding and stride equal to 1 we simply move the kernel over the input starting from the top left. Make an element wise multiplication and a summation of all elements. E.g. the top left entry is computed as 2 \tfrac18 + 6 \tfrac14 + 8 \tfrac18 + 2 \tfrac18 + 7 \tfrac14 + 2 \tfrac18 = 5. By moving to the right, we move along a row, by moving down we change column."><img src="../_assets/nn/convolution.svg" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn-cnn-convolution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8.1: Without any <em>padding</em> and <em>stride</em> equal to <span class="math inline">\(1\)</span> we simply move the kernel over the input starting from the top left. Make an element wise multiplication and a summation of all elements. By moving to the right, we move along a row, by moving down we change column.
+Figure&nbsp;8.1: Without any <em>padding</em> and <em>stride</em> equal to <span class="math inline">\(1\)</span> we simply move the kernel over the input starting from the top left. Make an element wise multiplication and a summation of all elements. E.g. the top left entry is computed as <span class="math inline">\(2 \tfrac18 + 6 \tfrac14 + 8 \tfrac18 + 2 \tfrac18 + 7 \tfrac14 + 2 \tfrac18 = 5\)</span>. By moving to the right, we move along a row, by moving down we change column.
 </figcaption>
 </figure>
 </div>
@@ -467,7 +467,7 @@ Figure&nbsp;8.1: Without any <em>padding</em> and <em>stride</em> equal to <span
 </div>
 <div class="callout-body-container">
 <div id="exr-nn-cnn-convolution-shape" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 8.1 (Output shape per input and kernel shape)</strong></span> Let us assume we have an input of size <span class="math inline">\((a \times b)\)</span> and kernel of size <span class="math inline">\((c \times d)\)</span>.</p>
+<p><span class="theorem-title"><strong>Exercise 8.1 (Output shape per input and kernel shape)</strong></span> Let us assume we have an input of size <span class="math inline">\((a \times b)\)</span> and kernel of size <span class="math inline">\((c \times d)\)</span>, in <a href="#fig-nn-cnn-convolution" class="quarto-xref">Figure&nbsp;<span>8.1</span></a> this would be <span class="math inline">\(a=b=5\)</span> and <span class="math inline">\(c=2\)</span>, <span class="math inline">\(d=3\)</span>.</p>
 <p>We call <strong>padding</strong> the process of extending the input by a boundary of (usual constant - zero) values. For <span class="math inline">\(p=1\)</span> we extend at the left, right, upper, and lower boundary by 1 column and row.</p>
 <p>Furthermore, <strong>stride</strong> or <em>step size</em> is how much the kernel is moved in each step.</p>
 <ol type="1">
@@ -482,10 +482,10 @@ Figure&nbsp;8.1: Without any <em>padding</em> and <em>stride</em> equal to <span
 </div>
 </div>
 </div>
-<p>The main idea behind including convolution into a NN is to allow for <em>sparse interactions</em>, <em>parameter sharing</em>, and <em>equivalent representations</em>. These concepts allow for a more efficient implementation, both in perms of storage and computation time. We follow the descriptions in <span class="citation" data-cites="Goodfellow-et-al-2016">Goodfellow, Bengio, and Courville (<a href="../references.html#ref-Goodfellow-et-al-2016" role="doc-biblioref">2016</a>)</span> fro these terms.</p>
-<p>The idea of <em>spares interaction</em> is, that we do not have fully connected neurons. In particular, by performing convolution with a kernel with a smaller size we can reduce the input size drastically. For example, a kernel that detects edges only needs to look at a couple of pixels. This allows for a more efficient and memory optimized implementation. It can also be used to downsample an image in case the input size is not homogeneous for all images.</p>
-<p>Next, <em>parameter sharing</em> refers to the process of using the same parameter (weight) for more than one function and input. In particular, the kernel weights are applied to all the different positions in the input. As a result, the CNN only learns one set of parameters (for the kernel) and not different sets for each of the positions, reducing the storage (but not the runtime) demands.</p>
-<p>Finally, <em>equivalence representations</em> means that input features transform in a <em>predictable</em> fashion under certain transformations. In particular, it should not mather if we first apply convolution and than said transform or the other way round. For CNNs the most important of these is translation. If we shift a parameter and than perform convolution or reverse the order, we see no change in the output. This allow the CNNs to recognize patterns and features consistently, even when we see a transform of the input, e.g.&nbsp;the cat sits 10 pixels to the left.</p>
+<p>The main ideas behind convolution in NN is to allow for <em>sparse interactions</em>, <em>parameter sharing</em>, and <em>equivalent representations</em>. These concepts allow for a more efficient implementation, both in perms of storage and computation time. We follow the descriptions in <span class="citation" data-cites="Goodfellow-et-al-2016">Goodfellow, Bengio, and Courville (<a href="../references.html#ref-Goodfellow-et-al-2016" role="doc-biblioref">2016</a>)</span> for these terms.</p>
+<p>The idea of <em><strong>sparse interaction</strong></em> is, that we do not have fully connected neurons. In particular, by performing convolution with a smaller kernel size, we can reduce the input size drastically. For example, a kernel that detects edges only needs to look at a couple of pixels at once to detect an edge. This allows for a more efficient and memory optimized implementation. It can also be used to downsample an image in case the input size is not homogeneous for all images.</p>
+<p>Next, <em><strong>parameter sharing</strong></em> refers to the process of using the same parameter (weight) for more than one function and input. In particular, the kernel weights are applied to all the different positions in the input. As a result, the CNN only learns one set of parameters (for the kernel) and not different sets for each of the positions, reducing the storage (but not necessarily the runtime) demands.</p>
+<p>Finally, if we talk about <em><strong>equivalence representations</strong></em> we mean that input features transform in a <em>predictable</em> fashion under certain transformations. In particular, it should not mather if we first apply convolution and than said transform or the other way round. For CNNs the most important of these is translation. If we shift a parameter and than perform convolution or reverse the order, we see no change in the output. This allow the CNNs to recognize patterns and features consistently, even when we see a transform of the input, e.g.&nbsp;the cat sits 10 pixels to the left.</p>
 <p>To illustrate the power of convolution we use it to detect the (vertical) edges of a cat via the simple difference of two neighbouring pixels (the first discrete derivative), see <a href="#fig-nn-cnn-edge" class="quarto-xref">Figure&nbsp;<span>8.2</span></a>.</p>
 <details class="code-fold">
 <summary>Show the code for the figure</summary>
@@ -502,15 +502,16 @@ Figure&nbsp;8.1: Without any <em>padding</em> and <em>stride</em> equal to <span
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>cats <span class="op">=</span> scipy.io.loadmat(io.BytesIO(response.content))[<span class="st">"cat"</span>]</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>plt.imshow(np.reshape(cats[:, <span class="dv">0</span>], (<span class="dv">64</span>, <span class="dv">64</span>)).T, cmap<span class="op">=</span>plt.get_cmap(<span class="st">"gray"</span>))</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>edge <span class="op">=</span> np.zeros((<span class="dv">64</span>, <span class="dv">63</span>))</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, c <span class="kw">in</span> <span class="bu">enumerate</span>(np.reshape(cats[:, <span class="dv">0</span>], (<span class="dv">64</span>, <span class="dv">64</span>)).T):</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    edge[i, :] <span class="op">=</span> np.convolve(c, [<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>], mode<span class="op">=</span><span class="st">"valid"</span>)</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>plt.imshow(edge, cmap<span class="op">=</span>plt.get_cmap(<span class="st">"gray"</span>))</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>plt.imshow(np.reshape(cats[:, <span class="dv">0</span>], (<span class="dv">64</span>, <span class="dv">64</span>)).T,</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>            cmap<span class="op">=</span>plt.get_cmap(<span class="st">"gray"</span>))</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>edge <span class="op">=</span> np.zeros((<span class="dv">64</span>, <span class="dv">63</span>))</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, c <span class="kw">in</span> <span class="bu">enumerate</span>(np.reshape(cats[:, <span class="dv">0</span>], (<span class="dv">64</span>, <span class="dv">64</span>)).T):</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    edge[i, :] <span class="op">=</span> np.convolve(c, [<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>], mode<span class="op">=</span><span class="st">"valid"</span>)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>plt.imshow(edge, cmap<span class="op">=</span>plt.get_cmap(<span class="st">"gray"</span>))</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div id="fig-nn-cnn-edge" class="quarto-layout-panel">
 <figure class="quarto-float quarto-float-fig figure">
@@ -543,7 +544,7 @@ Figure&nbsp;8.1: Without any <em>padding</em> and <em>stride</em> equal to <span
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn-cnn-edge-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8.2: Application of a simple one dimensional kernel to an image. The right image has one pixel less per row.
+Figure&nbsp;8.2: Application of a simple one dimensional kernel [-1, 1] to an image. The right image has one pixel less per row as a result of the convolution.
 </figcaption>
 </figure>
 </div>
@@ -594,7 +595,7 @@ Figure&nbsp;8.3: For the input on the left we compute two different pooling func
 <div class="callout-body-container">
 <div id="exr-nn-cnn-pooling-cat" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise 8.2 (Applying pooling to images)</strong></span> Implement max and mean pooling (or find an appropriate library function) for an image and apply it to the cat from above.</p>
-<p>Explain what features the different pooling methods conserve and which are lost.</p>
+<p>Explain which features the different pooling methods conserve and which are lost.</p>
 </div>
 </div>
 </div>
@@ -606,8 +607,8 @@ Figure&nbsp;8.3: For the input on the left we compute two different pooling func
 </section>
 <section id="implementation" class="level2" data-number="8.4">
 <h2 data-number="8.4" class="anchored" data-anchor-id="implementation"><span class="header-section-number">8.4</span> Implementation</h2>
-<p>Now that we have discussed the basic structure of a CNN we want to implement it. Luckily we can recycle most of the code. In the following we only show where we needed to make some changes.</p>
-<div id="9186ae48" class="cell" data-execution_count="3">
+<p>Now that we have discussed the basic structure of a CNN we want to implement it. Luckily we can recycle most of the code from <a href="nn.html#sec-nn-nn-firstnn" class="quarto-xref"><span>Section 7.2</span></a>. In the following we only show where we needed to make some changes.</p>
+<div id="d4ed2bcd" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="annotated-cell-2"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-2-1" class="code-annotation-target"><a href="#annotated-cell-2-1" aria-hidden="true" tabindex="-1"></a>X_train_tensor <span class="op">=</span> torch.tensor(X_train.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>, size, size),</span>
 <span id="annotated-cell-2-2"><a href="#annotated-cell-2-2" aria-hidden="true" tabindex="-1"></a>                              dtype<span class="op">=</span>torch.float32)</span>
 <span id="annotated-cell-2-3"><a href="#annotated-cell-2-3" aria-hidden="true" tabindex="-1"></a>y_train_tensor <span class="op">=</span> torch.tensor(y_train, dtype<span class="op">=</span>torch.uint8)</span>
@@ -739,7 +740,7 @@ Figure&nbsp;8.4: Performance of our model.
 </figure>
 </div>
 </div>
-<p>In <a href="#fig-nn-cnn-dvc-1" class="quarto-xref">Figure&nbsp;<span>8.4 (a)</span></a> we can see the final classification of our model with regards to the test set. For 10 dogs our model is convinced they are not <em>good dogs</em> but cats, and 3 cats are classified as dogs, in comparison to <a href="nn.html#fig-nn-nn-dvc-non-linear-1" class="quarto-xref">Figure&nbsp;<span>7.5 (a)</span></a> we gained one correct classified dog. If we look at the probabilities <a href="#fig-nn-cnn-dvc-2" class="quarto-xref">Figure&nbsp;<span>8.4 (b)</span></a>, we can see that we have a couple of close calls, but in general our model is quite sure about the classification. Regarding the history of our optimization, we can see learning happen right away with a saturation starting to manifest after about 36 iterations.</p>
+<p>In <a href="#fig-nn-cnn-dvc-1" class="quarto-xref">Figure&nbsp;<span>8.4 (a)</span></a> we can see the final classification of our model with regards to the test set. For 10 dogs our model is convinced they are not <em>good dogs</em> but cats, and 3 cats are classified as dogs, in comparison to <a href="nn.html#fig-nn-nn-dvc-non-linear-1" class="quarto-xref">Figure&nbsp;<span>7.5 (a)</span></a> we gained one correct classified dog. If we look at the probabilities <a href="#fig-nn-cnn-dvc-2" class="quarto-xref">Figure&nbsp;<span>8.4 (b)</span></a>, we can see that we have a couple of close calls, but in general our model is quite sure about the classification. Regarding the history of our optimization, we can see learning happen right away with a saturation starting to manifest after about 30 iterations.</p>
 <p>At the end, we have an accuracy of 83.75% for our test set, slightly better than our NN from before <a href="nn.html#fig-nn-nn-dvc-non-linear" class="quarto-xref">Figure&nbsp;<span>7.5</span></a>.</p>
 <div class="callout callout-style-simple callout-caution no-icon">
 <div class="callout-body d-flex">
@@ -749,8 +750,8 @@ Figure&nbsp;8.4: Performance of our model.
 <div class="callout-body-container">
 <div id="exr-nn-cnn-dvc-original" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise 8.3 (CNN for original cats and dogs images)</strong></span> In the above example we used the wavelet representation of our images. As mentioned before, CNNs are quite capable in finding edges and therefore this step should not be required.</p>
-<p>Therefore, implement a version of the above CNN with the original images (note they have a different size of <span class="math inline">\(64\times 64\)</span> pixels).</p>
-<p>It might be beneficial to implement multiple convolution stages with different sizes to get good performance, try to find a good architecture.</p>
+<p>Implement a version of the above CNN with the original images (note, they have a different size of <span class="math inline">\(64\times 64\)</span> pixels).</p>
+<p>It might be beneficial to implement multiple convolution stages with different sizes to get good performance, try to find a good architecture, this include some imagination and tests.</p>
 </div>
 </div>
 </div>

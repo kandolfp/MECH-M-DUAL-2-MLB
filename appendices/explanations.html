@@ -431,7 +431,7 @@ Figure&nbsp;A.1: The original image of cat zero.
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>plt.imshow(cD1, cmap<span class="op">=</span>plt.get_cmap(<span class="st">"gray"</span>))</span>
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div id="cell-fig-appendix-clustering-cat-2-wavelet2" class="cell quarto-layout-panel" data-layout-ncol="2" data-execution_count="2">
+<div id="cell-fig-appendix-clustering-cat-2-wavelet2" class="cell quarto-layout-panel" data-execution_count="2" data-layout-ncol="2">
 <div class="quarto-layout-row">
 <div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div id="fig-appendix-clustering-cat-2-wavelet2" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -486,7 +486,7 @@ Figure&nbsp;A.5: The diagonal highlights of the image
 </div>
 </div>
 <p>For our purposes, only the vertical and horizontal feature are of interest, and we combine these two images. In order to make sure the features are highlighted optimal, we need to rescale the images before combining them. For this we use a similar function like the MATLAB <a href="https://de.mathworks.com/help/wavelet/ref/wcodemat.html"><code>wcodemat</code></a> function.</p>
-<div id="bde6bdbf" class="cell" data-execution_count="3">
+<div id="d0392d8b" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rescale(data, nb):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> np.<span class="bu">abs</span>(data)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> x <span class="op">-</span> np.<span class="bu">min</span>(x)</span>
@@ -506,7 +506,7 @@ Figure&nbsp;A.5: The diagonal highlights of the image
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>plt.imshow(rescale(cH1, <span class="dv">256</span>) <span class="op">+</span> rescale(cV1, <span class="dv">256</span>), cmap<span class="op">=</span>plt.get_cmap(<span class="st">"gray"</span>))</span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div id="cell-fig-appendix-clustering-cat-2-wavelet3" class="cell quarto-layout-panel" data-layout-ncol="2" data-execution_count="4">
+<div id="cell-fig-appendix-clustering-cat-2-wavelet3" class="cell quarto-layout-panel" data-execution_count="4" data-layout-ncol="2">
 <div class="quarto-layout-row">
 <div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div id="fig-appendix-clustering-cat-2-wavelet3" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -535,7 +535,7 @@ Figure&nbsp;A.7: Combination of vertical and horizontal features rescaled.
 </div>
 </div>
 <p>In total this leads to the following function to transform a list of images (given as row vectors).</p>
-<div id="3ff2393f" class="cell" data-execution_count="5">
+<div id="594fa2c6" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pywt</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -583,7 +583,7 @@ Figure&nbsp;A.9: Some representatives and their score and three different thresh
 </figcaption>
 </figure>
 </div>
-<div id="983195dd" class="cell" data-execution_count="6">
+<div id="547a23f9" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code that provides the basis for the above figure.</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
