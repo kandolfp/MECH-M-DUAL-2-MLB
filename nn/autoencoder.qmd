@@ -1,29 +1,23 @@
 # Autoencoders {#sec-nn-autoenc}
 
-Another class of neural networks that exploit low-dimensional structure in high-dimensional data is called _autoencoders_. 
-Autoencoders can be understood to generalize the linear subspace embedding of _singular value decomposition_/_principal component analysis_[^1] to a nonlinear manifold embedding.
+Another class of neural networks, that exploit low-dimensional structure in high-dimensional data, is called _autoencoders_. 
+Autoencoders can be seen as a generalization of linear subspace embedding of _singular value decomposition_/_principal component analysis_[^1] to a nonlinear manifold embedding.
 
 The main idea, as stated in [@Goodfellow-et-al-2016, Chapter 14], is to train a NN to _copy_ its input $x$ via the _latent space_ $y$ to the output $z$.
-Crucially, $z$ is usually a low dimensional space, represents the output of the encoding and the input of the decoding part of the NN.
-This will force the latent space to reveal some useful properties that we can study.
+Crucially, $y$ is usually a low dimensional space, represents the output of the encoding and the input of the decoding part of the NN.
+This will force the latent space to reveal some useful properties that we can studied and exploited, same as PCA.
 
 ::: {#fig-nn-autoenc-image}
 ![](../_assets/nn/autoencoder)
 
-General structure of an _autoencoder_ with the _encoder_ network on the left and the _decoder_ network on the right (they don't need to be looking the same).
+General structure of an _autoencoder_ with the _encoder_ network on the left and the _decoder_ network on the right. Note: they are not necessarily identical or just the reverse.
 :::
 
 During the training the weights of the (two) neural networks are learned by minimizing a loss function that measures the difference between the input $x$ and the reconstruction $z$, e.g. $\operatorname{argmin}\|z - x\|^2$.
 
-::: {.callout-note}
-We can use this to span the same space as PCA.
-For a linear encoder/decoder and a latent space smaller than the input with the loss function being the mean least square, the autoencoder will learn the principal components of the data.
-For nonlinear functions $f$ and $g$ a more general form than PCA is learned.
-:::
+To connect this concept back to PCA and what we discussed in the _Eigenfaces Example_[^eigenface], where we used truncated SVD to project into a low dimensional space and than back to reconstruct the image, we formulate it in a more mathematical fashion. 
 
-To connect this concept back to what we discussed in the _Eigenfaces Example_[^eigenface], where we used truncated SVD to project into a low dimensional space and than back to reconstruct the image, we formulate it in a more mathematical fashion. 
-
-We call the encode $y=f_\Theta(x)$ and the decoder $z=g_\Theta(y)$. 
+We call the encoder $y=f_\Theta(x)$ and the decoder $z=g_\Theta(y)$. 
 Therefore, $z=(g \circ f)(x) = g(f(x))$ and
 $$
 \begin{align}
@@ -37,11 +31,21 @@ $$
 $$
 with an appropriate loss function $\mathscr{L}$. 
 
-This loss function is most of the time including some more general constraints to enforce something like sparsity, similar as LASSO or RIDGE, this is often referred to _regularized autoencoders_.
+This loss function is most of the time including some more general constraints to enforce something like sparsity, similar as LASSO[^lasso] or RIDGE[^ridge], this is often referred to _regularized autoencoders_.
 
 [^1]: see @Kandolf_GDM, Section 4 for SVD and 4.2 for PCA or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/matrixdc/svd.html).
 
 [^eigenface]: see @Kandolf_GDM, Section 4.2.2 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/matrixdc/svd.html#sec-matrixcd-svd-eigenfaces).
+
+[^lasso]: see @Kandolf_GDM, Section 7.1.1 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/regression/optimizers.html#sec-regression-optimizers-lasso).
+
+[^ridge]: see @Kandolf_GDM, Section 7.1.2 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/regression/optimizers.html#ridge).
+
+::: {.callout-note}
+We can use the concept of an autoencoder to span the same space as a PCA.
+For a linear encoder/decoder and a latent space smaller than the input with the loss function being the mean least square, the autoencoder will learn the principal components of the data.
+For nonlinear functions $f$ and $g$ a more general form is learned.
+:::
 
 ## Applications
 
@@ -54,9 +58,9 @@ We can use Autoencoders for various different applications:
 1. Image compression: By storing only the latent space representation an image can be compressed and reconstructed by inferring through the decoder.
 1. Image enhancement: By providing a low resolution images and their high resolution counterparts images can learn to enhance certain features of images.
 
-To illustrate this we construct an autoencoder for denoising the MNIST dataset we have seen before.
+To illustrate this we construct an autoencoder for denoising the MNIST dataset we have seen before (@sec-clustering-ul-me).
 
-The first part is the data preparation.
+First, we need to prepare and augment the data with some noise.
 ```{python}
 from sklearn.datasets import fetch_openml
 import torch
@@ -168,7 +172,7 @@ epochs = 5
 history = train_model(model, trainLoader, valLoader, loss_fn, optimizer,
                       epochs=epochs)
 ```
-
+Note, we only used `{python} epochs` epochs for the following results and this time we used `Adam` as optimizer. 
 ```{python}
 #| label: fig-nn-autoencoder
 #| fig-cap: "Some of the test images denoised via the model. Top row shows the original image, second with noise and last row after calling the model."
@@ -201,14 +205,13 @@ plt.show()
 
 ## Add more transformations
 
-Rework the `transform` function to make it more complicated.
-In addition to the noise add:
+Rework the `transform` function to include the following additions.
 
 1. Shuffle the pixels of the image with a fixed permutation.
 1. Rotate the image with a fixed rotation angle, extend the image first, rotate and than crop it again.
 1. Flip the image - mirror with respect to the middle.
 
-Retrain the autoencoder with these training sets and see how it performs (can it handle all of them?).
+Retrain the autoencoder with these training sets and see how it performs (can it handle all of them at the same time?).
 ::::
 :::
 
@@ -218,7 +221,7 @@ Retrain the autoencoder with these training sets and see how it performs (can it
 ## Explore the latent space and generate numbers
 
 Rework the above autoencoder in such a fashion that the encoder an decoder can be accessed individually.
-If for the later tasks reworking the model such that the laten space is smaller is beneficial, feel free to do so.
+If for the later tasks reworking the model such that the latent space is smaller is beneficial, feel free to do so, e.g. only 2 dimensions.
 
 1. Explore the latent space (e.g. similar to what was done in @sec-clustering-cvd) and see how well the clusters of numbers can be seen.
 1. Use the knowledge of the previous task to create a number generator by providing different self generated elements from the latent space to the decoder part of our autoencoder.
