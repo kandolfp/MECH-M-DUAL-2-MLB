@@ -196,7 +196,7 @@ for j in range(length):
     im[28*2:28*3, 28*j:28*(j+1)] = z[j].reshape(28, 28).numpy()
 
 plt.figure()
-plt.imshow(im, cmap=plt.get_cmap("gray"))
+plt.imshow(im, cmap="binary")
 plt.axis("off")
 
 plt.show()
