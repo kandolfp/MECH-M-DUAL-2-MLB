@@ -73,9 +73,11 @@ np.random.seed(6020)
 
 def transform(X, noise=0.4):                                        # <1>
     X_org = torch.tensor(X / 255.0).to(torch.float)                 
-    X_noise = torch.tensor(                                         
+    X_noise = torch.clamp(
+                torch.tensor(                                         
                     np.random.normal(0.5, noise, X_org.shape)       
-                ).to(torch.float) + X_org                           
+                ).to(torch.float) + X_org,
+                0, 1)
     return X_noise, X_org                                           # <1>
 
 mnist = fetch_openml("mnist_784", as_frame=False)
