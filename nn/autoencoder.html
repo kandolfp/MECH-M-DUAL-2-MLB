@@ -597,7 +597,7 @@ Note
 </ol>
 <p>To illustrate this we construct an autoencoder for denoising the MNIST dataset we have seen before (<a href="../clustering/unsupervised.html#sec-clustering-ul-me" class="quarto-xref"><span>Section 1.5</span></a>).</p>
 <p>First, we need to prepare and augment the data with some noise.</p>
-<div id="726d3233" class="cell" data-execution_count="1">
+<div id="173a68df" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="annotated-cell-1"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-1-1"><a href="#annotated-cell-1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_openml</span>
 <span id="annotated-cell-1-2"><a href="#annotated-cell-1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
 <span id="annotated-cell-1-3"><a href="#annotated-cell-1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn <span class="im">as</span> nn</span>
@@ -640,7 +640,7 @@ Note
 </div>
 </div>
 <p>Next we slightly modify our training function to suit our new task.</p>
-<div id="3cfd0f5b" class="cell" data-execution_count="2">
+<div id="1a2f528b" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Show the code for the training loop</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> train_model(model, train_dl, val_dl, loss_fn, optimizer,</span>
@@ -676,7 +676,7 @@ Note
 </details>
 </div>
 <p>Our autoencoder is quite simple with just 3 stages per encoder.</p>
-<div id="174aa250" class="cell" data-execution_count="3">
+<div id="9e575038" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="annotated-cell-3"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-3-1"><a href="#annotated-cell-3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> AutoEncoder(nn.Module):</span>
 <span id="annotated-cell-3-2"><a href="#annotated-cell-3-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
 <span id="annotated-cell-3-3"><a href="#annotated-cell-3-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>(AutoEncoder, <span class="va">self</span>).<span class="fu">__init__</span>()</span>
@@ -712,7 +712,7 @@ Note
 </div>
 </div>
 <p>Finally we need to train our model.</p>
-<div id="0af786f0" class="cell" data-execution_count="4">
+<div id="6210e71b" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> AutoEncoder()</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>loss_fn <span class="op">=</span> torch.nn.MSELoss()</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>optimizer <span class="op">=</span> torch.optim.Adam(model.parameters())</span>
@@ -741,7 +741,7 @@ Note
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    im[<span class="dv">28</span><span class="op">*</span><span class="dv">2</span>:<span class="dv">28</span><span class="op">*</span><span class="dv">3</span>, <span class="dv">28</span><span class="op">*</span>j:<span class="dv">28</span><span class="op">*</span>(j<span class="op">+</span><span class="dv">1</span>)] <span class="op">=</span> z[j].reshape(<span class="dv">28</span>, <span class="dv">28</span>).numpy()</span>
 <span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>plt.imshow(im, cmap<span class="op">=</span>plt.get_cmap(<span class="st">"gray"</span>))</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>plt.imshow(im, cmap<span class="op">=</span><span class="st">"binary"</span>)</span>
 <span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span>
 <span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

@@ -714,7 +714,7 @@ Note
 </div>
 </div>
 <p>Let us start with the input and how to prepare our data for for the model to-be. Before we load everything into the <code>pytorch</code> specific structures, we split our data into a training and test set. This time it is important that we rescale scale our image to <span class="math inline">\([0, 1]\)</span>, otherwise the optimization algorithms perform poorly. We scale by <span class="math inline">\(255\)</span>, our theoretical maximum in a generic image.</p>
-<div id="45065756" class="cell" data-execution_count="2">
+<div id="513ca98a" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="annotated-cell-2"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-2-1"><a href="#annotated-cell-2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="annotated-cell-2-2"><a href="#annotated-cell-2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy</span>
 <span id="annotated-cell-2-3"><a href="#annotated-cell-2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
@@ -762,7 +762,7 @@ Note
 </div>
 </div>
 <p>The easiest way to provide data for training is to use the mentioned <code>DataLoader</code> class. As we have only a very limited number of training data, we split our available data into a training and validation. We do so new and random in each epoch (optimization step). To provide a better overview, we use a dedicated function for this procedure. This function will be called during each optimization step in our training.</p>
-<div id="89e954c2" class="cell" data-execution_count="3">
+<div id="47806183" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch.utils.data <span class="im">import</span> DataLoader, random_split</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -811,7 +811,7 @@ Tip
 <p>For the following code snippet, we keep it in as a comment to show where it would be included.</p>
 </div>
 </div>
-<div id="b6844bf7" class="cell" data-execution_count="4">
+<div id="fe86e680" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="annotated-cell-4"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-4-1"><a href="#annotated-cell-4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
 <span id="annotated-cell-4-2"><a href="#annotated-cell-4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-4-3"><a href="#annotated-cell-4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -854,7 +854,7 @@ Tip
 </div>
 </div>
 <p>Of course it is important to check if the code corresponds to the model we have in mind. For this <a href="https://github.com/TylerYep/torchinfo"><code>torchinfo</code></a> is quite a useful tool. It provides a tabular overview.</p>
-<div id="bdff6ce0" class="cell styled-output" data-execution_count="5">
+<div id="356b8434" class="cell styled-output" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torchinfo</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> MyFirstNN(X_train.shape[<span class="dv">1</span>])</span>
@@ -893,7 +893,7 @@ Estimated Total Size (MB): 0.04
 <div class="callout-body-container">
 <div id="exr-nn-nn-params" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise 7.2 (Explain the output of <code>.summary()</code>)</strong></span> For the (extended) output of <code>.summary()</code> in the following listing answer the questions below.</p>
-<div id="441b6988" class="cell styled-output" data-execution_count="6">
+<div id="af19b655" class="cell styled-output" data-execution_count="6">
 <details class="code-fold">
 <summary>Show the code for the slightly extended summary.</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torchinfo</span>
@@ -942,7 +942,7 @@ The estimated total size in KB 8.03125</code></pre>
 </div>
 </div>
 <p>It is often also quite useful to export the model as an image. Here the <a href="https://github.com/szagoruyko/pytorchviz"><code>torchviz</code></a> package comes in handy. In our case we can work again with a <code>dot</code> file, that is rendered as <a href="#fig-nn-nn-model-visual" class="quarto-xref">Figure&nbsp;<span>7.4</span></a>.</p>
-<div id="cf713be5" class="cell" data-execution_count="7">
+<div id="f198d079" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torchviz</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">eval</span>()</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -960,169 +960,169 @@ The estimated total size in KB 8.03125</code></pre>
 <svg width="672" height="480" viewbox="0.00 0.00 299.30 424.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 420)">
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-420 295.3,-420 295.3,4 -4,4"></polygon>
-<!-- 140634313957344 -->
+<!-- 139904393366416 -->
 <g id="node1" class="node">
-<title>140634313957344</title>
+<title>139904393366416</title>
 <polygon fill="#caff70" stroke="black" points="170.15,-32 116.15,-32 116.15,0 170.15,0 170.15,-32"></polygon>
 <text text-anchor="middle" x="143.15" y="-7" font-family="monospace" font-size="10.00"> (1, 2)</text>
 </g>
-<!-- 140634323265008 -->
+<!-- 139904393641552 -->
 <g id="node2" class="node">
-<title>140634323265008</title>
+<title>139904393641552</title>
 <polygon fill="lightgrey" stroke="black" points="190.47,-88 95.83,-88 95.83,-68 190.47,-68 190.47,-88"></polygon>
 <text text-anchor="middle" x="143.15" y="-75" font-family="monospace" font-size="10.00">AddmmBackward0</text>
 </g>
-<!-- 140634323265008&#45;&gt;140634313957344 -->
+<!-- 139904393641552&#45;&gt;139904393366416 -->
 <g id="edge13" class="edge">
-<title>140634323265008-&gt;140634313957344</title>
+<title>139904393641552-&gt;139904393366416</title>
 <path fill="none" stroke="black" d="M143.15,-67.89C143.15,-61.1 143.15,-51.48 143.15,-42.44"></path>
 <polygon fill="black" stroke="black" points="146.65,-42.28 143.15,-32.28 139.65,-42.28 146.65,-42.28"></polygon>
 </g>
-<!-- 140634325560448 -->
+<!-- 139907641906736 -->
 <g id="node3" class="node">
-<title>140634325560448</title>
+<title>139907641906736</title>
 <polygon fill="lightgrey" stroke="black" points="84.45,-144 -0.15,-144 -0.15,-124 84.45,-124 84.45,-144"></polygon>
 <text text-anchor="middle" x="42.15" y="-131" font-family="monospace" font-size="10.00">AccumulateGrad</text>
 </g>
-<!-- 140634325560448&#45;&gt;140634323265008 -->
+<!-- 139907641906736&#45;&gt;139904393641552 -->
 <g id="edge1" class="edge">
-<title>140634325560448-&gt;140634323265008</title>
+<title>139907641906736-&gt;139904393641552</title>
 <path fill="none" stroke="black" d="M59.28,-123.84C75.2,-115.33 99.11,-102.55 117.33,-92.8"></path>
 <polygon fill="black" stroke="black" points="119.1,-95.83 126.27,-88.03 115.8,-89.65 119.1,-95.83"></polygon>
 </g>
-<!-- 140634313955584 -->
+<!-- 139904373775072 -->
 <g id="node4" class="node">
-<title>140634313955584</title>
+<title>139904373775072</title>
 <polygon fill="lightblue" stroke="black" points="75.75,-212 8.55,-212 8.55,-180 75.75,-180 75.75,-212"></polygon>
 <text text-anchor="middle" x="42.15" y="-199" font-family="monospace" font-size="10.00">model.2.bias</text>
 <text text-anchor="middle" x="42.15" y="-187" font-family="monospace" font-size="10.00"> (2)</text>
 </g>
-<!-- 140634313955584&#45;&gt;140634325560448 -->
+<!-- 139904373775072&#45;&gt;139907641906736 -->
 <g id="edge2" class="edge">
-<title>140634313955584-&gt;140634325560448</title>
+<title>139904373775072-&gt;139907641906736</title>
 <path fill="none" stroke="black" d="M42.15,-179.86C42.15,-172.13 42.15,-162.63 42.15,-154.37"></path>
 <polygon fill="black" stroke="black" points="45.65,-154.15 42.15,-144.15 38.65,-154.15 45.65,-154.15"></polygon>
 </g>
-<!-- 140634296031296 -->
+<!-- 139907641907072 -->
 <g id="node5" class="node">
-<title>140634296031296</title>
+<title>139907641907072</title>
 <polygon fill="lightgrey" stroke="black" points="184.23,-144 102.07,-144 102.07,-124 184.23,-124 184.23,-144"></polygon>
 <text text-anchor="middle" x="143.15" y="-131" font-family="monospace" font-size="10.00">TanhBackward0</text>
 </g>
-<!-- 140634296031296&#45;&gt;140634323265008 -->
+<!-- 139907641907072&#45;&gt;139904393641552 -->
 <g id="edge3" class="edge">
-<title>140634296031296-&gt;140634323265008</title>
+<title>139907641907072-&gt;139904393641552</title>
 <path fill="none" stroke="black" d="M143.15,-123.59C143.15,-116.7 143.15,-107.1 143.15,-98.57"></path>
 <polygon fill="black" stroke="black" points="146.65,-98.3 143.15,-88.3 139.65,-98.3 146.65,-98.3"></polygon>
 </g>
-<!-- 140634313797312 -->
+<!-- 139904374029760 -->
 <g id="node6" class="node">
-<title>140634313797312</title>
+<title>139904374029760</title>
 <polygon fill="lightgrey" stroke="black" points="189.47,-206 94.83,-206 94.83,-186 189.47,-186 189.47,-206"></polygon>
 <text text-anchor="middle" x="142.15" y="-193" font-family="monospace" font-size="10.00">AddmmBackward0</text>
 </g>
-<!-- 140634313797312&#45;&gt;140634296031296 -->
+<!-- 139904374029760&#45;&gt;139907641907072 -->
 <g id="edge4" class="edge">
-<title>140634313797312-&gt;140634296031296</title>
+<title>139904374029760-&gt;139907641907072</title>
 <path fill="none" stroke="black" d="M142.3,-185.89C142.44,-177.52 142.65,-164.84 142.83,-154.23"></path>
 <polygon fill="black" stroke="black" points="146.33,-154.26 143,-144.2 139.33,-154.14 146.33,-154.26"></polygon>
 </g>
-<!-- 140634313789392 -->
+<!-- 139904373065040 -->
 <g id="node7" class="node">
-<title>140634313789392</title>
+<title>139904373065040</title>
 <polygon fill="lightgrey" stroke="black" points="98.45,-274 13.85,-274 13.85,-254 98.45,-254 98.45,-274"></polygon>
 <text text-anchor="middle" x="56.15" y="-261" font-family="monospace" font-size="10.00">AccumulateGrad</text>
 </g>
-<!-- 140634313789392&#45;&gt;140634313797312 -->
+<!-- 139904373065040&#45;&gt;139904374029760 -->
 <g id="edge5" class="edge">
-<title>140634313789392-&gt;140634313797312</title>
+<title>139904373065040-&gt;139904374029760</title>
 <path fill="none" stroke="black" d="M68.11,-253.82C82.1,-243.09 105.48,-225.14 122.23,-212.29"></path>
 <polygon fill="black" stroke="black" points="124.49,-214.96 130.29,-206.1 120.23,-209.41 124.49,-214.96"></polygon>
 </g>
-<!-- 140634313955264 -->
+<!-- 139904373774912 -->
 <g id="node8" class="node">
-<title>140634313955264</title>
+<title>139904373774912</title>
 <polygon fill="lightblue" stroke="black" points="89.75,-348 22.55,-348 22.55,-316 89.75,-316 89.75,-348"></polygon>
 <text text-anchor="middle" x="56.15" y="-335" font-family="monospace" font-size="10.00">model.0.bias</text>
 <text text-anchor="middle" x="56.15" y="-323" font-family="monospace" font-size="10.00"> (2)</text>
 </g>
-<!-- 140634313955264&#45;&gt;140634313789392 -->
+<!-- 139904373774912&#45;&gt;139904373065040 -->
 <g id="edge6" class="edge">
-<title>140634313955264-&gt;140634313789392</title>
+<title>139904373774912-&gt;139904373065040</title>
 <path fill="none" stroke="black" d="M56.15,-315.69C56.15,-306.4 56.15,-294.44 56.15,-284.47"></path>
 <polygon fill="black" stroke="black" points="59.65,-284.32 56.15,-274.32 52.65,-284.32 59.65,-284.32"></polygon>
 </g>
-<!-- 140634313798752 -->
+<!-- 139904373064992 -->
 <g id="node9" class="node">
-<title>140634313798752</title>
+<title>139904373064992</title>
 <polygon fill="lightgrey" stroke="black" points="183.8,-274 116.5,-274 116.5,-254 183.8,-254 183.8,-274"></polygon>
 <text text-anchor="middle" x="150.15" y="-261" font-family="monospace" font-size="10.00">TBackward0</text>
 </g>
-<!-- 140634313798752&#45;&gt;140634313797312 -->
+<!-- 139904373064992&#45;&gt;139904374029760 -->
 <g id="edge7" class="edge">
-<title>140634313798752-&gt;140634313797312</title>
+<title>139904373064992-&gt;139904374029760</title>
 <path fill="none" stroke="black" d="M149.04,-253.82C147.87,-244.17 145.99,-228.69 144.49,-216.32"></path>
 <polygon fill="black" stroke="black" points="147.93,-215.61 143.25,-206.1 140.98,-216.45 147.93,-215.61"></polygon>
 </g>
-<!-- 140634296453248 -->
+<!-- 139904373065232 -->
 <g id="node10" class="node">
-<title>140634296453248</title>
+<title>139904373065232</title>
 <polygon fill="lightgrey" stroke="black" points="192.45,-342 107.85,-342 107.85,-322 192.45,-322 192.45,-342"></polygon>
 <text text-anchor="middle" x="150.15" y="-329" font-family="monospace" font-size="10.00">AccumulateGrad</text>
 </g>
-<!-- 140634296453248&#45;&gt;140634313798752 -->
+<!-- 139904373065232&#45;&gt;139904373064992 -->
 <g id="edge8" class="edge">
-<title>140634296453248-&gt;140634313798752</title>
+<title>139904373065232-&gt;139904373064992</title>
 <path fill="none" stroke="black" d="M150.15,-321.82C150.15,-312.17 150.15,-296.69 150.15,-284.32"></path>
 <polygon fill="black" stroke="black" points="153.65,-284.1 150.15,-274.1 146.65,-284.1 153.65,-284.1"></polygon>
 </g>
-<!-- 140634313955344 -->
+<!-- 139904373774752 -->
 <g id="node11" class="node">
-<title>140634313955344</title>
+<title>139904373774752</title>
 <polygon fill="lightblue" stroke="black" points="189.36,-416 110.94,-416 110.94,-384 189.36,-384 189.36,-416"></polygon>
 <text text-anchor="middle" x="150.15" y="-403" font-family="monospace" font-size="10.00">model.0.weight</text>
 <text text-anchor="middle" x="150.15" y="-391" font-family="monospace" font-size="10.00"> (2, 1024)</text>
 </g>
-<!-- 140634313955344&#45;&gt;140634296453248 -->
+<!-- 139904373774752&#45;&gt;139904373065232 -->
 <g id="edge9" class="edge">
-<title>140634313955344-&gt;140634296453248</title>
+<title>139904373774752-&gt;139904373065232</title>
 <path fill="none" stroke="black" d="M150.15,-383.69C150.15,-374.4 150.15,-362.44 150.15,-352.47"></path>
 <polygon fill="black" stroke="black" points="153.65,-352.32 150.15,-342.32 146.65,-352.32 153.65,-352.32"></polygon>
 </g>
-<!-- 140634314205808 -->
+<!-- 139904400450912 -->
 <g id="node12" class="node">
-<title>140634314205808</title>
+<title>139904400450912</title>
 <polygon fill="lightgrey" stroke="black" points="275.8,-144 208.5,-144 208.5,-124 275.8,-124 275.8,-144"></polygon>
 <text text-anchor="middle" x="242.15" y="-131" font-family="monospace" font-size="10.00">TBackward0</text>
 </g>
-<!-- 140634314205808&#45;&gt;140634323265008 -->
+<!-- 139904400450912&#45;&gt;139904393641552 -->
 <g id="edge10" class="edge">
-<title>140634314205808-&gt;140634323265008</title>
+<title>139904400450912-&gt;139904393641552</title>
 <path fill="none" stroke="black" d="M225.36,-123.84C209.9,-115.41 186.75,-102.78 168.95,-93.07"></path>
 <polygon fill="black" stroke="black" points="170.15,-89.74 159.7,-88.03 166.8,-95.89 170.15,-89.74"></polygon>
 </g>
-<!-- 140634313793376 -->
+<!-- 139904392650832 -->
 <g id="node13" class="node">
-<title>140634313793376</title>
+<title>139904392650832</title>
 <polygon fill="lightgrey" stroke="black" points="291.45,-206 206.85,-206 206.85,-186 291.45,-186 291.45,-206"></polygon>
 <text text-anchor="middle" x="249.15" y="-193" font-family="monospace" font-size="10.00">AccumulateGrad</text>
 </g>
-<!-- 140634313793376&#45;&gt;140634314205808 -->
+<!-- 139904392650832&#45;&gt;139904400450912 -->
 <g id="edge11" class="edge">
-<title>140634313793376-&gt;140634314205808</title>
+<title>139904392650832-&gt;139904400450912</title>
 <path fill="none" stroke="black" d="M248.09,-185.89C247.11,-177.52 245.63,-164.84 244.39,-154.23"></path>
 <polygon fill="black" stroke="black" points="247.86,-153.73 243.22,-144.2 240.91,-154.54 247.86,-153.73"></polygon>
 </g>
-<!-- 140634313955504 -->
+<!-- 139904373774992 -->
 <g id="node14" class="node">
-<title>140634313955504</title>
+<title>139904373774992</title>
 <polygon fill="lightblue" stroke="black" points="288.36,-280 209.94,-280 209.94,-248 288.36,-248 288.36,-280"></polygon>
 <text text-anchor="middle" x="249.15" y="-267" font-family="monospace" font-size="10.00">model.2.weight</text>
 <text text-anchor="middle" x="249.15" y="-255" font-family="monospace" font-size="10.00"> (2, 2)</text>
 </g>
-<!-- 140634313955504&#45;&gt;140634313793376 -->
+<!-- 139904373774992&#45;&gt;139904392650832 -->
 <g id="edge12" class="edge">
-<title>140634313955504-&gt;140634313793376</title>
+<title>139904373774992-&gt;139904392650832</title>
 <path fill="none" stroke="black" d="M249.15,-247.69C249.15,-238.4 249.15,-226.44 249.15,-216.47"></path>
 <polygon fill="black" stroke="black" points="252.65,-216.32 249.15,-206.32 245.65,-216.32 252.65,-216.32"></polygon>
 </g>
@@ -1138,7 +1138,7 @@ Figure&nbsp;7.4: Model with all its parameters visualized.
 </div>
 </div>
 <p>In <code>pytorch</code> we are responsible for our training function. This allows for a lot of flexibility. The structure is always quite similar.</p>
-<div id="72ce86d3" class="cell" data-execution_count="8">
+<div id="33c4fb0a" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="annotated-cell-7"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-7-1"><a href="#annotated-cell-7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> train_model(model, dataset, loss_fn, optimizer,</span>
 <span id="annotated-cell-7-2"><a href="#annotated-cell-7-2" aria-hidden="true" tabindex="-1"></a>                epochs<span class="op">=</span><span class="dv">250</span>, validation_split<span class="op">=</span><span class="fl">0.1</span>, </span>
 <span id="annotated-cell-7-3"><a href="#annotated-cell-7-3" aria-hidden="true" tabindex="-1"></a>                batch_size<span class="op">=</span><span class="dv">8</span>):</span>
@@ -1212,7 +1212,7 @@ Figure&nbsp;7.4: Model with all its parameters visualized.
 </div>
 </div>
 <p>Now all parts are available and we can finally train our model.</p>
-<div id="09c7429d" class="cell" data-execution_count="9">
+<div id="3df30d3a" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="annotated-cell-8"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-8-1" class="code-annotation-target"><a href="#annotated-cell-8-1" aria-hidden="true" tabindex="-1"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss()</span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-8-2" class="code-annotation-target"><a href="#annotated-cell-8-2" aria-hidden="true" tabindex="-1"></a>optimizer <span class="op">=</span> torch.optim.SGD(model.parameters(), lr<span class="op">=</span><span class="fl">1e-2</span>)</span>
 <span id="annotated-cell-8-3"><a href="#annotated-cell-8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1240,7 +1240,7 @@ Figure&nbsp;7.4: Model with all its parameters visualized.
 </div>
 <p>This looks like a lot, but actually it is boiler plate code if needed and allows for quite a lot of flexibility if required.</p>
 <p>Now that training is complete we can have a look at the performance.</p>
-<div id="2d22ec52" class="cell" data-execution_count="10">
+<div id="c16a46ba" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="annotated-cell-9"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-9" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-9-1" class="code-annotation-target"><a href="#annotated-cell-9-1" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">eval</span>()</span>
 <span id="annotated-cell-9-2"><a href="#annotated-cell-9-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():</span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-9" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-9-3" class="code-annotation-target"><a href="#annotated-cell-9-3" aria-hidden="true" tabindex="-1"></a>    y_proba <span class="op">=</span> torch.nn.Softmax(dim<span class="op">=</span><span class="dv">1</span>)(model(X_test_tensor))</span>
