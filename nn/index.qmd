@@ -40,7 +40,7 @@ $$
 for $\Theta$ denoting the weights of the network and $f$ the characteristics of the network (layers, structure, activation functions, etc.).
 
 The training of the network uses the labelled data to find the best weights such that the labels are recovered best from the observations (input), i.e. map $x_j$ to $y_j$. 
-This is often done via backpropagation algorithms and stochastic gradient decent. 
+This is often done via backpropagation algorithms and stochastic gradient descent. 
 
 ## Let us try to demystify the mathematics behind NN
 

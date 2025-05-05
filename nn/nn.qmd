@@ -468,7 +468,7 @@ The used optimizer [`SGD`](https://pytorch.org/docs/stable/generated/torch.optim
 
 As we have seen so often before, the optimizer used for the problem can change how fast convergence is reached (if at all). 
 
-1. Have a look at the possibilites provided in the framework [Overview - Optimizers](https://pytorch.org/docs/stable/optim.html#algorithms) - they are basically all improvements on Stochastic Gradient Decent.
+1. Have a look at the possibilites provided in the framework [Overview - Optimizers](https://pytorch.org/docs/stable/optim.html#algorithms) - they are basically all improvements on Stochastic Gradient Descent.
 
 1. Test different approaches, especially one of the Adam (`Adam`, `AdamW`, `Adamax`) and Ada (`Adadelta`, `Adafactor`, `Adagrad`, `SparseAdam`) implementations and record the performance (final accuracy).
 ::::
@@ -570,7 +570,7 @@ The introduction of the technique is contributed to the paper of @Rumelhart1986.
 As usual, predecessors and independent similar proposals go back to the 1960s.
 As we have seen, our NN can mathematically be described by nested functions, that are called inside the loss function, $\mathscr{L}(\Theta)$, for $\Theta$ being all trainable parameters.
 
-During the training, we can compute the _change_ between the NN output and the provided label and use it in a gradient decent method[^gradient].
+During the training, we can compute the _change_ between the NN output and the provided label and use it in a gradient descent method[^gradient].
 The result is the following iteration 
 $$
 \Theta^{(n+1)} = \Theta^{(n)} - \delta \nabla \mathscr{L}\left(\Theta^{(n)}\right),
