@@ -532,7 +532,7 @@ window.Quarto = {
 
 <p>As mentioned there are multiple frameworks to work neural networks (NNs) and we focus on <code>pytorch</code>. Nevertheless, <code>tensorflow.keras</code> is often used in industry and to give an idea how it works we also implemented the first model in this framework.</p>
 <p>In this section we will focus on <a href="https://keras.io/"><code>keras</code></a> with <a href="https://www.tensorflow.org/"><code>TensorFlow</code></a> as backend. This means we find our main modules under <code>tensorflow.keras</code>. We will, in general, reference the documentation via <code>tensorflow</code>, the content on <a href="https://keras.io/api/">keras.io Api Docs</a> is mostly equivalent. Where some tutorials and examples might differ.</p>
-<div id="4e3d11e8" class="cell" data-execution_count="1">
+<div id="5274e5c6" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code for loading, splitting and scaling the images.</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -572,7 +572,7 @@ window.Quarto = {
 </details>
 </div>
 <p>If we translate it into a <code>tensorflow.keras</code> model this looks like the following code (already including a summary at the end).</p>
-<div id="1de55031" class="cell styled-output" data-execution_count="3">
+<div id="e42d0a9b" class="cell styled-output" data-execution_count="3">
 <div class="sourceCode cell-code" id="annotated-cell-2"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-2-1"><a href="#annotated-cell-2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
 <span id="annotated-cell-2-2"><a href="#annotated-cell-2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-2-3"><a href="#annotated-cell-2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize everything for reproducibility</span></span>
@@ -583,15 +583,17 @@ window.Quarto = {
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-2-8" class="code-annotation-target"><a href="#annotated-cell-2-8" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> tf.keras.Sequential([</span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-2-9" class="code-annotation-target"><a href="#annotated-cell-2-9" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.InputLayer(shape<span class="op">=</span>[X_train.shape[<span class="dv">1</span>]], name<span class="op">=</span><span class="st">"Input"</span>),</span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-2-10" class="code-annotation-target"><a href="#annotated-cell-2-10" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Dense(<span class="dv">2</span>, activation<span class="op">=</span><span class="st">"tanh"</span>, name<span class="op">=</span><span class="st">"H01"</span>),</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-2-11" class="code-annotation-target"><a href="#annotated-cell-2-11" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Dense(<span class="dv">2</span>, activation<span class="op">=</span><span class="st">"softmax"</span>, name<span class="op">=</span><span class="st">"H02"</span>)</span>
-<span id="annotated-cell-2-12"><a href="#annotated-cell-2-12" aria-hidden="true" tabindex="-1"></a>])</span>
-<span id="annotated-cell-2-13"><a href="#annotated-cell-2-13" aria-hidden="true" tabindex="-1"></a></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="5" onclick="event.preventDefault();">5</a><span id="annotated-cell-2-14" class="code-annotation-target"><a href="#annotated-cell-2-14" aria-hidden="true" tabindex="-1"></a>model.summary(line_length<span class="op">=</span><span class="dv">60</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="annotated-cell-2-11"><a href="#annotated-cell-2-11" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Dense(<span class="dv">2</span>,</span>
+<span id="annotated-cell-2-12"><a href="#annotated-cell-2-12" aria-hidden="true" tabindex="-1"></a>                    <span class="co">#activation="softmax",</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-2-13" class="code-annotation-target"><a href="#annotated-cell-2-13" aria-hidden="true" tabindex="-1"></a>                    name<span class="op">=</span><span class="st">"H02"</span>)</span>
+<span id="annotated-cell-2-14"><a href="#annotated-cell-2-14" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="annotated-cell-2-15"><a href="#annotated-cell-2-15" aria-hidden="true" tabindex="-1"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="5" onclick="event.preventDefault();">5</a><span id="annotated-cell-2-16" class="code-annotation-target"><a href="#annotated-cell-2-16" aria-hidden="true" tabindex="-1"></a>model.summary(line_length<span class="op">=</span><span class="dv">60</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-2" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-2" data-code-lines="8,12" data-code-annotation="1">Generate a <a href="https://www.tensorflow.org/api_docs/python/tf/keras/Sequential"><em>sequential</em> model</a>, the <code>keras</code> way of calling a linear stack of layers.</span>
+<span data-code-cell="annotated-cell-2" data-code-lines="8,14" data-code-annotation="1">Generate a <a href="https://www.tensorflow.org/api_docs/python/tf/keras/Sequential"><em>sequential</em> model</a>, the <code>keras</code> way of calling a linear stack of layers.</span>
 </dd>
 <dt data-target-cell="annotated-cell-2" data-target-annotation="2">2</dt>
 <dd>
@@ -603,16 +605,16 @@ window.Quarto = {
 </dd>
 <dt data-target-cell="annotated-cell-2" data-target-annotation="4">4</dt>
 <dd>
-<span data-code-cell="annotated-cell-2" data-code-lines="11" data-code-annotation="4">Use the activation function <code>softmax</code> to compute the probability per class.</span>
+<span data-code-cell="annotated-cell-2" data-code-lines="13" data-code-annotation="4">Use the activation function <code>softmax</code> to compute the probability per class.</span>
 </dd>
 <dt data-target-cell="annotated-cell-2" data-target-annotation="5">5</dt>
 <dd>
-<span data-code-cell="annotated-cell-2" data-code-lines="14" data-code-annotation="5">Print the summary of the model.</span>
+<span data-code-cell="annotated-cell-2" data-code-lines="16" data-code-annotation="5">Print the summary of the model.</span>
 </dd>
 </dl>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>2025-05-05 06:03:47.697813: E external/local_xla/xla/stream_executor/cuda/cuda_platform.cc:51] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: UNKNOWN ERROR (303)</code></pre>
+<pre><code>2025-05-05 12:05:19.073897: E external/local_xla/xla/stream_executor/cuda/cuda_platform.cc:51] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: UNKNOWN ERROR (303)</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-weight: bold">Model: "sequential"</span>
@@ -642,7 +644,7 @@ window.Quarto = {
 </div>
 </div>
 <p>It is often also quite useful to export the model as an image. In our case we can work again with a <code>dot</code> file rendered as <a href="#fig-appendix-keras-model-visual" class="quarto-xref">Figure&nbsp;<span>B.1</span></a>.</p>
-<div id="83ce00a4" class="cell" data-execution_count="4">
+<div id="b07380ac" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>dot <span class="op">=</span> tf.keras.utils.model_to_dot(model, show_shapes<span class="op">=</span><span class="va">True</span>,</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                                  show_layer_activations<span class="op">=</span><span class="va">True</span>, dpi<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"model.dot"</span>, <span class="st">"w"</span>) <span class="im">as</span> f:</span>
@@ -658,9 +660,9 @@ window.Quarto = {
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 292)">
 <title>G</title>
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-292 369,-292 369,4 -4,4"></polygon>
-<!-- 140586553395776 -->
+<!-- 139656507053344 -->
 <g id="node1" class="node">
-<title>140586553395776</title>
+<title>139656507053344</title>
 <polygon fill="none" stroke="black" points="0,-162.5 0,-287.5 365,-287.5 365,-162.5 0,-162.5"></polygon>
 <polygon fill="black" stroke="transparent" points="0,-162.5 0,-287.5 365,-287.5 365,-162.5 0,-162.5"></polygon>
 <polygon fill="black" stroke="transparent" points="2.5,-244 2.5,-285 363.5,-285 363.5,-244 2.5,-244"></polygon>
@@ -680,9 +682,9 @@ window.Quarto = {
 <text text-anchor="start" x="201.13" y="-179.4" font-family="Helvetica,sans-Serif" font-size="14.00">Output shape: </text>
 <text text-anchor="start" x="292.98" y="-179.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="14.00">(None, 2)</text>
 </g>
-<!-- 140586553398608 -->
+<!-- 139656507054736 -->
 <g id="node2" class="node">
-<title>140586553398608</title>
+<title>139656507054736</title>
 <polygon fill="none" stroke="black" points="12,-0.5 12,-125.5 353,-125.5 353,-0.5 12,-0.5"></polygon>
 <polygon fill="black" stroke="transparent" points="12,-0.5 12,-125.5 353,-125.5 353,-0.5 12,-0.5"></polygon>
 <polygon fill="black" stroke="transparent" points="14.5,-82 14.5,-123 351.5,-123 351.5,-82 14.5,-82"></polygon>
@@ -691,8 +693,8 @@ window.Quarto = {
 <text text-anchor="start" x="167" y="-98.6" font-family="Helvetica,sans-Serif" font-size="16.00" fill="white"> (Dense)</text>
 <polygon fill="white" stroke="transparent" points="14.5,-42 14.5,-80 351.5,-80 351.5,-42 14.5,-42"></polygon>
 <polygon fill="none" stroke="black" points="14.5,-42 14.5,-80 351.5,-80 351.5,-42 14.5,-42"></polygon>
-<text text-anchor="start" x="121.92" y="-57.4" font-family="Helvetica,sans-Serif" font-size="14.00">Activation: </text>
-<text text-anchor="start" x="190.4" y="-57.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="14.00">softmax</text>
+<text text-anchor="start" x="130.09" y="-57.4" font-family="Helvetica,sans-Serif" font-size="14.00">Activation: </text>
+<text text-anchor="start" x="198.56" y="-57.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="14.00">linear</text>
 <polygon fill="white" stroke="transparent" points="14.5,-2 14.5,-40 176.5,-40 176.5,-2 14.5,-2"></polygon>
 <polygon fill="none" stroke="black" points="14.5,-2 14.5,-40 176.5,-40 176.5,-2 14.5,-2"></polygon>
 <text text-anchor="start" x="25.08" y="-17.4" font-family="Helvetica,sans-Serif" font-size="14.00">Input shape: </text>
@@ -702,9 +704,9 @@ window.Quarto = {
 <text text-anchor="start" x="189.13" y="-17.4" font-family="Helvetica,sans-Serif" font-size="14.00">Output shape: </text>
 <text text-anchor="start" x="280.98" y="-17.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="14.00">(None, 2)</text>
 </g>
-<!-- 140586553395776&#45;&gt;140586553398608 -->
+<!-- 139656507053344&#45;&gt;139656507054736 -->
 <g id="edge1" class="edge">
-<title>140586553395776-&gt;140586553398608</title>
+<title>139656507053344-&gt;139656507054736</title>
 <path fill="none" stroke="black" stroke-width="2" d="M182.5,-162.37C182.5,-162.37 182.5,-135.73 182.5,-135.73"></path>
 <polygon fill="black" stroke="black" stroke-width="2" points="186,-135.73 182.5,-125.73 179,-135.73 186,-135.73"></polygon>
 </g>
@@ -727,7 +729,7 @@ Figure&nbsp;B.1: Model with all its parameters visualized.
 <div class="callout-body-container">
 <div id="exr-appendix-keras-params" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise B.1 (Explain the output of <code>.summary()</code>)</strong></span> For the (extended) output of <code>.summary()</code></p>
-<div id="bbd7cecb" class="cell styled-output" data-execution_count="5">
+<div id="fdc2d74a" class="cell styled-output" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>model.summary(line_length<span class="op">=</span><span class="dv">60</span>, </span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>              expand_nested<span class="op">=</span><span class="va">True</span>, show_trainable<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
@@ -768,10 +770,11 @@ Figure&nbsp;B.1: Model with all its parameters visualized.
 </div>
 </div>
 <p>Next, we need to <em>compile</em> the model to prepare it for execution/training. In this step we define the optimizer to use for solving the included optimization method and how loss is computed. After this we can</p>
-<div id="e93865e8" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="annotated-cell-4"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-4-1" class="code-annotation-target"><a href="#annotated-cell-4-1" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">compile</span>(loss<span class="op">=</span><span class="st">"sparse_categorical_crossentropy"</span>,</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-4-2" class="code-annotation-target"><a href="#annotated-cell-4-2" aria-hidden="true" tabindex="-1"></a>              optimizer<span class="op">=</span>tf.keras.optimizers.SGD(),</span>
-<span id="annotated-cell-4-3"><a href="#annotated-cell-4-3" aria-hidden="true" tabindex="-1"></a>              metrics<span class="op">=</span>[<span class="st">"accuracy"</span>])</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="28065956" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="annotated-cell-4"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-4-1" class="code-annotation-target"><a href="#annotated-cell-4-1" aria-hidden="true" tabindex="-1"></a>loss <span class="op">=</span> tf.keras.losses.SparseCategoricalCrossentropy(from_logits<span class="op">=</span><span class="va">True</span>)</span>
+<span id="annotated-cell-4-2"><a href="#annotated-cell-4-2" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">compile</span>(loss<span class="op">=</span>loss,         </span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-4-3" class="code-annotation-target"><a href="#annotated-cell-4-3" aria-hidden="true" tabindex="-1"></a>              optimizer<span class="op">=</span>tf.keras.optimizers.SGD(),</span>
+<span id="annotated-cell-4-4"><a href="#annotated-cell-4-4" aria-hidden="true" tabindex="-1"></a>              metrics<span class="op">=</span>[<span class="st">"accuracy"</span>])</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-4" data-target-annotation="1">1</dt>
@@ -780,13 +783,13 @@ Figure&nbsp;B.1: Model with all its parameters visualized.
 </dd>
 <dt data-target-cell="annotated-cell-4" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-4" data-code-lines="2" data-code-annotation="2">Our optimizer, the <a href="https://www.tensorflow.org/api_docs/python/tf/keras/optimizers/SGD">Stochastic Gradient Decent</a> method, more details later.</span>
+<span data-code-cell="annotated-cell-4" data-code-lines="3" data-code-annotation="2">Our optimizer, the <a href="https://www.tensorflow.org/api_docs/python/tf/keras/optimizers/SGD">Stochastic Gradient Descent</a> method, more details later.</span>
 </dd>
 </dl>
 </div>
 </div>
 <p>After we compiled the model we can train it using our data</p>
-<div id="ea1d86a8" class="cell" data-execution_count="7">
+<div id="5fe1e52b" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="annotated-cell-5"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-5-1" class="code-annotation-target"><a href="#annotated-cell-5-1" aria-hidden="true" tabindex="-1"></a>history <span class="op">=</span> model.fit(X_train,</span>
 <span id="annotated-cell-5-2"><a href="#annotated-cell-5-2" aria-hidden="true" tabindex="-1"></a>                    y_train,</span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-5-3" class="code-annotation-target"><a href="#annotated-cell-5-3" aria-hidden="true" tabindex="-1"></a>                    epochs<span class="op">=</span><span class="dv">130</span>,</span>
@@ -828,30 +831,34 @@ Figure&nbsp;B.1: Model with all its parameters visualized.
 <div class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Show the code for the figure</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>y_proba <span class="op">=</span> model.predict(X_test, verbose<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>y_predict <span class="op">=</span> y_proba.argmax(axis<span class="op">=-</span><span class="dv">1</span>)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>myplot(y_predict <span class="op">*</span> (<span class="op">-</span><span class="dv">2</span>) <span class="op">+</span> <span class="dv">1</span>)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> y_proba.shape[<span class="dv">0</span>]</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>plt.bar(<span class="bu">range</span>(n), y_proba[:, <span class="dv">0</span>], color<span class="op">=</span><span class="st">'y'</span>, label<span class="op">=</span><span class="vs">r"p</span><span class="kw">(</span><span class="vs">dog</span><span class="kw">)</span><span class="vs">"</span>)</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>plt.bar(<span class="bu">range</span>(n), y_proba[:, <span class="dv">1</span>], color<span class="op">=</span><span class="st">'b'</span>, label<span class="op">=</span><span class="vs">r"p</span><span class="kw">(</span><span class="vs">cat</span><span class="kw">)</span><span class="vs">"</span>, </span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        bottom<span class="op">=</span>y_proba[:, <span class="dv">0</span>])</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>plt.plot([<span class="op">-</span><span class="fl">0.5</span>, n <span class="op">-</span> <span class="fl">0.5</span>], [<span class="fl">0.5</span>, <span class="fl">0.5</span>], <span class="st">"r"</span>, linewidth<span class="op">=</span><span class="fl">1.0</span>)</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>plt.gca().set_aspect(n <span class="op">/</span> (<span class="dv">1</span> <span class="op">*</span> <span class="dv">3</span>))</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>epochs <span class="op">=</span> <span class="bu">range</span>(<span class="bu">len</span>(history.history[<span class="st">"accuracy"</span>]))</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>plt_list <span class="op">=</span> [[<span class="st">"accuracy"</span>, <span class="st">"-"</span>], [<span class="st">"loss"</span>, <span class="st">":"</span>],</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>            [<span class="st">"val_accuracy"</span>, <span class="st">"--"</span>], [<span class="st">"val_loss"</span>, <span class="st">"-."</span>]]</span>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>probability_model <span class="op">=</span> tf.keras.Sequential([</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    model,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Softmax(axis<span class="op">=</span><span class="dv">1</span>),</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>y_proba <span class="op">=</span> probability_model.predict(X_test, verbose<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>y_predict <span class="op">=</span> y_proba.argmax(axis<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>myplot(y_predict <span class="op">*</span> (<span class="op">-</span><span class="dv">2</span>) <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> y_proba.shape[<span class="dv">0</span>]</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>plt.bar(<span class="bu">range</span>(n), y_proba[:, <span class="dv">0</span>], color<span class="op">=</span><span class="st">'y'</span>, label<span class="op">=</span><span class="vs">r"p</span><span class="kw">(</span><span class="vs">dog</span><span class="kw">)</span><span class="vs">"</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>plt.bar(<span class="bu">range</span>(n), y_proba[:, <span class="dv">1</span>], color<span class="op">=</span><span class="st">'b'</span>, label<span class="op">=</span><span class="vs">r"p</span><span class="kw">(</span><span class="vs">cat</span><span class="kw">)</span><span class="vs">"</span>, </span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        bottom<span class="op">=</span>y_proba[:, <span class="dv">0</span>])</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>plt.plot([<span class="op">-</span><span class="fl">0.5</span>, n <span class="op">-</span> <span class="fl">0.5</span>], [<span class="fl">0.5</span>, <span class="fl">0.5</span>], <span class="st">"r"</span>, linewidth<span class="op">=</span><span class="fl">1.0</span>)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>plt.gca().set_aspect(n <span class="op">/</span> (<span class="dv">1</span> <span class="op">*</span> <span class="dv">3</span>))</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
 <span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, style <span class="kw">in</span> plt_list:</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    plt.plot(epochs, history.history[name], style, label<span class="op">=</span>name)</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>plt.legend(loc<span class="op">=</span><span class="st">"lower right"</span>)</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>plt.gca().set_aspect(<span class="dv">130</span> <span class="op">/</span> (<span class="dv">1</span> <span class="op">*</span> <span class="dv">3</span>))</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>epochs <span class="op">=</span> <span class="bu">range</span>(<span class="bu">len</span>(history.history[<span class="st">"accuracy"</span>]))</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>plt_list <span class="op">=</span> [[<span class="st">"accuracy"</span>, <span class="st">"-"</span>], [<span class="st">"loss"</span>, <span class="st">":"</span>],</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>            [<span class="st">"val_accuracy"</span>, <span class="st">"--"</span>], [<span class="st">"val_loss"</span>, <span class="st">"-."</span>]]</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, style <span class="kw">in</span> plt_list:</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    plt.plot(epochs, history.history[name], style, label<span class="op">=</span>name)</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>plt.legend(loc<span class="op">=</span><span class="st">"lower right"</span>)</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>plt.gca().set_aspect(<span class="dv">130</span> <span class="op">/</span> (<span class="dv">1</span> <span class="op">*</span> <span class="dv">3</span>))</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div id="fig-appendix-keras-dvc-non-linear" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="8">
 <figure class="quarto-float quarto-float-fig figure">
@@ -926,7 +933,7 @@ Figure&nbsp;B.2: Performance of our model.
 <div id="exr-appendix-keras-dvc-adam" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise B.3 (Change the optimizer)</strong></span> As we have seen so often before, the optimizer used for the problem can change how fast convergence is reached (if at all).</p>
 <ol type="1">
-<li><p>Have a look at the possibilites provided in the framework <a href="https://www.tensorflow.org/api_docs/python/tf/keras/optimizers">Overview - Optimizers</a> - they are basically all improvements on Stochastic Gradient Decent.</p></li>
+<li><p>Have a look at the possibilites provided in the framework <a href="https://www.tensorflow.org/api_docs/python/tf/keras/optimizers">Overview - Optimizers</a> - they are basically all improvements on Stochastic Gradient Descent.</p></li>
 <li><p>Test different approaches, especially one of the Adam (<code>Adam</code>, <code>AdamW</code>, <code>Adamax</code>) and Ada (<code>Adadelta</code>, <code>Adafactor</code>, <code>Adagrad</code>) implementations and record the performance (final accuracy).</p></li>
 </ol>
 </div>
