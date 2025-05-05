@@ -67,8 +67,8 @@ model = tf.keras.Sequential([                                              # <1>
     tf.keras.layers.InputLayer(shape=[X_train.shape[1]], name="Input"),    # <2>
     tf.keras.layers.Dense(2, activation="tanh", name="H01"),               # <3>
     tf.keras.layers.Dense(2,
-                    #activation="softmax",
-                    name="H02")             # <4>
+                    #activation="softmax",                                # <4>
+                    name="H02")
 ])                                                                         # <1>
 
 model.summary(line_length=60)                                              # <5>
@@ -76,7 +76,7 @@ model.summary(line_length=60)                                              # <5>
 1. Generate a [_sequential_ model](https://www.tensorflow.org/api_docs/python/tf/keras/Sequential), the `keras` way of calling a linear stack of layers.
 1. Our fist layer defines the input size, in our case we have _flat_ images of size $1024$.
 1. Use the activation function $\tanh$ and we reduce down to $2$ neurons.
-1. Use the activation function `softmax` to compute the probability per class.
+1. Use the activation function `softmax` to compute the probability per class, not recommended directly in the model.
 1. Print the summary of the model.
 
 It is often also quite useful to export the model as an image.
