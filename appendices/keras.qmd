@@ -66,7 +66,9 @@ tf.keras.backend.clear_session(free_memory=True)
 model = tf.keras.Sequential([                                              # <1>
     tf.keras.layers.InputLayer(shape=[X_train.shape[1]], name="Input"),    # <2>
     tf.keras.layers.Dense(2, activation="tanh", name="H01"),               # <3>
-    tf.keras.layers.Dense(2, activation="softmax", name="H02")             # <4>
+    tf.keras.layers.Dense(2,
+                    #activation="softmax",
+                    name="H02")             # <4>
 ])                                                                         # <1>
 
 model.summary(line_length=60)                                              # <5>
@@ -115,8 +117,9 @@ In this step we define the optimizer to use for solving the included optimizatio
 After this we can 
 
 ```{python}
-model.compile(loss="sparse_categorical_crossentropy",       # <1>
-              optimizer=tf.keras.optimizers.SGD(),          # <2>
+loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)      # <1>
+model.compile(loss=loss,         
+              optimizer=tf.keras.optimizers.SGD(),                         # <2>
               metrics=["accuracy"])
 ```
 1. Function to compute the loss, the name corresponds to [`tf.keras.losses.sparse_categorical_crossentropy`](https://www.tensorflow.org/api_docs/python/tf/keras/losses/sparse_categorical_crossentropy).
@@ -150,7 +153,11 @@ Now that training is complete we can have a look at the performance.
 #|   - "Summary of the key metrics of the model training."
 #| code-fold: true
 #| code-summary: "Show the code for the figure"
-y_proba = model.predict(X_test, verbose=0)
+probability_model = tf.keras.Sequential([
+    model,
+    tf.keras.layers.Softmax(axis=1),
+])
+y_proba = probability_model.predict(X_test, verbose=0)
 y_predict = y_proba.argmax(axis=-1)
 myplot(y_predict * (-2) + 1)
 
