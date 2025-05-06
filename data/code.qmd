@@ -691,7 +691,7 @@ The biggest thing missing from our example project with `dvc` is a remote to sto
 ::: {.callout-important}
 For this lecture we use the storage on [Sakai](https://sakai.mci4me.at/), this also means that this part is tricky to follow if you are not part of the lecture.
 
-If a storage that can be accessed via WebDAV[^webdav] is available is it or use _local storage_ as an alternative, see [File systems (local remotes)](https://dvc.org/doc/user-guide/data-management/remote-storage#file-systems-local-remotes). 
+If a storage that can be accessed via WebDAV[^webdav] is available to you use it. Alternatively, use _local storage_, see [File systems (local remotes)](https://dvc.org/doc/user-guide/data-management/remote-storage#file-systems-local-remotes). 
 :::
 
 We can add the remote with the `dvc remote add` command.
