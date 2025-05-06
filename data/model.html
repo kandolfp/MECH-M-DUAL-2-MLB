@@ -505,7 +505,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>For example it might be that we do our training in a different environment than the <em>inference or prediction</em>. It might even be the case, that we switch programming language for these tasks to extract the best performance.</p>
 <p>As we mainly work with <code>scikit-learn</code> we introduce the concepts with it. Our first step is to check the documentation <a href="https://scikit-learn.org/stable/model_persistence.html">docs - model persistence</a> and we can use it as reference for this introduction. We introduce different possibilities, all of them have strengths and weaknesses, unfortunately there is no gold standard.</p>
 <p>Let us use the following toy example with our cats and dogs as reference, see <a href="../clustering/index.html#sec-clustering-cvd" class="quarto-xref"><span>Section 1.2</span></a>.</p>
-<div id="2257147c" class="cell styled-output" data-execution_count="1">
+<div id="9aa52111" class="cell styled-output" data-execution_count="1">
 <div id="lst-data-mp-toyexample" class="python cell-code listing quarto-float quarto-figure quarto-figure-left anchored">
 <figure class="quarto-float quarto-float-lst figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-data-mp-toyexample-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -602,7 +602,7 @@ Important
 </blockquote>
 <p>The use-case for ONNX is to persist a model without necessarily using the Python object itself. This is especially useful, when the runtime for distributing the model is not Python or a very restricted Python environment.</p>
 <p>Now let us see how we can persist the model of <a href="#lst-data-mp-toyexample" class="quarto-xref">Listing&nbsp;<span>4.1</span></a> via ONNX.</p>
-<div id="96560eb3" class="cell styled-output" data-execution_count="2">
+<div id="edfc971b" class="cell styled-output" data-execution_count="2">
 <div class="sourceCode cell-code" id="annotated-cell-2"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-2-1"><a href="#annotated-cell-2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> skl2onnx <span class="im">import</span> to_onnx</span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-2-2" class="code-annotation-target"><a href="#annotated-cell-2-2" aria-hidden="true" tabindex="-1"></a>onx <span class="op">=</span> to_onnx(voting_clf, X_train[:<span class="dv">1</span>].astype(np.int64))</span>
 <span id="annotated-cell-2-3"><a href="#annotated-cell-2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"model.onnx"</span>, <span class="st">"wb"</span>) <span class="im">as</span> f:</span>
@@ -617,13 +617,13 @@ Important
 </div>
 </div>
 <p>As mentioned, the file format is binary so it does not make a lot of sense to actually read the resulting file in plain text but we can have a look at the size.</p>
-<div id="c1189b5d" class="cell styled-output" data-execution_count="3">
+<div id="af37a758" class="cell styled-output" data-execution_count="3">
 <div class="cell-output cell-output-stdout">
 <pre><code>80K model.onnx</code></pre>
 </div>
 </div>
 <p>Unfortunately, there is no method to convert back to our <code>scikit-learn</code>. What we can do is to use the <code>onnxruntime</code> and see if we still get the same score as before.</p>
-<div id="b9244145" class="cell styled-output" data-execution_count="4">
+<div id="d636324f" class="cell styled-output" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> onnxruntime <span class="im">as</span> ort</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> ort.InferenceSession(<span class="st">"model.onnx"</span>)</span>
@@ -698,20 +698,20 @@ The <code>pickle</code> module is not secure. Only <em>unpickle</em> data you tr
 <p>This notably implies, it is not guaranteed that a model can be loaded with a different <code>scikit-learn</code> version or let alone a different <code>numpy</code> version, that is only a sub-dependency of <code>scikit-learn</code>. Furthermore, if a different hardware is involved there might be problems as well, e.g.&nbsp;a different architecture of an integer or float. As a consequence, if we use <code>pickle</code> a thorough version control with package management is key!</p>
 <p>If we have a model that moves around different processes via the disc or is restored frequently from storage but can not be permanently in storage and therefore performance for loading and storing is of interest we can also use <a href="https://joblib.readthedocs.io/en/latest/index.html#module-joblib"><code>joblib</code></a> as a more performant alternative.</p>
 <p>Now let us see how we can persist the model of <a href="#lst-data-mp-toyexample" class="quarto-xref">Listing&nbsp;<span>4.1</span></a> as a <code>pickle</code> file.</p>
-<div id="2d294c89" class="cell styled-output" data-execution_count="6">
+<div id="1de3eb98" class="cell styled-output" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pickle <span class="im">import</span> dump</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"model.pkl"</span>, <span class="st">"wb"</span>) <span class="im">as</span> f:</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    dump(voting_clf, f, protocol<span class="op">=</span><span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Again, the file format is binary so it does not make a lot of sense to actually read the file in plain text but we can have a look at the size</p>
-<div id="e8704ba6" class="cell styled-output" data-execution_count="7">
+<div id="e72a6ae0" class="cell styled-output" data-execution_count="7">
 <div class="cell-output cell-output-stdout">
 <pre><code>304K    model.pkl</code></pre>
 </div>
 </div>
 <p>and we can see that the storage demands are higher than for ONNX.</p>
 <p>We restore the model via</p>
-<div id="beb4b910" class="cell styled-output" data-execution_count="8">
+<div id="673fdc07" class="cell styled-output" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pickle <span class="im">import</span> load</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"model.pkl"</span>, <span class="st">"rb"</span>) <span class="im">as</span> f:</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    clf <span class="op">=</span> load(f)</span>
@@ -753,19 +753,19 @@ We have train_score of 1.0 after loading the object again.</code></pre>
 <p>As an alternative to <code>pickle</code> we can use <a href="https://skops.readthedocs.io/en/stable/persistence.html#persistence"><code>skops.io</code></a>. It is developed as a secure alternative for <code>pickle</code> and therefore supports a wide range of objects. The main idea is, that only <em>trusted functions</em> are loaded and not everything included in the file. It is also possible to verify our data before loading it into our program, increasing the security further. Still, it returns the Python object, if it can be loaded, and we can manipulate it in the same fashion as with <code>pickle</code>.</p>
 <p>As a downside, the process is slower and some user defined functions/object might not work as desired. This also implies, that we need to have the same environment for loading as we had for storing the Python object, similar to <code>pickle</code>.</p>
 <p>The interface itself is simple and follows <code>pickle</code>.</p>
-<div id="15d39107" class="cell styled-output" data-execution_count="10">
+<div id="0af9574d" class="cell styled-output" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> skops.io <span class="im">as</span> sio</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>obj <span class="op">=</span> sio.dump(voting_clf, <span class="st">"model.skops"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>For comparison, we show the size of the file</p>
-<div id="f0b5072b" class="cell styled-output" data-execution_count="11">
+<div id="13de440f" class="cell styled-output" data-execution_count="11">
 <div class="cell-output cell-output-stdout">
 <pre><code>26M model.skops</code></pre>
 </div>
 </div>
 <p>and we can see that this format has a significant higher overhead as the other formats.</p>
 <p>Retrieving the model is a two step process, first loading the <em>untrusted types</em> and than loading the verified objects.</p>
-<div id="abfb1eff" class="cell styled-output" data-execution_count="12">
+<div id="79e25584" class="cell styled-output" data-execution_count="12">
 <div class="sourceCode cell-code" id="annotated-cell-7"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-7-1" class="code-annotation-target"><a href="#annotated-cell-7-1" aria-hidden="true" tabindex="-1"></a>unknown_types <span class="op">=</span> sio.get_untrusted_types(<span class="bu">file</span><span class="op">=</span><span class="st">"model.skops"</span>)</span>
 <span id="annotated-cell-7-2"><a href="#annotated-cell-7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, a <span class="kw">in</span> <span class="bu">enumerate</span>(unknown_types):</span>
 <span id="annotated-cell-7-3"><a href="#annotated-cell-7-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Unknown type at </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss"> is </span><span class="sc">{</span>a<span class="sc">}</span><span class="ss">."</span>)</span>
