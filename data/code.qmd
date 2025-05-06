@@ -745,7 +745,8 @@ And of course, `dvc pull` to get the files on another computer.
 1. Synch the data from the remote described here.
 
 1. On the course _sakai cloud_ your have write rights in the subfolder `students_remote`, create a folder with your name and use it as remote.
-  - Synchronize the the performed experiments with the remote (`dvc` and `git`).
+
+   - Synchronize the performed experiments with the remote (`dvc` and `git`).
 
 1. Use a local directory as remote and see if you can make sense of the content, i.e. how is it structured.
 ::::
