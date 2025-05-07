@@ -235,8 +235,7 @@ import requests
 import io
 import matplotlib.pyplot as plt
 import torch
-from torch.utils.data import TensorDataset
-from torch.utils.data import DataLoader, random_split
+from torch.utils.data import TensorDataset, DataLoader, random_split
 %config InlineBackend.figure_formats = ["svg"]
 
 
@@ -322,11 +321,13 @@ X_test = np.concatenate((dogs_w[:, s:], cats_w[:, s:]), axis=1).T / 255.0
 y_test = np.repeat(np.array([0, 1]), 80 - s)
 ```
 ```{python}
-X_train_tensor = torch.tensor(X_train.reshape(-1, 1, size, size),       # <1>
-                              dtype=torch.float32)
+X_train_tensor = torch.tensor(
+    X_train.reshape(-1, 1, size, size).transpose([0, 1, 3, 2]),       # <1>
+    dtype=torch.float32)
 y_train_tensor = torch.tensor(y_train, dtype=torch.uint8)
-X_test_tensor = torch.tensor(X_test.reshape(-1, 1, size, size),         # <1>
-                              dtype=torch.float32)
+X_test_tensor = torch.tensor(
+    X_test.reshape(-1, 1, size, size).transpose([0, 1, 3, 2]),         # <1>
+    dtype=torch.float32)
 y_test_tensor = torch.tensor(y_test, dtype=torch.uint8)
 dataset = TensorDataset(X_train_tensor, y_train_tensor)
 
