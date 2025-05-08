@@ -36,6 +36,7 @@ book:
         - nn/nn.qmd
         - nn/cnn.qmd
         - nn/autoencoder.qmd
+        - nn/transfer.qmd
     - summary.qmd
     - references.qmd
   appendices:
