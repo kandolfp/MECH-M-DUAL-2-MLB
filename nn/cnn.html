@@ -98,9 +98,9 @@ div.csl-indent {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-c699154ef242142b43c34bd36ab18235.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-5246a6ab9276c4ca0c711472a3264538.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-c699154ef242142b43c34bd36ab18235.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-1e48ba61bbb28ed409cc66b93a2cf6ae.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-aa8bb76148ba733d74767651424b9944.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-1e48ba61bbb28ed409cc66b93a2cf6ae.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
@@ -474,6 +474,12 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Autoencoders</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nn/transfer.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Transfer learning</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item">
@@ -783,43 +789,45 @@ Figure&nbsp;8.3: For the input on the left we compute two different pooling func
 <section id="implementation" class="level2" data-number="8.4">
 <h2 data-number="8.4" class="anchored" data-anchor-id="implementation"><span class="header-section-number">8.4</span> Implementation</h2>
 <p>Now that we have discussed the basic structure of a CNN we want to implement it. Luckily we can recycle most of the code from <a href="nn.html#sec-nn-nn-firstnn" class="quarto-xref"><span>Section 7.2</span></a>. In the following we only show where we needed to make some changes.</p>
-<div id="b96dfc98" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="annotated-cell-2"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-2-1" class="code-annotation-target"><a href="#annotated-cell-2-1" aria-hidden="true" tabindex="-1"></a>X_train_tensor <span class="op">=</span> torch.tensor(X_train.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>, size, size),</span>
-<span id="annotated-cell-2-2"><a href="#annotated-cell-2-2" aria-hidden="true" tabindex="-1"></a>                              dtype<span class="op">=</span>torch.float32)</span>
-<span id="annotated-cell-2-3"><a href="#annotated-cell-2-3" aria-hidden="true" tabindex="-1"></a>y_train_tensor <span class="op">=</span> torch.tensor(y_train, dtype<span class="op">=</span>torch.uint8)</span>
-<span id="annotated-cell-2-4"><a href="#annotated-cell-2-4" aria-hidden="true" tabindex="-1"></a>X_test_tensor <span class="op">=</span> torch.tensor(X_test.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>, size, size),</span>
-<span id="annotated-cell-2-5"><a href="#annotated-cell-2-5" aria-hidden="true" tabindex="-1"></a>                              dtype<span class="op">=</span>torch.float32)</span>
-<span id="annotated-cell-2-6"><a href="#annotated-cell-2-6" aria-hidden="true" tabindex="-1"></a>y_test_tensor <span class="op">=</span> torch.tensor(y_test, dtype<span class="op">=</span>torch.uint8)</span>
-<span id="annotated-cell-2-7"><a href="#annotated-cell-2-7" aria-hidden="true" tabindex="-1"></a>dataset <span class="op">=</span> TensorDataset(X_train_tensor, y_train_tensor)</span>
-<span id="annotated-cell-2-8"><a href="#annotated-cell-2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-2-9"><a href="#annotated-cell-2-9" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MyFirstCNN(torch.nn.Module):</span>
-<span id="annotated-cell-2-10"><a href="#annotated-cell-2-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, conv_out_channels, size):</span>
-<span id="annotated-cell-2-11"><a href="#annotated-cell-2-11" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>(MyFirstCNN, <span class="va">self</span>).<span class="fu">__init__</span>()</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-2-12" class="code-annotation-target"><a href="#annotated-cell-2-12" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.model <span class="op">=</span> torch.nn.Sequential(</span>
-<span id="annotated-cell-2-13"><a href="#annotated-cell-2-13" aria-hidden="true" tabindex="-1"></a>            torch.nn.Conv2d(<span class="dv">1</span>, conv_out_channels, <span class="dv">5</span>, padding<span class="op">=</span><span class="dv">2</span>),</span>
-<span id="annotated-cell-2-14"><a href="#annotated-cell-2-14" aria-hidden="true" tabindex="-1"></a>            torch.nn.ReLU(),</span>
-<span id="annotated-cell-2-15"><a href="#annotated-cell-2-15" aria-hidden="true" tabindex="-1"></a>            torch.nn.MaxPool2d(<span class="dv">2</span>),</span>
-<span id="annotated-cell-2-16"><a href="#annotated-cell-2-16" aria-hidden="true" tabindex="-1"></a>            torch.nn.Dropout(p<span class="op">=</span><span class="fl">0.2</span>),</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-2-17" class="code-annotation-target"><a href="#annotated-cell-2-17" aria-hidden="true" tabindex="-1"></a>            torch.nn.Flatten(),</span>
-<span id="annotated-cell-2-18"><a href="#annotated-cell-2-18" aria-hidden="true" tabindex="-1"></a>            torch.nn.Linear(conv_out_channels <span class="op">*</span> size <span class="op">//</span> <span class="dv">2</span> <span class="op">*</span> size <span class="op">//</span> <span class="dv">2</span>, <span class="dv">2</span>),</span>
-<span id="annotated-cell-2-19"><a href="#annotated-cell-2-19" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="annotated-cell-2-20"><a href="#annotated-cell-2-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-2-21"><a href="#annotated-cell-2-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-2-22"><a href="#annotated-cell-2-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x):</span>
-<span id="annotated-cell-2-23"><a href="#annotated-cell-2-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.model(x)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="f192cb3c" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="annotated-cell-2"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-2-1"><a href="#annotated-cell-2-1" aria-hidden="true" tabindex="-1"></a>X_train_tensor <span class="op">=</span> torch.tensor(</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-2-2" class="code-annotation-target"><a href="#annotated-cell-2-2" aria-hidden="true" tabindex="-1"></a>    X_train.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>, size, size).transpose([<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>]),</span>
+<span id="annotated-cell-2-3"><a href="#annotated-cell-2-3" aria-hidden="true" tabindex="-1"></a>    dtype<span class="op">=</span>torch.float32)</span>
+<span id="annotated-cell-2-4"><a href="#annotated-cell-2-4" aria-hidden="true" tabindex="-1"></a>y_train_tensor <span class="op">=</span> torch.tensor(y_train, dtype<span class="op">=</span>torch.uint8)</span>
+<span id="annotated-cell-2-5"><a href="#annotated-cell-2-5" aria-hidden="true" tabindex="-1"></a>X_test_tensor <span class="op">=</span> torch.tensor(</span>
+<span id="annotated-cell-2-6"><a href="#annotated-cell-2-6" aria-hidden="true" tabindex="-1"></a>    X_test.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>, size, size).transpose([<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>]),</span>
+<span id="annotated-cell-2-7"><a href="#annotated-cell-2-7" aria-hidden="true" tabindex="-1"></a>    dtype<span class="op">=</span>torch.float32)</span>
+<span id="annotated-cell-2-8"><a href="#annotated-cell-2-8" aria-hidden="true" tabindex="-1"></a>y_test_tensor <span class="op">=</span> torch.tensor(y_test, dtype<span class="op">=</span>torch.uint8)</span>
+<span id="annotated-cell-2-9"><a href="#annotated-cell-2-9" aria-hidden="true" tabindex="-1"></a>dataset <span class="op">=</span> TensorDataset(X_train_tensor, y_train_tensor)</span>
+<span id="annotated-cell-2-10"><a href="#annotated-cell-2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-2-11"><a href="#annotated-cell-2-11" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MyFirstCNN(torch.nn.Module):</span>
+<span id="annotated-cell-2-12"><a href="#annotated-cell-2-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, conv_out_channels, size):</span>
+<span id="annotated-cell-2-13"><a href="#annotated-cell-2-13" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>(MyFirstCNN, <span class="va">self</span>).<span class="fu">__init__</span>()</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-2-14" class="code-annotation-target"><a href="#annotated-cell-2-14" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.model <span class="op">=</span> torch.nn.Sequential(</span>
+<span id="annotated-cell-2-15"><a href="#annotated-cell-2-15" aria-hidden="true" tabindex="-1"></a>            torch.nn.Conv2d(<span class="dv">1</span>, conv_out_channels, <span class="dv">5</span>, padding<span class="op">=</span><span class="dv">2</span>),</span>
+<span id="annotated-cell-2-16"><a href="#annotated-cell-2-16" aria-hidden="true" tabindex="-1"></a>            torch.nn.ReLU(),</span>
+<span id="annotated-cell-2-17"><a href="#annotated-cell-2-17" aria-hidden="true" tabindex="-1"></a>            torch.nn.MaxPool2d(<span class="dv">2</span>),</span>
+<span id="annotated-cell-2-18"><a href="#annotated-cell-2-18" aria-hidden="true" tabindex="-1"></a>            torch.nn.Dropout(p<span class="op">=</span><span class="fl">0.2</span>),</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-2-19" class="code-annotation-target"><a href="#annotated-cell-2-19" aria-hidden="true" tabindex="-1"></a>            torch.nn.Flatten(),</span>
+<span id="annotated-cell-2-20"><a href="#annotated-cell-2-20" aria-hidden="true" tabindex="-1"></a>            torch.nn.Linear(conv_out_channels <span class="op">*</span> size <span class="op">//</span> <span class="dv">2</span> <span class="op">*</span> size <span class="op">//</span> <span class="dv">2</span>, <span class="dv">2</span>),</span>
+<span id="annotated-cell-2-21"><a href="#annotated-cell-2-21" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="annotated-cell-2-22"><a href="#annotated-cell-2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-2-23"><a href="#annotated-cell-2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-2-24"><a href="#annotated-cell-2-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x):</span>
+<span id="annotated-cell-2-25"><a href="#annotated-cell-2-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.model(x)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-2" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-2" data-code-lines="1,4" data-code-annotation="1">We need to reshape our image to a square and inflate the dimensions to allow processing for <a href="https://pytorch.org/docs/stable/generated/torch.nn.Conv2d.html"><code>Conv2d</code></a>.</span>
+<span data-code-cell="annotated-cell-2" data-code-lines="2,6" data-code-annotation="1">We need to reshape our image to a square and inflate the dimensions to allow processing for <a href="https://pytorch.org/docs/stable/generated/torch.nn.Conv2d.html"><code>Conv2d</code></a>.</span>
 </dd>
 <dt data-target-cell="annotated-cell-2" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-2" data-code-lines="12,13,14,15,16" data-code-annotation="2">The Convolution part of our model, this could be repeated with different <code>out_channel</code> sizes.</span>
+<span data-code-cell="annotated-cell-2" data-code-lines="14,15,16,17,18" data-code-annotation="2">The Convolution part of our model, this could be repeated with different <code>out_channel</code> sizes.</span>
 </dd>
 <dt data-target-cell="annotated-cell-2" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="annotated-cell-2" data-code-lines="17,18" data-code-annotation="3">Classification step at the end of the model to break everything down to two classes.</span>
+<span data-code-cell="annotated-cell-2" data-code-lines="19,20" data-code-annotation="3">Classification step at the end of the model to break everything down to two classes.</span>
 </dd>
 </dl>
 </div>
@@ -916,7 +924,7 @@ Figure&nbsp;8.4: Performance of our model.
 </div>
 </div>
 <p>In <a href="#fig-nn-cnn-dvc-1" class="quarto-xref">Figure&nbsp;<span>8.4 (a)</span></a> we can see the final classification of our model with regards to the test set. For 10 dogs our model is convinced they are not <em>good dogs</em> but cats, and 3 cats are classified as dogs, in comparison to <a href="nn.html#fig-nn-nn-dvc-non-linear-1" class="quarto-xref">Figure&nbsp;<span>7.5 (a)</span></a> we gained one correct classified dog. If we look at the probabilities <a href="#fig-nn-cnn-dvc-2" class="quarto-xref">Figure&nbsp;<span>8.4 (b)</span></a>, we can see that we have a couple of close calls, but in general our model is quite sure about the classification. Regarding the history of our optimization, we can see learning happen right away with a saturation starting to manifest after about 30 iterations.</p>
-<p>At the end, we have an accuracy of 83.75% for our test set, slightly better than our NN from before <a href="nn.html#fig-nn-nn-dvc-non-linear" class="quarto-xref">Figure&nbsp;<span>7.5</span></a>.</p>
+<p>At the end, we have an accuracy of 82.5% for our test set, slightly better than our NN from before <a href="nn.html#fig-nn-nn-dvc-non-linear" class="quarto-xref">Figure&nbsp;<span>7.5</span></a>.</p>
 <div class="callout callout-style-simple callout-caution no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
