@@ -1,0 +1,41 @@
+# Data Augmentation {#sec-nn-transform}
+
+In the previous sections we used our image data either in the wavelet basis, raw or in the case of transfer learning with some augmentations to make sure it fits the input requirements of the network. 
+
+Quite often it is advisable to (randomly) augment the data for training and 
+sometimes also for inference.
+It has shown to be an important technique to improve several aspects of neural networks, like robustness, overfitting, generalization, and more.
+
+With simple augmentations like:
+
+- Geometric transformations: rotation, flipping, scaling, cropping, translation, etc.
+- Colour adjustments: brightness, contrast, saturation/hue, monochrome images, etc.
+- Artificial noise: random noise to simulate real-world imperfections like dust, glare, focus, etc. 
+- Random erasing: by masking out random parts of an image robustness can be improved and it simulates occlusions.
+- Combination of images: to create new images for training it is sometimes possible to combine existing images.
+
+we can influence the training and the model drastically.
+
+The most important aspects are:
+
+1. **Increases Dataset Size**: With data augmentation we can artificially increase the size of our dataset and therefore expose our network to more training data without the often tedious task of labeling. If we apply this in a _random_ fashion we need to make sure that the seed is set and we can track the changes in case we need to get a deeper understanding of the mechanics behind it. Overall, by always applying some augmentation, overfitting can be drastically reduced.
+
+1. **Improves Model Generalization**: With data augmentation we can make sure the model learns on features that are invariant to geometric transformations or something like different zoom levels. Overall, this will lead to a better generalization of the network.
+
+1. **Reduces Overfitting**: Especially for small data set overfitting is a serious problem and the augmentation techniques are a reliable tool to mitigate the risk of overfitting to your training set.
+
+1. **Simulates Real-World Variability**: When taking an image there are usually variations included. This might be orientation, occlusions, lighting conditions and so forth. We can simulate these _problems_ via data augmentation.
+
+1. **Improves Model Performance**: Quite often it also helps to introduce data augmentations during training achieve better results on several performance metrics like accuracy. 
+
+For instance, if a model is trained to classify images of cats and dogs, data augmentation might include flipping images horizontally, rotating them slightly, or adjusting brightness. This ensures the model learns to recognize cats and dogs regardless of orientation or lighting conditions.
+
+::: {.callout-caution appearance="simple" icon=false}
+:::: {#exr-nn-augmentation-1}
+
+## Use data augmentation to improve our models
+
+Similar to the pipeline use in @sec-nn-transferl create a pipeline to include some of the above described data augmentations and retrain the models we created with this pipeline in place for the training set. 
+Can you see any of the above described benefits?
+::::
+:::
