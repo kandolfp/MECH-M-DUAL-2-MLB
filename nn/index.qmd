@@ -8,7 +8,7 @@ It contains a multi-layer structure, convolution, max pooling, and nonlinear dyn
 The current high interest in NNs was arguably kickstarted with @NIPS2012_c399862d and their introduction of _ImageNet_.
 The used with high resolution images, facilitated with 15 million labels in over 22 000 categories.
 This transformed the field of computer vision tasks for classification and identification.
-All of this was made possible by the large labelled data set and the available compute power[^1].
+All of this was made possible by the large labelled dataset and the available compute power[^1].
 
 At its core a neural network consists of multiple layers (some with specific names) of interconnected nodes (or _neurons_).
 

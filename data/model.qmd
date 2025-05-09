@@ -1,6 +1,6 @@
 # Model persistence {#sec-data-mp}
 
-So far, we either loaded a data set or generated it on the fly.
+So far, we either loaded a dataset or generated it on the fly.
 Therefore, we start by looking into ways to persist the models we generated.
 
 The general idea is to simply store the object we generate and load it at some later time. 

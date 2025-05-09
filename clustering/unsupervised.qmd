@@ -8,7 +8,7 @@ There are several algorithms to perform this task, the most prominent is the $k$
 We will use `scikit-learn` in this section heavily.
 The [User Guide](https://scikit-learn.org/stable/user_guide.html) and [Examples](https://scikit-learn.org/stable/auto_examples/index.html) sections in the documentation are well structured and a good source for additional information. 
 
-Furthermore, there are several Examples that compare different methods on different data sets and therefore give a nice overview on strengths and weaknesses.
+Furthermore, there are several Examples that compare different methods on different datasets and therefore give a nice overview on strengths and weaknesses.
 Have look at them to gain further insights into the methods and their differences.
 
 - [Comparing different clustering algorithms on toy datasets](https://scikit-learn.org/stable/auto_examples/cluster/plot_cluster_comparison.html#sphx-glr-auto-examples-cluster-plot-cluster-comparison-py)
@@ -70,7 +70,7 @@ Nevertheless, a number of heuristic algorithms exist to provide a good performan
 We illustrate the proceedings with the help of some artificial observations in two dimensional space, and show how the clustering takes place.
 
 ::: {.callout-important}
-The following data set and the basic structure of the code is from [@Brunton2022, Code 5.5 - 5.6].
+The following dataset and the basic structure of the code is from [@Brunton2022, Code 5.5 - 5.6].
 Also see [GitHub](https://github.com/dynamicslab/databook_python).
 :::
 
@@ -212,13 +212,13 @@ Both can be found in @Geron2022-xh.
 ::: {.callout-caution appearance="simple" icon=false}
 :::: {#exr-kmean}
 
-## Apply the $k$-means algorithm to other data sets
+## Apply the $k$-means algorithm to other datasets
 
 As an exercise, to get some practice for using $k$-means, apply the algorithm to some other datasets to see how it performs.
 
-1. We already looked at the Fischer Iris data set in @sec-fischer-iris-data-set and discussed some basic features. Try with only two dimensional data, as well as four dimensional data to find the three clusters.
+1. We already looked at the Fischer Iris dataset in @sec-fischer-iris-data-set and discussed some basic features. Try with only two dimensional data, as well as four dimensional data to find the three clusters.
 
-1. For @fig-clustering-unsupervised_dbscan we will look at the moons data set.
+1. For @fig-clustering-unsupervised_dbscan we will look at the moons dataset.
 Try working out the clusters in this case.
 
 1. Apply the algorithm to the cats and dogs (in wavelet basis, see @sec-clustering-cvd) for various principal components and find the two clusters.
@@ -262,7 +262,7 @@ The following variants exist:
 Here we show how to perform colour segmentation with $k$-means.
 
 ::: {.callout-important}
-The following data set and the basic structure of the code is from @Geron2022-xh, see [GitHub](https://github.com/ageron/handson-ml3/blob/main/09_unsupervised_learning.ipynb), 
+The following dataset and the basic structure of the code is from @Geron2022-xh, see [GitHub](https://github.com/ageron/handson-ml3/blob/main/09_unsupervised_learning.ipynb), 
 :::
 
 ```{python}
@@ -331,7 +331,7 @@ It can also include the distance.
 On a larger scale, with always the first 25 points of the two clusters above we get the results shown in @fig-clustering-unsupervised_dengrogram
 ```{python}
 #| label: fig-clustering-unsupervised_dengrogram
-#| fig-cap: "Construction a agglomerative hierarchy for our data set."
+#| fig-cap: "Construction a agglomerative hierarchy for our dataset."
 #| fig-subcap: 
 #|   - "Dendrogram for euclidean norm."
 #|   - "Histogram showing the clustering for the euclidean norm."
@@ -368,7 +368,7 @@ for metric in ["euclidean", "cityblock"]:
 plt.show()
 ```
 
-The two dendrograms (@fig-clustering-unsupervised_dengrogram-1 and @fig-clustering-unsupervised_dengrogram-3) show the hierarchical structure derived from the data set.
+The two dendrograms (@fig-clustering-unsupervised_dengrogram-1 and @fig-clustering-unsupervised_dengrogram-3) show the hierarchical structure derived from the dataset.
 The number of clusters can be influenced by the `thresh` parameter and it is also used to label the observation accordingly.
 It is quite similar to the number of clusters $k$ in the $k$-means algorithm.
 
@@ -389,13 +389,13 @@ In `scikit-learn` this is supported via the [`sklearn.cluster.AgglomerativeClust
 ::: {.callout-caution appearance="simple" icon=false}
 :::: {#exr-dendrogram}
 
-## Apply the agglomerative clustering to the Fischer Iris data set
+## Apply the agglomerative clustering to the Fischer Iris dataset
 
 1. Work out how to use the `scikit-learn` alternative.
 
-1. We already looked at the Fischer Iris data set in @sec-fischer-iris-data-set and discussed some basic features. Try with only two dimensional data, as well as four dimensional data, to find the three clusters.
+1. We already looked at the Fischer Iris dataset in @sec-fischer-iris-data-set and discussed some basic features. Try with only two dimensional data, as well as four dimensional data, to find the three clusters.
 
-1. For @fig-clustering-unsupervised_dbscan we will look at the moons data set.
+1. For @fig-clustering-unsupervised_dbscan we will look at the moons dataset.
 Try working out the clusters in this case, look at the different possibilities with the `linkage` option as `{"ward", "complete", "average", "single"}`.
 
 ::::
@@ -423,7 +423,7 @@ Consequently, all point on the path, except $p$, need to be core points.
 Therefore, we get our definition of a cluster: a core point $p$ together with all points that are reachable from $p$. This includes core points (at least one) and none-core points (boundary points) on the boundary as they can not be used to reach more points.
 
 In contrast to $k$-means the algorithm we can find _non-linear_ (i.e. curved) clusters.
-We illustrate this with the _moon data set_. 
+We illustrate this with the _moon dataset_. 
 
 ::: {.callout-important}
 For the plotting function please see [GitHub](https://github.com/ageron/handson-ml3/blob/main/09_unsupervised_learning.ipynb), the accompanying repository to @Geron2022-xh, as it forms the basis.
@@ -511,7 +511,7 @@ See @Geron2022-xh and  [GitHub](https://github.com/ageron/handson-ml3/blob/main/
 1. Apply the DBSCAN algorithm to our toy example (the two ellipsoids from @sec-clustering-usl-kmeans) used through this section, to recover the two clusters as good as possible.
 Try different $\epsilon$ values as well as different norms (`metric` parameter).
 
-1. Additionally, for a higher dimensional problem, using DBSCAN to split the Fischer Iris data set (@sec-fischer-iris-data-set) into its three clusters of flowers.
+1. Additionally, for a higher dimensional problem, using DBSCAN to split the Fischer Iris dataset (@sec-fischer-iris-data-set) into its three clusters of flowers.
 ::::
 :::
 
@@ -597,7 +597,7 @@ Let us try it with the cats and dogs images in wavelet basis from @sec-clusterin
 Note, we directly load the images in wavelet basis and do not recompute them.
 
 ::: {.callout-important}
-The following data set and the basic structure of the code is from [@Brunton2022, Code 5.8].
+The following dataset and the basic structure of the code is from [@Brunton2022, Code 5.8].
 Also see [GitHub](https://github.com/dynamicslab/databook_python).
 :::
 
@@ -693,9 +693,9 @@ This can be done via the parameter `covariance_type`, see [docs](https://scikit-
 This should be straight forward, as we constructed it via Gaussian distributions.
 Try constraining the algorithm by imposing the different values possible for `covariance_type`. 
 
-1. Additionally, for a higher dimensional problem, split the Fischer Iris data set into its three clusters of flowers.
+1. Additionally, for a higher dimensional problem, split the Fischer Iris dataset into its three clusters of flowers.
 
-1. Try to use GMM to get clusters for the moon data set used in @sec-clustering-ul-dbscan.
+1. Try to use GMM to get clusters for the moon dataset used in @sec-clustering-ul-dbscan.
 Also try with the `BayesianGaussianMixture` class, where no amount of clusters needs to be specified.
 ::::
 :::
@@ -730,12 +730,12 @@ See @Geron2022-xh and the corresponding [GitHub repository](https://github.com/a
 
 ## Motivational example {#sec-clustering-ul-me}
 
-Before we make the leap to supervised learning, we we introduce a new data set and see how our unsupervised approach works in this case.
+Before we make the leap to supervised learning, we we introduce a new dataset and see how our unsupervised approach works in this case.
 
-We do this with the (in)famous MNIST data set of hand written digits. 
-Lets start by looking at the data set and establishing some basic properties.
+We do this with the (in)famous MNIST dataset of hand written digits. 
+Lets start by looking at the dataset and establishing some basic properties.
 
-We load the data set and look at its description
+We load the dataset and look at its description
 ```{python}
 #| classes: styled-output
 from sklearn.datasets import fetch_openml
@@ -749,7 +749,7 @@ We can look at the first 100 digits
 
 ```{python}
 #| label: fig-clustering-usl-mnist
-#| fig-cap: "First 100 digits from the MNIST data set."
+#| fig-cap: "First 100 digits from the MNIST dataset."
 #| code-fold: true
 #| code-summary: "Show the code for the figure"
 import numpy as np
@@ -776,7 +776,7 @@ Especially, there are `1`s with the english style (just one straight line) of wr
 Also the `2` digit comes in various forms, with loop (1st row, 6th column) and without (3rd row, 6th column).
 Finally we all know that a `3` can hide in an `8`, same as a `7` and `1` can hide in a `9` and much more. 
 
-Now, before we go any further in the investigation we split up the data set into a training and a test set, we will not use this here but we should establish some way of working right from the start. 
+Now, before we go any further in the investigation we split up the dataset into a training and a test set, we will not use this here but we should establish some way of working right from the start. 
 
 ```{python}
 X_train, X_test = mnist.data[:60000], mnist.data[60000:]

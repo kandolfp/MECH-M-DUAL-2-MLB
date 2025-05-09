@@ -4,7 +4,7 @@ One aspect of machine learning is binning data into meaningful and distinct cate
 This process is referred to as clustering and classification. 
 To achieve this task the main modus of operation is to find a _low-rank feature space_ that is informative and interpretable.
 
-One way to extract the dominate features from a data set is the singular value decomposition (SVD) or principal component analysis, see [@Kandolf_GDM].
+One way to extract the dominate features from a dataset is the singular value decomposition (SVD) or principal component analysis, see [@Kandolf_GDM].
 The main idea is, to not work in the high dimensional measurement space, but instead in the low rank feature space.
 This allows us to significantly reduce the cost (of computation or learning) by performing our clustering in this low dimensional space. 
 
@@ -17,23 +17,23 @@ As the names suggest, in _unsupervised learning_, no labels are given to the alg
 This is often used to _discover_ previously unknown patterns in the (low-rank) subspace of the data and leads to _feature engineering_ or _feature extraction_. 
 These features can than be used for building a model, e.g. a classifier.
 
-Supervised learning, on the other hand, uses labelled data sets.
+Supervised learning, on the other hand, uses labelled datasets.
 The training data is labelled for _cross-validation_ by a teacher or expert.
 I.e. the input and output for a model is explicitly provided and regression methods are used to find the _best model_ for the given labelled data.
 There are several different forms of supervised learning like _reinforcement learning_, _semi-supervised learning_, or _active learning_. 
 
-The main idea behind machine learning is to construct or exploit the intrinsic low-rank feature space of a given data set, how to find these is determined by the algorithm.
+The main idea behind machine learning is to construct or exploit the intrinsic low-rank feature space of a given dataset, how to find these is determined by the algorithm.
 
 ## Feature selection and generation of a feature space
 Before we go into specific algorithms lets have a general look at what we are going to talk about.
 We will follow [@Brunton2022, Section 5.1] for this introduction.
 
-### Fischer Iris data set {#sec-fischer-iris-data-set}
-First we look into one of the standard data sets well known in the community, the so called Fischer Iris data set @Fischer.
+### Fischer Iris dataset {#sec-fischer-iris-data-set}
+First we look into one of the standard datasets well known in the community, the so called Fischer Iris dataset @Fischer.
 
 ::: {.callout-note}
 Luckily for us there are several data packages available for general use.
-One of them is the [Fisher Iris data set](https://en.wikipedia.org/wiki/Iris_flower_data_set).
+One of them is the [Fisher Iris dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set).
 
 :::: {#fig-medium-iris}
 
@@ -51,7 +51,7 @@ Let us start right away by loading and visualizing the data in a 3D scatter plot
 
 ```{python}
 #| label: fig-clustering-iris
-#| fig-cap: "Iris data set with 150 samples from three distinct species, _Setosa_, _Versicolor_, and _Virginica_, as a scatter 3D plot along the features sepal length, sepal width, and petal width, the forth feature petal width is not shown."
+#| fig-cap: "Iris dataset with 150 samples from three distinct species, _Setosa_, _Versicolor_, and _Virginica_, as a scatter 3D plot along the features sepal length, sepal width, and petal width, the forth feature petal width is not shown."
 #| code-fold: true
 #| code-summary: "Show the code for the figure"
 import plotly.express as px
@@ -145,7 +145,7 @@ But be aware, as we will see later, the largest principal value might not be the
 
 ## Dimensionality Reduction
 
-As we can see with the Fischer Iris data set, we often have a problem of _dimensionality_, if we try to visualize something.
+As we can see with the Fischer Iris dataset, we often have a problem of _dimensionality_, if we try to visualize something.
 The data has four dimensions but it is very hard for us to perceive, let alone visualize, four dimensions (if the forth dimension is not time).
 
 Therefore, **dimensional reduction** techniques are often applied.
@@ -161,22 +161,22 @@ Now let us take a look at a more complicated example from @Brunton2022.
 
 ### Dogs and Cats {#sec-clustering-cvd}
 
-In this data set we explore how to distinguish between images dogs and cats, more particular the head only.
-The data set contains $80$ images of dogs and $80$ images of cats, each with $64 \times 64$ pixels and therefore a total of $4096$ feature measurements per image. 
+In this dataset we explore how to distinguish between images dogs and cats, more particular the head only.
+The dataset contains $80$ images of dogs and $80$ images of cats, each with $64 \times 64$ pixels and therefore a total of $4096$ feature measurements per image. 
 
 ::: {.callout-important}
-The following data set and the basic structure of the code is from [@Brunton2022, Code 5.2 - 5.4].
+The following dataset and the basic structure of the code is from [@Brunton2022, Code 5.2 - 5.4].
 Also see [GitHub](https://github.com/dynamicslab/databook_python).
 :::
 
-As before, a general inspection of the data set is always a good idea.
+As before, a general inspection of the dataset is always a good idea.
 With image we usually look at some to get an overview.
 
 ```{python}
 #| label: fig-clustering-dvc-overview
 #| fig-cap:
-#|   - "The first 16 cats from the data set."
-#|   - "The first 16 dogs from the data set."
+#|   - "The first 16 cats from the dataset."
+#|   - "The first 16 dogs from the dataset."
 #| layout-ncol: 2
 #| code-fold: true
 #| code-summary: "Show the code for the figure"

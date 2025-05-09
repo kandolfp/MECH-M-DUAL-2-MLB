@@ -1,11 +1,11 @@
 # Supervised learning {#sec-clustering-sl}
 
-If we recall @Fischer from the Iris data set, we can also find one of the first supervised learning methods in this paper.
+If we recall @Fischer from the Iris dataset, we can also find one of the first supervised learning methods in this paper.
 The introduced _linear discriminant analysis_ (LDA) has survived over time and is still one of the standard techniques for classification, even though we use a more generalized and improved method nowadays.
 
 ## Linear Discriminant Analysis (LDA) {#sec-clustering-sl-lda}
 ::: {.callout-important}
-The following introduction and illustrational data set, as well as the basic structure of the code is from [@Brunton2022, Code 5.9].
+The following introduction and illustrational dataset, as well as the basic structure of the code is from [@Brunton2022, Code 5.9].
 Also see [GitHub](https://github.com/dynamicslab/databook_python).
 :::
 
@@ -14,9 +14,9 @@ The crucial part in the algorithm is that it is guided by labelled observations.
 At its core, the algorithm aims to solve an optimization problem: find an optimal low-dimensional embedding of the data that shows a clear separation between their point distribution, or maximize the distance between the inter-class data and minimize the intra-class data distance.
 
 ::: {.callout-tip}
-For supervised learning, it is always good practice to split up our data set into a _training_ and _testing_ section.
+For supervised learning, it is always good practice to split up our dataset into a _training_ and _testing_ section.
 **It is important to have a test set that the algorithm has never seen!**
-In general a $80:20$ split is common but other ratios might be advisable, depending on the data set. 
+In general a $80:20$ split is common but other ratios might be advisable, depending on the dataset. 
 
 It is also common practice to use $k$-folds cross-validation for the training set. 
 :::
@@ -26,7 +26,7 @@ It is also common practice to use $k$-folds cross-validation for the training se
 
 ## $k$-folds cross-validation
 
-The $k$-folds cross-validation technique is a method to allow better _hyperparameter tuning_, especially for smaller data sets where training and validation data is small.
+The $k$-folds cross-validation technique is a method to allow better _hyperparameter tuning_, especially for smaller datasets where training and validation data is small.
 The main idea is that we split our iterate over different validation sets by splitting up our training set.
 Lets say we use $5$-fold cross-validation we split the training set into 5 parts.
 Therefore, we train the model with four parts and validate against the fifth.
@@ -57,14 +57,14 @@ S_W = \sum_{j=1}^2 \sum_{x\in\mathcal{D}_j} (x - \mu_j)(x - \mu_j)^\mathrm{T},
 $$
 for within-class data.
 The set $\mathcal{D}_j$ denotes the subdomain of the data associated with cluster $j$.
-The two matrices measure the variance of the data set as well as the means.
+The two matrices measure the variance of the dataset as well as the means.
 To solve @eq-grayleigh we need to solve the generalized eigenvalue problem[^GEV]
 $$
 S_B w = \lambda S_w w
 $$
 where the maximal eigenvalue and the corresponding eigenvector are our solution.
 
-We try this with the cats and dogs data set in both basis.
+We try this with the cats and dogs dataset in both basis.
 
 ```{python}
 #| label: fig-clustering-sl-lda
@@ -131,7 +131,7 @@ test_class, E_w, v_w = analyse(np.concatenate((dogs_w, cats_w), axis=1))
 plt.show()
 ```
 
-If we use our raw data set for the classification we get an overall accuracy of `{python} float(np.round(E, 2))`% with $\tfrac{4}{20}$ wrongly labelled dogs and $\tfrac{9}{20}$ wrongly labelled cats.
+If we use our raw dataset for the classification we get an overall accuracy of `{python} float(np.round(E, 2))`% with $\tfrac{4}{20}$ wrongly labelled dogs and $\tfrac{9}{20}$ wrongly labelled cats.
 We can increase this to an accuracy of `{python} float(np.round(E_w, 2))`% with $\tfrac{5}{20}$ wrongly labelled dogs and $\tfrac{2}{20}$ wrongly labelled cats.
 
 This could be expected, see @fig-clustering-dvc-wavelet-pca_results_overview for the separation of the principal values for the two basis. 
@@ -143,7 +143,7 @@ Let us see how selecting different test and training sets influence the behaviou
 
 ```{python}
 #| label: fig-clustering-sl-lda2
-#| fig-cap: "Cross validation for the data set in wavelet basis, use 100 run with different training and test sets. We always use 120 images for training and 40 for testing."
+#| fig-cap: "Cross validation for the dataset in wavelet basis, use 100 run with different training and test sets. We always use 120 images for training and 40 for testing."
 #| code-fold: true
 #| code-summary: "Show the code for the figure"
 import numpy as np
@@ -275,7 +275,7 @@ Luckily the `scikit-learn` class/function [`DecisionBoundaryDisplay.from_estimat
 
 1. Apply the LDA algorithm to the toy example (see @fig-clustering-unsupervised_lloyd) to recover the two clusters as good as possible.
 
-1. Additionally, for a higher dimensional problem, using LDA split the Fischer Iris data set (@sec-fischer-iris-data-set) into two clusters. Try for the harder split between `versicolor` and `virginica` types of flowers.
+1. Additionally, for a higher dimensional problem, using LDA split the Fischer Iris dataset (@sec-fischer-iris-data-set) into two clusters. Try for the harder split between `versicolor` and `virginica` types of flowers.
 ::::
 :::
 
@@ -292,7 +292,7 @@ In @fig-clustering-sl-lda2, we implied we are doing better than a coin toss but 
 The following approach and the basic structure of the code is from @Geron2022-xh, see [GitHub](https://github.com/ageron/handson-ml3/blob/main/03_classification.ipynb).
 :::
 
-In order to illustrate basic properties found in machine learning we use the MNIST data set together with a binary classifier based on Stochastic Gradient Descent, see @sec-clustering-ul-me for more on the MNIST data set. 
+In order to illustrate basic properties found in machine learning we use the MNIST dataset together with a binary classifier based on Stochastic Gradient Descent, see @sec-clustering-ul-me for more on the MNIST dataset. 
 
 ::: {.callout-note}
 Stochastic Gradient Descent (SGD)[^SGD] is an optimization algorithm.
@@ -306,7 +306,7 @@ As SGD methods are prone to a sensitivity in feature scaling and order we need t
 In `scikit-learn` we can use the class [`SGDClassifier`](https://scikit-learn.org/stable/modules/sgd.html).
 :::
 
-First we load the MNIST data set again and split it into a training and testing section, see @sec-clustering-ul-me.
+First we load the MNIST dataset again and split it into a training and testing section, see @sec-clustering-ul-me.
 
 ```{python}
 #| code-fold: true
@@ -364,7 +364,7 @@ scores_dummy = sklearn.model_selection.cross_val_score(
 pd.DataFrame({"accuracy [%]": np.round(scores_dummy * 100, 2)}).T
 ```
 
-As this is pretty much $91\%$ (as expected there are only about $10\%$ of `5`s in the data set).
+As this is pretty much $91\%$ (as expected there are only about $10\%$ of `5`s in the dataset).
 Just using accuracy is apparently not the gold standard to measure performance, what other possibilities are there?
 
 ::: {.callout appearance="simple"}
@@ -705,7 +705,7 @@ plt.show()
 Create tests data of your classification by changing to `np.linspace(-1, 1, 12)`.
 ```{python}
 #| label: fig-clustering-sl-svm-nl-exr
-#| fig-cap: "Data set in 2D"
+#| fig-cap: "Dataset in 2D"
 #| code-fold: true
 #| code-summary: "Show the code for the figure"
 import numpy as np
@@ -910,7 +910,7 @@ While there are a lot of different optimizations the base algorithm follows thes
 1. Compare the prediction accuracy over all observations, the best result is used.
 1. Proceed with the two new branches in the same fashion.
 
-Let us apply it to the Fischer Iris data set to better understand what is happening.
+Let us apply it to the Fischer Iris dataset to better understand what is happening.
 
 ```{python}
 #| code-fold: true
@@ -941,7 +941,7 @@ sklearn.tree.export_graphviz(decision_tree, out_file=dot_data,
 ```
 ```{dot}
 //| label: fig-clustering-sl-tree-iris
-//| fig-cap: "Decision tree for the Fischer iris data set and depth 2."
+//| fig-cap: "Decision tree for the Fischer iris dataset and depth 2."
 //|file: fischer_tree.dot
 ```
 ::: {.callout-important}
@@ -969,7 +969,7 @@ As we only have the splits happening in these two variables we can also visualiz
 
 ```{python}
 #| label: fig-clustering-sl-tree-iris-split
-#| fig-cap: "Splits for the Fischer Iris data set with the first two split form the above tree and the third split would be the next step for a larger tree."
+#| fig-cap: "Splits for the Fischer Iris dataset with the first two split form the above tree and the third split would be the next step for a larger tree."
 #| code-fold: true
 #| code-summary: "Show the code for the figure"
 import matplotlib.pyplot as plt
@@ -1055,7 +1055,7 @@ score = decision_tree_cvd.score(xtest, truth)
 ```
 ```{dot}
 //| label: fig-clustering-sl-tree-cvsd
-//| fig-cap: "Decision tree for the Fischer iris data set and depth 2."
+//| fig-cap: "Decision tree for the Fischer iris dataset and depth 2."
 //| file: cvsd_tree.dot
 ```
 ```{python}
@@ -1164,9 +1164,9 @@ plot_tree_bound(tree_square_pca, X_pca, y)
 plt.show()
 ```
 
-In @fig-clustering-sl-tree-rot-1 we see the split for the original data set - random numbers in $[-0.5, 0.5]^2$ and the classes separation for $x_1 > 0$.
+In @fig-clustering-sl-tree-rot-1 we see the split for the original dataset - random numbers in $[-0.5, 0.5]^2$ and the classes separation for $x_1 > 0$.
 A simple line, i.e. one split is enough to make the separation.
-If we rotate the data set by by 45° we can see a way more complicated separation line in @fig-clustering-sl-tree-rot-2.
+If we rotate the dataset by by 45° we can see a way more complicated separation line in @fig-clustering-sl-tree-rot-2.
 Furthermore, @fig-clustering-sl-tree-rot-3 shows that the `random_state` has an influence as well.
 Finally, if we apply scaling and PCA to the data we more or less end up at our original sample again @fig-clustering-sl-tree-rot-4, showcasing the power of these feature extraction techniques once more.
 
@@ -1303,7 +1303,7 @@ In `scikit-learn` this is can be found in the [`sklearn.ensemble.StackingClassif
 
 We follow the example of [@Geron2022-xh, Chapter 7] to explore the various possibilities for ensemble methods. 
 
-For our data set we use the moons example:
+For our dataset we use the moons example:
 ```{.python}
 from sklearn.datasets import make_moons
 from sklearn.model_selection import train_test_split
@@ -1326,9 +1326,9 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=6020)
 
 1. Create a `StackingClassifier` with an _LDA_, a _SVM_, and a _tree_ for classification and a _random forest_ as the final blending step and report the score of this method.
 
-1. Train a random forest for the Fischer Iris data set and check `.feature_importances_` to get an insight on the importance of each feature.
+1. Train a random forest for the Fischer Iris dataset and check `.feature_importances_` to get an insight on the importance of each feature.
 
-1. Train a random forest for our dogs and cats data set in raw and wavelet form and check `.feature_importances_` to get an insight on the importance of each feature of the PCA.
+1. Train a random forest for our dogs and cats dataset in raw and wavelet form and check `.feature_importances_` to get an insight on the importance of each feature of the PCA.
 ::::
 :::
 
@@ -1346,7 +1346,7 @@ For others, there are several approaches to create a multiclass classifier out o
 The _one versus the rest_ (OvR) or _one versus all_ (OvA) strategy is to train a binary classifier for each class and always interpret all other classes as the others or the _rest class_.
 To classify an observation you get the scores for each classifier and select the one with the highest score.
 
-For the Fischer Iris data set this would result in three classifiers (one for each iris), for the MNIST data set in ten (one for each number).
+For the Fischer Iris dataset this would result in three classifiers (one for each iris), for the MNIST dataset in ten (one for each number).
 
 ::::
 :::
@@ -1359,9 +1359,9 @@ For the Fischer Iris data set this would result in three classifiers (one for ea
 The _one versus one_ (OvO) strategy is to train a binary classifier for always two classes and build up a set of classifiers, for $n$ classes we get $\tfrac{n (n-1)}{2}$ classifiers. 
 To classify an observation you get the result for each classifier and select the one class with the most duels won.
 
-For the Fischer Iris data set this would result in three classifiers, for the MNIST data set 45.
+For the Fischer Iris dataset this would result in three classifiers, for the MNIST dataset 45.
 
-The advantage of OvO over OvR is that each classifier only needs to be trained on a subset and not with the entire data set. 
+The advantage of OvO over OvR is that each classifier only needs to be trained on a subset and not with the entire dataset. 
 This is especially useful for algorithms that do not scale well, like SVMs.
 ::::
 :::
@@ -1377,7 +1377,7 @@ Nevertheless, there exist dedicated classes for the task as well [`sklearn.multi
 
 ## Multiclass classification
 
-1. Use SVM for the Fischer Iris data set and test it.
+1. Use SVM for the Fischer Iris dataset and test it.
 1. Compare with a random forest.
 1. Create a confusion matrix for more than two classes with your results and interpret the results.
 ::::

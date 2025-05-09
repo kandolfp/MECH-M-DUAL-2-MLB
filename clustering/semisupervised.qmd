@@ -1,12 +1,12 @@
 # Semi-Supervised learning {#sec-clustering-ssl}
 
 There is a hybrid between unsupervised and supervised learning, called _semi supervised learning_. 
-If we have a data set with just a couple of labelled observations, we might be able to use the discussed clustering methods to extend the labels and therefore generate more labelled data. 
+If we have a dataset with just a couple of labelled observations, we might be able to use the discussed clustering methods to extend the labels and therefore generate more labelled data. 
 
-We try this with the (in)famous MNIST data set of hand written digits. 
+We try this with the (in)famous MNIST dataset of hand written digits. 
 As we did not do this when discussion MNIST in @sec-clustering-sl-performance we first looking at the dataset and establishing some basic properties.
 
-We load the data set and look at its description
+We load the dataset and look at its description
 ```{python}
 #| classes: styled-output
 from sklearn.datasets import fetch_openml
@@ -20,7 +20,7 @@ We can look at the first 100 digits
 
 ```{python}
 #| label: fig-clustering-ssl-mnist
-#| fig-cap: "First 100 digits from the MNIST data set."
+#| fig-cap: "First 100 digits from the MNIST dataset."
 #| code-fold: true
 #| code-summary: "Show the code for the figure"
 import numpy as np
@@ -39,7 +39,7 @@ plt.axis("off")
 plt.show()
 ```
 
-Before we go any further in the investigation, we split up the data set into a training and a test set.
+Before we go any further in the investigation, we split up the dataset into a training and a test set.
 
 ```{python}
 X_train, X_test = mnist.data[:60000], mnist.data[60000:]
@@ -82,13 +82,13 @@ We discussed methods to perform this task in @sec-clustering-sl now let us consi
 Our aim is to only label 50 observations and not more. 
 How can we do this smartly?
 For this task $k$-means is a good choice. 
-Instead of trying to find our 10 digits we try to find 50 clusters within our data set.
+Instead of trying to find our 10 digits we try to find 50 clusters within our dataset.
 We use the images closest to the mean as our representative and label these images. 
 Now instead of labeling just 50 random digits we labelled 50 cluster centers.
 These labels we can than spread out onto the rest of the clusters and we can test how the performance is. 
 
 ::: {.callout-important}
-Due to the nature of these notes, being compiled interactively, we restrict the data set to 2000 points.
+Due to the nature of these notes, being compiled interactively, we restrict the dataset to 2000 points.
 
 ```{python}
 X_train = X_train[:2000]
@@ -120,7 +120,7 @@ So how can we approach this problem?
 Instead of just randomly selecting `{python} n_labels` images with labels, let us create `{python} n_labels` clusters, label the image centers, i.e. get good representatives of the classes we are interested in.
 ```{python}
 #| label: fig-clustering-ssl-mnist3
-#| fig-cap: "The representative (closest image to the cluster mean) of the 50 clusters found with $k$-means for the first 1500 digits in the MNIST data set."
+#| fig-cap: "The representative (closest image to the cluster mean) of the 50 clusters found with $k$-means for the first 1500 digits in the MNIST dataset."
 #| code-fold: true
 #| code-summary: "Show the code for the figure"
 import numpy as np

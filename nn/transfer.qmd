@@ -12,7 +12,7 @@ The main scenarios for transfer learning are:
 - **Pretrained model**: It takes a lot of resources to train a _modern CNN_.
 Quite often people release their final checkpoint and others can benefit from it.
 This means we can load the model and instead of working with random weights we have the trained weights of somebody else to start off with.
-We can now continue training with our data set. 
+We can now continue training with our dataset. 
 
 - **Fixed feature extractor**: After loading a pretrained model, we can also remove, for example, the last classification layers of the network and replace them with our own classification.
 In this process we can specify the number of features we need for our problem and we can get results for our case.
@@ -26,35 +26,35 @@ This approach limits the probability of overfitting but can shift the network to
 
 Of course it is not easy to decide exactly in which of the categories our problem falls but as a general rules: 
 
-- if the new data set is small we should not not fine-tune but rather only train a classifier.
+- if the new dataset is small we should not not fine-tune but rather only train a classifier.
 
-    - if the data set is very different for the original training set we should probably remove a couple of layers and not the final stage.
+    - if the dataset is very different for the original training set we should probably remove a couple of layers and not the final stage.
 
 - if we have a large dataset we can risc fine-tuning of the network as overfitting is limited.
     
-    - if the data set is very different from the original training set we can also train the entire model from scratch but we should still consider initializing with existing weights so we do not need to relearn everything (e.g. edges).
+    - if the dataset is very different from the original training set we can also train the entire model from scratch but we should still consider initializing with existing weights so we do not need to relearn everything (e.g. edges).
 
 In [@Geron2022-xh, Chapter 14] we can find amongst a detailed explanation how CNNs work also a discussion about several CNNs architectures and models that are available for transfer learning.
 
 ## Fine-tuning an ImageNet for cats and dogs
 
 As example, we use our already well known dogs and cats example.
-As mentioned before, the data set is small and we know that the ImageNet has the capabilities to classify for different species in dogs and cats.
+As mentioned before, the dataset is small and we know that the ImageNet has the capabilities to classify for different species in dogs and cats.
 Therefore, we will switch the final layer of the network but retrain with all parameters trainable.
 
 ### Model selection
 
 Via the`torchvision` module we have the capabilities to load some pre-existing models and weights, see [docs](https://docs.pytorch.org/vision/stable/models.html).
-As mentioned, we want a model trained on the [ImageNet](https://www.image-net.org/index.php) data set, we use EfficientNet (@efficientnet). We will see how to load the model a bit later but it is important to have a look at the [docs](https://pytorch.org/vision/stable/models/efficientnet.html) to get an idea how we need to prepare our images and how to replace the final hidden layer.
+As mentioned, we want a model trained on the [ImageNet](https://www.image-net.org/index.php) dataset, we use EfficientNet (@efficientnet). We will see how to load the model a bit later but it is important to have a look at the [docs](https://pytorch.org/vision/stable/models/efficientnet.html) to get an idea how we need to prepare our images and how to replace the final hidden layer.
 There are multiple versions of the network available, we use [B0](https://docs.pytorch.org/vision/stable/models/generated/torchvision.models.efficientnet_b0.html#torchvision.models.efficientnet_b0).
 
 ### Data preparation
 
-As the ImageNet data set uses _normal_ images we do not use our images in the wavelet basis but our original images.
+As the ImageNet dataset uses _normal_ images we do not use our images in the wavelet basis but our original images.
 
 ```{python}
 #| code-fold: true
-#| code-summary: "Show the code for loading the data set"
+#| code-summary: "Show the code for loading the dataset"
 import numpy as np
 import scipy
 import requests
@@ -120,7 +120,7 @@ y_test_tensor = torch.tensor(y_test, dtype=torch.uint8)
 dataset = TensorDataset(X_train_tensor, y_train_tensor)
 ```
 
-The functions for preparing the training and validation data set, the training loop and plotting stay the same. 
+The functions for preparing the training and validation dataset, the training loop and plotting stay the same. 
 
 ```{python}
 #| code-fold: true
