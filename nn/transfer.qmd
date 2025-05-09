@@ -7,7 +7,7 @@ If we find such a NN we can look at the architecture, reuse parts of it, build o
 This technique is called _transfer learning_.
 As mentioned, if our training set is small is small, this is especially beneficial.
 
-The main scenarios for transfer learning are (compare @):
+The main scenarios for transfer learning are:
 
 - **Pretrained model**: It takes a lot of resources to train a _modern CNN_.
 Quite often people release their final checkpoint and others can benefit from it.
@@ -33,6 +33,8 @@ Of course it is not easy to decide exactly in which of the categories our proble
 - if we have a large dataset we can risc fine-tuning of the network as overfitting is limited.
     
     - if the data set is very different from the original training set we can also train the entire model from scratch but we should still consider initializing with existing weights so we do not need to relearn everything (e.g. edges).
+
+In [@Geron2022-xh, Chapter 14] we can find amongst a detailed explanation how CNNs work also a discussion about several CNNs architectures and models that are available for transfer learning.
 
 ## Fine-tuning an ImageNet for cats and dogs
 
@@ -269,7 +271,9 @@ The simplest way is to use the loaded module as the first element in a `torch.nn
 
 ## Freeze the original network
 
-Instead of including the layers of the original model in the backpropagation try to freeze them and only train a final classifier.  
+Instead of including the layers of the original model in the backpropagation try to freeze them and only train a final classifier.
+
+See if using one of the other EfficientNet versions (e.g. v3) performs better or worse in this scenario.
 ::::
 :::
 
