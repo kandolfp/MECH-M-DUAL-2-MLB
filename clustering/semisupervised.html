@@ -480,6 +480,12 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Transfer learning</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nn/augmentation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Data Augmentation</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item">
@@ -548,10 +554,10 @@ window.Quarto = {
 </header>
 
 
-<p>There is a hybrid between unsupervised and supervised learning, called <em>semi supervised learning</em>. If we have a data set with just a couple of labelled observations, we might be able to use the discussed clustering methods to extend the labels and therefore generate more labelled data.</p>
-<p>We try this with the (in)famous MNIST data set of hand written digits. As we did not do this when discussion MNIST in <a href="supervised.html#sec-clustering-sl-performance" class="quarto-xref"><span>Section 2.2</span></a> we first looking at the dataset and establishing some basic properties.</p>
-<p>We load the data set and look at its description</p>
-<div id="0777a302" class="cell styled-output" data-execution_count="1">
+<p>There is a hybrid between unsupervised and supervised learning, called <em>semi supervised learning</em>. If we have a dataset with just a couple of labelled observations, we might be able to use the discussed clustering methods to extend the labels and therefore generate more labelled data.</p>
+<p>We try this with the (in)famous MNIST dataset of hand written digits. As we did not do this when discussion MNIST in <a href="supervised.html#sec-clustering-sl-performance" class="quarto-xref"><span>Section 2.2</span></a> we first looking at the dataset and establishing some basic properties.</p>
+<p>We load the dataset and look at its description</p>
+<div id="496c0f4d" class="cell styled-output" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_openml</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>mnist <span class="op">=</span> fetch_openml(<span class="st">"mnist_784"</span>, as_frame<span class="op">=</span><span class="va">False</span>)</span>
@@ -595,17 +601,17 @@ Downloaded from openml.org.</code></pre>
 <div id="fig-clustering-ssl-mnist" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-clustering-ssl-mnist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="semisupervised_files/figure-html/fig-clustering-ssl-mnist-output-1.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;3.1: First 100 digits from the MNIST data set."><img src="semisupervised_files/figure-html/fig-clustering-ssl-mnist-output-1.svg" class="img-fluid figure-img"></a>
+<a href="semisupervised_files/figure-html/fig-clustering-ssl-mnist-output-1.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;3.1: First 100 digits from the MNIST dataset."><img src="semisupervised_files/figure-html/fig-clustering-ssl-mnist-output-1.svg" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-ssl-mnist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3.1: First 100 digits from the MNIST data set.
+Figure&nbsp;3.1: First 100 digits from the MNIST dataset.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>Before we go any further in the investigation, we split up the data set into a training and a test set.</p>
-<div id="c197b7d0" class="cell" data-execution_count="3">
+<p>Before we go any further in the investigation, we split up the dataset into a training and a test set.</p>
+<div id="408f9cb3" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>X_train, X_test <span class="op">=</span> mnist.data[:<span class="dv">60000</span>], mnist.data[<span class="dv">60000</span>:]</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>y_train, y_test <span class="op">=</span> mnist.target[:<span class="dv">60000</span>], mnist.target[<span class="dv">60000</span>:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -647,7 +653,7 @@ Figure&nbsp;3.2: The cluster means of <span class="math inline">\(k\)</span>-mea
 </div>
 </div>
 <p>As can be seen from <a href="#fig-clustering-ssl-mnist2" class="quarto-xref">Figure&nbsp;<span>3.2</span></a>, the cluster centers do not recover our 10 digits. It looks like <span class="math inline">\(0, 1, 2, 3, 6, 8, 9\)</span> are <em>easy</em> to discover but <span class="math inline">\(4, 5, 7\)</span> not. If we look closely, we can see <span class="math inline">\(4, 5, 7\)</span> represented in our clusters but not as separate digits. Obviously, this is not a good way to proceed to find our digits. We discussed methods to perform this task in <a href="supervised.html" class="quarto-xref"><span>Chapter 2</span></a> now let us consider a different scenario.</p>
-<p>Our aim is to only label 50 observations and not more. How can we do this smartly? For this task <span class="math inline">\(k\)</span>-means is a good choice. Instead of trying to find our 10 digits we try to find 50 clusters within our data set. We use the images closest to the mean as our representative and label these images. Now instead of labeling just 50 random digits we labelled 50 cluster centers. These labels we can than spread out onto the rest of the clusters and we can test how the performance is.</p>
+<p>Our aim is to only label 50 observations and not more. How can we do this smartly? For this task <span class="math inline">\(k\)</span>-means is a good choice. Instead of trying to find our 10 digits we try to find 50 clusters within our dataset. We use the images closest to the mean as our representative and label these images. Now instead of labeling just 50 random digits we labelled 50 cluster centers. These labels we can than spread out onto the rest of the clusters and we can test how the performance is.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -658,8 +664,8 @@ Important
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Due to the nature of these notes, being compiled interactively, we restrict the data set to 2000 points.</p>
-<div id="e45593b8" class="cell" data-execution_count="5">
+<p>Due to the nature of these notes, being compiled interactively, we restrict the dataset to 2000 points.</p>
+<div id="e1a96436" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> X_train[:<span class="dv">2000</span>]</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> y_train[:<span class="dv">2000</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -679,7 +685,7 @@ Important
 </div>
 </div>
 <p>To get a baseline for our algorithm we use a random forest for the classification and only work with 50 labels.</p>
-<div id="eac6125b" class="cell styled-output" data-execution_count="6">
+<div id="1a0c0565" class="cell styled-output" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>n_labels <span class="op">=</span> <span class="dv">50</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>forest <span class="op">=</span> RandomForestClassifier(random_state<span class="op">=</span><span class="dv">6020</span>).fit(X_train[:n_labels], y_train[:n_labels])</span>
@@ -726,17 +732,17 @@ score for training with 2000 labels 0.9117</code></pre>
 <div id="fig-clustering-ssl-mnist3" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-clustering-ssl-mnist3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="semisupervised_files/figure-html/fig-clustering-ssl-mnist3-output-1.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Figure&nbsp;3.3: The representative (closest image to the cluster mean) of the 50 clusters found with k-means for the first 1500 digits in the MNIST data set."><img src="semisupervised_files/figure-html/fig-clustering-ssl-mnist3-output-1.svg" class="img-fluid figure-img"></a>
+<a href="semisupervised_files/figure-html/fig-clustering-ssl-mnist3-output-1.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Figure&nbsp;3.3: The representative (closest image to the cluster mean) of the 50 clusters found with k-means for the first 1500 digits in the MNIST dataset."><img src="semisupervised_files/figure-html/fig-clustering-ssl-mnist3-output-1.svg" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-ssl-mnist3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3.3: The representative (closest image to the cluster mean) of the 50 clusters found with <span class="math inline">\(k\)</span>-means for the first 1500 digits in the MNIST data set.
+Figure&nbsp;3.3: The representative (closest image to the cluster mean) of the 50 clusters found with <span class="math inline">\(k\)</span>-means for the first 1500 digits in the MNIST dataset.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p>We can now label these observations</p>
-<div id="8a8697a8" class="cell styled-output" data-execution_count="8">
+<div id="7fe4eea2" class="cell styled-output" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>y_rep <span class="op">=</span> np.array([</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"3"</span>, <span class="st">"4"</span>, <span class="st">"1"</span>, <span class="st">"9"</span>, <span class="st">"9"</span>, <span class="st">"0"</span>, <span class="st">"3"</span>, <span class="st">"0"</span>, <span class="st">"9"</span>, <span class="st">"1"</span>,</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"9"</span>, <span class="st">"8"</span>, <span class="st">"0"</span>, <span class="st">"9"</span>, <span class="st">"3"</span>, <span class="st">"6"</span>, <span class="st">"6"</span>, <span class="st">"7"</span>, <span class="st">"1"</span>, <span class="st">"6"</span>,</span>
@@ -753,7 +759,7 @@ Figure&nbsp;3.3: The representative (closest image to the cluster mean) of the 5
 </div>
 </div>
 <p>This helped us increase our score significantly, but we can do better. We can extend our labels from the representatives to the entire cluster and train with that.</p>
-<div id="f449ddee" class="cell styled-output" data-execution_count="9">
+<div id="98205fe2" class="cell styled-output" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>y_train_prop <span class="op">=</span> np.empty(<span class="bu">len</span>(X_train), dtype<span class="op">=</span><span class="bu">str</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(k):</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    y_train_prop[kmeans.labels_ <span class="op">==</span> i] <span class="op">=</span> y_rep[i]</span>
@@ -766,14 +772,14 @@ Figure&nbsp;3.3: The representative (closest image to the cluster mean) of the 5
 </div>
 </div>
 <p>This again increases our score by another good 10%. If we check our propagated labels, we see that, we can not expect more as we only have an accuracy slightly higher than our classification result, i.e.&nbsp;we provide wrong results labels for our classification.</p>
-<div id="c4e32426" class="cell styled-output" data-execution_count="10">
+<div id="646c92f6" class="cell styled-output" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>np.mean(y_train_prop <span class="op">==</span> y_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="10">
 <pre><code>np.float64(0.7745)</code></pre>
 </div>
 </div>
 <p>Let us try to eliminate outliers by removing the 10% of instances that are far away from our cluster centers.</p>
-<div id="f2953766" class="cell styled-output" data-execution_count="11">
+<div id="02107b0e" class="cell styled-output" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>percentile_closest <span class="op">=</span> <span class="dv">90</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>X_cluster_dist <span class="op">=</span> X_digits_dist[np.arange(<span class="bu">len</span>(X_train)), kmeans.labels_]</span>
@@ -793,7 +799,7 @@ Figure&nbsp;3.3: The representative (closest image to the cluster mean) of the 5
 </div>
 </div>
 <p>We have cleaned up our source but does it have a big influence?</p>
-<div id="68eb4185" class="cell styled-output" data-execution_count="12">
+<div id="e235d789" class="cell styled-output" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>forest_pprop <span class="op">=</span> RandomForestClassifier(random_state<span class="op">=</span><span class="dv">6020</span>).fit(X_train_pprop, y_train_pprop)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>score_forest_pprop <span class="op">=</span> forest_pprop.score(X_test, y_test)</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"score for training with </span><span class="sc">{</span><span class="bu">len</span>(y_train_pprop)<span class="sc">}</span><span class="ss"> labels </span><span class="sc">{</span>score_forest_pprop<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

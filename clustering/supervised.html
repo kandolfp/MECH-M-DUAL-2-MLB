@@ -483,6 +483,12 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Transfer learning</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../nn/augmentation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Data Augmentation</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item">
@@ -567,7 +573,7 @@ window.Quarto = {
 </header>
 
 
-<p>If we recall <span class="citation" data-cites="Fischer">Fisher (<a href="../references.html#ref-Fischer" role="doc-biblioref">1936</a>)</span> from the Iris data set, we can also find one of the first supervised learning methods in this paper. The introduced <em>linear discriminant analysis</em> (LDA) has survived over time and is still one of the standard techniques for classification, even though we use a more generalized and improved method nowadays.</p>
+<p>If we recall <span class="citation" data-cites="Fischer">Fisher (<a href="../references.html#ref-Fischer" role="doc-biblioref">1936</a>)</span> from the Iris dataset, we can also find one of the first supervised learning methods in this paper. The introduced <em>linear discriminant analysis</em> (LDA) has survived over time and is still one of the standard techniques for classification, even though we use a more generalized and improved method nowadays.</p>
 <section id="sec-clustering-sl-lda" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="sec-clustering-sl-lda"><span class="header-section-number">2.1</span> Linear Discriminant Analysis (LDA)</h2>
 <div class="callout callout-style-default callout-important callout-titled">
@@ -580,7 +586,7 @@ Important
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The following introduction and illustrational data set, as well as the basic structure of the code is from <span class="citation" data-cites="Brunton2022">(<a href="../references.html#ref-Brunton2022" role="doc-biblioref">Brunton and Kutz 2022</a>, Code 5.9)</span>. Also see <a href="https://github.com/dynamicslab/databook_python">GitHub</a>.</p>
+<p>The following introduction and illustrational dataset, as well as the basic structure of the code is from <span class="citation" data-cites="Brunton2022">(<a href="../references.html#ref-Brunton2022" role="doc-biblioref">Brunton and Kutz 2022</a>, Code 5.9)</span>. Also see <a href="https://github.com/dynamicslab/databook_python">GitHub</a>.</p>
 </div>
 </div>
 <p>The idea of LDA is to find a linear combination of features that optimally separates two or more classes. The crucial part in the algorithm is that it is guided by labelled observations. At its core, the algorithm aims to solve an optimization problem: find an optimal low-dimensional embedding of the data that shows a clear separation between their point distribution, or maximize the distance between the inter-class data and minimize the intra-class data distance.</p>
@@ -594,7 +600,7 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>For supervised learning, it is always good practice to split up our data set into a <em>training</em> and <em>testing</em> section. <strong>It is important to have a test set that the algorithm has never seen!</strong> In general a <span class="math inline">\(80:20\)</span> split is common but other ratios might be advisable, depending on the data set.</p>
+<p>For supervised learning, it is always good practice to split up our dataset into a <em>training</em> and <em>testing</em> section. <strong>It is important to have a test set that the algorithm has never seen!</strong> In general a <span class="math inline">\(80:20\)</span> split is common but other ratios might be advisable, depending on the dataset.</p>
 <p>It is also common practice to use <span class="math inline">\(k\)</span>-folds cross-validation for the training set.</p>
 </div>
 </div>
@@ -605,7 +611,7 @@ Tip
 </div>
 <div class="callout-body-container">
 <div id="def-crossvalidation" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 2.1 (<span class="math inline">\(k\)</span>-folds cross-validation)</strong></span> The <span class="math inline">\(k\)</span>-folds cross-validation technique is a method to allow better <em>hyperparameter tuning</em>, especially for smaller data sets where training and validation data is small. The main idea is that we split our iterate over different validation sets by splitting up our training set. Lets say we use <span class="math inline">\(5\)</span>-fold cross-validation we split the training set into 5 parts. Therefore, we train the model with four parts and validate against the fifth. We then rotate the folds and select a different one for validation. At the end, we average over the five iterations to get our final parameters.</p>
+<p><span class="theorem-title"><strong>Definition 2.1 (<span class="math inline">\(k\)</span>-folds cross-validation)</strong></span> The <span class="math inline">\(k\)</span>-folds cross-validation technique is a method to allow better <em>hyperparameter tuning</em>, especially for smaller datasets where training and validation data is small. The main idea is that we split our iterate over different validation sets by splitting up our training set. Lets say we use <span class="math inline">\(5\)</span>-fold cross-validation we split the training set into 5 parts. Therefore, we train the model with four parts and validate against the fifth. We then rotate the folds and select a different one for validation. At the end, we average over the five iterations to get our final parameters.</p>
 <p>This looks something like this:</p>
 <div id="fig-clustering-sl-5foldcrossvalidation" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -628,10 +634,10 @@ w = \operatorname{arg\, max}_w \frac{w^\mathrm{T}S_B w}{w^\mathrm{T}S_W w},
 S_B = (\mu_2 - \mu_1)(\mu_2 - \mu_1)^\mathrm{T},
 \]</span> for between-class relation as well as <span class="math display">\[
 S_W = \sum_{j=1}^2 \sum_{x\in\mathcal{D}_j} (x - \mu_j)(x - \mu_j)^\mathrm{T},
-\]</span> for within-class data. The set <span class="math inline">\(\mathcal{D}_j\)</span> denotes the subdomain of the data associated with cluster <span class="math inline">\(j\)</span>. The two matrices measure the variance of the data set as well as the means. To solve <a href="#eq-grayleigh" class="quarto-xref">Equation&nbsp;<span>2.1</span></a> we need to solve the generalized eigenvalue problem<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> <span class="math display">\[
+\]</span> for within-class data. The set <span class="math inline">\(\mathcal{D}_j\)</span> denotes the subdomain of the data associated with cluster <span class="math inline">\(j\)</span>. The two matrices measure the variance of the dataset as well as the means. To solve <a href="#eq-grayleigh" class="quarto-xref">Equation&nbsp;<span>2.1</span></a> we need to solve the generalized eigenvalue problem<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> <span class="math display">\[
 S_B w = \lambda S_w w
 \]</span> where the maximal eigenvalue and the corresponding eigenvector are our solution.</p>
-<p>We try this with the cats and dogs data set in both basis.</p>
+<p>We try this with the cats and dogs dataset in both basis.</p>
 <div class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code for the figure</summary>
@@ -725,7 +731,7 @@ Figure&nbsp;2.2: Evaluation of the LDA for the second and fourth principal compo
 </figure>
 </div>
 </div>
-<p>If we use our raw data set for the classification we get an overall accuracy of 67.5% with <span class="math inline">\(\tfrac{4}{20}\)</span> wrongly labelled dogs and <span class="math inline">\(\tfrac{9}{20}\)</span> wrongly labelled cats. We can increase this to an accuracy of 82.5% with <span class="math inline">\(\tfrac{5}{20}\)</span> wrongly labelled dogs and <span class="math inline">\(\tfrac{2}{20}\)</span> wrongly labelled cats.</p>
+<p>If we use our raw dataset for the classification we get an overall accuracy of 67.5% with <span class="math inline">\(\tfrac{4}{20}\)</span> wrongly labelled dogs and <span class="math inline">\(\tfrac{9}{20}\)</span> wrongly labelled cats. We can increase this to an accuracy of 82.5% with <span class="math inline">\(\tfrac{5}{20}\)</span> wrongly labelled dogs and <span class="math inline">\(\tfrac{2}{20}\)</span> wrongly labelled cats.</p>
 <p>This could be expected, see <a href="index.html#fig-clustering-dvc-wavelet-pca_results_overview" class="quarto-xref">Figure&nbsp;<span>11</span></a> for the separation of the principal values for the two basis.</p>
 <p>Of course we have very limited data with only 80 images for each of the classes. In this case we should do a cross-validation and we have not shuffled the data.</p>
 <p>Let us see how selecting different test and training sets influence the behaviour.</p>
@@ -777,10 +783,10 @@ Figure&nbsp;2.2: Evaluation of the LDA for the second and fourth principal compo
 <div id="fig-clustering-sl-lda2" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-clustering-sl-lda2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="supervised_files/figure-html/fig-clustering-sl-lda2-output-1.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Figure&nbsp;2.3: Cross validation for the data set in wavelet basis, use 100 run with different training and test sets. We always use 120 images for training and 40 for testing."><img src="supervised_files/figure-html/fig-clustering-sl-lda2-output-1.svg" class="img-fluid figure-img"></a>
+<a href="supervised_files/figure-html/fig-clustering-sl-lda2-output-1.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Figure&nbsp;2.3: Cross validation for the dataset in wavelet basis, use 100 run with different training and test sets. We always use 120 images for training and 40 for testing."><img src="supervised_files/figure-html/fig-clustering-sl-lda2-output-1.svg" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-sl-lda2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.3: Cross validation for the data set in wavelet basis, use 100 run with different training and test sets. We always use 120 images for training and 40 for testing.
+Figure&nbsp;2.3: Cross validation for the dataset in wavelet basis, use 100 run with different training and test sets. We always use 120 images for training and 40 for testing.
 </figcaption>
 </figure>
 </div>
@@ -905,7 +911,7 @@ Tip
 <p><span class="theorem-title"><strong>Exercise 2.1 (Application of LDA)</strong></span> &nbsp;</p>
 <ol type="1">
 <li><p>Apply the LDA algorithm to the toy example (see <a href="unsupervised.html#fig-clustering-unsupervised_lloyd" class="quarto-xref">Figure&nbsp;<span>1.1</span></a>) to recover the two clusters as good as possible.</p></li>
-<li><p>Additionally, for a higher dimensional problem, using LDA split the Fischer Iris data set (<a href="index.html#sec-fischer-iris-data-set" class="quarto-xref"><span>Section 1.1</span></a>) into two clusters. Try for the harder split between <code>versicolor</code> and <code>virginica</code> types of flowers.</p></li>
+<li><p>Additionally, for a higher dimensional problem, using LDA split the Fischer Iris dataset (<a href="index.html#sec-fischer-iris-data-set" class="quarto-xref"><span>Section 1.1</span></a>) into two clusters. Try for the harder split between <code>versicolor</code> and <code>virginica</code> types of flowers.</p></li>
 </ol>
 </div>
 </div>
@@ -928,7 +934,7 @@ Important
 <p>The following approach and the basic structure of the code is from <span class="citation" data-cites="Geron2022-xh">Geron (<a href="../references.html#ref-Geron2022-xh" role="doc-biblioref">2022</a>)</span>, see <a href="https://github.com/ageron/handson-ml3/blob/main/03_classification.ipynb">GitHub</a>.</p>
 </div>
 </div>
-<p>In order to illustrate basic properties found in machine learning we use the MNIST data set together with a binary classifier based on Stochastic Gradient Descent, see <a href="unsupervised.html#sec-clustering-ul-me" class="quarto-xref"><span>Section 1.5</span></a> for more on the MNIST data set.</p>
+<p>In order to illustrate basic properties found in machine learning we use the MNIST dataset together with a binary classifier based on Stochastic Gradient Descent, see <a href="unsupervised.html#sec-clustering-ul-me" class="quarto-xref"><span>Section 1.5</span></a> for more on the MNIST dataset.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -945,8 +951,8 @@ Note
 <p>In <code>scikit-learn</code> we can use the class <a href="https://scikit-learn.org/stable/modules/sgd.html"><code>SGDClassifier</code></a>.</p>
 </div>
 </div>
-<p>First we load the MNIST data set again and split it into a training and testing section, see <a href="unsupervised.html#sec-clustering-ul-me" class="quarto-xref"><span>Section 1.5</span></a>.</p>
-<div id="180fc8d8" class="cell" data-execution_count="4">
+<p>First we load the MNIST dataset again and split it into a training and testing section, see <a href="unsupervised.html#sec-clustering-ul-me" class="quarto-xref"><span>Section 1.5</span></a>.</p>
+<div id="7994cfa9" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Show the code for loading and splitting the dataset</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -963,7 +969,7 @@ Note
 </details>
 </div>
 <p>Next, as we only want a binary classifier, we select one number, in our case <code>5</code> and relabel our data. With the new labels we can train our classifier, compare <a href="#def-multiclass-ovr" class="quarto-xref">Definition&nbsp;<span>2.9</span></a>.</p>
-<div id="6acac766" class="cell" data-execution_count="5">
+<div id="a95811e3" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>y_train_5 <span class="op">=</span> (y_train <span class="op">==</span> <span class="st">"5"</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>y_test_5 <span class="op">=</span> (y_test <span class="op">==</span> <span class="st">"5"</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -971,11 +977,11 @@ Note
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>SGD.fit(X_train, y_train_5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In order to get a score for our method, we use <span class="math inline">\(k\)</span>-folds cross-validation <a href="#def-crossvalidation" class="quarto-xref">Definition&nbsp;<span>2.1</span></a> and the corresponding <code>scikit-learn</code> function <a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_score.html"><code>cross_val_score</code></a> to perform this task for our model.</p>
-<div id="3c4909cc" class="cell" data-execution_count="6">
+<div id="6faa1b60" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> sklearn.model_selection.cross_val_score(</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    SGD, X_train, y_train_5, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">"accuracy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="fda94825" class="cell" data-execution_count="7">
+<div id="830307ad" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display" data-execution_count="7">
 <div>
 
@@ -1007,13 +1013,13 @@ Note
 </div>
 </div>
 <p>With scores in the high <span class="math inline">\(90\%\)</span> range the results look promising, if not great, but are they really that good? In order to get a better idea just always guess that we do not see a <code>5</code> that should be the most common class in our case. To simulate this we use the <code>DummyClassifier</code> class.</p>
-<div id="3e4eb66c" class="cell" data-execution_count="8">
+<div id="7373da36" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>dummy <span class="op">=</span> sklearn.dummy.DummyClassifier()</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>dummy.fit(X_train, y_train_5)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>scores_dummy <span class="op">=</span> sklearn.model_selection.cross_val_score(</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    dummy, X_train, y_train_5, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">"accuracy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="4fe6a199" class="cell" data-execution_count="9">
+<div id="d78a8c9c" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-display" data-execution_count="9">
 <div>
 
@@ -1044,7 +1050,7 @@ Note
 </div>
 </div>
 </div>
-<p>As this is pretty much <span class="math inline">\(91\%\)</span> (as expected there are only about <span class="math inline">\(10\%\)</span> of <code>5</code>s in the data set). Just using accuracy is apparently not the gold standard to measure performance, what other possibilities are there?</p>
+<p>As this is pretty much <span class="math inline">\(91\%\)</span> (as expected there are only about <span class="math inline">\(10\%\)</span> of <code>5</code>s in the dataset). Just using accuracy is apparently not the gold standard to measure performance, what other possibilities are there?</p>
 <div class="callout callout-style-simple callout-none no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -1072,12 +1078,12 @@ Figure&nbsp;2.6: Names and abbreviations for a <span class="math inline">\(2\tim
 </div>
 <p>To compute the confusion matrix we first need predictions. This can be achieved by <a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_predict.html"><code>cross_val_predict</code></a> instead of <code>cross_val_score</code> and than we use <a href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html"><code>sklearn.metrics.confusion_matrix</code></a>.</p>
 <p>Combined, for our example, this reads as:</p>
-<div id="680e6bea" class="cell" data-execution_count="10">
+<div id="31da363d" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>y_train_pred <span class="op">=</span> sklearn.model_selection.cross_val_predict(</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                    SGD, X_train, y_train_5, cv<span class="op">=</span><span class="dv">3</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> sklearn.metrics.confusion_matrix(y_train_5, y_train_pred)                   </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="d2aec351" class="cell" data-execution_count="11">
+<div id="69efebe8" class="cell" data-execution_count="11">
 <div class="cell-output cell-output-display" data-execution_count="11">
 <div>
 
@@ -1141,7 +1147,7 @@ F_1 = \frac{2 TP}{2 TP + FP + FN}
 \]</span></p></li>
 </ol>
 <p>In the <a href="https://scikit-learn.org/stable/api/sklearn.metrics.html"><code>sklearn.metrics</code></a> most of these values have a corresponding function. If we look at <em>precission</em>, <em>recall</em>, and the <span class="math inline">\(F_1\)</span> score, for our example we see that our performance is viewed under a different light:</p>
-<div id="7b7d3122" class="cell styled-output" data-execution_count="12">
+<div id="7b243818" class="cell styled-output" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>precision <span class="op">=</span> sklearn.metrics.precision_score(y_train_5, y_train_pred)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>recall <span class="op">=</span> sklearn.metrics.recall_score(y_train_5, y_train_pred)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>f1_score <span class="op">=</span> sklearn.metrics.f1_score(y_train_5, y_train_pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1322,7 +1328,7 @@ Pipeline
 <li>apply a scaler to our observations</li>
 <li>apply the Linear SVM</li>
 </ul>
-<div id="147acff0" class="cell" data-execution_count="14">
+<div id="546a940d" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>composit_svm <span class="op">=</span> sklearn.pipeline.make_pipeline(</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    sklearn.preprocessing.PolynomialFeatures(<span class="dv">2</span>),</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    sklearn.preprocessing.StandardScaler(),</span>
@@ -1458,10 +1464,10 @@ Figure&nbsp;2.9: Classification with autoscaler vs.&nbsp;no scaler.
 <div id="fig-clustering-sl-svm-nl-exr" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-clustering-sl-svm-nl-exr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="supervised_files/figure-html/fig-clustering-sl-svm-nl-exr-output-1.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-14" title="Figure&nbsp;2.10: Data set in 2D"><img src="supervised_files/figure-html/fig-clustering-sl-svm-nl-exr-output-1.svg" class="img-fluid figure-img"></a>
+<a href="supervised_files/figure-html/fig-clustering-sl-svm-nl-exr-output-1.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-14" title="Figure&nbsp;2.10: Dataset in 2D"><img src="supervised_files/figure-html/fig-clustering-sl-svm-nl-exr-output-1.svg" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-sl-svm-nl-exr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.10: Data set in 2D
+Figure&nbsp;2.10: Dataset in 2D
 </figcaption>
 </figure>
 </div>
@@ -1562,7 +1568,7 @@ Figure&nbsp;2.11: Training a SVM with an RBF kernel for the singular vectors 2 t
 </div>
 </div>
 <p>We get a confusion matrix for our test set as</p>
-<div id="3f5fec46" class="cell" data-execution_count="18">
+<div id="426714b6" class="cell" data-execution_count="18">
 <div class="cell-output cell-output-display" data-execution_count="18">
 <div>
 
@@ -1614,7 +1620,7 @@ Figure&nbsp;2.11: Training a SVM with an RBF kernel for the singular vectors 2 t
 <div class="callout-body-container">
 <div id="exr-nonlinear-SVM-regression" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise 2.5 (Nonlinear SVM for regression)</strong></span> We can use SVM for regression. Have a look at <a href="https://scikit-learn.org/stable/auto_examples/svm/plot_svm_regression.html#sphx-glr-auto-examples-svm-plot-svm-regression-py">docs</a> and use the findings to fit the following observations with various degrees and kernel functions.</p>
-<div id="89aade2f" class="cell" data-execution_count="19">
+<div id="c503d0f8" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
@@ -1660,8 +1666,8 @@ Figure&nbsp;2.11: Training a SVM with an RBF kernel for the singular vectors 2 t
 <li>Compare the prediction accuracy over all observations, the best result is used.</li>
 <li>Proceed with the two new branches in the same fashion.</li>
 </ol>
-<p>Let us apply it to the Fischer Iris data set to better understand what is happening.</p>
-<div id="aeaf213b" class="cell" data-execution_count="20">
+<p>Let us apply it to the Fischer Iris dataset to better understand what is happening.</p>
+<div id="7322d7d0" class="cell" data-execution_count="20">
 <details class="code-fold">
 <summary>Show the code for the figure</summary>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -1777,7 +1783,7 @@ Figure&nbsp;2.11: Training a SVM with an RBF kernel for the singular vectors 2 t
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-sl-tree-iris-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.12: Decision tree for the Fischer iris data set and depth 2.
+Figure&nbsp;2.12: Decision tree for the Fischer iris dataset and depth 2.
 </figcaption>
 </figure>
 </div>
@@ -1836,10 +1842,10 @@ Displaying <code>dot</code> files
 <div id="fig-clustering-sl-tree-iris-split" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-clustering-sl-tree-iris-split-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="supervised_files/figure-html/fig-clustering-sl-tree-iris-split-output-1.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-17" title="Figure&nbsp;2.13: Splits for the Fischer Iris data set with the first two split form the above tree and the third split would be the next step for a larger tree."><img src="supervised_files/figure-html/fig-clustering-sl-tree-iris-split-output-1.svg" class="img-fluid figure-img"></a>
+<a href="supervised_files/figure-html/fig-clustering-sl-tree-iris-split-output-1.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-17" title="Figure&nbsp;2.13: Splits for the Fischer Iris dataset with the first two split form the above tree and the third split would be the next step for a larger tree."><img src="supervised_files/figure-html/fig-clustering-sl-tree-iris-split-output-1.svg" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-sl-tree-iris-split-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.13: Splits for the Fischer Iris data set with the first two split form the above tree and the third split would be the next step for a larger tree.
+Figure&nbsp;2.13: Splits for the Fischer Iris dataset with the first two split form the above tree and the third split would be the next step for a larger tree.
 </figcaption>
 </figure>
 </div>
@@ -1847,7 +1853,7 @@ Figure&nbsp;2.13: Splits for the Fischer Iris data set with the first two split 
 </div>
 <p>In <a href="#fig-clustering-sl-tree-iris-split" class="quarto-xref">Figure&nbsp;<span>2.13</span></a> we can see the the first two splits and the next split if we would increase the tree. With the first split, we immediately separate <em>setosa</em> with <span class="math inline">\(100\%\)</span> accuracy. The two other classes are a bit tricky and we can not classify everything correct right away. In total <span class="math inline">\(6\)</span> out of <span class="math inline">\(150\)</span> observations are wrongly classified with this simple tree.</p>
 <p>Let us also apply the tree classification to our cats and dogs example.</p>
-<div id="1e4aef5b" class="cell" data-execution_count="22">
+<div id="75e7fad7" class="cell" data-execution_count="22">
 <details class="code-fold">
 <summary>Show the code for the figure</summary>
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -2023,13 +2029,13 @@ Figure&nbsp;2.13: Splits for the Fischer Iris data set with the first two split 
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-sl-tree-cvsd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.14: Decision tree for the Fischer iris data set and depth 2.
+Figure&nbsp;2.14: Decision tree for the Fischer iris dataset and depth 2.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<div id="c9154d40" class="cell" data-execution_count="23">
+<div id="891de0bb" class="cell" data-execution_count="23">
 <div class="cell-output cell-output-display" data-execution_count="23">
 <div>
 
@@ -2211,7 +2217,7 @@ Figure&nbsp;2.15: Illustration of the sensitivity to rotation of decision trees.
 </figcaption>
 </figure>
 </div>
-<p>In <a href="#fig-clustering-sl-tree-rot-1" class="quarto-xref">Figure&nbsp;<span>2.15 (a)</span></a> we see the split for the original data set - random numbers in <span class="math inline">\([-0.5, 0.5]^2\)</span> and the classes separation for <span class="math inline">\(x_1 &gt; 0\)</span>. A simple line, i.e.&nbsp;one split is enough to make the separation. If we rotate the data set by by 45° we can see a way more complicated separation line in <a href="#fig-clustering-sl-tree-rot-2" class="quarto-xref">Figure&nbsp;<span>2.15 (b)</span></a>. Furthermore, <a href="#fig-clustering-sl-tree-rot-3" class="quarto-xref">Figure&nbsp;<span>2.15 (c)</span></a> shows that the <code>random_state</code> has an influence as well. Finally, if we apply scaling and PCA to the data we more or less end up at our original sample again <a href="#fig-clustering-sl-tree-rot-4" class="quarto-xref">Figure&nbsp;<span>2.15 (d)</span></a>, showcasing the power of these feature extraction techniques once more.</p>
+<p>In <a href="#fig-clustering-sl-tree-rot-1" class="quarto-xref">Figure&nbsp;<span>2.15 (a)</span></a> we see the split for the original dataset - random numbers in <span class="math inline">\([-0.5, 0.5]^2\)</span> and the classes separation for <span class="math inline">\(x_1 &gt; 0\)</span>. A simple line, i.e.&nbsp;one split is enough to make the separation. If we rotate the dataset by by 45° we can see a way more complicated separation line in <a href="#fig-clustering-sl-tree-rot-2" class="quarto-xref">Figure&nbsp;<span>2.15 (b)</span></a>. Furthermore, <a href="#fig-clustering-sl-tree-rot-3" class="quarto-xref">Figure&nbsp;<span>2.15 (c)</span></a> shows that the <code>random_state</code> has an influence as well. Finally, if we apply scaling and PCA to the data we more or less end up at our original sample again <a href="#fig-clustering-sl-tree-rot-4" class="quarto-xref">Figure&nbsp;<span>2.15 (d)</span></a>, showcasing the power of these feature extraction techniques once more.</p>
 <p>We note, all the trees make a perfect classification, just the structure is not as easy to recognize as it <em>could</em> be.</p>
 </div>
 </div>
@@ -2360,7 +2366,7 @@ Figure&nbsp;2.18: Illustration of an <span class="math inline">\(m\)</span> laye
 <div class="callout-body-container">
 <div id="exr-nonlinear-ensemble" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise 2.8 (Ensemble methods)</strong></span> We follow the example of <span class="citation" data-cites="Geron2022-xh">(<a href="../references.html#ref-Geron2022-xh" role="doc-biblioref">Geron 2022, chap. 7</a>)</span> to explore the various possibilities for ensemble methods.</p>
-<p>For our data set we use the moons example:</p>
+<p>For our dataset we use the moons example:</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> make_moons</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -2374,8 +2380,8 @@ Figure&nbsp;2.18: Illustration of an <span class="math inline">\(m\)</span> laye
 <li><p>Create a <code>BaggingClassifier</code> with 500 trees and and an appropriate <code>max_samples</code> value. Report the score for this new classifier, also report the out-of-bag score via <code>.oob_score_</code>.</p></li>
 <li><p>Create directly a <code>RandomForestClassifier</code> with 500 trees and appropriate value for <code>max_leaf_nodes</code>.</p></li>
 <li><p>Create a <code>StackingClassifier</code> with an <em>LDA</em>, a <em>SVM</em>, and a <em>tree</em> for classification and a <em>random forest</em> as the final blending step and report the score of this method.</p></li>
-<li><p>Train a random forest for the Fischer Iris data set and check <code>.feature_importances_</code> to get an insight on the importance of each feature.</p></li>
-<li><p>Train a random forest for our dogs and cats data set in raw and wavelet form and check <code>.feature_importances_</code> to get an insight on the importance of each feature of the PCA.</p></li>
+<li><p>Train a random forest for the Fischer Iris dataset and check <code>.feature_importances_</code> to get an insight on the importance of each feature.</p></li>
+<li><p>Train a random forest for our dogs and cats dataset in raw and wavelet form and check <code>.feature_importances_</code> to get an insight on the importance of each feature of the PCA.</p></li>
 </ol>
 </div>
 </div>
@@ -2393,7 +2399,7 @@ Figure&nbsp;2.18: Illustration of an <span class="math inline">\(m\)</span> laye
 <div class="callout-body-container">
 <div id="def-multiclass-ovr" class="theorem definition">
 <p><span class="theorem-title"><strong>Definition 2.9 (One vs.&nbsp;the Rest (OvR) or One vs.&nbsp;All (OvA))</strong></span> The <em>one versus the rest</em> (OvR) or <em>one versus all</em> (OvA) strategy is to train a binary classifier for each class and always interpret all other classes as the others or the <em>rest class</em>. To classify an observation you get the scores for each classifier and select the one with the highest score.</p>
-<p>For the Fischer Iris data set this would result in three classifiers (one for each iris), for the MNIST data set in ten (one for each number).</p>
+<p>For the Fischer Iris dataset this would result in three classifiers (one for each iris), for the MNIST dataset in ten (one for each number).</p>
 </div>
 </div>
 </div>
@@ -2406,8 +2412,8 @@ Figure&nbsp;2.18: Illustration of an <span class="math inline">\(m\)</span> laye
 <div class="callout-body-container">
 <div id="def-multiclass-ovo" class="theorem definition">
 <p><span class="theorem-title"><strong>Definition 2.10 (One vs.&nbsp;One (OvO))</strong></span> The <em>one versus one</em> (OvO) strategy is to train a binary classifier for always two classes and build up a set of classifiers, for <span class="math inline">\(n\)</span> classes we get <span class="math inline">\(\tfrac{n (n-1)}{2}\)</span> classifiers. To classify an observation you get the result for each classifier and select the one class with the most duels won.</p>
-<p>For the Fischer Iris data set this would result in three classifiers, for the MNIST data set 45.</p>
-<p>The advantage of OvO over OvR is that each classifier only needs to be trained on a subset and not with the entire data set. This is especially useful for algorithms that do not scale well, like SVMs.</p>
+<p>For the Fischer Iris dataset this would result in three classifiers, for the MNIST dataset 45.</p>
+<p>The advantage of OvO over OvR is that each classifier only needs to be trained on a subset and not with the entire dataset. This is especially useful for algorithms that do not scale well, like SVMs.</p>
 </div>
 </div>
 </div>
@@ -2435,7 +2441,7 @@ Tip
 <div id="exr-nonlinear-multi" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise 2.9 (Multiclass classification)</strong></span> &nbsp;</p>
 <ol type="1">
-<li>Use SVM for the Fischer Iris data set and test it.</li>
+<li>Use SVM for the Fischer Iris dataset and test it.</li>
 <li>Compare with a random forest.</li>
 <li>Create a confusion matrix for more than two classes with your results and interpret the results.</li>
 </ol>

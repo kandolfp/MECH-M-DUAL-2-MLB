@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Introduction – Machine Learning in Industrial Image Processing</title>
+<title>11&nbsp; Data Augmentation – Machine Learning in Industrial Image Processing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,52 +20,32 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-  margin-bottom: 0em;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./clustering/index.html" rel="next">
-<link href="./index.html" rel="prev">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-748b535e376f14d4692bf2b2e5fd6380.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-1e48ba61bbb28ed409cc66b93a2cf6ae.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-aa8bb76148ba733d74767651424b9944.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-1e48ba61bbb28ed409cc66b93a2cf6ae.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../summary.html" rel="next">
+<link href="../nn/transfer.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-748b535e376f14d4692bf2b2e5fd6380.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-1e48ba61bbb28ed409cc66b93a2cf6ae.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-aa8bb76148ba733d74767651424b9944.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-1e48ba61bbb28ed409cc66b93a2cf6ae.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -276,7 +256,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./intro.html">Introduction</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../nn/index.html">Neural Networks and Deep Learning</a></li><li class="breadcrumb-item"><a href="../nn/augmentation.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Data Augmentation</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -291,7 +271,7 @@ div.csl-indent {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Machine Learning in Industrial Image Processing</a> 
+      <a href="../">Machine Learning in Industrial Image Processing</a> 
         <div class="sidebar-tools-main tools-wide">
     <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
@@ -312,19 +292,19 @@ div.csl-indent {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Preface</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./intro.html" class="sidebar-item-text sidebar-link active">
+  <a href="../intro.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Introduction</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./clustering/index.html" class="sidebar-item-text sidebar-link">
+            <a href="../clustering/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Clustering and Classification</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -333,19 +313,19 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./clustering/unsupervised.html" class="sidebar-item-text sidebar-link">
+  <a href="../clustering/unsupervised.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Unsupervised learning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./clustering/supervised.html" class="sidebar-item-text sidebar-link">
+  <a href="../clustering/supervised.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Supervised learning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./clustering/semisupervised.html" class="sidebar-item-text sidebar-link">
+  <a href="../clustering/semisupervised.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Semi-Supervised learning</span></span></a>
   </div>
 </li>
@@ -353,7 +333,7 @@ div.csl-indent {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./data/index.html" class="sidebar-item-text sidebar-link">
+            <a href="../data/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Data management and data engineering</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -362,19 +342,19 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./data/model.html" class="sidebar-item-text sidebar-link">
+  <a href="../data/model.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Model persistence</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./data/code.html" class="sidebar-item-text sidebar-link">
+  <a href="../data/code.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Code persistence</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./data/data.html" class="sidebar-item-text sidebar-link">
+  <a href="../data/data.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Data persistence</span></span></a>
   </div>
 </li>
@@ -382,7 +362,7 @@ div.csl-indent {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./nn/index.html" class="sidebar-item-text sidebar-link">
+            <a href="../nn/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Neural Networks and Deep Learning</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -391,31 +371,31 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./nn/nn.html" class="sidebar-item-text sidebar-link">
+  <a href="../nn/nn.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Neural Networks</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./nn/cnn.html" class="sidebar-item-text sidebar-link">
+  <a href="../nn/cnn.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Convolutional Neural Networks</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./nn/autoencoder.html" class="sidebar-item-text sidebar-link">
+  <a href="../nn/autoencoder.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Autoencoders</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./nn/transfer.html" class="sidebar-item-text sidebar-link">
+  <a href="../nn/transfer.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Transfer learning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./nn/augmentation.html" class="sidebar-item-text sidebar-link">
+  <a href="../nn/augmentation.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Data Augmentation</span></span></a>
   </div>
 </li>
@@ -423,13 +403,13 @@ div.csl-indent {
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./summary.html" class="sidebar-item-text sidebar-link">
+  <a href="../summary.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Summary</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./references.html" class="sidebar-item-text sidebar-link">
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">References</span></a>
   </div>
 </li>
@@ -444,13 +424,13 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./appendices/explanations.html" class="sidebar-item-text sidebar-link">
+  <a href="../appendices/explanations.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">More detailed explanations</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./appendices/keras.html" class="sidebar-item-text sidebar-link">
+  <a href="../appendices/keras.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Our first Neural Network in <code>tensorflow.keras</code></span></span></a>
   </div>
 </li>
@@ -468,9 +448,9 @@ div.csl-indent {
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../nn/index.html">Neural Networks and Deep Learning</a></li><li class="breadcrumb-item"><a href="../nn/augmentation.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Data Augmentation</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Introduction</h1>
+<h1 class="title"><span id="sec-nn-transform" class="quarto-section-identifier"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Data Augmentation</span></span></h1>
 </div>
 
 
@@ -487,55 +467,40 @@ div.csl-indent {
 </header>
 
 
-<p>In this class we are going to look at the basic concepts behind modern day Data Science techniques for industrial image processing. We will always try to not only discuss the theory but also use <a href="https://www.python.org/">Python</a> to illustrate the content programmatically.</p>
-<p>The plan for these notes is to cover not only the basics of modern methods for machine learning in image processing but also topics in the near vicinity like</p>
-<ol type="1">
-<li>data management, labeling and preprocessing</li>
-<li>life-cycle management of models</li>
-<li>machine learning operations (MLOps)</li>
-<li>current and research topics</li>
-</ol>
-<p>These notes are intended for engineering students and therefore the mathematical concepts will rarely include rigorous proofs.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>The <code>sklearn</code> package has all the tools to perform a PCA, see <a href="https://scikit-learn.org/dev/auto_examples/decomposition/plot_pca_iris.html">Link</a> for an example using the Iris dataset same as in the beginning of this section.</p>
-</div>
-</div>
-<p>The following books cover large sections of the content and are a good read to get further into the topics:</p>
+<p>In the previous sections we used our image data either in the wavelet basis, raw or in the case of transfer learning with some augmentations to make sure it fits the input requirements of the network.</p>
+<p>Quite often it is advisable to (randomly) augment the data for training and sometimes also for inference. It has shown to be an important technique to improve several aspects of neural networks, like robustness, overfitting, generalization, and more.</p>
+<p>With simple augmentations like:</p>
 <ul>
-<li><span class="citation" data-cites="Brunton2022">Brunton and Kutz (<a href="references.html#ref-Brunton2022" role="doc-biblioref">2022</a>)</span></li>
-<li><span class="citation" data-cites="Geron2022-xh">Geron (<a href="references.html#ref-Geron2022-xh" role="doc-biblioref">2022</a>)</span></li>
-<li><span class="citation" data-cites="Goodfellow-et-al-2016">Goodfellow, Bengio, and Courville (<a href="references.html#ref-Goodfellow-et-al-2016" role="doc-biblioref">2016</a>)</span></li>
-<li><span class="citation" data-cites="Landup">Landup (<a href="references.html#ref-Landup" role="doc-biblioref">2022</a>)</span></li>
-<li><span class="citation" data-cites="Huyen2022-wh">Huyen (<a href="references.html#ref-Huyen2022-wh" role="doc-biblioref">2022</a>)</span></li>
+<li><strong>Geometric transformations</strong>: rotation, flipping, scaling, cropping, translation, etc.</li>
+<li><strong>Colour adjustments</strong>: brightness, contrast, saturation/hue, monochrome images, etc.</li>
+<li><strong>Artificial noise</strong>: random noise to simulate real-world imperfections like dust, glare, focus, etc.</li>
+<li><strong>Random erasing</strong>: by masking out random parts of an image robustness can be improved and it simulates occlusions.</li>
+<li><strong>Combination of images</strong>: to create new images for training it is sometimes possible to combine existing images.</li>
 </ul>
+<p>we can influence the training and the model drastically. For <code>pytorch</code> we can find most of these in <code>torchvison.transforms.v2</code>, see <a href="https://docs.pytorch.org/vision/stable/transforms.html">docs</a> for some insights.</p>
+<p>The most important aspects influenced by these augmentations are:</p>
+<ol type="1">
+<li><p><strong>Dataset</strong>: With data augmentation we can artificially increase the size of our dataset and therefore expose our network to more training data without the often tedious task of labeling. If we apply this in a <em>random</em> fashion we need to make sure that the seed is set and we can track the changes in case we need to get a deeper understanding of the mechanics behind it. Overall, by always applying some augmentation, overfitting can be drastically reduced. If, for some reason, your dataset is not balanced and one class is less frequent than it should be, these techniques can also produce more instances. This process is called <em>synthetic minority oversampling techniques</em> (SMOTE).</p></li>
+<li><p><strong>Generalization</strong>: With data augmentation we can make sure the model learns on features that are invariant to geometric transformations or something like different zoom levels. Overall, this will lead to a better generalization of the network.</p></li>
+<li><p><strong>Overfitting</strong>: Especially for small dataset overfitting is a serious problem and the augmentation techniques are a reliable tool to mitigate the risk of overfitting to your training set.</p></li>
+<li><p><strong>Performance</strong>: Quite often it also helps to introduce data augmentations during training achieve better results on several performance metrics like accuracy.</p></li>
+<li><p><strong>Simulates real-world variability</strong>: When taking an image there are usually variations included. This might be orientation, occlusions, lighting conditions and so forth. We can simulate these <em>problems</em> via data augmentation.</p></li>
+</ol>
+<p>For instance, if a model is trained to classify images of cats and dogs, data augmentation might include flipping images horizontally, rotating them slightly, or adjusting brightness. This ensures the model learns to recognize cats and dogs regardless of orientation or lighting conditions.</p>
+<div class="callout callout-style-simple callout-caution no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div id="exr-nn-augmentation-1" class="theorem exercise">
+<p><span class="theorem-title"><strong>Exercise 11.1 (Use data augmentation to improve our models)</strong></span> Similar to the pipeline use in <a href="transfer.html" class="quarto-xref"><span>Chapter 10</span></a> create a pipeline to include some of the above described data augmentations and retrain the models we created with this pipeline in place for the training set. Can you see any of the above described benefits?</p>
+</div>
+</div>
+</div>
+</div>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
-<div id="ref-Brunton2022" class="csl-entry" role="listitem">
-Brunton, Steven L., and J. Nathan Kutz. 2022. <em>Data-Driven Science and Engineering - Machine Learning, Dynamical Systems, and Control</em>. 2nd ed. Cambridge: Cambridge University Press.
-</div>
-<div id="ref-Geron2022-xh" class="csl-entry" role="listitem">
-Geron, Aurelien. 2022. <em>Hands-on Machine Learning with Scikit-Learn, Keras, and <span>TensorFlow</span> 3e</em>. 3rd ed. Sebastopol, CA: O’Reilly Media.
-</div>
-<div id="ref-Goodfellow-et-al-2016" class="csl-entry" role="listitem">
-Goodfellow, Ian, Yoshua Bengio, and Aaron Courville. 2016. <em>Deep Learning</em>. MIT Press.
-</div>
-<div id="ref-Huyen2022-wh" class="csl-entry" role="listitem">
-Huyen, Chip. 2022. <em>Designing Machine Learning Systems</em>. Sebastopol, CA: O’Reilly Media.
-</div>
-<div id="ref-Landup" class="csl-entry" role="listitem">
-Landup, David. 2022. <em>Practical Deep Learning for Computer Vision with Python</em>.
-</div>
-</div>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -952,13 +917,13 @@ Landup, David. 2022. <em>Practical Deep Learning for Computer Vision with Python
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./index.html" class="pagination-link" aria-label="Preface">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Preface</span>
+      <a href="../nn/transfer.html" class="pagination-link" aria-label="Transfer learning">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Transfer learning</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./clustering/index.html" class="pagination-link" aria-label="Clustering and Classification">
-        <span class="nav-page-text">Clustering and Classification</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../summary.html" class="pagination-link" aria-label="Summary">
+        <span class="nav-page-text">Summary</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -970,7 +935,7 @@ Landup, David. 2022. <em>Practical Deep Learning for Computer Vision with Python
 </div>   
     <div class="nav-footer-center">
 <p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> Peter Kandolf</p>
-<div class="toc-actions"><ul><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/edit/main/intro.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+<div class="toc-actions"><ul><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/edit/main/nn/augmentation.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was built with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>
