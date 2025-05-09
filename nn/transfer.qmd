@@ -60,6 +60,7 @@ import io
 import matplotlib.pyplot as plt
 import torch
 import torchvision as tv
+import torchvision.transforms.v2 as transforms
 from torch.utils.data import TensorDataset, Dataset, DataLoader, random_split
 %config InlineBackend.figure_formats = ["svg"]
 # Initialize everything for reproducibility
@@ -86,18 +87,17 @@ y_test = np.repeat(np.array([0, 1]), 80 - s)
 
 First, we need to make sure our input is in a format that can be handled by the NN.
 As the input size of the image is $256 \times 256$ with RGB channels and with specific normalizations.
-To do this we use some helper functions from the `torchvision` module.
+To do this we use some helper functions from the `torchvision.transforms.v2` module.
 
 
 ```{python}
-T = tv.transforms.Compose([                                         # <1>
-    tv.transforms.ToPILImage(),                                     # <2>
-    #tv.transforms.Pad((96, 96, 96, 96), fill=255),
-    tv.transforms.Grayscale(num_output_channels=3),                 # <3>
-    tv.transforms.Resize((256, 256)),                               # <4>
-    tv.transforms.ToTensor(),
-    tv.transforms.Normalize(mean=[0.485, 0.456, 0.406],             # <5>
-                            std=[0.229, 0.224, 0.225])              # <5>
+T = transforms.Compose([                                         # <1>
+    transforms.ToPILImage(),                                     # <2>
+    transforms.Grayscale(num_output_channels=3),                 # <3>
+    transforms.Resize((256, 256)),                               # <4>
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406],             # <5>
+                         std=[0.229, 0.224, 0.225])              # <5>
 ])                                                                  # <1>
 ```
 1. Define a pipeline to apply several transformations to a single image.
