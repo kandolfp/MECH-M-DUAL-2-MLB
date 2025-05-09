@@ -8,25 +8,27 @@ It has shown to be an important technique to improve several aspects of neural n
 
 With simple augmentations like:
 
-- Geometric transformations: rotation, flipping, scaling, cropping, translation, etc.
-- Colour adjustments: brightness, contrast, saturation/hue, monochrome images, etc.
-- Artificial noise: random noise to simulate real-world imperfections like dust, glare, focus, etc. 
-- Random erasing: by masking out random parts of an image robustness can be improved and it simulates occlusions.
-- Combination of images: to create new images for training it is sometimes possible to combine existing images.
+- **Geometric transformations**: rotation, flipping, scaling, cropping, translation, etc.
+- **Colour adjustments**: brightness, contrast, saturation/hue, monochrome images, etc.
+- **Artificial noise**: random noise to simulate real-world imperfections like dust, glare, focus, etc. 
+- **Random erasing**: by masking out random parts of an image robustness can be improved and it simulates occlusions.
+- **Combination of images**: to create new images for training it is sometimes possible to combine existing images.
 
 we can influence the training and the model drastically.
+For `pytorch` we can find most of these in `torchvison.transforms.v2`, see [docs](https://docs.pytorch.org/vision/stable/transforms.html) for some insights.
 
-The most important aspects are:
+The most important aspects influenced by these augmentations are:
 
-1. **Increases Dataset Size**: With data augmentation we can artificially increase the size of our dataset and therefore expose our network to more training data without the often tedious task of labeling. If we apply this in a _random_ fashion we need to make sure that the seed is set and we can track the changes in case we need to get a deeper understanding of the mechanics behind it. Overall, by always applying some augmentation, overfitting can be drastically reduced.
+1. **Data set**: With data augmentation we can artificially increase the size of our dataset and therefore expose our network to more training data without the often tedious task of labeling. If we apply this in a _random_ fashion we need to make sure that the seed is set and we can track the changes in case we need to get a deeper understanding of the mechanics behind it. Overall, by always applying some augmentation, overfitting can be drastically reduced. If, for some reason, your data set is not balanced and one class is less frequent than it should be, these techniques can also produce more instances. This process is called _synthetic minority oversampling techniques_ (SMOTE).
 
-1. **Improves Model Generalization**: With data augmentation we can make sure the model learns on features that are invariant to geometric transformations or something like different zoom levels. Overall, this will lead to a better generalization of the network.
+1. **Generalization**: With data augmentation we can make sure the model learns on features that are invariant to geometric transformations or something like different zoom levels. Overall, this will lead to a better generalization of the network.
 
-1. **Reduces Overfitting**: Especially for small data set overfitting is a serious problem and the augmentation techniques are a reliable tool to mitigate the risk of overfitting to your training set.
+1. **Overfitting**: Especially for small data set overfitting is a serious problem and the augmentation techniques are a reliable tool to mitigate the risk of overfitting to your training set.
 
-1. **Simulates Real-World Variability**: When taking an image there are usually variations included. This might be orientation, occlusions, lighting conditions and so forth. We can simulate these _problems_ via data augmentation.
+1. **Performance**: Quite often it also helps to introduce data augmentations during training achieve better results on several performance metrics like accuracy. 
 
-1. **Improves Model Performance**: Quite often it also helps to introduce data augmentations during training achieve better results on several performance metrics like accuracy. 
+1. **Simulates real-world variability**: When taking an image there are usually variations included. This might be orientation, occlusions, lighting conditions and so forth. We can simulate these _problems_ via data augmentation.
+
 
 For instance, if a model is trained to classify images of cats and dogs, data augmentation might include flipping images horizontally, rotating them slightly, or adjusting brightness. This ensures the model learns to recognize cats and dogs regardless of orientation or lighting conditions.
 
