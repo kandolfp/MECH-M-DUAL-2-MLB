@@ -101,3 +101,46 @@ Can you see any of the above described benefits?
 :::
 
 ## Data Labeling {#sec-nn-data-labelling}
+
+Labeling data is a critical step in machine learning projects as the quality directly influences the performance of the model.
+For image data the process of labeling involves assigning meaningful annotations to images (what is in the image, or what classes it belongs to), bounding boxes or masks for objects visible in the image.
+Furthermore, these informations should be easy to process by a machine and keeping a change log is also recommended.
+
+Depending on the task we set out to achieve, the requirements on labelling can be quite different.
+The following list covers some tasks and also highlights where specific labels can be problematic.
+
+- **Image classification**: Each image has a single label e.g., _cat_ or _dog_.
+This can cause problems, especially if we decide to move from superclasses like _animal_, _for lagged_, _furry_ to subclasses or specific species of cats. 
+
+- **Object detection**: Annotating bounding boxes around objects within an image.
+This can be tricky in the case of objects overlapping each other or for a sequence of images where parts get obfuscated. 
+
+- **Semantic segmentation**: Assigning a class label to each pixel in an image.
+This can cause problems with class imbalance if e.g. _background_ is the dominate class.
+Another problem occurs when capturing precise object boundaries and the challenges involved here with down and upsampling.
+Furthermore, generalization can be a problem in these tasks if e.g. background is _always_ black.
+
+- **Instance segmentation**: This builds on sematic segmentation but distinguishes between different individual of the same instance, e.g. two different cats in one image.
+One obvious challenge here is that even for a human labelling it might not always be clear if a pixel belongs to one instance or the other if the _overlap_.
+  
+Above be discussed some specific challenges depending on the topic but there are also more general challenges in the context of labelling image data.
+
+- **Subjectivity**: Images allow for some form of interpretation what exactly is part of the image, instance.
+This might be where one object begins and another ends, e.g. satellite data and we need do distinguish between a roof with grass and an actual field, not to talk about different plants in the background of image.
+Furthermore, if we try to label emotions this might be hard due to cultural differences.
+The same is true for abstract concepts. 
+
+- **Scalability**: The larger the dataset, the more time consuming and challenging the labelling process becomes.
+This is e.g. why old CAPTCHA algorithms _employed_ users to read text to help improve OCR software[^1].
+The task is even more challenging for the pixel labels required for segmentation.
+
+[^1]: Mix some _known_ letters or words to check if the user is correct and collect the data for the second part to build up a statistically significant classification.
+
+- **Imbalance**: This can be more subtle than we often think.
+E.g. there are not a lot of images of snow leopards and those existing might be from the same individual leading to problems we already discussed. 
+
+- **Errors**: It is possible that labels are wrong or inconsistent.
+Such problems can propagate and influence workflow.
+While we can simply _correct_ an error it might also be beneficial to keep track of the wrong labels to make sure we capture model drift and also to work against systematic errors. 
+
+- **Cost**: The costs for high-quality labelled data was made implicitly clear in the above points but we need to mention it separately as it can have serious implications on a project.
