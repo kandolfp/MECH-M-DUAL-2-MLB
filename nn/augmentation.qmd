@@ -1,4 +1,62 @@
-# Data Augmentation {#sec-nn-transform}
+# Data Preparation {#sec-nn-data}
+
+Now that we know how to design, train and work with neural networks we need to talk about one of the most important topic: data. 
+We could see throughout this notes that the algorithms need to have data to _learn_.
+This includes labelled and unlabelled data. 
+
+There are several topics that need to be addressed when a project does not simply include training on available datasets.
+We briefly discuss several important topics (some of which we have already heard) before some more extended discussion on a selection.
+Quite often a data pipeline consists of the steps as listed below (the order may differ).
+
+::: {.callout-note}
+
+We list here some general techniques with a focus on image processing.
+Depending on the domain in question there are often domain-specific challenges to overcome.
+This includes the domain of processing (computer vision, NLP, time series) but also the domain of you data.
+The challenges in producing industries is different than astrophysics, medicine or metrology.
+
+:::
+
+- **Cleaning and preprocessing**: The raw data often needs some cleaning and preprocessing.
+For images this starts with an appropriate image format - remember that most formats include some form of compression, that can lead to artifacts.
+We might also need to handle missing, blurry, out of focus, fuzzy, hazy, or grainy images.
+It might also be the useful that we detect the region of interest and cut the image to the appropriate dimensions to reduce the size of our problem already on this stage.
+The main idea of this step is to have data that can be processed in a standardized way.
+
+- **Dataset splitting**: The split of the available data is important.
+Already at this level it is essential, that for example the _test dataset_ is never touched by the training or validation.
+
+- **Class imbalance**: A real-world dataset is often not balanced or not as balanced as it should be for good learning behaviour in NNs.
+The training techniques need to be adapted or a selection needs to be restricted.
+We discussed some of the problems in @sec-clustering-sl-performance.
+Some of the data augmentation techniques we discuss below @sec-nn-data-transform can help to mitigate these problems. 
+
+- **Feature engineering**: While NNs can be used to detect the important features it does not mean that for every application we can skip feature engineering.
+We might want to create new features from existing ones (e.g. transforming to wavelet basis to highlight vertical and horizontal features) or reduce to the most important features like only the edges. 
+
+- **Labeling**: The process of labeling data can be tedious and time consuming.
+Arguably it is the most important part as all supervised learning relies on the quality of the labels.
+We discuss this in more detail below, @sec-nn-data-labelling.
+
+
+- **Augmentation**: By augmenting the data we have we can also greatly influence the training of our NNs. In short, we can use geometric transformations, colour adjustments, artificial noise, and random erasing to augment our data and create new data from the NNs point of view.
+We discuss this step in more detail in @sec-nn-data-transform.
+
+Besides these steps that are often part of a data preparation pipeline or directly included in the training there are other important aspects that greatly influence our outcome.
+
+- **Validation and quality assurance**: It is important to have some processes in place that ensure the quality of the data is accurate, especially if data is automatically generated and labelled.
+Making suer the labels are valid, and the quality of the data is as desired makes sure the training can have major impact on the performance.
+It is also important to keep track of how balanced our dataset is.
+
+- **Scalability and efficiency**: Quite likely our dataset is growing over time and this can cause problems in terms of scalability and efficiency.
+You might need to apply batch processing and parallelization techniques to make sure the data can be processed at all. 
+Furthermore, the way it is stored and provided for the NN can often become the bottleneck of training. 
+
+- **Ethical considerations**: A bias in the dataset can create a bias in the model we train.
+This is especially important if we are working with sensitive information and data.
+Furthermore, ethical considerations and GDPR considerations should never be ignored during data collection and use.
+
+## Data Augmentation {#sec-nn-data-transform}
 
 In the previous sections we used our image data either in the wavelet basis, raw or in the case of transfer learning with some augmentations to make sure it fits the input requirements of the network. 
 
@@ -33,7 +91,7 @@ The most important aspects influenced by these augmentations are:
 For instance, if a model is trained to classify images of cats and dogs, data augmentation might include flipping images horizontally, rotating them slightly, or adjusting brightness. This ensures the model learns to recognize cats and dogs regardless of orientation or lighting conditions.
 
 ::: {.callout-caution appearance="simple" icon=false}
-:::: {#exr-nn-augmentation-1}
+:::: {#exr-nn-data-augmentation-1}
 
 ## Use data augmentation to improve our models
 
@@ -41,3 +99,5 @@ Similar to the pipeline use in @sec-nn-transferl create a pipeline to include so
 Can you see any of the above described benefits?
 ::::
 :::
+
+## Data Labeling {#sec-nn-data-labelling}
