@@ -170,4 +170,4 @@ As Label Studio is one of the most versatile and free tools available we highlig
 Label Studio supports a wide range of labelling/annotation tasks from image classification via object detection to segmentation tasks.
 This is handled via multiple types of labels like bounding boxes or polygons and allows cooperative processes.
 We can use tools ans assistant systems to facilitate semi-automated labelling where the human performs fine tuning and checks the results.
-Furthermore, we can define workflows and have quality control features (consensus scoring) available
+Furthermore, we can define workflows and have quality control features (consensus scoring) available.
