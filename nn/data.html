@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>11&nbsp; Data Augmentation – Machine Learning in Industrial Image Processing</title>
+<title>11&nbsp; Data Preparation – Machine Learning in Industrial Image Processing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -43,9 +43,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-1e48ba61bbb28ed409cc66b93a2cf6ae.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-aa8bb76148ba733d74767651424b9944.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-1e48ba61bbb28ed409cc66b93a2cf6ae.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-c699154ef242142b43c34bd36ab18235.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-5246a6ab9276c4ca0c711472a3264538.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-c699154ef242142b43c34bd36ab18235.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -256,7 +256,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../nn/index.html">Neural Networks and Deep Learning</a></li><li class="breadcrumb-item"><a href="../nn/augmentation.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Data Augmentation</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../nn/index.html">Neural Networks and Deep Learning</a></li><li class="breadcrumb-item"><a href="../nn/data.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Data Preparation</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -395,8 +395,8 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../nn/augmentation.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Data Augmentation</span></span></a>
+  <a href="../nn/data.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Data Preparation</span></span></a>
   </div>
 </li>
       </ul>
@@ -441,16 +441,26 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-nn-data-transform" id="toc-sec-nn-data-transform" class="nav-link active" data-scroll-target="#sec-nn-data-transform"><span class="header-section-number">11.1</span> Data Augmentation</a></li>
+  <li><a href="#sec-nn-data-labelling" id="toc-sec-nn-data-labelling" class="nav-link" data-scroll-target="#sec-nn-data-labelling"><span class="header-section-number">11.2</span> Data Labeling</a>
+  <ul class="collapse">
+  <li><a href="#tools-for-labeling" id="toc-tools-for-labeling" class="nav-link" data-scroll-target="#tools-for-labeling"><span class="header-section-number">11.2.1</span> Tools for Labeling</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/edit/main/nn/data.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../nn/index.html">Neural Networks and Deep Learning</a></li><li class="breadcrumb-item"><a href="../nn/augmentation.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Data Augmentation</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../nn/index.html">Neural Networks and Deep Learning</a></li><li class="breadcrumb-item"><a href="../nn/data.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Data Preparation</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span id="sec-nn-transform" class="quarto-section-identifier"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Data Augmentation</span></span></h1>
+<h1 class="title"><span id="sec-nn-data" class="quarto-section-identifier"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Data Preparation</span></span></h1>
 </div>
 
 
@@ -467,6 +477,37 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<p>Now that we know how to design, train and work with neural networks we need to talk about one of the most important topic: data. We could see throughout this notes that the algorithms need to have data to <em>learn</em>. This includes labelled and unlabelled data.</p>
+<p>There are several topics that need to be addressed when a project does not simply include training on available datasets. We briefly discuss several important topics (some of which we have already heard) before some more extended discussion on a selection. Quite often a data pipeline consists of the steps as listed below (the order may differ).</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We list here some general techniques with a focus on image processing. Depending on the domain in question there are often domain-specific challenges to overcome. This includes the domain of processing (computer vision, NLP, time series) but also the domain of you data. The challenges in producing industries is different than astrophysics, medicine or metrology.</p>
+</div>
+</div>
+<ul>
+<li><p><strong>Cleaning and preprocessing</strong>: The raw data often needs some cleaning and preprocessing. For images this starts with an appropriate image format - remember that most formats include some form of compression, that can lead to artifacts. We might also need to handle missing, blurry, out of focus, fuzzy, hazy, or grainy images. It might also be the useful that we detect the region of interest and cut the image to the appropriate dimensions to reduce the size of our problem already on this stage. The main idea of this step is to have data that can be processed in a standardized way.</p></li>
+<li><p><strong>Dataset splitting</strong>: The split of the available data is important. Already at this level it is essential, that for example the <em>test dataset</em> is never touched by the training or validation.</p></li>
+<li><p><strong>Class imbalance</strong>: A real-world dataset is often not balanced or not as balanced as it should be for good learning behaviour in NNs. The training techniques need to be adapted or a selection needs to be restricted. We discussed some of the problems in <a href="../clustering/supervised.html#sec-clustering-sl-performance" class="quarto-xref"><span>Section 2.2</span></a>. Some of the data augmentation techniques we discuss below <a href="#sec-nn-data-transform" class="quarto-xref"><span>Section 11.1</span></a> can help to mitigate these problems.</p></li>
+<li><p><strong>Feature engineering</strong>: While NNs can be used to detect the important features it does not mean that for every application we can skip feature engineering. We might want to create new features from existing ones (e.g.&nbsp;transforming to wavelet basis to highlight vertical and horizontal features) or reduce to the most important features like only the edges.</p></li>
+<li><p><strong>Labeling</strong>: The process of labeling data can be tedious and time consuming. Arguably it is the most important part as all supervised learning relies on the quality of the labels. We discuss this in more detail below, <a href="#sec-nn-data-labelling" class="quarto-xref"><span>Section 11.2</span></a>.</p></li>
+<li><p><strong>Augmentation</strong>: By augmenting the data we have we can also greatly influence the training of our NNs. In short, we can use geometric transformations, colour adjustments, artificial noise, and random erasing to augment our data and create new data from the NNs point of view. We discuss this step in more detail in <a href="#sec-nn-data-transform" class="quarto-xref"><span>Section 11.1</span></a>.</p></li>
+</ul>
+<p>Besides these steps that are often part of a data preparation pipeline or directly included in the training there are other important aspects that greatly influence our outcome.</p>
+<ul>
+<li><p><strong>Validation and quality assurance</strong>: It is important to have some processes in place that ensure the quality of the data is accurate, especially if data is automatically generated and labelled. Making suer the labels are valid, and the quality of the data is as desired makes sure the training can have major impact on the performance. It is also important to keep track of how balanced our dataset is.</p></li>
+<li><p><strong>Scalability and efficiency</strong>: Quite likely our dataset is growing over time and this can cause problems in terms of scalability and efficiency. You might need to apply batch processing and parallelization techniques to make sure the data can be processed at all. Furthermore, the way it is stored and provided for the NN can often become the bottleneck of training.</p></li>
+<li><p><strong>Ethical considerations</strong>: A bias in the dataset can create a bias in the model we train. This is especially important if we are working with sensitive information and data. Furthermore, ethical considerations and GDPR considerations should never be ignored during data collection and use.</p></li>
+</ul>
+<section id="sec-nn-data-transform" class="level2" data-number="11.1">
+<h2 data-number="11.1" class="anchored" data-anchor-id="sec-nn-data-transform"><span class="header-section-number">11.1</span> Data Augmentation</h2>
 <p>In the previous sections we used our image data either in the wavelet basis, raw or in the case of transfer learning with some augmentations to make sure it fits the input requirements of the network.</p>
 <p>Quite often it is advisable to (randomly) augment the data for training and sometimes also for inference. It has shown to be an important technique to improve several aspects of neural networks, like robustness, overfitting, generalization, and more.</p>
 <p>With simple augmentations like:</p>
@@ -493,14 +534,69 @@ ul.task-list li input[type="checkbox"] {
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-body-container">
-<div id="exr-nn-augmentation-1" class="theorem exercise">
+<div id="exr-nn-data-augmentation-1" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise 11.1 (Use data augmentation to improve our models)</strong></span> Similar to the pipeline use in <a href="transfer.html" class="quarto-xref"><span>Chapter 10</span></a> create a pipeline to include some of the above described data augmentations and retrain the models we created with this pipeline in place for the training set. Can you see any of the above described benefits?</p>
 </div>
 </div>
 </div>
 </div>
+</section>
+<section id="sec-nn-data-labelling" class="level2" data-number="11.2">
+<h2 data-number="11.2" class="anchored" data-anchor-id="sec-nn-data-labelling"><span class="header-section-number">11.2</span> Data Labeling</h2>
+<p>Labeling data is a critical step in machine learning projects as the quality directly influences the performance of the model. For image data the process of labeling involves assigning meaningful annotations to images (what is in the image, or what classes it belongs to), bounding boxes or masks for objects visible in the image. Furthermore, these informations should be easy to process by a machine and keeping a change log is also recommended.</p>
+<p>Depending on the task we set out to achieve, the requirements on labelling can be quite different. The following list covers some tasks and also highlights where specific labels can be problematic.</p>
+<ul>
+<li><p><strong>Image classification</strong>: Each image has a single label e.g., <em>cat</em> or <em>dog</em>. This can cause problems, especially if we decide to move from superclasses like <em>animal</em>, <em>for lagged</em>, <em>furry</em> to subclasses or specific species of cats.</p></li>
+<li><p><strong>Object detection</strong>: Annotating bounding boxes around objects within an image. This can be tricky in the case of objects overlapping each other or for a sequence of images where parts get obfuscated.</p></li>
+<li><p><strong>Semantic segmentation</strong>: Assigning a class label to each pixel in an image. This can cause problems with class imbalance if e.g.&nbsp;<em>background</em> is the dominate class. Another problem occurs when capturing precise object boundaries and the challenges involved here with down and upsampling. Furthermore, generalization can be a problem in these tasks if e.g.&nbsp;background is <em>always</em> black.</p></li>
+<li><p><strong>Instance segmentation</strong>: This builds on sematic segmentation but distinguishes between different individual of the same instance, e.g.&nbsp;two different cats in one image. One obvious challenge here is that even for a human labelling it might not always be clear if a pixel belongs to one instance or the other if the <em>overlap</em>.</p></li>
+</ul>
+<p>Above be discussed some specific challenges depending on the topic but there are also more general challenges in the context of labelling image data.</p>
+<ul>
+<li><p><strong>Subjectivity</strong>: Images allow for some form of interpretation what exactly is part of the image, instance. This might be where one object begins and another ends, e.g.&nbsp;satellite data and we need do distinguish between a roof with grass and an actual field, not to talk about different plants in the background of image. Furthermore, if we try to label emotions this might be hard due to cultural differences. The same is true for abstract concepts.</p></li>
+<li><p><strong>Scalability</strong>: The larger the dataset, the more time consuming and challenging the labelling process becomes. This is e.g.&nbsp;why old CAPTCHA algorithms <em>employed</em> users to read text to help improve OCR software<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. The task is even more challenging for the pixel labels required for segmentation.</p></li>
+</ul>
+<ul>
+<li><p><strong>Imbalance</strong>: This can be more subtle than we often think. E.g. there are not a lot of images of snow leopards and those existing might be from the same individual leading to problems we already discussed.</p></li>
+<li><p><strong>Errors</strong>: It is possible that labels are wrong or inconsistent. Such problems can propagate and influence workflow. While we can simply <em>correct</em> an error it might also be beneficial to keep track of the wrong labels to make sure we capture model drift and also to work against systematic errors.</p></li>
+<li><p><strong>Cost</strong>: The costs for high-quality labelled data was made implicitly clear in the above points but we need to mention it separately as it can have serious implications on a project.</p></li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Best practices
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In the light of the above challenges it is a good idea keep the following checks in mind. Start of small to establish a process, gave <em>labeling guidelines</em> in place to allow for reproducible results, if possible allow for multiple annotators, implement a quality control, leverage pre-labelled data if possible.</p>
+</div>
+</div>
+<section id="tools-for-labeling" class="level3" data-number="11.2.1">
+<h3 data-number="11.2.1" class="anchored" data-anchor-id="tools-for-labeling"><span class="header-section-number">11.2.1</span> Tools for Labeling</h3>
+<p>There are several tools available to help in the labelling process.</p>
+<ul>
+<li><a href="https://labelstud.io/">Label Studio</a>: Open-source tool for general data labelling (free, commercial with extended security features available)</li>
+<li><a href="https://www.cvat.ai/">CVAT</a>: Open-source tool specific for computer vision labelling tasks (commercial product available)</li>
+<li><a href="https://www.superannotate.com/">SuperAnnotate</a>: General data labelling (commercial)</li>
+<li><a href="https://www.robots.ox.ac.uk/~vgg/software/via/">VGG Image Annotator (VIA)</a>: Open-source tool for image, audio and video annotation (free)</li>
+<li><a href="https://aws.amazon.com/de/sagemaker-ai/groundtruth/">Amazon SageMaker Ground Truth</a>: An annotation tool from AWS (commercial)</li>
+<li><a href="https://labelbox.com/">Labelbox</a>: General data labelling (commercial)</li>
+</ul>
+<p>As Label Studio is one of the most versatile and free tools available we highlight some of the main features as a general guide on how these tools work and what kind of workflows they provide.</p>
+<p>Label Studio supports a wide range of labelling/annotation tasks from image classification via object detection to segmentation tasks. This is handled via multiple types of labels like bounding boxes or polygons and allows cooperative processes. We can use tools ans assistant systems to facilitate semi-automated labelling where the human performs fine tuning and checks the results. Furthermore, we can define workflows and have quality control features (consensus scoring) available</p>
 
 
+</section>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>Mix some <em>known</em> letters or words to check if the user is correct and collect the data for the second part to build up a statistically significant classification.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -935,7 +1031,7 @@ ul.task-list li input[type="checkbox"] {
 </div>   
     <div class="nav-footer-center">
 <p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> Peter Kandolf</p>
-<div class="toc-actions"><ul><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/edit/main/nn/augmentation.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/edit/main/nn/data.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was built with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>
