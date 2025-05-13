@@ -38,6 +38,7 @@ book:
         - nn/autoencoder.qmd
         - nn/transfer.qmd
         - nn/data.qmd
+        - nn/challenges.qmd
     - summary.qmd
     - references.qmd
   appendices:
