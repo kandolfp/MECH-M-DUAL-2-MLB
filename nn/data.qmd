@@ -144,3 +144,30 @@ Such problems can propagate and influence workflow.
 While we can simply _correct_ an error it might also be beneficial to keep track of the wrong labels to make sure we capture model drift and also to work against systematic errors. 
 
 - **Cost**: The costs for high-quality labelled data was made implicitly clear in the above points but we need to mention it separately as it can have serious implications on a project.
+
+::: {.callout-tip}
+
+## Best practices
+
+In the light of the above challenges it is a good idea keep the following checks in mind. 
+Start of small to establish a process, gave _labeling guidelines_ in place to allow for reproducible results, if possible allow for multiple annotators, implement a quality control, leverage pre-labelled data if possible.
+
+:::
+
+### Tools for Labeling
+
+There are several tools available to help in the labelling process. 
+
+- [Label Studio](https://labelstud.io/): Open-source tool for general data labelling (free, commercial with extended security features available)
+- [CVAT](https://www.cvat.ai/): Open-source tool specific for computer vision labelling tasks (commercial product available)
+- [SuperAnnotate](https://www.superannotate.com/): General data labelling (commercial)
+- [VGG Image Annotator (VIA)](https://www.robots.ox.ac.uk/~vgg/software/via/): Open-source tool for image, audio and video annotation (free)
+- [Amazon SageMaker Ground Truth](https://aws.amazon.com/de/sagemaker-ai/groundtruth/): An annotation tool from AWS (commercial)
+- [Labelbox](https://labelbox.com/): General data labelling (commercial)
+
+As Label Studio is one of the most versatile and free tools available we highlight some of the main features as a general guide on how these tools work and what kind of workflows they provide.
+
+Label Studio supports a wide range of labelling/annotation tasks from image classification via object detection to segmentation tasks.
+This is handled via multiple types of labels like bounding boxes or polygons and allows cooperative processes.
+We can use tools ans assistant systems to facilitate semi-automated labelling where the human performs fine tuning and checks the results.
+Furthermore, we can define workflows and have quality control features (consensus scoring) available
