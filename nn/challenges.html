@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Summary – Machine Learning in Industrial Image Processing</title>
+<title>12&nbsp; Common Challenges – Machine Learning in Industrial Image Processing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,32 +20,52 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./references.html" rel="next">
-<link href="./nn/challenges.html" rel="prev">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-748b535e376f14d4692bf2b2e5fd6380.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-c699154ef242142b43c34bd36ab18235.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-5246a6ab9276c4ca0c711472a3264538.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-c699154ef242142b43c34bd36ab18235.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../summary.html" rel="next">
+<link href="../nn/data.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-748b535e376f14d4692bf2b2e5fd6380.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-c699154ef242142b43c34bd36ab18235.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-5246a6ab9276c4ca0c711472a3264538.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-c699154ef242142b43c34bd36ab18235.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -256,7 +276,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./summary.html">Summary</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../nn/index.html">Neural Networks and Deep Learning</a></li><li class="breadcrumb-item"><a href="../nn/challenges.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Common Challenges</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -271,7 +291,7 @@ ul.task-list li input[type="checkbox"] {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Machine Learning in Industrial Image Processing</a> 
+      <a href="../">Machine Learning in Industrial Image Processing</a> 
         <div class="sidebar-tools-main tools-wide">
     <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
@@ -292,19 +312,19 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Preface</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+  <a href="../intro.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Introduction</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./clustering/index.html" class="sidebar-item-text sidebar-link">
+            <a href="../clustering/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Clustering and Classification</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -313,19 +333,19 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./clustering/unsupervised.html" class="sidebar-item-text sidebar-link">
+  <a href="../clustering/unsupervised.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Unsupervised learning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./clustering/supervised.html" class="sidebar-item-text sidebar-link">
+  <a href="../clustering/supervised.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Supervised learning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./clustering/semisupervised.html" class="sidebar-item-text sidebar-link">
+  <a href="../clustering/semisupervised.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Semi-Supervised learning</span></span></a>
   </div>
 </li>
@@ -333,7 +353,7 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./data/index.html" class="sidebar-item-text sidebar-link">
+            <a href="../data/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Data management and data engineering</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -342,19 +362,19 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./data/model.html" class="sidebar-item-text sidebar-link">
+  <a href="../data/model.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Model persistence</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./data/code.html" class="sidebar-item-text sidebar-link">
+  <a href="../data/code.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Code persistence</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./data/data.html" class="sidebar-item-text sidebar-link">
+  <a href="../data/data.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Data persistence</span></span></a>
   </div>
 </li>
@@ -362,7 +382,7 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./nn/index.html" class="sidebar-item-text sidebar-link">
+            <a href="../nn/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Neural Networks and Deep Learning</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -371,37 +391,37 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./nn/nn.html" class="sidebar-item-text sidebar-link">
+  <a href="../nn/nn.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Neural Networks</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./nn/cnn.html" class="sidebar-item-text sidebar-link">
+  <a href="../nn/cnn.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Convolutional Neural Networks</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./nn/autoencoder.html" class="sidebar-item-text sidebar-link">
+  <a href="../nn/autoencoder.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Autoencoders</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./nn/transfer.html" class="sidebar-item-text sidebar-link">
+  <a href="../nn/transfer.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Transfer learning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./nn/data.html" class="sidebar-item-text sidebar-link">
+  <a href="../nn/data.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Data Preparation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./nn/challenges.html" class="sidebar-item-text sidebar-link">
+  <a href="../nn/challenges.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Common Challenges</span></span></a>
   </div>
 </li>
@@ -409,13 +429,13 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./summary.html" class="sidebar-item-text sidebar-link active">
+  <a href="../summary.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Summary</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./references.html" class="sidebar-item-text sidebar-link">
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">References</span></a>
   </div>
 </li>
@@ -430,13 +450,13 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./appendices/explanations.html" class="sidebar-item-text sidebar-link">
+  <a href="../appendices/explanations.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">More detailed explanations</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./appendices/keras.html" class="sidebar-item-text sidebar-link">
+  <a href="../appendices/keras.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Our first Neural Network in <code>tensorflow.keras</code></span></span></a>
   </div>
 </li>
@@ -454,9 +474,9 @@ ul.task-list li input[type="checkbox"] {
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../nn/index.html">Neural Networks and Deep Learning</a></li><li class="breadcrumb-item"><a href="../nn/challenges.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Common Challenges</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Summary</h1>
+<h1 class="title"><span id="sec-nn-further" class="quarto-section-identifier"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Common Challenges</span></span></h1>
 </div>
 
 
@@ -473,9 +493,23 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>T.B.D.</p>
+<p>This concludes our introduction to neural networks. We introduced the basic concept, how it relates back to regression and how we can extend it to outperform regression methods. The illustrations might not always be the most evolved but they are crucial to convey the concepts and get started in the topic. We did cover some specific architectures and types of neural networks like CNNs and Autoencoders.</p>
+<p>Nevertheless, there are some topics we could not cover but that often surface when working with neural networks. We use this space to briefly discuss some aspects. The idea is not a comprehensive discussion but rather to give some guidance if problems occur. See <span class="citation" data-cites="Geron2022-xh">Geron (<a href="../references.html#ref-Geron2022-xh" role="doc-biblioref">2022</a>)</span> for more details on many on the mentioned subjects and original references.</p>
+<ul>
+<li><p><strong>Vanishing/Exploding gradient</strong>: The <em>working horse</em> of backpropagation is the (stochastic) gradient descent method. The problem that might occur is that the gradient becomes smaller and smaller when propagated through the layers and the <em>change</em> for weights becomes almost null during training. On the other side it can also run in the opposite direction. This problems are often cited for one of the main reasons that NN where abandoned in the early 2000s. In <span class="citation" data-cites="Geron2022-xh">Geron (<a href="../references.html#ref-Geron2022-xh" role="doc-biblioref">2022</a>)</span> we can find quite a nice introduction in the corresponding chapter. In short, a combination of activation function and initialization of weights caused the problem is some cases. By introducing new weight initializations this could be mitigated and therefore it is not such a huge problem, if you see it change the weight init or rethink the choice of activation functions.</p></li>
+<li><p><strong>Dying ReLUs</strong>: The vanishing gradient problem helped ReLU to rise to prominence, as it does not saturate like the sigmoid. Nevertheless, there is another problem where some neurons die during training (they output 0 only). This happens when the weights and bias always result in a negative number for any input. To mitigate this problem, <em>leaky ReLu</em> was introduces. The so called SELU and ELU are alternatives as well.</p></li>
+<li><p><strong>Batch Normalization</strong>: With better weight initialization and ReLU activation vanishing gradients can still happen. To have an additional safeguard batch normalization was introduced. After the activation it normalizes over a batch or training data and therefore the network learns the optimal mean and shift for the data. This is often the first layer and helps preparing the data and makes sure everything is in an expected range.</p></li>
+<li><p><strong>Model/Data Drift</strong>: Over the lifetime of a model it can happen that the output or performance degenerates. This might be due to a shift in the input data that is not known or considered. E.g. consider changing the camera or updating the software. The output might afterwards change in a way we do not see with the naked eye but the model perceives. Retraining the model with new input will most likely fix the problem. The frequency of required retraining is hard to predict so monitoring the performance of the model is key.</p></li>
+<li><p><strong>Overfitting</strong>: This is a serious problem that we addressed thought the notes and is listed here as it is often the cause of poor performance and poor generalization. There are some common strategies to mitigate it like data augmentation and others.</p></li>
+<li><p><strong>Underfitting</strong>: Our model can also suffer from underfitting, i.e.&nbsp;poor performance. Try training for longer, find better features and if this does not help increase the complexity of the model.</p></li>
+</ul>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-Geron2022-xh" class="csl-entry" role="listitem">
+Geron, Aurelien. 2022. <em>Hands-on Machine Learning with Scikit-Learn, Keras, and <span>TensorFlow</span> 3e</em>. 3rd ed. Sebastopol, CA: O’Reilly Media.
+</div>
+</div>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -892,13 +926,13 @@ ul.task-list li input[type="checkbox"] {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./nn/challenges.html" class="pagination-link" aria-label="Common Challenges">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Common Challenges</span></span>
+      <a href="../nn/data.html" class="pagination-link" aria-label="Data Preparation">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Data Preparation</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./references.html" class="pagination-link" aria-label="References">
-        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../summary.html" class="pagination-link" aria-label="Summary">
+        <span class="nav-page-text">Summary</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -910,7 +944,7 @@ ul.task-list li input[type="checkbox"] {
 </div>   
     <div class="nav-footer-center">
 <p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> Peter Kandolf</p>
-<div class="toc-actions"><ul><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/edit/main/summary.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+<div class="toc-actions"><ul><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/edit/main/nn/challenges.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was built with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>
