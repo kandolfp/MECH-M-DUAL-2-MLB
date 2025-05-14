@@ -209,7 +209,7 @@ For the input on the left we compute two different pooling functions. First max 
 
 ## Applying pooling to images
 
-Implement max and mean pooling (or find an appropriate library function) for an image and apply it to the cat from above.
+Implement max and mean pooling (or find an appropriate library function) for an image and apply it to the (unmodified) cat from above.
 
 Explain which features the different pooling methods conserve and which are lost.
 ::::
