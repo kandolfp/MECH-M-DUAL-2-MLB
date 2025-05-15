@@ -157,6 +157,10 @@ One of these is PCA others are:
 - Linear discriminant analysis (LDA) - projects data onto a hyperplane where the hyperplane is chosen in such a way that it is _most discriminative_ for the observations see @sec-clustering-sl-lda.
 :::
 
+::: {.callout-note}
+The `sklearn` package has all the tools to perform a PCA, see [Link](https://scikit-learn.org/dev/auto_examples/decomposition/plot_pca_iris.html) for an example using the Iris dataset, same as in the beginning of this section.
+:::
+
 Now let us take a look at a more complicated example from @Brunton2022.
 
 ### Dogs and Cats {#sec-clustering-cvd}
