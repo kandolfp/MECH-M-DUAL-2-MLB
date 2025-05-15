@@ -8,7 +8,7 @@ It contains a multi-layer structure, convolution, max pooling, and nonlinear dyn
 The current high interest in NNs was arguably kickstarted with @NIPS2012_c399862d and their introduction of _ImageNet_.
 The used with high resolution images, facilitated with 15 million labels in over 22 000 categories.
 This transformed the field of computer vision tasks for classification and identification.
-All of this was made possible by the large labelled dataset and the available compute power[^1].
+All of this was made possible by the large labelled dataset and the available compute power[^cpower].
 
 At its core a neural network consists of multiple layers (some with specific names) of interconnected nodes (or _neurons_).
 
@@ -148,5 +148,5 @@ Nevertheless, we can only cover a limited range of possibilities with linear fun
 Therefore, the extension to _arbitrary_ activation functions is a natural progression. 
 
 
-[^1]: As a reference: The IBM Personal Computer (PC) was introduced in 1981, after the first NN.
+[^cpower]: As a reference: The IBM Personal Computer (PC) was introduced in 1981, after the first NN.
 [^pinv]: See [@Kandolf_GDM, Definition 4.3] or access it directly via the [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/matrixdc/svd.html#def-pinv)

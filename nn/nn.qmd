@@ -502,7 +502,7 @@ Include `softmax` into to model for training and see how the performance is infl
 
 ## Optional: PyTorch Lightning
 
-The module [`pytorch lightning`](https://lightning.ai/docs/pytorch/stable/)[^1] promises to streamline the process for the training and to reduce the code.
+The module [`pytorch lightning`](https://lightning.ai/docs/pytorch/stable/)[^lightning] promises to streamline the process for the training and to reduce the code.
 
 With the _Lightning in 15 minutes_ (or any other tutorial) rewrite your code to use this framework.
 
@@ -542,7 +542,7 @@ Implement the [`DVCLive`](https://dvc.org/doc/dvclive/ml-frameworks/pytorch) int
 It is also possible to export the model in the ONNX format, see @sec-data-model-onnx and for specifics the [docs](https://pytorch.org/tutorials/beginner/onnx/export_simple_model_to_onnx_tutorial.html).
 :::
 
-[^1]: Install it via `pdm add lightning`.
+[^lightning]: Install it via `pdm add lightning`.
 
 ## Backward Propagation of Error - Backpropagation
 

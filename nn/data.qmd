@@ -131,10 +131,10 @@ Furthermore, if we try to label emotions this might be hard due to cultural diff
 The same is true for abstract concepts. 
 
 - **Scalability**: The larger the dataset, the more time consuming and challenging the labelling process becomes.
-This is e.g. why old CAPTCHA algorithms _employed_ users to read text to help improve OCR software[^1].
+This is e.g. why old CAPTCHA algorithms _employed_ users to read text to help improve OCR software[^captcha].
 The task is even more challenging for the pixel labels required for segmentation.
 
-[^1]: Mix some _known_ letters or words to check if the user is correct and collect the data for the second part to build up a statistically significant classification.
+[^captcha]: Mix some _known_ letters or words to check if the user is correct and collect the data for the second part to build up a statistically significant classification.
 
 - **Imbalance**: This can be more subtle than we often think.
 E.g. there are not a lot of images of snow leopards and those existing might be from the same individual leading to problems we already discussed. 

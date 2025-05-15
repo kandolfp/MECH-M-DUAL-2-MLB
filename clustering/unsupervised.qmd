@@ -489,7 +489,7 @@ plt.show()
 ```
 
 The algorithm works best for clusters well separated by low density regions.
-As all algorithms depending on distance measures, it suffers from the curse of dimensionality[^1].
+As all algorithms depending on distance measures, it suffers from the curse of dimensionality[^dim].
 
 As can be seen in @fig-clustering-unsupervised_dbscan-1 the algorithm produces quite a lot of clusters for a small $\epsilon=0.05$.
 In total we get 10 clusters and quite a lot of outliers that are not all easy to retract by the naked eye.
@@ -823,6 +823,6 @@ Furthermore, keep this part in mind, as we will come back to how this can still 
 
 [^iff]: short for _if and only if_
 
-[^1]: Problems occurring for higher dimensional data and distance measures, see [WikiPedia](https://en.wikipedia.org/wiki/Curse_of_dimensionality#Distance_functions)
+[^dim]: Problems occurring for higher dimensional data and distance measures, see [WikiPedia](https://en.wikipedia.org/wiki/Curse_of_dimensionality#Distance_functions)
 
 [^gauss]: see @Kandolf_GDM, Example 14.6 or for a direct [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/statistics/bayesian.html#exm-statistics-normal_dist) 

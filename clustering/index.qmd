@@ -42,10 +42,10 @@ One of them is the [Fisher Iris dataset](https://en.wikipedia.org/wiki/Iris_flow
 Illustration of the recorded features and structure of the iris dataset inspired by the  [Medium article - Exploring the Iris flower dataset](https://eminebozkus.medium.com/exploring-the-iris-flower-dataset-4e000bcc266c).
 ::::
 
-We use the possibilities of [`sklearn`](https://scikit-learn.org/stable/) [^1] to access the dataset in Python.
+We use the possibilities of [`sklearn`](https://scikit-learn.org/stable/) [^sklearn] to access the dataset in Python.
 :::
 
-[^1]: To add it to `pdm` us `pdm add scikit-learn`.
+[^sklearn]: To add it to `pdm` us `pdm add scikit-learn`.
 
 Let us start right away by loading and visualizing the data in a 3D scatter plot (there are 4 features present so one is not shown).
 
@@ -256,9 +256,9 @@ While mode 2 (@fig-clustering-dvc-pca-2) highlights the pointy ears common in ca
 Consequently, these two features make a good choice for classification.
 
 Of course this is not the only possible representation of the initial data.
-We can also use the Wavelet transform[^wave].
+We can also use the Wavelet transform[^wave2].
 
-[^wave]: see @Kandolf_GDM, Section 10 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/signal/wavelet.html)
+[^wave2]: see @Kandolf_GDM, Section 10 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/signal/wavelet.html)
 
 The multi resolution analysis features of the Wavelet transformation can be used to transform the image in such a way that the resulting principal components yield a better separation of the two classes. 
 

@@ -259,7 +259,7 @@ The QDA arises from LDA when we do not assume that the covariance of each of the
 
 ::: {.callout-note}
 LDA and QDA assume a normal distribution as the basis for each of the clusters.
-This allows us to write it also as an update procedure with Bayes[^1] theorem.
+This allows us to write it also as an update procedure with Bayes[^bayes] theorem.
 :::
 
 ::: {.callout-tip}
@@ -281,7 +281,7 @@ Luckily the `scikit-learn` class/function [`DecisionBoundaryDisplay.from_estimat
 
 [^GEV]: see [@Kandolf_GDM, Definition 3.5] or the direct link [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/matrixdc/eigen.html#generalized-eigenvalue-problem)
 
-[^1]: see [@Kandolf_GDM, Theorem 14.4] or the direct link [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/statistics/bayesian.html#def-statistics-bayesianth)
+[^bayes]: see [@Kandolf_GDM, Theorem 14.4] or the direct link [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/statistics/bayesian.html#def-statistics-bayesianth)
 
 ## Measuring Performance {#sec-clustering-sl-performance}
 
