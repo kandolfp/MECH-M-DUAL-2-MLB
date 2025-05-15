@@ -1,3 +1,8 @@
 # Summary {.unnumbered}
 
-T.B.D.
+This concludes our introduction to machine learning in the context of images. 
+The field of grid bases machine learning is vast and always developing.
+With this in mind, these notes provide a strong foundation for addressing many challenges in industrial image processing using machine learning tools. 
+By illustrating the concepts with well established examples and directly in Python code we hope to give a sound basis for developing new concepts and workflows.
+
+In summary, if none of the methods and tools we've discussed here help solve the problem at hand, it indicates that we've encountered a challenge worth deeper investigation — perhaps even an opportunity for innovation, where domain expertise and machine learning can come together to create new solutions.
