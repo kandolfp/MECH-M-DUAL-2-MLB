@@ -610,37 +610,37 @@ we get an error, depending on the weights $a$, $b$, and for $y_0$ being the grou
 In order to minimize the error according to $a$ and $b$ we need to compute the partial derivatives with respect to these variables
 
 $$
-\begin{align}
+\begin{aligned}
 \frac{\partial\, \mathscr{L}}{\partial\, a} 
 &= \frac{\partial\, \mathscr{L}}{\partial\, y} \cdot \frac{\partial\, y}{\partial\, a} &=& \big[y = g(z, b)\big]\\
 &= \frac{\partial\, \mathscr{L}}{\partial\, y}\cdot \frac{\partial\, g}{\partial\, z} \cdot \frac{\partial\, z}{\partial\, a} &=& \big[z = f(x, a)\big]\\
 &= \frac{\partial\, \mathscr{L}}{\partial\, y}\cdot \frac{\partial\, g}{\partial\, z} \cdot \frac{\partial\, f}{\partial\, a}
-\end{align}
+\end{aligned}
 $$
 
 $$
-\begin{align}
+\begin{aligned}
 \frac{\partial\, \mathscr{L}}{\partial\, b} 
 &= \frac{\partial\, \mathscr{L}}{\partial\, y} \cdot \frac{\partial\, y}{\partial\, b} &=& \big[y = g(z,b)\big] \\
 &= \frac{\partial\, \mathscr{L}}{\partial\, y}\cdot \frac{\partial\, g}{\partial\, b} \phantom{ \cdot \frac{\partial\, f}{\partial\, a}}
-\end{align}
+\end{aligned}
 $$
 
 For a particular $\mathscr{L}$, $g$, and $f$ we can compute it explicitly, e.g. $\mathscr{L}=\tfrac12(y_0 - y)^2$, $g(z,b) = b z$, and  $f(x,a) = \tanh(a x)$
 
 $$
-\begin{align}
+\begin{aligned}
 \frac{\partial\, \mathscr{L}}{\partial\, a} &=  \frac{\partial\, \mathscr{L}}{\partial\, y} \frac{\partial\, g}{\partial\, z}\frac{\partial\, f}{\partial\, a} &=& - (y_0 - y) \cdot b \cdot (1 - \tanh^2(a x)) \cdot x,\\
 \frac{\partial\, \mathscr{L}}{\partial\, b} &=  \frac{\partial\, \mathscr{L}}{\partial\, y} \frac{\partial\, g}{\partial\, b} &=& - (y_0 - y) \cdot \tanh(a x).
-\end{align}
+\end{aligned}
 $$
 
 With this information we can define the gradient descent update
 $$
-\begin{align}
+\begin{aligned}
 a^{(k+1)} &= a^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, a} = a^{(k)} - \delta \left(- (y_0 - y) \cdot b^{(k)} \cdot (1 - \tanh^2(a^{(k)} x)) \cdot x\right), \\
 b^{(k+1)} &= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b} = b^{(k)} - \delta \left( - (y_0 - y) \cdot \tanh(a^{(k)} x)\right).
-\end{align}
+\end{aligned}
 $$
 ::::
 :::
@@ -674,10 +674,10 @@ First, we call our output $p = [p_1, p_2]$ and our labels are encoded in one-hot
 
 As our loss function we use cross-entropy
 $$
-\begin{align}
+\begin{aligned}
 \mathscr{L}(\Theta) &= - \frac12 \sum_{i=1}^2 y_i \log(p_i) = - \frac{y_1 \log(p_1) + y_2 \log(p_2)}{2} \\
 &= -\frac{1}{2} \left( y_1 \log(p_1) + (1-y_1) \log(1-p_1) \right),
-\end{align}
+\end{aligned}
 $$
 for a single sample with the above notation.
 The last line is true to the fact that the sum of the entries of $y$ and $p$ is equal to $1$.

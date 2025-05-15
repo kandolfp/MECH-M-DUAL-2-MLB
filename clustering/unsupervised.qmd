@@ -584,11 +584,11 @@ in the $l$ iteration.
 
 Now the M step starts to update the parameters and mixture weights as
 $$
-\begin{align}
+\begin{aligned}
 \alpha_p^{(l+1)} &= \frac1n \sum_{j=1}^n \tau_p^{(l)}(x_j), \\
 \mu_p^{(l+1)} &= \frac{\sum_{j=1}^n x_j\tau_p^{(l)}(x_j)}{\sum_{j=1}^n \tau_p^{(l)}(x_j)}, \\
 \Sigma_p^{(l+1)} &= \frac{\sum_{j=1}^n \tau_p^{(l)}(x_j)[(x_j - \mu_p^{(l+1)})(x_j - \mu_p^{(l+1)})^\mathrm{T}]}{\sum_{j=1}^n \tau_p^{(l)}(x_j)},
-\end{align}
+\end{aligned}
 $$
 with $\Sigma_p^{(l+1)}$ denotes the covariance matrix.
 The algorithm now alternates between E and M until convergence is reached.

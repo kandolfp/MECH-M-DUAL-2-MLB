@@ -20,10 +20,10 @@ To connect this concept back to PCA and what we discussed in the _Eigenfaces Exa
 We call the encoder $y=f_\Theta(x)$ and the decoder $z=g_\Theta(y)$. 
 Therefore, $z=(g \circ f)(x) = g(f(x))$ and
 $$
-\begin{align}
+\begin{aligned}
 f : \mathcal{X} \to \mathcal{Y}\\
 g : \mathcal{Y} \to \mathcal{Z}\\
-\end{align}
+\end{aligned}
 $$
 and the loss is computed as 
 $$
