@@ -1,4 +1,4 @@
-# Data management and data engineering {.unnumbered}
+# Data Management and Data Engineering {.unnumbered}
 
 In the previous sections we discussed classification with the help of various examples. 
 We did not talk about how we provide the observations/data for our training, validation, and testing.
