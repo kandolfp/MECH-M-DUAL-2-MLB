@@ -50,10 +50,9 @@ We use the possibilities of [`sklearn`](https://scikit-learn.org/stable/) [^skle
 Let us start right away by loading and visualizing the data in a 3D scatter plot (there are 4 features present so one is not shown).
 
 ```{python}
-#| label: fig-clustering-iris
-#| fig-cap: "Iris dataset with 150 samples from three distinct species, _Setosa_, _Versicolor_, and _Virginica_, as a scatter 3D plot along the features sepal length, sepal width, and petal width, the forth feature petal width is not shown."
 #| code-fold: true
 #| code-summary: "Show the code for the figure"
+#| output: false
 import plotly.express as px
 from sklearn.datasets import load_iris
 %config InlineBackend.figure_formats = ["svg"]
@@ -62,14 +61,35 @@ iris = load_iris(as_frame=True)
 iris.frame["target"] = iris.target_names[iris.target]
 df = iris.frame
 
-fig = px.scatter_3d(df, x='sepal length (cm)', y='sepal width (cm)',
-                    z='petal width (cm)', color='target')
+fig = px.scatter_3d(df, x="sepal length (cm)", y="sepal width (cm)",
+                    z="petal width (cm)", color="target")
 camera = dict(
-    eye=dict(x=2, y=2, z=0.1)
+    eye=dict(x=1.45, y=1.45, z=0.1)
 )
 fig.update_layout(scene_camera=camera)
 fig.show()
 ```
+::: {.content-visible when-format="html"}
+```{python}
+#| echo: false
+#| label: fig-clustering-iris
+#| fig-cap: "Iris dataset with 150 samples from three distinct species, _Setosa_, _Versicolor_, and _Virginica_, as a scatter 3D plot along the features sepal length, sepal width, and petal width, the forth feature petal width is not shown."
+fig.show()
+```
+:::
+::: {.content-visible unless-format="html"}
+:::: {#fig-clustering-iris fig-env="figure"}
+```{python}
+#| echo: false
+import plotly.io as pio
+from IPython.display import Image
+img = pio.to_image(fig, format="png", engine="kaleido")
+Image(img)
+```
+
+Iris dataset with 150 samples from three distinct species, _Setosa_, _Versicolor_, and _Virginica_, as a scatter 3D plot along the features sepal length, sepal width, and petal width, the forth feature petal width is not shown.
+::::
+:::
 
 As can be seen in @fig-clustering-iris the three features are enough to easily separate _Sentosa_ and to a very good degree _Versicolor_ from _Virginica_, where the last two have a small overlap in the samples provided. 
 
@@ -327,16 +347,14 @@ plt.show()
 
 Right away we can see that the ears and eyes of the cats show up more pronounced in the second mode @fig-clustering-dvc-wavelet-pca_wavelet-2.
 
-Now how does this influence our classification problem?
+Now, how does this influence our classification problem?
 For this let us first see how easy it is to distinguish the two classes in a scatter plot for the first four modes. 
 
 ```{python}
 #| label: fig-clustering-dvc-wavelet-pca_results_overview
 #| fig-cap: 
 #|   - "First four modes of the raw images for cats and dogs."
-#|   - "First four modes of the wavelet images for cats and dogs."
 #| code-fold: true
-#| layout-ncol: 1
 #| code-summary: "Show the code for the figure"
 import seaborn as sns
 import pandas as pd
@@ -347,24 +365,32 @@ target = ["cat"] * 80 + ["dog"] * 80
 C = U[:, :4].T @ (CD - np.mean(CD))
 df = pd.DataFrame(C.T, columns=["PV1", "PV2", "PV3", "PV4"])
 df["target"] = target
+_ = sns.pairplot(df, hue="target", height=1.45)
+```
+
+```{python}
+#| label: fig-clustering-dvc-wavelet-pca_results_overview_wave
+#| fig-cap: 
+#|   - "First four modes of the wavelet images for cats and dogs."
+#| code-fold: true
+#| code-summary: "Show the code for the figure"
+import seaborn as sns
+import pandas as pd
+%config InlineBackend.figure_formats = ["svg"]
+
 
 C_w = U_w[:, :4].T @ (CD_w - np.mean(CD))
 df_w = pd.DataFrame(C_w.T, columns=["PV1", "PV2", "PV3", "PV4"])
 df_w["target"] = target
-
-_ = sns.pairplot(df, hue="target", height=1.45)
 _ = sns.pairplot(df_w, hue="target", height=1.45)
 ```
-The two figures above give us a good idea what the different principal values can tell us. 
+The two figures (@fig-clustering-dvc-wavelet-pca_results_overview, @fig-clustering-dvc-wavelet-pca_results_overview_wave) give us a good idea what the different principal values can tell us. 
 It is quite clear, that the first mode is not of much use for differentiation of the two classes.
 In general the second mode seems to work best (the ears), in contrast to the raw image we can also see that the wavelet basis is slightly better for the separation. 
 ```{python}
-#| label: fig-clustering-dvc-wavelet-pca_results
-#| fig-cap: 
-#|    - "Scatter plots of modes 2 to 4 for the raw images."
-#|    - "Scatter plots of modes 2 to 4 for the wavelet images."
 #| code-fold: true
 #| code-summary: "Show the code for the figures"
+#| output: false
 import plotly.express as px
 
 
@@ -373,6 +399,44 @@ fig.show()
 fig = px.scatter_3d(df_w, x="PV2", y="PV3", z="PV4", color="target")
 fig.show()
 ```
+
+::: {.content-visible when-format="html"}
+```{python}
+#| echo: false
+#| label: fig-clustering-dvc-wavelet-pca_results
+#| fig-cap: 
+#|    - "Scatter plots of modes 2 to 4 for the raw images."
+#|    - "Scatter plots of modes 2 to 4 for the wavelet images."
+fig = px.scatter_3d(df, x='PV2', y='PV3', z='PV4', color="target")
+fig.show()
+fig = px.scatter_3d(df_w, x="PV2", y="PV3", z="PV4", color="target")
+fig.show()
+```
+:::
+::: {.content-visible unless-format="html"}
+:::: {#fig-clustering-iris fig-env="figure"}
+```{python}
+#| echo: false
+import plotly.io as pio
+from IPython.display import Image
+fig = px.scatter_3d(df, x='PV2', y='PV3', z='PV4', color="target")
+img = pio.to_image(fig, format="png", engine="kaleido")
+Image(img)
+```
+
+Scatter plots of modes 2 to 4 for the raw images.
+::::
+:::: {#fig-clustering-iris fig-env="figure"}
+```{python}
+#| echo: false
+fig = px.scatter_3d(df_w, x="PV2", y="PV3", z="PV4", color="target")
+img = pio.to_image(fig, format="png", engine="kaleido")
+Image(img)
+```
+
+Scatter plots of modes 2 to 4 for the wavelet images.
+::::
+:::
 
 Now that we have an idea what we are dealing with, we can start looking into the two previously described paths in machine learning.
 The difference between supervised and unsupervised learning can be summarized by the following two images.
@@ -385,7 +449,6 @@ The difference between supervised and unsupervised learning can be summarized by
 #| code-fold: true
 #| layout-ncol: 2
 #| code-summary: "Show the code for the figure"
-import plotly.express as px
 import matplotlib.pyplot as plt
 %config InlineBackend.figure_formats = ["svg"]
 
