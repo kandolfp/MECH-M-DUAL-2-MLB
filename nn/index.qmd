@@ -44,7 +44,7 @@ This is often done via backpropagation algorithms and stochastic gradient descen
 
 ## Let us try to demystify the mathematics behind NN
 
-The main building block is a so called _perceptron_ (a single neutron) that takes its set of inputs, multiplies each by a weight, sums them up, adds a bias term, and applies a function to produce an output.
+The main building block is a so called _perceptron_ (a single neutron, see @fig-nn-perceptron) that takes its set of inputs, multiplies each by a weight, sums them up, adds a bias term, and applies a function to produce an output.
 
 ![Basic building block _perceptron_ with its input, weights, bias, and activation function.](../_assets/nn/perceptron){#fig-nn-perceptron}
 
@@ -52,7 +52,7 @@ The main building block is a so called _perceptron_ (a single neutron) that take
 A perceptron is the equivalent of the `scikit-learn` classifier [SGDClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDClassifier.html) with `loss="perceptron"`.
 :::
 
-For multiple perceptions in one layer we get weights for each of them and they are combined into the matrix $A$.
+For multiple perceptions in one layer we get weights for each of them and they are combined into the matrix $A$, see @fig-nn-metrices_dims.
 
 ![First weight matrix for a generic NN, where no connection is present a 0 is inserted.](../_assets/nn/generic_matrices_dims){#fig-nn-metrices_dims}
 
@@ -65,15 +65,15 @@ $$
 The matrices might be sparse or dense, depending on the connections they describe.
 The resulting system is most likely under-determined and requires some constraints to select a _unique solution_, see @Kandolf_GDM.
 
-To make it more hands on, let us considering a one layer NN for our cats and dogs example with the following structure.
+To make it more hands on, let us considering a one layer NN for our cats and dogs example with the structure illustrated in @fig-nn-cvd.
 
 ![A single layer structure for the cats vs. dogs classification.](../_assets/nn/cats_vs_dogs){#fig-nn-cvd}
 
-Or mathematically,
+Mathematically, this becomes
 $$
 y = A x.
 $$
-and to connect back to the perceptron, $A = w^\mathsf{T}$.
+and to connects back to the perceptron as $A = w^\mathsf{T}$.
 
 One possible solution is via the Moore-Penrose pseudo inverse[^pinv] $A = Y X^\dagger$, where all our training data is combined into $X$ and $Y$ are the corresponding labels.
 This in return, tells us that a single layer linear NN can be used to build a least-square fit.
@@ -149,4 +149,4 @@ Therefore, the extension to _arbitrary_ activation functions is a natural progre
 
 
 [^cpower]: As a reference: The IBM Personal Computer (PC) was introduced in 1981, after the first NN.
-[^pinv]: See [@Kandolf_GDM, Definition 4.3] or access it directly via the [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/matrixdc/svd.html#def-pinv)
+[^pinv]: See [@Kandolf_GDM, Definition 4.3] or access it directly via the [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/matrixdc/svd.html#def-pinv)f
