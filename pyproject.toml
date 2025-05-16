@@ -11,7 +11,6 @@ dependencies = [
     "quarto-cli>=1.5.57",
     "pyqt5>=5.15.11",
     "pandas>=2.2.3",
-    "plotly>=5.24.1",
     "scipy>=1.14.1",
     "imageio>=2.35.1",
     "owid-catalog>=0.3.11",
@@ -34,6 +33,8 @@ dependencies = [
     "torch[cpu]>=2.6.0",
     "torchvision>=0.21.0",
     "torchviz>=0.0.3",
+    "kaleido==0.2.1",
+    "plotly>=6.0.1",
 ]
 requires-python = "==3.12.*"
 readme = "README.md"

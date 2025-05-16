@@ -5,7 +5,7 @@
 groups = ["default"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:5fe89e5e7add1d7c291d37e449873380f06e1300c6bac021d322997885181f6c"
+content_hash = "sha256:68c7b4560d482aa447195d27c86a351bd5656dbfeab181c02924935ad051678d"
 
 [[metadata.targets]]
 requires_python = "==3.12.*"
@@ -1223,6 +1223,23 @@ files = [
 ]
 
 [[package]]
+name = "kaleido"
+version = "0.2.1"
+summary = "Static image export for web-based visualization libraries with zero dependencies"
+groups = ["default"]
+dependencies = [
+    "pathlib; python_version < \"3.4\"",
+]
+files = [
+    {file = "kaleido-0.2.1-py2.py3-none-macosx_10_11_x86_64.whl", hash = "sha256:ca6f73e7ff00aaebf2843f73f1d3bacde1930ef5041093fe76b83a15785049a7"},
+    {file = "kaleido-0.2.1-py2.py3-none-macosx_11_0_arm64.whl", hash = "sha256:bb9a5d1f710357d5d432ee240ef6658a6d124c3e610935817b4b42da9c787c05"},
+    {file = "kaleido-0.2.1-py2.py3-none-manylinux1_x86_64.whl", hash = "sha256:aa21cf1bf1c78f8fa50a9f7d45e1003c387bd3d6fe0a767cfbbf344b95bdc3a8"},
+    {file = "kaleido-0.2.1-py2.py3-none-manylinux2014_aarch64.whl", hash = "sha256:845819844c8082c9469d9c17e42621fbf85c2b237ef8a86ec8a8527f98b6512a"},
+    {file = "kaleido-0.2.1-py2.py3-none-win32.whl", hash = "sha256:ecc72635860be616c6b7161807a65c0dbd9b90c6437ac96965831e2e24066552"},
+    {file = "kaleido-0.2.1-py2.py3-none-win_amd64.whl", hash = "sha256:4670985f28913c2d063c5734d125ecc28e40810141bdb0a46f15b76c1d45f23c"},
+]
+
+[[package]]
 name = "keras"
 version = "3.9.1"
 requires_python = ">=3.9"
@@ -1475,6 +1492,17 @@ groups = ["default"]
 files = [
     {file = "namex-0.0.8-py3-none-any.whl", hash = "sha256:7ddb6c2bb0e753a311b7590f84f6da659dd0c05e65cb89d519d54c0a250c0487"},
     {file = "namex-0.0.8.tar.gz", hash = "sha256:32a50f6c565c0bb10aa76298c959507abdc0e850efe085dc38f3440fcb3aa90b"},
+]
+
+[[package]]
+name = "narwhals"
+version = "1.39.0"
+requires_python = ">=3.8"
+summary = "Extremely lightweight compatibility layer between dataframe libraries"
+groups = ["default"]
+files = [
+    {file = "narwhals-1.39.0-py3-none-any.whl", hash = "sha256:50b6778f4b4249eb86c88dd17c3907dd004a16ec25b02d5effaf226a2bcfb940"},
+    {file = "narwhals-1.39.0.tar.gz", hash = "sha256:6f114def701fc6a23b0523ad53700ae545ad3f5ece041c64dc3ad59e699da43f"},
 ]
 
 [[package]]
@@ -2077,17 +2105,17 @@ files = [
 
 [[package]]
 name = "plotly"
-version = "5.24.1"
+version = "6.0.1"
 requires_python = ">=3.8"
-summary = "An open-source, interactive data visualization library for Python"
+summary = "An open-source interactive data visualization library for Python"
 groups = ["default"]
 dependencies = [
+    "narwhals>=1.15.1",
     "packaging",
-    "tenacity>=6.2.0",
 ]
 files = [
-    {file = "plotly-5.24.1-py3-none-any.whl", hash = "sha256:f67073a1e637eb0dc3e46324d9d51e2fe76e9727c892dde64ddf1e1b51f29089"},
-    {file = "plotly-5.24.1.tar.gz", hash = "sha256:dbc8ac8339d248a4bcc36e08a5659bacfe1b079390b8953533f4eb22169b4bae"},
+    {file = "plotly-6.0.1-py3-none-any.whl", hash = "sha256:4714db20fea57a435692c548a4eb4fae454f7daddf15f8d8ba7e1045681d7768"},
+    {file = "plotly-6.0.1.tar.gz", hash = "sha256:dd8400229872b6e3c964b099be699f8d00c489a974f2cfccfad5e8240873366b"},
 ]
 
 [[package]]
@@ -2432,7 +2460,7 @@ files = [
 
 [[package]]
 name = "quarto-cli"
-version = "1.7.29"
+version = "1.7.31"
 summary = "Open-source scientific and technical publishing system built on Pandoc."
 groups = ["default"]
 dependencies = [
@@ -2441,7 +2469,7 @@ dependencies = [
     "wheel",
 ]
 files = [
-    {file = "quarto_cli-1.7.29.tar.gz", hash = "sha256:253fde39e5d26d0e041e14749d281ee98e9fcd9ea1a626405ea92c5cc8cee0d5"},
+    {file = "quarto_cli-1.7.31.tar.gz", hash = "sha256:47f6f6af0cfdb8b0b6a693edc88c63ec86d01f60545cec28b624b84fd6e04bb5"},
 ]
 
 [[package]]
@@ -2764,17 +2792,6 @@ groups = ["default"]
 files = [
     {file = "tabulate-0.9.0-py3-none-any.whl", hash = "sha256:024ca478df22e9340661486f85298cff5f6dcdba14f3813e8830015b9ed1948f"},
     {file = "tabulate-0.9.0.tar.gz", hash = "sha256:0095b12bf5966de529c0feb1fa08671671b3368eec77d7ef7ab114be2c068b3c"},
-]
-
-[[package]]
-name = "tenacity"
-version = "9.0.0"
-requires_python = ">=3.8"
-summary = "Retry code until it succeeds"
-groups = ["default"]
-files = [
-    {file = "tenacity-9.0.0-py3-none-any.whl", hash = "sha256:93de0c98785b27fcf659856aa9f54bfbd399e29969b0621bc7f762bd441b4539"},
-    {file = "tenacity-9.0.0.tar.gz", hash = "sha256:807f37ca97d62aa361264d497b0e31e92b8027044942bfa756160d908320d73b"},
 ]
 
 [[package]]
