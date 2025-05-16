@@ -90,7 +90,7 @@ with open("model.dot", "w") as f:
 ```{dot}
 //| label: fig-appendix-keras-model-visual
 //| fig-cap: "Model with all its parameters visualized."
-//|file: model.dot
+//| file: model.dot
 ```
 
 ::: {.callout-caution appearance="simple" icon=false}
