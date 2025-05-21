@@ -5,7 +5,7 @@ It is very unlikely that we are the first to look at a particular class of probl
 In addition, most of the time we will not have enough training data to do a _full training_.
 If we find such a NN we can look at the architecture, reuse parts of it, build on the training included and so forth.
 This technique is called _transfer learning_.
-As mentioned, if our training set is small is small, this is especially beneficial.
+As mentioned, if our training set is small, this is especially beneficial.
 
 The main scenarios for transfer learning are:
 
