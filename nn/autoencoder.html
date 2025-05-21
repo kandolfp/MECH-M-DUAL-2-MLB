@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
+<meta name="generator" content="quarto-1.7.31">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -93,14 +93,14 @@ div.csl-indent {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-748b535e376f14d4692bf2b2e5fd6380.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-c699154ef242142b43c34bd36ab18235.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-5246a6ab9276c4ca0c711472a3264538.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-c699154ef242142b43c34bd36ab18235.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-91269faae8b05e90b72f852b441977e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-e71bfb4db8e3d607a96f8e3c6f00daa1.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-91269faae8b05e90b72f852b441977e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
@@ -319,6 +319,7 @@ window.Quarto = {
       toggleColorMode(toAlternate);
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
     };
     queryPrefersDark.addEventListener("change", e => {
       if(window.localStorage.getItem("quarto-color-scheme") !== null)
@@ -421,7 +422,7 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../data/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Data management and data engineering</span></a>
+ <span class="menu-text">Data Management and Data Engineering</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -581,10 +582,10 @@ Figure&nbsp;9.1: General structure of an <em>autoencoder</em> with the <em>encod
 <p>During the training the weights of the (two) neural networks are learned by minimizing a loss function that measures the difference between the input <span class="math inline">\(x\)</span> and the reconstruction <span class="math inline">\(z\)</span>, e.g.&nbsp;<span class="math inline">\(\operatorname{argmin}\|z - x\|^2\)</span>.</p>
 <p>To connect this concept back to PCA and what we discussed in the <em>Eigenfaces Example</em><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, where we used truncated SVD to project into a low dimensional space and than back to reconstruct the image, we formulate it in a more mathematical fashion.</p>
 <p>We call the encoder <span class="math inline">\(y=f_\Theta(x)\)</span> and the decoder <span class="math inline">\(z=g_\Theta(y)\)</span>. Therefore, <span class="math inline">\(z=(g \circ f)(x) = g(f(x))\)</span> and <span class="math display">\[
-\begin{align}
+\begin{aligned}
 f : \mathcal{X} \to \mathcal{Y}\\
 g : \mathcal{Y} \to \mathcal{Z}\\
-\end{align}
+\end{aligned}
 \]</span> and the loss is computed as <span class="math display">\[
 \mathscr{L}(x, g(f(x))),
 \]</span> with an appropriate loss function <span class="math inline">\(\mathscr{L}\)</span>.</p>
@@ -615,7 +616,7 @@ Note
 </ol>
 <p>To illustrate this we construct an autoencoder for denoising the MNIST dataset we have seen before (<a href="../clustering/unsupervised.html#sec-clustering-ul-me" class="quarto-xref"><span>Section 1.5</span></a>).</p>
 <p>First, we need to prepare and augment the data with some noise.</p>
-<div id="d38f7295" class="cell" data-execution_count="1">
+<div id="a05a682f" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="annotated-cell-1"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-1-1"><a href="#annotated-cell-1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_openml</span>
 <span id="annotated-cell-1-2"><a href="#annotated-cell-1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
 <span id="annotated-cell-1-3"><a href="#annotated-cell-1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn <span class="im">as</span> nn</span>
@@ -658,7 +659,7 @@ Note
 </div>
 </div>
 <p>Next we slightly modify our training function to suit our new task.</p>
-<div id="2b9c91a7" class="cell" data-execution_count="2">
+<div id="a9512293" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Show the code for the training loop</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> train_model(model, train_dl, val_dl, loss_fn, optimizer,</span>
@@ -694,7 +695,7 @@ Note
 </details>
 </div>
 <p>Our autoencoder is quite simple with just 3 stages per encoder.</p>
-<div id="51df9ce2" class="cell" data-execution_count="3">
+<div id="d7967985" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="annotated-cell-3"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-3-1"><a href="#annotated-cell-3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> AutoEncoder(nn.Module):</span>
 <span id="annotated-cell-3-2"><a href="#annotated-cell-3-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
 <span id="annotated-cell-3-3"><a href="#annotated-cell-3-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>(AutoEncoder, <span class="va">self</span>).<span class="fu">__init__</span>()</span>
@@ -730,7 +731,7 @@ Note
 </div>
 </div>
 <p>Finally we need to train our model.</p>
-<div id="14a81ccd" class="cell" data-execution_count="4">
+<div id="c6949d54" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> AutoEncoder()</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>loss_fn <span class="op">=</span> torch.nn.MSELoss()</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>optimizer <span class="op">=</span> torch.optim.Adam(model.parameters())</span>

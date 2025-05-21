@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
+<meta name="generator" content="quarto-1.7.31">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -93,14 +93,14 @@ div.csl-indent {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-748b535e376f14d4692bf2b2e5fd6380.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-c699154ef242142b43c34bd36ab18235.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-5246a6ab9276c4ca0c711472a3264538.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-c699154ef242142b43c34bd36ab18235.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-91269faae8b05e90b72f852b441977e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-e71bfb4db8e3d607a96f8e3c6f00daa1.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-91269faae8b05e90b72f852b441977e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
@@ -319,6 +319,7 @@ window.Quarto = {
       toggleColorMode(toAlternate);
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
     };
     queryPrefersDark.addEventListener("change", e => {
       if(window.localStorage.getItem("quarto-color-scheme") !== null)
@@ -421,7 +422,7 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../data/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Data management and data engineering</span></a>
+ <span class="menu-text">Data Management and Data Engineering</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -590,7 +591,7 @@ Figure&nbsp;1: Illustration of a generic Neural Network. On the left in green we
 <p>The training of the network uses the labelled data to find the best weights such that the labels are recovered best from the observations (input), i.e.&nbsp;map <span class="math inline">\(x_j\)</span> to <span class="math inline">\(y_j\)</span>. This is often done via backpropagation algorithms and stochastic gradient descent.</p>
 <section id="let-us-try-to-demystify-the-mathematics-behind-nn" class="level2">
 <h2 class="anchored" data-anchor-id="let-us-try-to-demystify-the-mathematics-behind-nn">Let us try to demystify the mathematics behind NN</h2>
-<p>The main building block is a so called <em>perceptron</em> (a single neutron) that takes its set of inputs, multiplies each by a weight, sums them up, adds a bias term, and applies a function to produce an output.</p>
+<p>The main building block is a so called <em>perceptron</em> (a single neutron, see <a href="#fig-nn-perceptron" class="quarto-xref">Figure&nbsp;<span>2</span></a>) that takes its set of inputs, multiplies each by a weight, sums them up, adds a bias term, and applies a function to produce an output.</p>
 <div id="fig-nn-perceptron" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-nn-perceptron-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -614,7 +615,7 @@ Note
 <p>A perceptron is the equivalent of the <code>scikit-learn</code> classifier <a href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDClassifier.html">SGDClassifier</a> with <code>loss="perceptron"</code>.</p>
 </div>
 </div>
-<p>For multiple perceptions in one layer we get weights for each of them and they are combined into the matrix <span class="math inline">\(A\)</span>.</p>
+<p>For multiple perceptions in one layer we get weights for each of them and they are combined into the matrix <span class="math inline">\(A\)</span>, see <a href="#fig-nn-metrices_dims" class="quarto-xref">Figure&nbsp;<span>3</span></a>.</p>
 <div id="fig-nn-metrices_dims" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-nn-metrices_dims-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -629,7 +630,7 @@ Figure&nbsp;3: First weight matrix for a generic NN, where no connection is pres
 y = A_m A_{m-1} \cdots A_2 A_1 x.
 \]</span></p>
 <p>The matrices might be sparse or dense, depending on the connections they describe. The resulting system is most likely under-determined and requires some constraints to select a <em>unique solution</em>, see <span class="citation" data-cites="Kandolf_GDM">Kandolf (<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">2025</a>)</span>.</p>
-<p>To make it more hands on, let us considering a one layer NN for our cats and dogs example with the following structure.</p>
+<p>To make it more hands on, let us considering a one layer NN for our cats and dogs example with the structure illustrated in <a href="#fig-nn-cvd" class="quarto-xref">Figure&nbsp;<span>4</span></a>.</p>
 <div id="fig-nn-cvd" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-nn-cvd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -640,9 +641,9 @@ Figure&nbsp;4: A single layer structure for the cats vs.&nbsp;dogs classificatio
 </figcaption>
 </figure>
 </div>
-<p>Or mathematically, <span class="math display">\[
+<p>Mathematically, this becomes <span class="math display">\[
 y = A x.
-\]</span> and to connect back to the perceptron, <span class="math inline">\(A = w^\mathsf{T}\)</span>.</p>
+\]</span> and to connects back to the perceptron as <span class="math inline">\(A = w^\mathsf{T}\)</span>.</p>
 <p>One possible solution is via the Moore-Penrose pseudo inverse<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> <span class="math inline">\(A = Y X^\dagger\)</span>, where all our training data is combined into <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are the corresponding labels. This in return, tells us that a single layer linear NN can be used to build a least-square fit.</p>
 <p>Of course there are other possibilities to solve this system (as discussed in <span class="citation" data-cites="Kandolf_GDM">Kandolf (<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">2025</a>)</span>), e.g.&nbsp;the LASSO method or RIDGE can be used to promote certain properties on the matrix <span class="math inline">\(A\)</span>.</p>
 <div class="cell" data-execution_count="1">
@@ -760,7 +761,7 @@ Krizhevsky, Alex, Ilya Sutskever, and Geoffrey E Hinton. 2012. <span>“ImageNet
 <hr>
 <ol>
 <li id="fn1"><p>As a reference: The IBM Personal Computer (PC) was introduced in 1981, after the first NN.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>See <span class="citation" data-cites="Kandolf_GDM">(<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">Kandolf 2025</a>, Definition 4.3)</span> or access it directly via the <a href="https://kandolfp.github.io/MECH-M-DUAL-1-DBM/matrixdc/svd.html#def-pinv">Link</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>See <span class="citation" data-cites="Kandolf_GDM">(<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">Kandolf 2025</a>, Definition 4.3)</span> or access it directly via the <a href="https://kandolfp.github.io/MECH-M-DUAL-1-DBM/matrixdc/svd.html#def-pinv">Link</a>f<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 

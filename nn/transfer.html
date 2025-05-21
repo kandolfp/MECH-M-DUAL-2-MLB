@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
+<meta name="generator" content="quarto-1.7.31">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -93,14 +93,14 @@ div.csl-indent {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-748b535e376f14d4692bf2b2e5fd6380.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-c699154ef242142b43c34bd36ab18235.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-5246a6ab9276c4ca0c711472a3264538.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-c699154ef242142b43c34bd36ab18235.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-91269faae8b05e90b72f852b441977e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-e71bfb4db8e3d607a96f8e3c6f00daa1.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-91269faae8b05e90b72f852b441977e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
@@ -319,6 +319,7 @@ window.Quarto = {
       toggleColorMode(toAlternate);
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
     };
     queryPrefersDark.addEventListener("change", e => {
       if(window.localStorage.getItem("quarto-color-scheme") !== null)
@@ -421,7 +422,7 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../data/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Data management and data engineering</span></a>
+ <span class="menu-text">Data Management and Data Engineering</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -600,7 +601,7 @@ window.Quarto = {
 <section id="data-preparation" class="level3" data-number="10.1.2">
 <h3 data-number="10.1.2" class="anchored" data-anchor-id="data-preparation"><span class="header-section-number">10.1.2</span> Data preparation</h3>
 <p>As the ImageNet dataset uses <em>normal</em> images we do not use our images in the wavelet basis but our original images.</p>
-<div id="7121b68b" class="cell" data-execution_count="1">
+<div id="4eba82b8" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code for loading the dataset</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -636,7 +637,7 @@ window.Quarto = {
 </details>
 </div>
 <p>First, we need to make sure our input is in a format that can be handled by the NN. As the input size of the image is <span class="math inline">\(256 \times 256\)</span> with RGB channels and with specific normalizations. To do this we use some helper functions from the <code>torchvision.transforms.v2</code> module.</p>
-<div id="6b2f7b47" class="cell" data-execution_count="2">
+<div id="8dc348cd" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="annotated-cell-2"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-2-1" class="code-annotation-target"><a href="#annotated-cell-2-1" aria-hidden="true" tabindex="-1"></a>T <span class="op">=</span> transforms.Compose([</span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-2-2" class="code-annotation-target"><a href="#annotated-cell-2-2" aria-hidden="true" tabindex="-1"></a>    transforms.ToPILImage(),</span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-2-3" class="code-annotation-target"><a href="#annotated-cell-2-3" aria-hidden="true" tabindex="-1"></a>    transforms.Grayscale(num_output_channels<span class="op">=</span><span class="dv">3</span>),</span>
@@ -677,7 +678,7 @@ The transform `ToTensor()` is deprecated and will be removed in a future release
 </div>
 </div>
 <p>Some steps can not be directly be applied in the above pipeline, therefore we reshape the flattened image to a square and rotate it before we apply the pipeline to each image.</p>
-<div id="7f90d317" class="cell" data-execution_count="3">
+<div id="0a41e70b" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>X_train_tensor <span class="op">=</span> torch.tensor(np.array(</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    [T(img.reshape((size, size)).T) <span class="cf">for</span> img <span class="kw">in</span> X_train]))</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>y_train_tensor <span class="op">=</span> torch.tensor(y_train, dtype<span class="op">=</span>torch.uint8)</span>
@@ -687,7 +688,7 @@ The transform `ToTensor()` is deprecated and will be removed in a future release
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>dataset <span class="op">=</span> TensorDataset(X_train_tensor, y_train_tensor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The functions for preparing the training and validation dataset, the training loop and plotting stay the same.</p>
-<div id="c9f69c5c" class="cell" data-execution_count="4">
+<div id="f381c1f5" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Show the code for some basic functions for training</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> myplot(y):</span>
@@ -757,7 +758,7 @@ The transform `ToTensor()` is deprecated and will be removed in a future release
 <section id="model-loading-modification-and-training" class="level3" data-number="10.1.3">
 <h3 data-number="10.1.3" class="anchored" data-anchor-id="model-loading-modification-and-training"><span class="header-section-number">10.1.3</span> Model loading, modification, and training</h3>
 <p>Now, we can finally load our pertained model and modify its final layer.</p>
-<div id="69d205a9" class="cell styled-output" data-execution_count="5">
+<div id="17df833d" class="cell styled-output" data-execution_count="5">
 <div class="sourceCode cell-code" id="annotated-cell-5"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-5-1" class="code-annotation-target"><a href="#annotated-cell-5-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> tv.models.efficientnet_b0(weights<span class="op">=</span><span class="st">'IMAGENET1K_V1'</span>)</span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-5-2" class="code-annotation-target"><a href="#annotated-cell-5-2" aria-hidden="true" tabindex="-1"></a>num_classes <span class="op">=</span> <span class="dv">2</span></span>
 <span id="annotated-cell-5-3"><a href="#annotated-cell-5-3" aria-hidden="true" tabindex="-1"></a>in_features <span class="op">=</span> model.classifier[<span class="dv">1</span>].in_features</span>
@@ -789,7 +790,7 @@ The transform `ToTensor()` is deprecated and will be removed in a future release
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Downloading: "https://download.pytorch.org/models/efficientnet_b0_rwightman-7f5810bc.pth" to /home/runner/.cache/torch/hub/checkpoints/efficientnet_b0_rwightman-7f5810bc.pth
-  0%|          | 0.00/20.5M [00:00&lt;?, ?B/s]100%|██████████| 20.5M/20.5M [00:00&lt;00:00, 332MB/s]</code></pre>
+  0%|          | 0.00/20.5M [00:00&lt;?, ?B/s] 76%|███████▋  | 15.6M/20.5M [00:00&lt;00:00, 164MB/s]100%|██████████| 20.5M/20.5M [00:00&lt;00:00, 185MB/s]</code></pre>
 </div>
 </div>
 <p>Now that we have our model and it was trained for 1ß epochs we can have a look at its performance.</p>
