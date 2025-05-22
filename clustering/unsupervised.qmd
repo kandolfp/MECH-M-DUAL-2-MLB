@@ -319,9 +319,9 @@ To illustrate the agglomerative approach and the difference in norms we use four
 
 ::: {#fig-clustering-unsupervised-dendrogram-explained}
 
-![Use two norm or euclidean norm to compute the distance - $\| \cdot \|_2$](../_assets/clustering/dendrogram_euclidean){#fig-clustering-unsupervised-dendrogram-explained-1}
+![Use two norm or euclidean norm to compute the distance - $\| \cdot \|_2$](../_assets/clustering/dendrogram_euclidean){#fig-clustering-unsupervised-dendrogram-explained-1 width=4.58in}
 
-![Use one or cityblock norm to compute the distance - $\| \cdot \|_1$](../_assets/clustering/dendrogram_city){#fig-clustering-unsupervised-dendrogram-explained-2}
+![Use one or cityblock norm to compute the distance - $\| \cdot \|_1$](../_assets/clustering/dendrogram_city){#fig-clustering-unsupervised-dendrogram-explained-2 width=4.62in}
 
 We always combine the two nearest points and replace them with the point in the middle. This iteration continues until only one point is left.
 The Dendrogram is build according to the order of points chosen.

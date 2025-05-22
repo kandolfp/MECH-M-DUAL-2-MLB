@@ -377,7 +377,7 @@ The rows represent the true observations in each class, and the columns the pred
 
 In our $2\times 2$ case we get
 
-![Names and abbreviations for a $2\times 2$ confusion matrix together with an example form our test case.](../_assets/clustering/confusion_matrix){#fig-clustering-sl-confusionmatrix}
+![Names and abbreviations for a $2\times 2$ confusion matrix together with an example form our test case.](../_assets/clustering/confusion_matrix){#fig-clustering-sl-confusionmatrix width=2.88in}
 
 but it can be extended for multi-class segmentation.
 
@@ -496,9 +496,9 @@ There is a natural degree of freedom in this selection of the hyperplane, see @f
 
 ::: {#fig-clustering-sl-svm}
 
-![Hyperplane with small margin.](../_assets/clustering/SVM_hyperplain1){#fig-clustering-sl-svm-1}
+![Hyperplane with small margin.](../_assets/clustering/SVM_hyperplain1){#fig-clustering-sl-svm-1 width=4.70in}
 
-![Hyperplane with large margin.](../_assets/clustering/SVM_hyperplain2){#fig-clustering-sl-svm-2}
+![Hyperplane with large margin.](../_assets/clustering/SVM_hyperplain2){#fig-clustering-sl-svm-2 width=4.68in}
 
 We see the hyperplane for the SVM classification scheme. The margin is much larger in the second choice.
 :::
@@ -1226,7 +1226,7 @@ _Pasting_ uses sampling without replacement and therefore an observation can be 
 
 To predict, we can use hard or soft voting from above.
 
-![Illustration of the random sampling for bagging and pasting in ensemble classifiers.](../_assets/clustering/ensemble_sampling){#fig-clustering-el-sampling}
+![Illustration of the random sampling for bagging and pasting in ensemble classifiers.](../_assets/clustering/ensemble_sampling){#fig-clustering-el-sampling width=3.36in}
 
 With these sampling methods it is possible to use the _out-of-bag_ observations (everything that is not used for a particular training) for evaluation of the trained classifier.
 This is called _out-of-bag evaluation_.
@@ -1290,7 +1290,7 @@ The general idea of _stacking_ is, to use a _blender_ for combining the results 
 The blender is not just a linear combination like for soft/hard voting but another classifier/model to perform a hopefully better combination.
 Of course we can stack this approach and produce multiple layers before we combine them into a single result. 
 
-![Illustration of an $m$ layer stacking with various classifiers in each layer.](../_assets/clustering/ensemble_stacking){#fig-clustering-el-stacking}
+![Illustration of an $m$ layer stacking with various classifiers in each layer.](../_assets/clustering/ensemble_stacking){#fig-clustering-el-stacking width=4.58in}
 
 In `scikit-learn` this is can be found in the [`sklearn.ensemble.StackingClassifier`](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.StackingClassifier.html#sklearn.ensemble.StackingClassifier) class.
 ::::

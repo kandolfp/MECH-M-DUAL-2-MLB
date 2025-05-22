@@ -46,7 +46,7 @@ This is often done via backpropagation algorithms and stochastic gradient descen
 
 The main building block is a so called _perceptron_ (a single neutron, see @fig-nn-perceptron) that takes its set of inputs, multiplies each by a weight, sums them up, adds a bias term, and applies a function to produce an output.
 
-![Basic building block _perceptron_ with its input, weights, bias, and activation function.](../_assets/nn/perceptron){#fig-nn-perceptron}
+![Basic building block _perceptron_ with its input, weights, bias, and activation function.](../_assets/nn/perceptron){#fig-nn-perceptron width=4.96in}
 
 ::: {.callout-note}
 A perceptron is the equivalent of the `scikit-learn` classifier [SGDClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDClassifier.html) with `loss="perceptron"`.
@@ -67,7 +67,7 @@ The resulting system is most likely under-determined and requires some constrain
 
 To make it more hands on, let us considering a one layer NN for our cats and dogs example with the structure illustrated in @fig-nn-cvd.
 
-![A single layer structure for the cats vs. dogs classification.](../_assets/nn/cats_vs_dogs){#fig-nn-cvd}
+![A single layer structure for the cats vs. dogs classification.](../_assets/nn/cats_vs_dogs){#fig-nn-cvd width=5.13in}
 
 Mathematically, this becomes
 $$

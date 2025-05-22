@@ -89,7 +89,7 @@ Before we build our first NN in the next section, we need to get a better unders
 As discussed, these parameters are the matrices combining the weights and the biases. 
 Of course they are related to the neurons. 
 
-![Generic linear NN with weights and biases.](../_assets/nn/generic_nn_get_dim){#fig-nn-nn-get_dim}
+![Generic linear NN with weights and biases.](../_assets/nn/generic_nn_get_dim){#fig-nn-nn-get_dim width=5.78in}
 
 
 ::: {.callout-caution appearance="simple" icon=false}
@@ -595,7 +595,7 @@ $$
 
 To illustrate the procedure we start with the simplest example, illustrated in @fig-nn-nn-backprop_simple.
 
-![One node, one layer model for illustration of the backpropagation algorithm.](../_assets/nn/backprop_simple){#fig-nn-nn-backprop_simple}
+![One node, one layer model for illustration of the backpropagation algorithm.](../_assets/nn/backprop_simple){#fig-nn-nn-backprop_simple width=3.0in}
 
 To get the output $y$ from $x$ the following computation is required
 $$

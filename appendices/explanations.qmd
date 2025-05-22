@@ -140,7 +140,7 @@ The score is on some scale and in the default setting, everything above zero is 
 See @fig-appendices-sl-pvsr-threshold.
 In the presented example we can have a precision from $71\%$ to $100\%$ and at the same time a recall from $100\%$ to $60\%$.
 
-![Some representatives and their score and three different thresholds and the corresponding results for precision and recall.](../_assets/appendices/threshold){#fig-appendices-sl-pvsr-threshold}
+![Some representatives and their score and three different thresholds and the corresponding results for precision and recall.](../_assets/appendices/threshold){#fig-appendices-sl-pvsr-threshold width=4.64in}
 
 ```{python}
 #| code-fold: true

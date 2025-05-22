@@ -75,7 +75,7 @@ Therefore, from the point of view of a CNN but functions work.
 Let us walk through a 2D example, for an input of size $5 \times 5$ and for an averaging kernel (no flipping) of size $2 \times 3$, illustrated in @fig-nn-cnn-convolution.
 
 ::: {#fig-nn-cnn-convolution}
-![](../_assets/nn/convolution)
+![](../_assets/nn/convolution){width=4.65in}
 
 Without any _padding_ and _stride_ equal to $1$ we simply move the kernel over the input starting from the top left.
 Make an element wise multiplication and a summation of all elements.
@@ -199,7 +199,7 @@ The most common pooling function are:
 In image processing the most common form of max pooling is with a $2\times 2$ filter with a stride of $2$, effectively downsampling to $\frac14$ parameters, see @fig-nn-cnn-pooling.
 
 ::: {#fig-nn-cnn-pooling}
-![](../_assets/nn/pooling)
+![](../_assets/nn/pooling){width=5.31in}
 
 For the input on the left we compute two different pooling functions. First max pooling with a $2\times 2$ kernel and stride $2$, second mean with a $2\times2$ kernel and stride $2$.
 :::
