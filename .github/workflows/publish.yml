@@ -44,6 +44,7 @@ jobs:
           pdm install
           pdm add yq
           pdm run quarto install tinytex
+          pdm run quarto install chromium
           pdm run quarto render --to pdf
           TAG=$(git tag -l | tail -n 1)
           FILENAME=$(pdm run yq -r ".book.title" _quarto.yml | tr ' ' '-')
