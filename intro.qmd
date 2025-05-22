@@ -6,11 +6,11 @@ We will always try illustrate the theory directly with [Python](https://www.pyth
 The following books cover large sections of the content and serve as the main references for these notes.
 They are an excellent read to get further into the topics presented, some also include code in Python and MATLAB:
 
-- @Brunton2022
-- @Geron2022-xh
-- @Goodfellow-et-al-2016
-- @Landup
-- @Huyen2022-wh
+- Data-Driven Science and Engineering - Machine Learning, Dynamical Systems, and Control - @Brunton2022
+- Hands-on Machine Learning with Scikit-Learn, Keras, and TensorFlow - @Geron2022-xh
+- Deep Learning - @Goodfellow-et-al-2016
+- Practical Deep Learning for Computer Vision with Python - @Landup
+- Designing Machine Learning Systems - @Huyen2022-wh
 
 
 These notes are intended for engineering students and therefore the mathematical concepts will rarely include rigorous proofs.
