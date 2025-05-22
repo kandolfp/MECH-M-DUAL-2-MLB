@@ -279,9 +279,9 @@ Luckily the `scikit-learn` class/function [`DecisionBoundaryDisplay.from_estimat
 ::::
 :::
 
-[^GEV]: see [@Kandolf_GDM, Definition 3.5] or the direct link [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/matrixdc/eigen.html#generalized-eigenvalue-problem)
+[^GEV]: see [@Kandolf_GDM, Definition 3.5] or the direct [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/matrixdc/eigen.html#generalized-eigenvalue-problem)
 
-[^bayes]: see [@Kandolf_GDM, Theorem 14.4] or the direct link [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/statistics/bayesian.html#def-statistics-bayesianth)
+[^bayes]: see [@Kandolf_GDM, Theorem 14.4] or the direct [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/statistics/bayesian.html#def-statistics-bayesianth)
 
 ## Measuring Performance {#sec-clustering-sl-performance}
 
@@ -476,7 +476,7 @@ An alternative way to look at accuracy for binary classifiers is to look at the 
 It looks at recall (TPR) vs. the _false positive rate_ (FPR).
 Other than that it works similar.
 
-[^SGD]: see [@Kandolf_GDM, Section 6.2] or the direct link [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/regression/nonlinear.html#stochastic-gradient-descent)
+[^SGD]: see [@Kandolf_GDM, Section 6.2] or the direct [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/regression/nonlinear.html#stochastic-gradient-descent)
 
 [^wikicm]: see Wikipedia overview [Link](https://en.wikipedia.org/wiki/Confusion_matrix)
 

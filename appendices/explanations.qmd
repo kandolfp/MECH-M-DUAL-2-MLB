@@ -7,7 +7,7 @@ In this section we collect more detailed explanations to help clear up some thin
 In @sec-clustering-cvd we discuss how to use the wavelet transformation[^wave] to transform the image into a different basis.
 Here are the details of how this is performed, with cat _zero_ as example.
 
-[^wave]: see @Kandolf_GDM, Section 10 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/signal/wavelet.html)
+[^wave]: see @Kandolf_GDM, Section 10 or follow the direct [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/signal/wavelet.html)
 
 ```{python}
 #| label: fig-appendix-clustering-cat-2-wavelet
