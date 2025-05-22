@@ -28,7 +28,7 @@ If you decide not to write your own code but rather use the reference repository
 
 After the redesign we get a structure looking something like the following, see [`22788a6`](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/22788a608b76d0b3180728c36c0351cc531b1def) for reference and file content:
 
-```bash
+```{.bash}
 MLB-DATA$ tree
 
 .
@@ -335,7 +335,7 @@ DEBUG:root: Save clf to skops file dvclive/artifacts/model.skops
 DEBUG:scmrepo.git: Stashing workspace
 DEBUG:scmrepo.git.stash: Stashing changes in 'refs/stash'
 DEBUG:scmrepo.git: Detaching HEAD at 'HEAD'
-DEBUG:scmrepo.git.stash: Applying stash commit '7d0806908ca50c01b5626e944591e138a8cebc28'
+DEBUG:scmrepo.git.stash: Applying stash commit '7d0806908'
 Collecting files and computing hashes in data        |0.00 [00:00,     ?file/s]
 DEBUG:fsspec.memoryfs: open file /.UFCO7_lfUrOd1sAFVpO-vw.tmp
 DEBUG:fsspec.memoryfs: info: memory://.UFCO7_lfUrOd1sAFVpO-vw.tmp
@@ -346,11 +346,11 @@ DEBUG:scmrepo.git.stash: Stashing changes in 'refs/exps/stash'
 DEBUG:scmrepo.git: Restore HEAD to 'main'
 DEBUG:scmrepo.git: Restoring stashed workspace
 DEBUG:scmrepo.git.stash: Popping from stash 'refs/stash'
-DEBUG:scmrepo.git.stash: Applying stash commit '7d0806908ca50c01b5626e944591e138a8cebc28'
+DEBUG:scmrepo.git.stash: Applying stash commit '7d0806908'
 DEBUG:scmrepo.git.stash: Dropping 'refs/stash@{0}'
 DEBUG:scmrepo.git.stash: Dropping 'refs/exps/stash@{0}'
 DEBUG:scmrepo.git: Detaching HEAD at 'f264314e5442315c74c395a89c2c73a3b7269f90'
-DEBUG:scmrepo.git.stash: Applying stash commit 'adac86009edec08745dffc95c3e6eb68c9fb4dcb'
+DEBUG:scmrepo.git.stash: Applying stash commit 'adac86009'
 DEBUG:fsspec.memoryfs: open file /.cSw5cWuYdyH1AkprvFGF8g.tmp
 DEBUG:fsspec.memoryfs: info: memory://.cSw5cWuYdyH1AkprvFGF8g.tmp
 Collecting files and computing hashes in data         0.00 [00:00,     ?file/s]
@@ -387,7 +387,8 @@ dvclive/
 The experiment is automatically added. 
 We can check this with `dvc exp show`
 
-```
+::: {.content-visible when-format="html"}
+```bash
 MLB-DATA$ pdm run dvc exp show
 
  ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── 
@@ -397,8 +398,24 @@ MLB-DATA$ pdm run dvc exp show
   main                       Mar 19, 2025            -           -   -                  -                                   -                                     -                                       -                                     -            -                 -                  sklearn.decomposition.PCA   41                           sklearn.ensemble.VotingClassifier   False                                          ['LinearDiscriminantAnalysis', 'RandomForestClassifier', 'SVC']   sklearn.discriminant_analysis.LinearDiscriminantAnalysis   svd                                           sklearn.ensemble.RandomForestClassifier   500                                             2                                                 6020                                            sklearn.svm.SVC   linear                 True                        6020                        
   └── 9e83c73 [sural-cyma]   10:03 AM                1         0.8   41                 svd                                 500                                   2                                       6020                                  linear       True              6020               sklearn.decomposition.PCA   41                           sklearn.ensemble.VotingClassifier   False                                          ['LinearDiscriminantAnalysis', 'RandomForestClassifier', 'SVC']   sklearn.discriminant_analysis.LinearDiscriminantAnalysis   svd                                           sklearn.ensemble.RandomForestClassifier   500                                             2                                                 6020                                            sklearn.svm.SVC   linear                 True                        6020                        
  ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── 
-
 ```
+:::
+::: {.content-visible unless-format="html"}
+:::: {.callout-note}
+We truncate the output in this format of the notes.
+Please use the above code to view it.
+::::
+```bash
+MLB-DATA$ pdm run dvc exp show
+ ───────────────────────────────────────────────────────────────────────────
+  Experiment                 Created        trainscore   testscore   PCA/n_c
+ ───────────────────────────────────────────────────────────────────────────
+  workspace                  -                       1         0.8   41     
+  main                       Mar 19, 2025            -           -   -      
+  └── 9e83c73 [sural-cyma]   10:03 AM                1         0.8   41     
+ ───────────────────────────────────────────────────────────────────────────
+```
+:::
 
 ::: {.callout-note}
 `dvc exp show` provides an overview of the experiments base on the `git` commit SHAs. The output can be counter intuitive.
@@ -423,14 +440,14 @@ We can see this in the above logger output or via git.
 ```bash
 MLB-DATA$ git lg # <1>
 
-| * 1f2bee5 - (29 hours ago) dvc: commit experiment 44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a - Peter Kandolf
+| * 1f2bee5 - (29 hours ago) dvc: commit experiment 44136fa35 - Authors
 |/  
-* 519a854 - (29 hours ago) feat: include dvc-live - Peter Kandolf
-* f264314 - (2 days ago) feat: add data to dvc - Peter Kandolf
-* df38086 - (2 days ago) feat: init dvc - Peter Kandolf
-* 073fb93 - (2 days ago) fixup! feat: externalize params via omegaconfig - Peter Kandolf
-* 9f7dead - (2 days ago) feat: externalize params via omegaconfig - Peter Kandolf
-* 22788a6 - (2 days ago) init: project - Peter Kandolf
+* 519a854 - (29 hours ago) feat: include dvc-live - Authors
+* f264314 - (2 days ago) feat: add data to dvc - Authors
+* df38086 - (2 days ago) feat: init dvc - Authors
+* 073fb93 - (2 days ago) fixup! feat: externalize params via omegaconfig - Authors
+* 9f7dead - (2 days ago) feat: externalize params via omegaconfig - Authors
+* 22788a6 - (2 days ago) init: project - Authors
 ```
 1. This is a shorthand see[^shorthand].
 
@@ -455,21 +472,21 @@ We can also see this in the `git reflog` (compare above output).
 MLB-DATA$ git reflog
 
 519a854 (HEAD -> main) HEAD@{0}: dvc: Restore HEAD to 'main'
-1f2bee5 HEAD@{1}: commit: dvc: commit experiment 44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a
-519a854 (HEAD -> main) HEAD@{2}: checkout: moving from main to 519a8544c82667cec5356f92ddde77993f0a0e76
+1f2bee5 HEAD@{1}: commit: dvc: commit experiment 44136fa355b3678
+519a854 (HEAD -> main) HEAD@{2}: checkout: moving from main to 519a8544c82667
 519a854 (HEAD -> main) HEAD@{3}: dvc: Restore HEAD to 'main'
-519a854 (HEAD -> main) HEAD@{4}: checkout: moving from main to 519a8544c82667cec5356f92ddde77993f0a0e76
+519a854 (HEAD -> main) HEAD@{4}: checkout: moving from main to 519a8544c82667
 519a854 (HEAD -> main) HEAD@{5}: commit: feat: include dvc-live
 f264314 HEAD@{6}: dvc: Restore HEAD to 'main'
-9e83c73 HEAD@{7}: commit: dvc: commit experiment 44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a
-f264314 HEAD@{8}: checkout: moving from main to f264314e5442315c74c395a89c2c73a3b7269f90
+9e83c73 HEAD@{7}: commit: dvc: commit experiment 44136fa355b3678
+f264314 HEAD@{8}: checkout: moving from main to f264314e5442315
 f264314 HEAD@{9}: dvc: Restore HEAD to 'main'
-f264314 HEAD@{10}: checkout: moving from main add dat to f264314e5442315c74c395a89c2c73a3b7269f90
+f264314 HEAD@{10}: checkout: moving from main add dat to f264314e5442315
 f264314 HEAD@{11}: dvc: Restore HEAD to 'main'
-4afc6af HEAD@{12}: commit: dvc: commit experiment 44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a
-f264314 HEAD@{13}: checkout: moving from main to f264314e5442315c74c395a89c2c73a3b7269f90
+4afc6af HEAD@{12}: commit: dvc: commit experiment 44136fa355b3678a
+f264314 HEAD@{13}: checkout: moving from main to f264314e5442315
 f264314 HEAD@{14}: dvc: Restore HEAD to 'main'
-f264314 HEAD@{15}: checkout: moving from main to f264314e5442315c74c395a89c2c73a3b7269f90
+f264314 HEAD@{15}: checkout: moving from main to f264314e5442315
 ``` 
 
 In the file system we can look inside (via `ls` on Linux).
@@ -516,9 +533,9 @@ As the current configuration would produce a conflict with the stage we want to 
 The pipeline features we are after are part of the `dvc stage` command and we add our training call in the following fashion.
 
 ```bash
-MLB-DATA$ pdm run dvc stage add --name train \ # <1>
-          --deps data --deps src/MECH-M-DUAL-2-MLB-DATA/ --deps params.yaml \ # <2>
-          --outs dvclive \ # <3>
+MLB-DATA$ pdm run dvc stage add --name train \                             # <1>
+          --deps data --deps src/MECH-M-DUAL-2-MLB-DATA/ --deps params.yaml \  # <2>
+          --outs dvclive \  # <3>
           pdm run python src/MECH-M-DUAL-2-MLB-DATA/train.py # <4>
 
 Added stage 'train' in 'dvc.yaml'                                     
@@ -618,6 +635,7 @@ Experiment results have been applied to your workspace.
 
 The result can be seen in the experiment list, of course under a new commit SHA.
 
+::: {.content-visible when-format="html"}
 ```bash
  ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── 
   Experiment                 Created        trainscore   testscore   PCA/n_components   LinearDiscriminantAnalysis/solver   RandomForestClassifier/n_estimators   RandomForestClassifier/max_leaf_nodes   RandomForestClassifier/random_state   SVC/kernel   SVC/probability   SVC/random_state   PCA.type                    PCA.init_args.n_components   VotingClassifier.type               VotingClassifier.init_args.flatten_transform   VotingClassifier.estimators                                       LinearDiscriminantAnalysis.type                            LinearDiscriminantAnalysis.init_args.solver   RandomForestClassifier.type               RandomForestClassifier.init_args.n_estimators   RandomForestClassifier.init_args.max_leaf_nodes   RandomForestClassifier.init_args.random_state   SVC.type          SVC.init_args.kernel   SVC.init_args.probability   SVC.init_args.random_state   data                                   params.yaml                        src/MECH-M-DUAL-2-MLB-DATA            
@@ -635,6 +653,30 @@ The result can be seen in the experiment list, of course under a new commit SHA.
   22788a6                    Mar 19, 2025            -           -   -                  -                                   -                                     -                                       -                                     -            -                 -                  -                           -                            -                                   -                                              -                                                                 -                                                          -                                             -                                         -                                               -                                                 -                                               -                 -                      -                           -                            -                                      -                                  -                                     
  ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── 
 ```
+:::
+::: {.content-visible unless-format="html"}
+:::: {.callout-note}
+We truncate the output in this format of the notes.
+Please use the above code to view it.
+::::
+```bash
+ ──────────────────────────────────────────────────────────────────────────────────────
+  Experiment                 Created        trainscore   testscore   PCA/n_components  
+ ──────────────────────────────────────────────────────────────────────────────────────
+  workspace                  -                 0.99167         0.6   5                 
+  main                       01:36 PM                -           -   -                 
+  └── 9c326d3 [sappy-corm]   01:36 PM          0.99167         0.6   5                 
+  519a854                    10:15 AM                -           -   -                 
+  ├── 1b92871 [mesic-beep]   01:26 PM                -           -   -                 
+  └── 1f2bee5 [sural-cyma]   10:15 AM                1         0.8   41                
+  f264314                    Mar 19, 2025            -           -   -                 
+  df38086                    Mar 19, 2025            -           -   -                 
+  073fb93                    Mar 19, 2025            -           -   -                 
+  9f7dead                    Mar 19, 2025            -           -   -                 
+  22788a6                    Mar 19, 2025            -           -   -                 
+ ──────────────────────────────────────────────────────────────────────────────────────
+```
+:::
 
 If we want to restore a specific experiment we can use `dvc exp apply` to restore it, note that this will also restore the code and the data. 
 
@@ -697,7 +739,8 @@ If a storage that can be accessed via WebDAV[^webdav] is available to you use it
 We can add the remote with the `dvc remote add` command.
 
 ```bash
-MLB-DATA$ pdm run dvc remote add -d myremote webdavs://sakai.mci4me.at/dav/Course-ID-SLVA-46549/MECH-M-DUAL-2-MLB-DATA
+MLB-DATA$ pdm run dvc remote add -d myremote \
+    webdavs://sakai.mci4me.at/dav/Course-ID-SLVA-46549/MECH-M-DUAL-2-MLB-DATA
 
 Setting 'myremote' as a default remote.
 ```

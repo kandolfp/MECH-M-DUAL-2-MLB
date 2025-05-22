@@ -122,7 +122,7 @@ model.compile(loss=loss,
               optimizer=tf.keras.optimizers.SGD(),                         # <2>
               metrics=["accuracy"])
 ```
-1. Function to compute the loss, the name corresponds to [`tf.keras.losses.sparse_categorical_crossentropy`](https://www.tensorflow.org/api_docs/python/tf/keras/losses/sparse_categorical_crossentropy).
+1. Function to compute the loss, the name corresponds to [`sparse_categorical_crossentropy`](https://www.tensorflow.org/api_docs/python/tf/keras/losses/sparse_categorical_crossentropy) from the `tf.keras.losses` module.
 1. Our optimizer, the [Stochastic Gradient Descent](https://www.tensorflow.org/api_docs/python/tf/keras/optimizers/SGD) method, more details later.
 
 After we compiled the model we can train it using our data

@@ -41,6 +41,8 @@ This means, instead of directly using `catData_w.mat` we start of from the _raw_
 We introduce a new module called `etl` with three files plus the module file to accomplish this task. 
 
 ```bash
+MLB-DATA$ tree src/etl
+
 etl
 ├── extract.py
 ├── __init__.py

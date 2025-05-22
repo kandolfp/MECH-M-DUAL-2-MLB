@@ -93,6 +93,7 @@ To do this we use some helper functions from the `torchvision.transforms.v2` mod
 
 
 ```{python}
+#| output: false
 T = transforms.Compose([                                         # <1>
     transforms.ToPILImage(),                                     # <2>
     transforms.Grayscale(num_output_channels=3),                 # <3>
@@ -100,7 +101,7 @@ T = transforms.Compose([                                         # <1>
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406],             # <5>
                          std=[0.229, 0.224, 0.225])              # <5>
-])                                                                  # <1>
+])                                                               # <1>
 ```
 1. Define a pipeline to apply several transformations to a single image.
 1. Transform a `numpy` array to a `PIL` image.

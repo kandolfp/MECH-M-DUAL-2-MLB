@@ -64,7 +64,7 @@ df = iris.frame
 fig = px.scatter_3d(df, x="sepal length (cm)", y="sepal width (cm)",
                     z="petal width (cm)", color="target")
 camera = dict(
-    eye=dict(x=1.45, y=1.45, z=0.1)
+    eye=dict(x=1.49, y=1.49, z=0.1)
 )
 fig.update_layout(scene_camera=camera)
 fig.show()
@@ -314,7 +314,8 @@ def img2wave(data):
     for i in range(w):
         A = np.reshape(data[:, i], (math.isqrt(l), math.isqrt(l)))
         [A_1, (cH1, cV1, cD1)] = pywt.wavedec2(A, wavelet="haar", level=1)
-        data_w[:, i] = np.matrix.flatten(rescale(cH1, 256) + rescale(cV1, 256))
+        data_w[:, i] = np.matrix.flatten(rescale(cH1, 256) +
+                       rescale(cV1, 256))
     return data_w
 ```
 
@@ -403,18 +404,23 @@ fig.show()
 ::: {.content-visible when-format="html"}
 ```{python}
 #| echo: false
-#| label: fig-clustering-dvc-wavelet-pca_results
+#| label: fig-clustering-dvc-wavelet-pca_results-1
 #| fig-cap: 
 #|    - "Scatter plots of modes 2 to 4 for the raw images."
-#|    - "Scatter plots of modes 2 to 4 for the wavelet images."
 fig = px.scatter_3d(df, x='PV2', y='PV3', z='PV4', color="target")
 fig.show()
+```
+```{python}
+#| echo: false
+#| label: fig-clustering-dvc-wavelet-pca_results-2
+#| fig-cap: 
+#|    - "Scatter plots of modes 2 to 4 for the wavelet images."
 fig = px.scatter_3d(df_w, x="PV2", y="PV3", z="PV4", color="target")
 fig.show()
 ```
 :::
 ::: {.content-visible unless-format="html"}
-:::: {#fig-clustering-iris fig-env="figure"}
+:::: {#fig-clustering-dvc-wavelet-pca_results-1 fig-env="figure"}
 ```{python}
 #| echo: false
 import plotly.io as pio
@@ -426,7 +432,7 @@ Image(img)
 
 Scatter plots of modes 2 to 4 for the raw images.
 ::::
-:::: {#fig-clustering-iris fig-env="figure"}
+:::: {#fig-clustering-dvc-wavelet-pca_results-2 fig-env="figure"}
 ```{python}
 #| echo: false
 fig = px.scatter_3d(df_w, x="PV2", y="PV3", z="PV4", color="target")
@@ -437,13 +443,15 @@ Image(img)
 Scatter plots of modes 2 to 4 for the wavelet images.
 ::::
 :::
+In @fig-clustering-dvc-wavelet-pca_results-1 and @fig-clustering-dvc-wavelet-pca_results-2 we can find the second and third mode in a 3D plot, illustrating the separation in a different way.
 
 Now that we have an idea what we are dealing with, we can start looking into the two previously described paths in machine learning.
 The difference between supervised and unsupervised learning can be summarized by the following two images.
 
 ```{python}
 #| label: fig-clustering-unsupervised_vs_supervised
-#| fig-cap: 
+#| fig-cap: "Illustration of the difference between supervised and unsupervised learning."
+#| fig-subcap: 
 #|   - "Labelled data for supervised learning."
 #|   - "Unlabelled data for unsupervised learning."
 #| code-fold: true
@@ -465,4 +473,4 @@ plt.figure()
 plt.scatter(df.iloc[:, 0], df.iloc[:, 2], color="gray")
 ```
 
-You either provide/have labels or not.
+You either provide/have labels or not, see @fig-clustering-unsupervised_vs_supervised.

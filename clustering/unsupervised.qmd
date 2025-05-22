@@ -52,8 +52,10 @@ def lloyd(data, centers, steps):
     centers_ = np.copy(centers)
     for i in range(steps):
         for j in range(data.shape[0]):
-            classes[j] = np.argmin(np.linalg.norm(centers_ - np.tile(data[j, :],
-                                   (centers.shape[0], 1)), axis=1))
+            classes[j] = np.argmin(np.linalg.norm(centers_ - 
+                                   np.tile(data[j, :],
+                                       (centers.shape[0], 1)),
+                                   axis=1))
         for j in range(centers.shape[0]):
             centers_[j, :] = np.mean(data[classes == j, :], axis=0)
         
@@ -259,7 +261,7 @@ The following variants exist:
 
 - Instance segmentation - similar to semantic segmentation but individual objects are assigned to the same segment. In the autonomous driving application we would find individual pedestrians.
 
-Here we show how to perform colour segmentation with $k$-means.
+In @fig-clustering-unsupervised-img-seg and the corresponding code we show how to perform colour segmentation with $k$-means.
 
 ::: {.callout-important}
 The following dataset and the basic structure of the code is from @Geron2022-xh, see [GitHub](https://github.com/ageron/handson-ml3/blob/main/09_unsupervised_learning.ipynb), 
@@ -315,7 +317,7 @@ top-down often called _divisive_.
 
 Of course the norm[^norm] used has quite an influence as can be seen in [@Kandolf_GDM, Section 7.1] [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/regression/optimizers.html#over-determined-systems) where we compared LASSO and RIDGE algorithms for our optimization problem. 
 
-To illustrate the agglomerative approach and the difference in norms we use four points and construct the hierarchy by combining the two closest points.
+To illustrate the agglomerative approach and the difference in norms we use four points and construct the hierarchy by combining the two closest points, see @fig-clustering-unsupervised-dendrogram-explained-1 and @fig-clustering-unsupervised-dendrogram-explained-2.
 
 ::: {#fig-clustering-unsupervised-dendrogram-explained}
 
@@ -334,9 +336,9 @@ On a larger scale, with always the first 25 points of the two clusters above we 
 #| fig-cap: "Construction a agglomerative hierarchy for our dataset."
 #| fig-subcap: 
 #|   - "Dendrogram for euclidean norm."
-#|   - "Histogram showing the clustering for the euclidean norm."
+#|   - "Histogram for euclidean norm."
 #|   - "Dendrogram for cityblock norm."
-#|   - "Histogram showing the clustering for the cityblock norm."
+#|   - "Histogram for cityblock norm."
 #| code-fold: true
 #| layout-ncol: 2
 #| code-summary: "Show the code for the figure"
@@ -737,12 +739,28 @@ Lets start by looking at the dataset and establishing some basic properties.
 
 We load the dataset and look at its description
 ```{python}
-#| classes: styled-output
+#| output: false
 from sklearn.datasets import fetch_openml
 
 mnist = fetch_openml('mnist_784', as_frame=False)
 print(mnist.DESCR)
 ```
+::: {.content-visible when-format="html"}
+```{python}
+#| classes: styled-output
+#| echo: false
+import textwrap
+for paragraph in mnist.DESCR.split('\n'):
+    print(textwrap.fill(paragraph, width=70))
+```
+:::
+::: {.content-visible unless-format="html"}
+:::: {.callout-note}
+We suppressed the output in this format of the notes.
+Please use the above code to view it.
+It is not a problem to continue reading without reading the description first.
+::::
+:::
 
 The images are stored in `.data` and the label in `.target`.
 We can look at the first 100 digits

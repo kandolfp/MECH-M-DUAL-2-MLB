@@ -6,9 +6,10 @@ If we have a dataset with just a couple of labelled observations, we might be ab
 We try this with the (in)famous MNIST dataset of hand written digits. 
 As we did not do this when discussion MNIST in @sec-clustering-sl-performance we first looking at the dataset and establishing some basic properties.
 
-We load the dataset and look at its description
+We load the dataset and look at its description (see @sec-clustering-ul-me for the output)
 ```{python}
 #| classes: styled-output
+#| output: false
 from sklearn.datasets import fetch_openml
 
 mnist = fetch_openml("mnist_784", as_frame=False)
@@ -106,7 +107,8 @@ To get a baseline for our algorithm we use a random forest for the classificatio
 #| classes: styled-output
 from sklearn.ensemble import RandomForestClassifier
 n_labels = 50
-forest = RandomForestClassifier(random_state=6020).fit(X_train[:n_labels], y_train[:n_labels])
+forest = RandomForestClassifier(random_state=6020).fit(
+            X_train[:n_labels], y_train[:n_labels])
 score_forest = forest.score(X_test, y_test)
 print(f"score for training with {n_labels} labels {score_forest}")
 
@@ -171,9 +173,11 @@ y_train_prop = np.empty(len(X_train), dtype=str)
 for i in range(k):
     y_train_prop[kmeans.labels_ == i] = y_rep[i]
 
-forest_prop = RandomForestClassifier(random_state=6020).fit(X_train, y_train_prop)
+forest_prop = RandomForestClassifier(random_state=6020).fit(
+    X_train, y_train_prop)
 score_forest_prop = forest_prop.score(X_test, y_test)
-print(f"score for training with {len(y_train_prop)} propagated labels {score_forest_prop}")
+print(f"score for training with {len(y_train_prop)} "
+      f"propagated labels {score_forest_prop}")
 ```
 
 This again increases our score by another good 10%. 
@@ -205,9 +209,11 @@ np.mean(y_train_pprop == y_train[partially_propagated])
 We have cleaned up our source but does it have a big influence?
 ```{python}
 #| classes: styled-output
-forest_pprop = RandomForestClassifier(random_state=6020).fit(X_train_pprop, y_train_pprop)
+forest_pprop = RandomForestClassifier(random_state=6020).fit(
+    X_train_pprop, y_train_pprop)
 score_forest_pprop = forest_pprop.score(X_test, y_test)
-print(f"score for training with {len(y_train_pprop)} labels {score_forest_pprop}")
+print(f"score for training with {len(y_train_pprop)} "
+      f"labels {score_forest_pprop}")
 ```
 We actually do not change our result with this step much.
 

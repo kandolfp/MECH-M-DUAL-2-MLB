@@ -385,7 +385,7 @@ but it can be extended for multi-class segmentation.
 :::
 
 To compute the confusion matrix we first need predictions.
-This can be achieved by [`cross_val_predict`](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_predict.html) instead of `cross_val_score` and than we use [`sklearn.metrics.confusion_matrix`](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html). 
+This can be achieved by [`cross_val_predict`](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_predict.html) instead of `cross_val_score` and than we use [`confusion_matrix`](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html) from `sklearn.metrics`. 
 
 Combined, for our example, this reads as:
 ```{python}
