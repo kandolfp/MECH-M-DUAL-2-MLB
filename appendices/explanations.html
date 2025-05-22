@@ -572,7 +572,7 @@ window.Quarto = {
 <p>In this section we collect more detailed explanations to help clear up some things that are only lightly touched in the main notes.</p>
 <section id="sec-appendix-dvc" class="level2" data-number="A.1">
 <h2 data-number="A.1" class="anchored" data-anchor-id="sec-appendix-dvc"><span class="header-section-number">A.1</span> Wavelet decomposition for cats and dogs</h2>
-<p>In <a href="../clustering/index.html#sec-clustering-cvd" class="quarto-xref"><span>Section 1.2</span></a> we discuss how to use the wavelet transformation<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> to transform the image into a different basis. Here are the details of how this is performed, with cat <em>zero</em> as example.</p>
+<p>In the introduction of the Clustering and Classification section we discuss how to use the wavelet transformation<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> to transform the images of cats and dogs into a different basis. Here are the details of how this is performed, with cat <em>zero</em> as example.</p>
 <div id="cell-fig-appendix-clustering-cat-2-wavelet" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code for the figure</summary>
@@ -680,7 +680,7 @@ Figure&nbsp;A.5: The diagonal highlights of the image
 </div>
 </div>
 <p>For our purposes, only the vertical and horizontal feature are of interest, and we combine these two images. In order to make sure the features are highlighted optimal, we need to rescale the images before combining them. For this we use a similar function like the MATLAB <a href="https://de.mathworks.com/help/wavelet/ref/wcodemat.html"><code>wcodemat</code></a> function.</p>
-<div id="eaa25632" class="cell" data-execution_count="3">
+<div id="70f528d8" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rescale(data, nb):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> np.<span class="bu">abs</span>(data)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> x <span class="op">-</span> np.<span class="bu">min</span>(x)</span>
@@ -729,7 +729,7 @@ Figure&nbsp;A.7: Combination of vertical and horizontal features rescaled.
 </div>
 </div>
 <p>In total this leads to the following function to transform a list of images (given as row vectors).</p>
-<div id="7f06603e" class="cell" data-execution_count="5">
+<div id="ee2bbb1a" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pywt</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -770,14 +770,14 @@ Figure&nbsp;A.8: Workflow to get from the original image to the wavelet transfor
 <div id="fig-appendices-sl-pvsr-threshold" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-appendices-sl-pvsr-threshold-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../_assets/appendices/threshold.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-9" title="Figure&nbsp;A.9: Some representatives and their score and three different thresholds and the corresponding results for precision and recall."><img src="../_assets/appendices/threshold.svg" class="img-fluid figure-img"></a>
+<a href="../_assets/appendices/threshold.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-9" title="Figure&nbsp;A.9: Some representatives and their score and three different thresholds and the corresponding results for precision and recall."><img src="../_assets/appendices/threshold.svg" class="img-fluid figure-img" style="width:4.64in"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-appendices-sl-pvsr-threshold-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;A.9: Some representatives and their score and three different thresholds and the corresponding results for precision and recall.
 </figcaption>
 </figure>
 </div>
-<div id="1a74157f" class="cell" data-execution_count="6">
+<div id="f7e7ca9a" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code that provides the basis for the above figure.</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -909,7 +909,7 @@ Kandolf, Peter. 2025. <span>“MECH-m-DUAL-1-DBM - Grundlagen Datenbasierter Met
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p>see <span class="citation" data-cites="Kandolf_GDM">Kandolf (<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">2025</a>)</span>, Section 10 or follow the direct <a href="https://kandolfp.github.io/MECH-M-DUAL-1-DBM/signal/wavelet.html">link</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>see <span class="citation" data-cites="Kandolf_GDM">Kandolf (<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">2025</a>)</span>, Section 10 or follow the direct <a href="https://kandolfp.github.io/MECH-M-DUAL-1-DBM/signal/wavelet.html">Link</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 

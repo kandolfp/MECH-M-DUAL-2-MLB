@@ -572,7 +572,7 @@ window.Quarto = {
 </header>
 
 
-<p>When working with neural networks, it is always a good idea to have a look what other people did. It is very unlikely that we are the first to look at a particular class of problems and somebody else likely solved (or tried to solve) a similar problem. In addition, most of the time we will not have enough training data to do a <em>full training</em>. If we find such a NN we can look at the architecture, reuse parts of it, build on the training included and so forth. This technique is called <em>transfer learning</em>. As mentioned, if our training set is small is small, this is especially beneficial.</p>
+<p>When working with neural networks, it is always a good idea to have a look what other people did. It is very unlikely that we are the first to look at a particular class of problems and somebody else likely solved (or tried to solve) a similar problem. In addition, most of the time we will not have enough training data to do a <em>full training</em>. If we find such a NN we can look at the architecture, reuse parts of it, build on the training included and so forth. This technique is called <em>transfer learning</em>. As mentioned, if our training set is small, this is especially beneficial.</p>
 <p>The main scenarios for transfer learning are:</p>
 <ul>
 <li><p><strong>Pretrained model</strong>: It takes a lot of resources to train a <em>modern CNN</em>. Quite often people release their final checkpoint and others can benefit from it. This means we can load the model and instead of working with random weights we have the trained weights of somebody else to start off with. We can now continue training with our dataset.</p></li>
@@ -601,7 +601,7 @@ window.Quarto = {
 <section id="data-preparation" class="level3" data-number="10.1.2">
 <h3 data-number="10.1.2" class="anchored" data-anchor-id="data-preparation"><span class="header-section-number">10.1.2</span> Data preparation</h3>
 <p>As the ImageNet dataset uses <em>normal</em> images we do not use our images in the wavelet basis but our original images.</p>
-<div id="4eba82b8" class="cell" data-execution_count="1">
+<div id="ef7e5590" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code for loading the dataset</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -637,7 +637,7 @@ window.Quarto = {
 </details>
 </div>
 <p>First, we need to make sure our input is in a format that can be handled by the NN. As the input size of the image is <span class="math inline">\(256 \times 256\)</span> with RGB channels and with specific normalizations. To do this we use some helper functions from the <code>torchvision.transforms.v2</code> module.</p>
-<div id="8dc348cd" class="cell" data-execution_count="2">
+<div id="fdf6ccfb" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="annotated-cell-2"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-2-1" class="code-annotation-target"><a href="#annotated-cell-2-1" aria-hidden="true" tabindex="-1"></a>T <span class="op">=</span> transforms.Compose([</span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-2-2" class="code-annotation-target"><a href="#annotated-cell-2-2" aria-hidden="true" tabindex="-1"></a>    transforms.ToPILImage(),</span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-2-3" class="code-annotation-target"><a href="#annotated-cell-2-3" aria-hidden="true" tabindex="-1"></a>    transforms.Grayscale(num_output_channels<span class="op">=</span><span class="dv">3</span>),</span>
@@ -670,95 +670,89 @@ window.Quarto = {
 </dd>
 </dl>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>/home/runner/work/MECH-M-DUAL-2-MLB/MECH-M-DUAL-2-MLB/.venv/lib/python3.12/site-packages/torchvision/transforms/v2/_deprecated.py:42: UserWarning:
-
-The transform `ToTensor()` is deprecated and will be removed in a future release. Instead, please use `v2.Compose([v2.ToImage(), v2.ToDtype(torch.float32, scale=True)])`.Output is equivalent up to float precision.
-</code></pre>
-</div>
 </div>
 <p>Some steps can not be directly be applied in the above pipeline, therefore we reshape the flattened image to a square and rotate it before we apply the pipeline to each image.</p>
-<div id="0a41e70b" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>X_train_tensor <span class="op">=</span> torch.tensor(np.array(</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    [T(img.reshape((size, size)).T) <span class="cf">for</span> img <span class="kw">in</span> X_train]))</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>y_train_tensor <span class="op">=</span> torch.tensor(y_train, dtype<span class="op">=</span>torch.uint8)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>X_test_tensor <span class="op">=</span> torch.tensor(np.array(</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    [T(img.reshape((size, size)).T) <span class="cf">for</span> img <span class="kw">in</span> X_test]))</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>y_test_tensor <span class="op">=</span> torch.tensor(y_test, dtype<span class="op">=</span>torch.uint8)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>dataset <span class="op">=</span> TensorDataset(X_train_tensor, y_train_tensor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="8af92d58" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>X_train_tensor <span class="op">=</span> torch.tensor(np.array(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    [T(img.reshape((size, size)).T) <span class="cf">for</span> img <span class="kw">in</span> X_train]))</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>y_train_tensor <span class="op">=</span> torch.tensor(y_train, dtype<span class="op">=</span>torch.uint8)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>X_test_tensor <span class="op">=</span> torch.tensor(np.array(</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    [T(img.reshape((size, size)).T) <span class="cf">for</span> img <span class="kw">in</span> X_test]))</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>y_test_tensor <span class="op">=</span> torch.tensor(y_test, dtype<span class="op">=</span>torch.uint8)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>dataset <span class="op">=</span> TensorDataset(X_train_tensor, y_train_tensor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The functions for preparing the training and validation dataset, the training loop and plotting stay the same.</p>
-<div id="f381c1f5" class="cell" data-execution_count="4">
+<div id="297b92e6" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Show the code for some basic functions for training</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> myplot(y):</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    plt.figure()</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> y.shape[<span class="dv">0</span>]</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    plt.bar(<span class="bu">range</span>(n), y)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    plt.plot([<span class="op">-</span><span class="fl">0.5</span>, n <span class="op">-</span> <span class="fl">0.5</span>], [<span class="dv">0</span>, <span class="dv">0</span>], <span class="st">"k"</span>, linewidth<span class="op">=</span><span class="fl">1.0</span>)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    plt.plot([n <span class="op">//</span> <span class="dv">2</span> <span class="op">-</span> <span class="fl">0.5</span>, y.shape[<span class="dv">0</span>] <span class="op">//</span> <span class="dv">2</span> <span class="op">-</span> <span class="fl">0.5</span>], [<span class="op">-</span><span class="fl">1.1</span>, <span class="fl">1.1</span>],</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>             <span class="st">"r-."</span>, linewidth<span class="op">=</span><span class="dv">3</span>)</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    plt.yticks([<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span>], [<span class="st">"cats"</span>, <span class="st">"dogs"</span>], rotation<span class="op">=</span><span class="dv">90</span>, va<span class="op">=</span><span class="st">"center"</span>)</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    plt.text(n <span class="op">//</span> <span class="dv">4</span>, <span class="fl">1.05</span>, <span class="st">"dogs"</span>)</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    plt.text(n <span class="op">//</span> <span class="dv">4</span> <span class="op">*</span> <span class="dv">3</span>, <span class="fl">1.05</span>, <span class="st">"cats"</span>)</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    plt.gca().set_aspect(n <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> <span class="dv">3</span>))</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_dataset(dataset: TensorDataset, val_split: <span class="bu">float</span>, batch_size: <span class="bu">int</span>):</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    val_size <span class="op">=</span> <span class="bu">int</span>(val_split <span class="op">*</span> <span class="bu">len</span>(dataset))</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    train_size <span class="op">=</span> <span class="bu">len</span>(dataset) <span class="op">-</span> val_size</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    train_ds, val_ds <span class="op">=</span> random_split(dataset, [train_size, val_size])</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create a dataset</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    train <span class="op">=</span> DataLoader(train_ds, batch_size<span class="op">=</span>batch_size, shuffle<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    val <span class="op">=</span> DataLoader(val_ds, batch_size<span class="op">=</span>batch_size, shuffle<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> train, val</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> train_model(model, dataset, loss_fn, optimizer,</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>                epochs<span class="op">=</span><span class="dv">250</span>, validation_split<span class="op">=</span><span class="fl">0.1</span>, </span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>                batch_size<span class="op">=</span><span class="dv">8</span>):</span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    met <span class="op">=</span> {</span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>        <span class="st">"train_loss"</span>: [],</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>        <span class="st">"val_loss"</span>: [],</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>        <span class="st">"train_acc"</span>: [],</span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>        <span class="st">"val_acc"</span>: []}</span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(epochs):</span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>        model.train()</span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>        train_loss, train_corr <span class="op">=</span> <span class="dv">0</span>, <span class="dv">0</span></span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>        train_dl, val_dl <span class="op">=</span> get_dataset(dataset, validation_split, batch_size)</span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> X_batch, y_batch <span class="kw">in</span> train_dl:</span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>            y_pred <span class="op">=</span> model(X_batch)            <span class="co"># Forward pass through the model</span></span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>            loss <span class="op">=</span> loss_fn(y_pred, y_batch)    <span class="co"># Compute the loss</span></span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>            loss.backward()                    <span class="co"># Backpropagation</span></span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>            optimizer.step()                   <span class="co"># Update the model parameters</span></span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>            optimizer.zero_grad()              <span class="co"># Reset the gradients</span></span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>            train_loss <span class="op">+=</span> loss.item()</span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>            train_corr <span class="op">+=</span> (y_pred.argmax(<span class="dv">1</span>) <span class="op">==</span> y_batch).<span class="bu">sum</span>().item()</span>
-<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>        model.<span class="bu">eval</span>()</span>
-<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>        val_loss, val_corr <span class="op">=</span> <span class="dv">0</span>, <span class="dv">0</span>                                       </span>
-<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> torch.no_grad():                   <span class="co"># No gradient calculation</span></span>
-<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> X_val, y_val <span class="kw">in</span> val_dl:</span>
-<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>                y_val_pred <span class="op">=</span> model(X_val)</span>
-<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>                val_loss <span class="op">+=</span> loss_fn(y_val_pred, y_val).item()</span>
-<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>                val_corr <span class="op">+=</span> (y_val_pred.argmax(<span class="dv">1</span>) <span class="op">==</span> y_val).<span class="bu">sum</span>().item()</span>
-<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>        met[<span class="st">"train_loss"</span>].append(train_loss <span class="op">/</span> <span class="bu">len</span>(train_dl))</span>
-<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>        met[<span class="st">"val_loss"</span>].append(val_loss <span class="op">/</span> <span class="bu">len</span>(val_dl))</span>
-<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>        met[<span class="st">"train_acc"</span>].append(train_corr <span class="op">/</span> <span class="bu">len</span>(train_dl.dataset))</span>
-<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>        met[<span class="st">"val_acc"</span>].append(val_corr <span class="op">/</span> <span class="bu">len</span>(val_dl.dataset))</span>
-<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> met</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> myplot(y):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    plt.figure()</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> y.shape[<span class="dv">0</span>]</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    plt.bar(<span class="bu">range</span>(n), y)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    plt.plot([<span class="op">-</span><span class="fl">0.5</span>, n <span class="op">-</span> <span class="fl">0.5</span>], [<span class="dv">0</span>, <span class="dv">0</span>], <span class="st">"k"</span>, linewidth<span class="op">=</span><span class="fl">1.0</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    plt.plot([n <span class="op">//</span> <span class="dv">2</span> <span class="op">-</span> <span class="fl">0.5</span>, y.shape[<span class="dv">0</span>] <span class="op">//</span> <span class="dv">2</span> <span class="op">-</span> <span class="fl">0.5</span>], [<span class="op">-</span><span class="fl">1.1</span>, <span class="fl">1.1</span>],</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>             <span class="st">"r-."</span>, linewidth<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    plt.yticks([<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span>], [<span class="st">"cats"</span>, <span class="st">"dogs"</span>], rotation<span class="op">=</span><span class="dv">90</span>, va<span class="op">=</span><span class="st">"center"</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    plt.text(n <span class="op">//</span> <span class="dv">4</span>, <span class="fl">1.05</span>, <span class="st">"dogs"</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    plt.text(n <span class="op">//</span> <span class="dv">4</span> <span class="op">*</span> <span class="dv">3</span>, <span class="fl">1.05</span>, <span class="st">"cats"</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    plt.gca().set_aspect(n <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> <span class="dv">3</span>))</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_dataset(dataset: TensorDataset, val_split: <span class="bu">float</span>, batch_size: <span class="bu">int</span>):</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    val_size <span class="op">=</span> <span class="bu">int</span>(val_split <span class="op">*</span> <span class="bu">len</span>(dataset))</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    train_size <span class="op">=</span> <span class="bu">len</span>(dataset) <span class="op">-</span> val_size</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    train_ds, val_ds <span class="op">=</span> random_split(dataset, [train_size, val_size])</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create a dataset</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    train <span class="op">=</span> DataLoader(train_ds, batch_size<span class="op">=</span>batch_size, shuffle<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    val <span class="op">=</span> DataLoader(val_ds, batch_size<span class="op">=</span>batch_size, shuffle<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> train, val</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> train_model(model, dataset, loss_fn, optimizer,</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>                epochs<span class="op">=</span><span class="dv">250</span>, validation_split<span class="op">=</span><span class="fl">0.1</span>, </span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>                batch_size<span class="op">=</span><span class="dv">8</span>):</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    met <span class="op">=</span> {</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>        <span class="st">"train_loss"</span>: [],</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>        <span class="st">"val_loss"</span>: [],</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>        <span class="st">"train_acc"</span>: [],</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>        <span class="st">"val_acc"</span>: []}</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(epochs):</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>        model.train()</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>        train_loss, train_corr <span class="op">=</span> <span class="dv">0</span>, <span class="dv">0</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>        train_dl, val_dl <span class="op">=</span> get_dataset(dataset, validation_split, batch_size)</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> X_batch, y_batch <span class="kw">in</span> train_dl:</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>            y_pred <span class="op">=</span> model(X_batch)            <span class="co"># Forward pass through the model</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>            loss <span class="op">=</span> loss_fn(y_pred, y_batch)    <span class="co"># Compute the loss</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>            loss.backward()                    <span class="co"># Backpropagation</span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>            optimizer.step()                   <span class="co"># Update the model parameters</span></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>            optimizer.zero_grad()              <span class="co"># Reset the gradients</span></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>            train_loss <span class="op">+=</span> loss.item()</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>            train_corr <span class="op">+=</span> (y_pred.argmax(<span class="dv">1</span>) <span class="op">==</span> y_batch).<span class="bu">sum</span>().item()</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>        model.<span class="bu">eval</span>()</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>        val_loss, val_corr <span class="op">=</span> <span class="dv">0</span>, <span class="dv">0</span>                                       </span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> torch.no_grad():                   <span class="co"># No gradient calculation</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> X_val, y_val <span class="kw">in</span> val_dl:</span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>                y_val_pred <span class="op">=</span> model(X_val)</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>                val_loss <span class="op">+=</span> loss_fn(y_val_pred, y_val).item()</span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>                val_corr <span class="op">+=</span> (y_val_pred.argmax(<span class="dv">1</span>) <span class="op">==</span> y_val).<span class="bu">sum</span>().item()</span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>        met[<span class="st">"train_loss"</span>].append(train_loss <span class="op">/</span> <span class="bu">len</span>(train_dl))</span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>        met[<span class="st">"val_loss"</span>].append(val_loss <span class="op">/</span> <span class="bu">len</span>(val_dl))</span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>        met[<span class="st">"train_acc"</span>].append(train_corr <span class="op">/</span> <span class="bu">len</span>(train_dl.dataset))</span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>        met[<span class="st">"val_acc"</span>].append(val_corr <span class="op">/</span> <span class="bu">len</span>(val_dl.dataset))</span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> met</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
 <section id="model-loading-modification-and-training" class="level3" data-number="10.1.3">
 <h3 data-number="10.1.3" class="anchored" data-anchor-id="model-loading-modification-and-training"><span class="header-section-number">10.1.3</span> Model loading, modification, and training</h3>
 <p>Now, we can finally load our pertained model and modify its final layer.</p>
-<div id="17df833d" class="cell styled-output" data-execution_count="5">
+<div id="ca94235c" class="cell styled-output" data-execution_count="5">
 <div class="sourceCode cell-code" id="annotated-cell-5"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-5-1" class="code-annotation-target"><a href="#annotated-cell-5-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> tv.models.efficientnet_b0(weights<span class="op">=</span><span class="st">'IMAGENET1K_V1'</span>)</span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-5-2" class="code-annotation-target"><a href="#annotated-cell-5-2" aria-hidden="true" tabindex="-1"></a>num_classes <span class="op">=</span> <span class="dv">2</span></span>
 <span id="annotated-cell-5-3"><a href="#annotated-cell-5-3" aria-hidden="true" tabindex="-1"></a>in_features <span class="op">=</span> model.classifier[<span class="dv">1</span>].in_features</span>
@@ -790,39 +784,39 @@ The transform `ToTensor()` is deprecated and will be removed in a future release
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Downloading: "https://download.pytorch.org/models/efficientnet_b0_rwightman-7f5810bc.pth" to /home/runner/.cache/torch/hub/checkpoints/efficientnet_b0_rwightman-7f5810bc.pth
-  0%|          | 0.00/20.5M [00:00&lt;?, ?B/s] 76%|███████▋  | 15.6M/20.5M [00:00&lt;00:00, 164MB/s]100%|██████████| 20.5M/20.5M [00:00&lt;00:00, 185MB/s]</code></pre>
+  0%|          | 0.00/20.5M [00:00&lt;?, ?B/s]  2%|▏         | 512k/20.5M [00:00&lt;00:04, 4.97MB/s] 32%|███▏      | 6.50M/20.5M [00:00&lt;00:00, 38.2MB/s]100%|██████████| 20.5M/20.5M [00:00&lt;00:00, 71.8MB/s]</code></pre>
 </div>
 </div>
 <p>Now that we have our model and it was trained for 1ß epochs we can have a look at its performance.</p>
 <div class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Show the code for the figure</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">eval</span>()</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    y_proba <span class="op">=</span> torch.nn.Softmax(dim<span class="op">=</span><span class="dv">1</span>)(model(X_test_tensor))</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>y_predict <span class="op">=</span> y_proba.argmax(axis<span class="op">=-</span><span class="dv">1</span>)</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>myplot(y_predict <span class="op">*</span> (<span class="op">-</span><span class="dv">2</span>) <span class="op">+</span> <span class="dv">1</span>)</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>acc <span class="op">=</span> (y_predict <span class="op">==</span> y_test_tensor).<span class="bu">sum</span>().item() <span class="op">/</span> <span class="bu">len</span>(y_test)</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> y_proba.shape[<span class="dv">0</span>]</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>plt.bar(<span class="bu">range</span>(n), y_proba[:, <span class="dv">0</span>], color<span class="op">=</span><span class="st">'y'</span>, label<span class="op">=</span><span class="vs">r"p</span><span class="kw">(</span><span class="vs">dog</span><span class="kw">)</span><span class="vs">"</span>)</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>plt.bar(<span class="bu">range</span>(n), y_proba[:, <span class="dv">1</span>], color<span class="op">=</span><span class="st">'b'</span>, label<span class="op">=</span><span class="vs">r"p</span><span class="kw">(</span><span class="vs">cat</span><span class="kw">)</span><span class="vs">"</span>, </span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        bottom<span class="op">=</span>y_proba[:, <span class="dv">0</span>])</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>plt.plot([<span class="op">-</span><span class="fl">0.5</span>, n <span class="op">-</span> <span class="fl">0.5</span>], [<span class="fl">0.5</span>, <span class="fl">0.5</span>], <span class="st">"r"</span>, linewidth<span class="op">=</span><span class="fl">1.0</span>)</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>plt.gca().set_aspect(n <span class="op">/</span> (<span class="dv">1</span> <span class="op">*</span> <span class="dv">3</span>))</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>epochs_range <span class="op">=</span> <span class="bu">range</span>(<span class="bu">len</span>(history[<span class="st">"train_acc"</span>]))</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>plt_list <span class="op">=</span> [[<span class="st">"train_acc"</span>, <span class="st">"-"</span>], [<span class="st">"train_loss"</span>, <span class="st">":"</span>],</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>            [<span class="st">"val_acc"</span>, <span class="st">"--"</span>], [<span class="st">"val_loss"</span>, <span class="st">"-."</span>]]</span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, style <span class="kw">in</span> plt_list:</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    plt.plot(epochs_range, history[name], style, label<span class="op">=</span>name)</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>plt.legend(loc<span class="op">=</span><span class="st">"lower right"</span>)</span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>plt.gca().set_aspect(epochs <span class="op">/</span> (<span class="dv">1</span> <span class="op">*</span> <span class="dv">3</span>))</span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">eval</span>()</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    y_proba <span class="op">=</span> torch.nn.Softmax(dim<span class="op">=</span><span class="dv">1</span>)(model(X_test_tensor))</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>y_predict <span class="op">=</span> y_proba.argmax(axis<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>myplot(y_predict <span class="op">*</span> (<span class="op">-</span><span class="dv">2</span>) <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>acc <span class="op">=</span> (y_predict <span class="op">==</span> y_test_tensor).<span class="bu">sum</span>().item() <span class="op">/</span> <span class="bu">len</span>(y_test)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> y_proba.shape[<span class="dv">0</span>]</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>plt.bar(<span class="bu">range</span>(n), y_proba[:, <span class="dv">0</span>], color<span class="op">=</span><span class="st">'y'</span>, label<span class="op">=</span><span class="vs">r"p</span><span class="kw">(</span><span class="vs">dog</span><span class="kw">)</span><span class="vs">"</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>plt.bar(<span class="bu">range</span>(n), y_proba[:, <span class="dv">1</span>], color<span class="op">=</span><span class="st">'b'</span>, label<span class="op">=</span><span class="vs">r"p</span><span class="kw">(</span><span class="vs">cat</span><span class="kw">)</span><span class="vs">"</span>, </span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        bottom<span class="op">=</span>y_proba[:, <span class="dv">0</span>])</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>plt.plot([<span class="op">-</span><span class="fl">0.5</span>, n <span class="op">-</span> <span class="fl">0.5</span>], [<span class="fl">0.5</span>, <span class="fl">0.5</span>], <span class="st">"r"</span>, linewidth<span class="op">=</span><span class="fl">1.0</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>plt.gca().set_aspect(n <span class="op">/</span> (<span class="dv">1</span> <span class="op">*</span> <span class="dv">3</span>))</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>epochs_range <span class="op">=</span> <span class="bu">range</span>(<span class="bu">len</span>(history[<span class="st">"train_acc"</span>]))</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>plt_list <span class="op">=</span> [[<span class="st">"train_acc"</span>, <span class="st">"-"</span>], [<span class="st">"train_loss"</span>, <span class="st">":"</span>],</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>            [<span class="st">"val_acc"</span>, <span class="st">"--"</span>], [<span class="st">"val_loss"</span>, <span class="st">"-."</span>]]</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, style <span class="kw">in</span> plt_list:</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    plt.plot(epochs_range, history[name], style, label<span class="op">=</span>name)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>plt.legend(loc<span class="op">=</span><span class="st">"lower right"</span>)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>plt.gca().set_aspect(epochs <span class="op">/</span> (<span class="dv">1</span> <span class="op">*</span> <span class="dv">3</span>))</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div id="fig-nn-transfer-dvc" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="6">
 <figure class="quarto-float quarto-float-fig figure">

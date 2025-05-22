@@ -551,7 +551,7 @@ window.Quarto = {
 
 <p>As mentioned there are multiple frameworks to work neural networks (NNs) and we focus on <code>pytorch</code>. Nevertheless, <code>tensorflow.keras</code> is often used in industry and to give an idea how it works we also implemented the first model in this framework.</p>
 <p>In this section we will focus on <a href="https://keras.io/"><code>keras</code></a> with <a href="https://www.tensorflow.org/"><code>TensorFlow</code></a> as backend. This means we find our main modules under <code>tensorflow.keras</code>. We will, in general, reference the documentation via <code>tensorflow</code>, the content on <a href="https://keras.io/api/">keras.io Api Docs</a> is mostly equivalent. Where some tutorials and examples might differ.</p>
-<div id="d27eb7e2" class="cell" data-execution_count="1">
+<div id="747624d1" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code for loading, splitting and scaling the images.</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -591,7 +591,7 @@ window.Quarto = {
 </details>
 </div>
 <p>If we translate it into a <code>tensorflow.keras</code> model this looks like the following code (already including a summary at the end).</p>
-<div id="4eccf5c4" class="cell styled-output" data-execution_count="3">
+<div id="c53f8389" class="cell styled-output" data-execution_count="3">
 <div class="sourceCode cell-code" id="annotated-cell-2"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-2-1"><a href="#annotated-cell-2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
 <span id="annotated-cell-2-2"><a href="#annotated-cell-2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-2-3"><a href="#annotated-cell-2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize everything for reproducibility</span></span>
@@ -633,7 +633,7 @@ window.Quarto = {
 </dl>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>2025-05-21 07:46:55.419260: E external/local_xla/xla/stream_executor/cuda/cuda_platform.cc:51] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: UNKNOWN ERROR (303)</code></pre>
+<pre><code>2025-05-22 14:21:53.787952: E external/local_xla/xla/stream_executor/cuda/cuda_platform.cc:51] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: UNKNOWN ERROR (303)</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="font-weight: bold">Model: "sequential"</span>
@@ -663,7 +663,7 @@ window.Quarto = {
 </div>
 </div>
 <p>It is often also quite useful to export the model as an image. In our case we can work again with a <code>dot</code> file rendered as <a href="#fig-appendix-keras-model-visual" class="quarto-xref">Figure&nbsp;<span>B.1</span></a>.</p>
-<div id="d94ecd18" class="cell" data-execution_count="4">
+<div id="8422f658" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>dot <span class="op">=</span> tf.keras.utils.model_to_dot(model, show_shapes<span class="op">=</span><span class="va">True</span>,</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                                  show_layer_activations<span class="op">=</span><span class="va">True</span>, dpi<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"model.dot"</span>, <span class="st">"w"</span>) <span class="im">as</span> f:</span>
@@ -679,9 +679,9 @@ window.Quarto = {
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 292)">
 <title>G</title>
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-292 369,-292 369,4 -4,4"></polygon>
-<!-- 140560838707584 -->
+<!-- 140087410873728 -->
 <g id="node1" class="node">
-<title>140560838707584</title>
+<title>140087410873728</title>
 <polygon fill="none" stroke="black" points="0,-162.5 0,-287.5 365,-287.5 365,-162.5 0,-162.5"></polygon>
 <polygon fill="black" stroke="transparent" points="0,-162.5 0,-287.5 365,-287.5 365,-162.5 0,-162.5"></polygon>
 <polygon fill="black" stroke="transparent" points="2.5,-244 2.5,-285 363.5,-285 363.5,-244 2.5,-244"></polygon>
@@ -701,9 +701,9 @@ window.Quarto = {
 <text text-anchor="start" x="201.13" y="-179.4" font-family="Helvetica,sans-Serif" font-size="14.00">Output shape: </text>
 <text text-anchor="start" x="292.98" y="-179.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="14.00">(None, 2)</text>
 </g>
-<!-- 140560838715552 -->
+<!-- 140087410872432 -->
 <g id="node2" class="node">
-<title>140560838715552</title>
+<title>140087410872432</title>
 <polygon fill="none" stroke="black" points="12,-0.5 12,-125.5 353,-125.5 353,-0.5 12,-0.5"></polygon>
 <polygon fill="black" stroke="transparent" points="12,-0.5 12,-125.5 353,-125.5 353,-0.5 12,-0.5"></polygon>
 <polygon fill="black" stroke="transparent" points="14.5,-82 14.5,-123 351.5,-123 351.5,-82 14.5,-82"></polygon>
@@ -723,9 +723,9 @@ window.Quarto = {
 <text text-anchor="start" x="189.13" y="-17.4" font-family="Helvetica,sans-Serif" font-size="14.00">Output shape: </text>
 <text text-anchor="start" x="280.98" y="-17.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="14.00">(None, 2)</text>
 </g>
-<!-- 140560838707584&#45;&gt;140560838715552 -->
+<!-- 140087410873728&#45;&gt;140087410872432 -->
 <g id="edge1" class="edge">
-<title>140560838707584-&gt;140560838715552</title>
+<title>140087410873728-&gt;140087410872432</title>
 <path fill="none" stroke="black" stroke-width="2" d="M182.5,-162.37C182.5,-162.37 182.5,-135.73 182.5,-135.73"></path>
 <polygon fill="black" stroke="black" stroke-width="2" points="186,-135.73 182.5,-125.73 179,-135.73 186,-135.73"></polygon>
 </g>
@@ -748,7 +748,7 @@ Figure&nbsp;B.1: Model with all its parameters visualized.
 <div class="callout-body-container">
 <div id="exr-appendix-keras-params" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise B.1 (Explain the output of <code>.summary()</code>)</strong></span> For the (extended) output of <code>.summary()</code></p>
-<div id="bf15edda" class="cell styled-output" data-execution_count="5">
+<div id="d0b9a259" class="cell styled-output" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>model.summary(line_length<span class="op">=</span><span class="dv">60</span>, </span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>              expand_nested<span class="op">=</span><span class="va">True</span>, show_trainable<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
@@ -789,7 +789,7 @@ Figure&nbsp;B.1: Model with all its parameters visualized.
 </div>
 </div>
 <p>Next, we need to <em>compile</em> the model to prepare it for execution/training. In this step we define the optimizer to use for solving the included optimization method and how loss is computed. After this we can</p>
-<div id="f951d034" class="cell" data-execution_count="6">
+<div id="9e7b9241" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="annotated-cell-4"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-4-1" class="code-annotation-target"><a href="#annotated-cell-4-1" aria-hidden="true" tabindex="-1"></a>loss <span class="op">=</span> tf.keras.losses.SparseCategoricalCrossentropy(from_logits<span class="op">=</span><span class="va">True</span>)</span>
 <span id="annotated-cell-4-2"><a href="#annotated-cell-4-2" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">compile</span>(loss<span class="op">=</span>loss,         </span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-4-3" class="code-annotation-target"><a href="#annotated-cell-4-3" aria-hidden="true" tabindex="-1"></a>              optimizer<span class="op">=</span>tf.keras.optimizers.SGD(),</span>
@@ -798,7 +798,7 @@ Figure&nbsp;B.1: Model with all its parameters visualized.
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-4" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-4" data-code-lines="1" data-code-annotation="1">Function to compute the loss, the name corresponds to <a href="https://www.tensorflow.org/api_docs/python/tf/keras/losses/sparse_categorical_crossentropy"><code>tf.keras.losses.sparse_categorical_crossentropy</code></a>.</span>
+<span data-code-cell="annotated-cell-4" data-code-lines="1" data-code-annotation="1">Function to compute the loss, the name corresponds to <a href="https://www.tensorflow.org/api_docs/python/tf/keras/losses/sparse_categorical_crossentropy"><code>sparse_categorical_crossentropy</code></a> from the <code>tf.keras.losses</code> module.</span>
 </dd>
 <dt data-target-cell="annotated-cell-4" data-target-annotation="2">2</dt>
 <dd>
@@ -808,7 +808,7 @@ Figure&nbsp;B.1: Model with all its parameters visualized.
 </div>
 </div>
 <p>After we compiled the model we can train it using our data</p>
-<div id="043d718f" class="cell" data-execution_count="7">
+<div id="5e77ee63" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="annotated-cell-5"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-5-1" class="code-annotation-target"><a href="#annotated-cell-5-1" aria-hidden="true" tabindex="-1"></a>history <span class="op">=</span> model.fit(X_train,</span>
 <span id="annotated-cell-5-2"><a href="#annotated-cell-5-2" aria-hidden="true" tabindex="-1"></a>                    y_train,</span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-5-3" class="code-annotation-target"><a href="#annotated-cell-5-3" aria-hidden="true" tabindex="-1"></a>                    epochs<span class="op">=</span><span class="dv">130</span>,</span>

@@ -563,46 +563,31 @@ window.Quarto = {
 
 <p>There is a hybrid between unsupervised and supervised learning, called <em>semi supervised learning</em>. If we have a dataset with just a couple of labelled observations, we might be able to use the discussed clustering methods to extend the labels and therefore generate more labelled data.</p>
 <p>We try this with the (in)famous MNIST dataset of hand written digits. As we did not do this when discussion MNIST in <a href="supervised.html#sec-clustering-sl-performance" class="quarto-xref"><span>Section 2.2</span></a> we first looking at the dataset and establishing some basic properties.</p>
-<p>We load the dataset and look at its description</p>
-<div id="83822f76" class="cell styled-output" data-execution_count="1">
+<p>We load the dataset and look at its description (see <a href="unsupervised.html#sec-clustering-ul-me" class="quarto-xref"><span>Section 1.5</span></a> for the output)</p>
+<div id="b8c6e5b3" class="cell styled-output" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_openml</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>mnist <span class="op">=</span> fetch_openml(<span class="st">"mnist_784"</span>, as_frame<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mnist.DESCR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>**Author**: Yann LeCun, Corinna Cortes, Christopher J.C. Burges  
-**Source**: [MNIST Website](http://yann.lecun.com/exdb/mnist/) - Date unknown  
-**Please cite**:  
-
-The MNIST database of handwritten digits with 784 features, raw data available at: http://yann.lecun.com/exdb/mnist/. It can be split in a training set of the first 60,000 examples, and a test set of 10,000 examples  
-
-It is a subset of a larger set available from NIST. The digits have been size-normalized and centered in a fixed-size image. It is a good database for people who want to try learning techniques and pattern recognition methods on real-world data while spending minimal efforts on preprocessing and formatting. The original black and white (bilevel) images from NIST were size normalized to fit in a 20x20 pixel box while preserving their aspect ratio. The resulting images contain grey levels as a result of the anti-aliasing technique used by the normalization algorithm. the images were centered in a 28x28 image by computing the center of mass of the pixels, and translating the image so as to position this point at the center of the 28x28 field.  
-
-With some classification methods (particularly template-based methods, such as SVM and K-nearest neighbors), the error rate improves when the digits are centered by bounding box rather than center of mass. If you do this kind of pre-processing, you should report it in your publications. The MNIST database was constructed from NIST's NIST originally designated SD-3 as their training set and SD-1 as their test set. However, SD-3 is much cleaner and easier to recognize than SD-1. The reason for this can be found on the fact that SD-3 was collected among Census Bureau employees, while SD-1 was collected among high-school students. Drawing sensible conclusions from learning experiments requires that the result be independent of the choice of training set and test among the complete set of samples. Therefore it was necessary to build a new database by mixing NIST's datasets.  
-
-The MNIST training set is composed of 30,000 patterns from SD-3 and 30,000 patterns from SD-1. Our test set was composed of 5,000 patterns from SD-3 and 5,000 patterns from SD-1. The 60,000 pattern training set contained examples from approximately 250 writers. We made sure that the sets of writers of the training set and test set were disjoint. SD-1 contains 58,527 digit images written by 500 different writers. In contrast to SD-3, where blocks of data from each writer appeared in sequence, the data in SD-1 is scrambled. Writer identities for SD-1 is available and we used this information to unscramble the writers. We then split SD-1 in two: characters written by the first 250 writers went into our new training set. The remaining 250 writers were placed in our test set. Thus we had two sets with nearly 30,000 examples each. The new training set was completed with enough examples from SD-3, starting at pattern # 0, to make a full set of 60,000 training patterns. Similarly, the new test set was completed with SD-3 examples starting at pattern # 35,000 to make a full set with 60,000 test patterns. Only a subset of 10,000 test images (5,000 from SD-1 and 5,000 from SD-3) is available on this site. The full 60,000 sample training set is available.
-
-Downloaded from openml.org.</code></pre>
-</div>
 </div>
 <p>The images are stored in <code>.data</code> and the label in <code>.target</code>. We can look at the first 100 digits</p>
 <div id="cell-fig-clustering-ssl-mnist" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Show the code for the figure</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_openml</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>im <span class="op">=</span> np.zeros((<span class="dv">10</span> <span class="op">*</span> <span class="dv">28</span>, <span class="dv">10</span> <span class="op">*</span> <span class="dv">28</span>), <span class="bu">int</span>)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        im[<span class="dv">28</span><span class="op">*</span>i:<span class="dv">28</span><span class="op">*</span>(i<span class="op">+</span><span class="dv">1</span>), <span class="dv">28</span><span class="op">*</span>j:<span class="dv">28</span><span class="op">*</span>(j<span class="op">+</span><span class="dv">1</span>)] <span class="op">=</span> mnist.data[i<span class="op">*</span><span class="dv">10</span> <span class="op">+</span> j].reshape(<span class="dv">28</span>, <span class="dv">28</span>)</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>plt.imshow(im, cmap<span class="op">=</span><span class="st">"binary"</span>)</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_openml</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>im <span class="op">=</span> np.zeros((<span class="dv">10</span> <span class="op">*</span> <span class="dv">28</span>, <span class="dv">10</span> <span class="op">*</span> <span class="dv">28</span>), <span class="bu">int</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        im[<span class="dv">28</span><span class="op">*</span>i:<span class="dv">28</span><span class="op">*</span>(i<span class="op">+</span><span class="dv">1</span>), <span class="dv">28</span><span class="op">*</span>j:<span class="dv">28</span><span class="op">*</span>(j<span class="op">+</span><span class="dv">1</span>)] <span class="op">=</span> mnist.data[i<span class="op">*</span><span class="dv">10</span> <span class="op">+</span> j].reshape(<span class="dv">28</span>, <span class="dv">28</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>plt.imshow(im, cmap<span class="op">=</span><span class="st">"binary"</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-clustering-ssl-mnist" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -618,33 +603,33 @@ Figure&nbsp;3.1: First 100 digits from the MNIST dataset.
 </div>
 </div>
 <p>Before we go any further in the investigation, we split up the dataset into a training and a test set.</p>
-<div id="202403c8" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>X_train, X_test <span class="op">=</span> mnist.data[:<span class="dv">60000</span>], mnist.data[<span class="dv">60000</span>:]</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>y_train, y_test <span class="op">=</span> mnist.target[:<span class="dv">60000</span>], mnist.target[<span class="dv">60000</span>:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cde1ca79" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>X_train, X_test <span class="op">=</span> mnist.data[:<span class="dv">60000</span>], mnist.data[<span class="dv">60000</span>:]</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>y_train, y_test <span class="op">=</span> mnist.target[:<span class="dv">60000</span>], mnist.target[<span class="dv">60000</span>:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now let us try with <span class="math inline">\(k\)</span>-means to find the 10 digits.</p>
 <div id="cell-fig-clustering-ssl-mnist2" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Show the code for the figure</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_openml</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> KMeans</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> <span class="dv">10</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>kmeans <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>k, n_init<span class="op">=</span><span class="dv">1</span>, random_state<span class="op">=</span><span class="dv">6020</span>).fit(X_train)</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>im <span class="op">=</span> np.zeros((<span class="dv">1</span> <span class="op">*</span> <span class="dv">28</span>, <span class="dv">10</span> <span class="op">*</span> <span class="dv">28</span>), <span class="bu">int</span>)</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>):</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        im[<span class="dv">28</span><span class="op">*</span>i:<span class="dv">28</span><span class="op">*</span>(i<span class="op">+</span><span class="dv">1</span>), <span class="dv">28</span><span class="op">*</span>j:<span class="dv">28</span><span class="op">*</span>(j<span class="op">+</span><span class="dv">1</span>)] <span class="op">=</span> <span class="op">\</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>                kmeans.cluster_centers_[i<span class="op">*</span><span class="dv">10</span> <span class="op">+</span> j].reshape(<span class="dv">28</span>, <span class="dv">28</span>)</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>plt.imshow(im, cmap<span class="op">=</span><span class="st">"binary"</span>)</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_openml</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> KMeans</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>kmeans <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>k, n_init<span class="op">=</span><span class="dv">1</span>, random_state<span class="op">=</span><span class="dv">6020</span>).fit(X_train)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>im <span class="op">=</span> np.zeros((<span class="dv">1</span> <span class="op">*</span> <span class="dv">28</span>, <span class="dv">10</span> <span class="op">*</span> <span class="dv">28</span>), <span class="bu">int</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>):</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>        im[<span class="dv">28</span><span class="op">*</span>i:<span class="dv">28</span><span class="op">*</span>(i<span class="op">+</span><span class="dv">1</span>), <span class="dv">28</span><span class="op">*</span>j:<span class="dv">28</span><span class="op">*</span>(j<span class="op">+</span><span class="dv">1</span>)] <span class="op">=</span> <span class="op">\</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>                kmeans.cluster_centers_[i<span class="op">*</span><span class="dv">10</span> <span class="op">+</span> j].reshape(<span class="dv">28</span>, <span class="dv">28</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>plt.imshow(im, cmap<span class="op">=</span><span class="st">"binary"</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-clustering-ssl-mnist2" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -672,9 +657,9 @@ Important
 </div>
 <div class="callout-body-container callout-body">
 <p>Due to the nature of these notes, being compiled interactively, we restrict the dataset to 2000 points.</p>
-<div id="11784141" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> X_train[:<span class="dv">2000</span>]</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> y_train[:<span class="dv">2000</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="1de85bc9" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> X_train[:<span class="dv">2000</span>]</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> y_train[:<span class="dv">2000</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
@@ -692,16 +677,17 @@ Important
 </div>
 </div>
 <p>To get a baseline for our algorithm we use a random forest for the classification and only work with 50 labels.</p>
-<div id="f617b798" class="cell styled-output" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>n_labels <span class="op">=</span> <span class="dv">50</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>forest <span class="op">=</span> RandomForestClassifier(random_state<span class="op">=</span><span class="dv">6020</span>).fit(X_train[:n_labels], y_train[:n_labels])</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>score_forest <span class="op">=</span> forest.score(X_test, y_test)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"score for training with </span><span class="sc">{</span>n_labels<span class="sc">}</span><span class="ss"> labels </span><span class="sc">{</span>score_forest<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>forest_full <span class="op">=</span> RandomForestClassifier(random_state<span class="op">=</span><span class="dv">6020</span>).fit(X_train, y_train)</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>score_forest_full <span class="op">=</span> forest_full.score(X_test, y_test)</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"score for training with </span><span class="sc">{</span><span class="bu">len</span>(y_train)<span class="sc">}</span><span class="ss"> labels </span><span class="sc">{</span>score_forest_full<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="223e05af" class="cell styled-output" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>n_labels <span class="op">=</span> <span class="dv">50</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>forest <span class="op">=</span> RandomForestClassifier(random_state<span class="op">=</span><span class="dv">6020</span>).fit(</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>            X_train[:n_labels], y_train[:n_labels])</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>score_forest <span class="op">=</span> forest.score(X_test, y_test)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"score for training with </span><span class="sc">{</span>n_labels<span class="sc">}</span><span class="ss"> labels </span><span class="sc">{</span>score_forest<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>forest_full <span class="op">=</span> RandomForestClassifier(random_state<span class="op">=</span><span class="dv">6020</span>).fit(X_train, y_train)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>score_forest_full <span class="op">=</span> forest_full.score(X_test, y_test)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"score for training with </span><span class="sc">{</span><span class="bu">len</span>(y_train)<span class="sc">}</span><span class="ss"> labels </span><span class="sc">{</span>score_forest_full<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>score for training with 50 labels 0.5618
 score for training with 2000 labels 0.9117</code></pre>
@@ -712,28 +698,28 @@ score for training with 2000 labels 0.9117</code></pre>
 <div id="cell-fig-clustering-ssl-mnist3" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Show the code for the figure</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_openml</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> KMeans</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> <span class="dv">50</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>kmeans <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>k, n_init<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">6020</span>)</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>X_digits_dist <span class="op">=</span> kmeans.fit_transform(X_train)</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>represent_digit_idx <span class="op">=</span> X_digits_dist.argmin(axis<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>X_rep <span class="op">=</span> X_train[represent_digit_idx]</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>im <span class="op">=</span> np.zeros((<span class="dv">5</span> <span class="op">*</span> <span class="dv">28</span>, <span class="dv">10</span> <span class="op">*</span> <span class="dv">28</span>), <span class="bu">int</span>)</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>        im[<span class="dv">28</span><span class="op">*</span>i:<span class="dv">28</span><span class="op">*</span>(i<span class="op">+</span><span class="dv">1</span>), <span class="dv">28</span><span class="op">*</span>j:<span class="dv">28</span><span class="op">*</span>(j<span class="op">+</span><span class="dv">1</span>)] <span class="op">=</span> X_rep[i<span class="op">*</span><span class="dv">10</span> <span class="op">+</span> j].reshape(<span class="dv">28</span>, <span class="dv">28</span>)</span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>plt.imshow(im, cmap<span class="op">=</span><span class="st">"binary"</span>)</span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_openml</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> KMeans</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> <span class="dv">50</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>kmeans <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>k, n_init<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">6020</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>X_digits_dist <span class="op">=</span> kmeans.fit_transform(X_train)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>represent_digit_idx <span class="op">=</span> X_digits_dist.argmin(axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>X_rep <span class="op">=</span> X_train[represent_digit_idx]</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>im <span class="op">=</span> np.zeros((<span class="dv">5</span> <span class="op">*</span> <span class="dv">28</span>, <span class="dv">10</span> <span class="op">*</span> <span class="dv">28</span>), <span class="bu">int</span>)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>        im[<span class="dv">28</span><span class="op">*</span>i:<span class="dv">28</span><span class="op">*</span>(i<span class="op">+</span><span class="dv">1</span>), <span class="dv">28</span><span class="op">*</span>j:<span class="dv">28</span><span class="op">*</span>(j<span class="op">+</span><span class="dv">1</span>)] <span class="op">=</span> X_rep[i<span class="op">*</span><span class="dv">10</span> <span class="op">+</span> j].reshape(<span class="dv">28</span>, <span class="dv">28</span>)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>plt.imshow(im, cmap<span class="op">=</span><span class="st">"binary"</span>)</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-clustering-ssl-mnist3" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -749,67 +735,71 @@ Figure&nbsp;3.3: The representative (closest image to the cluster mean) of the 5
 </div>
 </div>
 <p>We can now label these observations</p>
-<div id="8a31b531" class="cell styled-output" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>y_rep <span class="op">=</span> np.array([</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"3"</span>, <span class="st">"4"</span>, <span class="st">"1"</span>, <span class="st">"9"</span>, <span class="st">"9"</span>, <span class="st">"0"</span>, <span class="st">"3"</span>, <span class="st">"0"</span>, <span class="st">"9"</span>, <span class="st">"1"</span>,</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"9"</span>, <span class="st">"8"</span>, <span class="st">"0"</span>, <span class="st">"9"</span>, <span class="st">"3"</span>, <span class="st">"6"</span>, <span class="st">"6"</span>, <span class="st">"7"</span>, <span class="st">"1"</span>, <span class="st">"6"</span>,</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"6"</span>, <span class="st">"5"</span>, <span class="st">"3"</span>, <span class="st">"2"</span>, <span class="st">"2"</span>, <span class="st">"0"</span>, <span class="st">"0"</span>, <span class="st">"6"</span>, <span class="st">"7"</span>, <span class="st">"2"</span>,</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"5"</span>, <span class="st">"1"</span>, <span class="st">"7"</span>, <span class="st">"3"</span>, <span class="st">"4"</span>, <span class="st">"8"</span>, <span class="st">"6"</span>, <span class="st">"0"</span>, <span class="st">"8"</span>, <span class="st">"5"</span>,</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"0"</span>, <span class="st">"3"</span>, <span class="st">"2"</span>, <span class="st">"3"</span>, <span class="st">"7"</span>, <span class="st">"4"</span>, <span class="st">"5"</span>, <span class="st">"4"</span>, <span class="st">"2"</span>, <span class="st">"7"</span> </span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>])</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>forest_rep <span class="op">=</span> RandomForestClassifier(random_state<span class="op">=</span><span class="dv">6020</span>).fit(X_rep, y_rep)</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>score_forest_rep <span class="op">=</span> forest_rep.score(X_test, y_test)</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"score for training with </span><span class="sc">{</span><span class="bu">len</span>(y_rep)<span class="sc">}</span><span class="ss"> labels </span><span class="sc">{</span>score_forest_rep<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="2bb2a7a8" class="cell styled-output" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>y_rep <span class="op">=</span> np.array([</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"3"</span>, <span class="st">"4"</span>, <span class="st">"1"</span>, <span class="st">"9"</span>, <span class="st">"9"</span>, <span class="st">"0"</span>, <span class="st">"3"</span>, <span class="st">"0"</span>, <span class="st">"9"</span>, <span class="st">"1"</span>,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"9"</span>, <span class="st">"8"</span>, <span class="st">"0"</span>, <span class="st">"9"</span>, <span class="st">"3"</span>, <span class="st">"6"</span>, <span class="st">"6"</span>, <span class="st">"7"</span>, <span class="st">"1"</span>, <span class="st">"6"</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"6"</span>, <span class="st">"5"</span>, <span class="st">"3"</span>, <span class="st">"2"</span>, <span class="st">"2"</span>, <span class="st">"0"</span>, <span class="st">"0"</span>, <span class="st">"6"</span>, <span class="st">"7"</span>, <span class="st">"2"</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"5"</span>, <span class="st">"1"</span>, <span class="st">"7"</span>, <span class="st">"3"</span>, <span class="st">"4"</span>, <span class="st">"8"</span>, <span class="st">"6"</span>, <span class="st">"0"</span>, <span class="st">"8"</span>, <span class="st">"5"</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"0"</span>, <span class="st">"3"</span>, <span class="st">"2"</span>, <span class="st">"3"</span>, <span class="st">"7"</span>, <span class="st">"4"</span>, <span class="st">"5"</span>, <span class="st">"4"</span>, <span class="st">"2"</span>, <span class="st">"7"</span> </span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>forest_rep <span class="op">=</span> RandomForestClassifier(random_state<span class="op">=</span><span class="dv">6020</span>).fit(X_rep, y_rep)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>score_forest_rep <span class="op">=</span> forest_rep.score(X_test, y_test)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"score for training with </span><span class="sc">{</span><span class="bu">len</span>(y_rep)<span class="sc">}</span><span class="ss"> labels </span><span class="sc">{</span>score_forest_rep<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>score for training with 50 labels 0.6551</code></pre>
 </div>
 </div>
 <p>This helped us increase our score significantly, but we can do better. We can extend our labels from the representatives to the entire cluster and train with that.</p>
-<div id="b3151441" class="cell styled-output" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>y_train_prop <span class="op">=</span> np.empty(<span class="bu">len</span>(X_train), dtype<span class="op">=</span><span class="bu">str</span>)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(k):</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    y_train_prop[kmeans.labels_ <span class="op">==</span> i] <span class="op">=</span> y_rep[i]</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>forest_prop <span class="op">=</span> RandomForestClassifier(random_state<span class="op">=</span><span class="dv">6020</span>).fit(X_train, y_train_prop)</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>score_forest_prop <span class="op">=</span> forest_prop.score(X_test, y_test)</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"score for training with </span><span class="sc">{</span><span class="bu">len</span>(y_train_prop)<span class="sc">}</span><span class="ss"> propagated labels </span><span class="sc">{</span>score_forest_prop<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="c110ed54" class="cell styled-output" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>y_train_prop <span class="op">=</span> np.empty(<span class="bu">len</span>(X_train), dtype<span class="op">=</span><span class="bu">str</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(k):</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    y_train_prop[kmeans.labels_ <span class="op">==</span> i] <span class="op">=</span> y_rep[i]</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>forest_prop <span class="op">=</span> RandomForestClassifier(random_state<span class="op">=</span><span class="dv">6020</span>).fit(</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    X_train, y_train_prop)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>score_forest_prop <span class="op">=</span> forest_prop.score(X_test, y_test)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"score for training with </span><span class="sc">{</span><span class="bu">len</span>(y_train_prop)<span class="sc">}</span><span class="ss"> "</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"propagated labels </span><span class="sc">{</span>score_forest_prop<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>score for training with 2000 propagated labels 0.7672</code></pre>
 </div>
 </div>
 <p>This again increases our score by another good 10%. If we check our propagated labels, we see that, we can not expect more as we only have an accuracy slightly higher than our classification result, i.e.&nbsp;we provide wrong results labels for our classification.</p>
-<div id="4d1537b3" class="cell styled-output" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>np.mean(y_train_prop <span class="op">==</span> y_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="42e2c3c7" class="cell styled-output" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>np.mean(y_train_prop <span class="op">==</span> y_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="10">
 <pre><code>np.float64(0.7745)</code></pre>
 </div>
 </div>
 <p>Let us try to eliminate outliers by removing the 10% of instances that are far away from our cluster centers.</p>
-<div id="eb60a894" class="cell styled-output" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>percentile_closest <span class="op">=</span> <span class="dv">90</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>X_cluster_dist <span class="op">=</span> X_digits_dist[np.arange(<span class="bu">len</span>(X_train)), kmeans.labels_]</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(k):</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    in_cluster <span class="op">=</span> (kmeans.labels_ <span class="op">==</span> i)</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    cluster_dist <span class="op">=</span> X_cluster_dist[in_cluster]</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    cutoff_distance <span class="op">=</span> np.percentile(cluster_dist, percentile_closest)</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    above_cutoff <span class="op">=</span> (X_cluster_dist <span class="op">&gt;</span> cutoff_distance)</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    X_cluster_dist[in_cluster <span class="op">&amp;</span> above_cutoff] <span class="op">=</span> <span class="op">-</span><span class="dv">1</span></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>partially_propagated <span class="op">=</span> (X_cluster_dist <span class="op">!=</span> <span class="op">-</span><span class="dv">1</span>)</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>X_train_pprop <span class="op">=</span> X_train[partially_propagated]</span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>y_train_pprop <span class="op">=</span> y_train_prop[partially_propagated]</span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>np.mean(y_train_pprop <span class="op">==</span> y_train[partially_propagated])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="6285a67a" class="cell styled-output" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>percentile_closest <span class="op">=</span> <span class="dv">90</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>X_cluster_dist <span class="op">=</span> X_digits_dist[np.arange(<span class="bu">len</span>(X_train)), kmeans.labels_]</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(k):</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    in_cluster <span class="op">=</span> (kmeans.labels_ <span class="op">==</span> i)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    cluster_dist <span class="op">=</span> X_cluster_dist[in_cluster]</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    cutoff_distance <span class="op">=</span> np.percentile(cluster_dist, percentile_closest)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    above_cutoff <span class="op">=</span> (X_cluster_dist <span class="op">&gt;</span> cutoff_distance)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    X_cluster_dist[in_cluster <span class="op">&amp;</span> above_cutoff] <span class="op">=</span> <span class="op">-</span><span class="dv">1</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>partially_propagated <span class="op">=</span> (X_cluster_dist <span class="op">!=</span> <span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>X_train_pprop <span class="op">=</span> X_train[partially_propagated]</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>y_train_pprop <span class="op">=</span> y_train_prop[partially_propagated]</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>np.mean(y_train_pprop <span class="op">==</span> y_train[partially_propagated])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="11">
 <pre><code>np.float64(0.8102189781021898)</code></pre>
 </div>
 </div>
 <p>We have cleaned up our source but does it have a big influence?</p>
-<div id="b5c1fe0d" class="cell styled-output" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>forest_pprop <span class="op">=</span> RandomForestClassifier(random_state<span class="op">=</span><span class="dv">6020</span>).fit(X_train_pprop, y_train_pprop)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>score_forest_pprop <span class="op">=</span> forest_pprop.score(X_test, y_test)</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"score for training with </span><span class="sc">{</span><span class="bu">len</span>(y_train_pprop)<span class="sc">}</span><span class="ss"> labels </span><span class="sc">{</span>score_forest_pprop<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="155ae5da" class="cell styled-output" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>forest_pprop <span class="op">=</span> RandomForestClassifier(random_state<span class="op">=</span><span class="dv">6020</span>).fit(</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    X_train_pprop, y_train_pprop)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>score_forest_pprop <span class="op">=</span> forest_pprop.score(X_test, y_test)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"score for training with </span><span class="sc">{</span><span class="bu">len</span>(y_train_pprop)<span class="sc">}</span><span class="ss"> "</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"labels </span><span class="sc">{</span>score_forest_pprop<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>score for training with 1781 labels 0.768</code></pre>
 </div>

@@ -616,7 +616,7 @@ Tip
 <li>Repeat, starting from step 2, until the cluster centers stay stable up to some tolerance.</li>
 </ol>
 <p>This algorithm was first introduced in <span class="citation" data-cites="DBLP:journals/tit/Lloyd82">Lloyd (<a href="../references.html#ref-DBLP:journals/tit/Lloyd82" role="doc-biblioref">1982</a>)</span> and is therefore often called Lloyd algorithm.</p>
-<div id="becee226" class="cell" data-execution_count="1">
+<div id="a5e103b4" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code for Lloyd algorithm</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lloyd(data, centers, steps):</span>
@@ -624,12 +624,14 @@ Tip
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    centers_ <span class="op">=</span> np.copy(centers)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(steps):</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(data.shape[<span class="dv">0</span>]):</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>            classes[j] <span class="op">=</span> np.argmin(np.linalg.norm(centers_ <span class="op">-</span> np.tile(data[j, :],</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>                                   (centers.shape[<span class="dv">0</span>], <span class="dv">1</span>)), axis<span class="op">=</span><span class="dv">1</span>))</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(centers.shape[<span class="dv">0</span>]):</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>            centers_[j, :] <span class="op">=</span> np.mean(data[classes <span class="op">==</span> j, :], axis<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (classes, centers_)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>            classes[j] <span class="op">=</span> np.argmin(np.linalg.norm(centers_ <span class="op">-</span> </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>                                   np.tile(data[j, :],</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>                                       (centers.shape[<span class="dv">0</span>], <span class="dv">1</span>)),</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>                                   axis<span class="op">=</span><span class="dv">1</span>))</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(centers.shape[<span class="dv">0</span>]):</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>            centers_[j, :] <span class="op">=</span> np.mean(data[classes <span class="op">==</span> j, :], axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (classes, centers_)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </div>
@@ -877,9 +879,9 @@ Figure&nbsp;1.3: Validation against a test set.
 <div id="exr-kmean" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise 1.1 (Apply the <span class="math inline">\(k\)</span>-means algorithm to other datasets)</strong></span> As an exercise, to get some practice for using <span class="math inline">\(k\)</span>-means, apply the algorithm to some other datasets to see how it performs.</p>
 <ol type="1">
-<li><p>We already looked at the Fischer Iris dataset in <a href="index.html#sec-fischer-iris-data-set" class="quarto-xref"><span>Section 1.1</span></a> and discussed some basic features. Try with only two dimensional data, as well as four dimensional data to find the three clusters.</p></li>
+<li><p>We already looked at the Fischer Iris dataset (see the introduction this part of the notes) and discussed some basic features. Try with only two dimensional data, as well as four dimensional data to find the three clusters.</p></li>
 <li><p>For <a href="#fig-clustering-unsupervised_dbscan" class="quarto-xref">Figure&nbsp;<span>1.7</span></a> we will look at the moons dataset. Try working out the clusters in this case.</p></li>
-<li><p>Apply the algorithm to the cats and dogs (in wavelet basis, see <a href="index.html#sec-clustering-cvd" class="quarto-xref"><span>Section 1.2</span></a>) for various principal components and find the two clusters.</p></li>
+<li><p>Apply the algorithm to the cats and dogs (in wavelet basis, see the introduction this part of the notes) for various principal components and find the two clusters.</p></li>
 </ol>
 </div>
 </div>
@@ -905,7 +907,7 @@ Figure&nbsp;1.3: Validation against a test set.
 <li><p>Semantic segmentation - all pixels that are part of the same <em>object</em> get assigned to the same segment. An application of this is in autonomous driving to find pedestrians - one segment containing all pedestrians.</p></li>
 <li><p>Instance segmentation - similar to semantic segmentation but individual objects are assigned to the same segment. In the autonomous driving application we would find individual pedestrians.</p></li>
 </ul>
-<p>Here we show how to perform colour segmentation with <span class="math inline">\(k\)</span>-means.</p>
+<p>In <a href="#fig-clustering-unsupervised-img-seg" class="quarto-xref">Figure&nbsp;<span>1.4</span></a> and the corresponding code we show how to perform colour segmentation with <span class="math inline">\(k\)</span>-means.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1016,14 +1018,14 @@ Figure&nbsp;1.4: Colour segmentation for the image of a lady bug.
 <li><p>For the divisive approach we go the opposite direction and start with the super cluster containing all observations <span class="math inline">\(x_i\)</span> and we gradually split up into smaller and smaller clusters. The algorithm stops, when each observation is its own leave.</p></li>
 </ul>
 <p>Of course the norm<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> used has quite an influence as can be seen in <span class="citation" data-cites="Kandolf_GDM">(<a href="../references.html#ref-Kandolf_GDM" role="doc-biblioref">Kandolf 2025, sec. 7.1</a>)</span> <a href="https://kandolfp.github.io/MECH-M-DUAL-1-DBM/regression/optimizers.html#over-determined-systems">Link</a> where we compared LASSO and RIDGE algorithms for our optimization problem.</p>
-<p>To illustrate the agglomerative approach and the difference in norms we use four points and construct the hierarchy by combining the two closest points.</p>
+<p>To illustrate the agglomerative approach and the difference in norms we use four points and construct the hierarchy by combining the two closest points, see <a href="#fig-clustering-unsupervised-dendrogram-explained-1" class="quarto-xref">Figure&nbsp;<span>1.5 (a)</span></a> and <a href="#fig-clustering-unsupervised-dendrogram-explained-2" class="quarto-xref">Figure&nbsp;<span>1.5 (b)</span></a>.</p>
 <div id="fig-clustering-unsupervised-dendrogram-explained" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-clustering-unsupervised-dendrogram-explained-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div id="fig-clustering-unsupervised-dendrogram-explained-1" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-clustering-unsupervised-dendrogram-explained-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../_assets/clustering/dendrogram_euclidean.svg" class="lightbox" data-gallery="fig-clustering-unsupervised-dendrogram-explained" title="Figure&nbsp;1.5&nbsp;(a): Use two norm or euclidean norm to compute the distance - \| \cdot \|_2"><img src="../_assets/clustering/dendrogram_euclidean.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-unsupervised-dendrogram-explained"></a>
+<a href="../_assets/clustering/dendrogram_euclidean.svg" class="lightbox" data-gallery="fig-clustering-unsupervised-dendrogram-explained" title="Figure&nbsp;1.5&nbsp;(a): Use two norm or euclidean norm to compute the distance - \| \cdot \|_2"><img src="../_assets/clustering/dendrogram_euclidean.svg" class="img-fluid figure-img" style="width:4.58in" data-ref-parent="fig-clustering-unsupervised-dendrogram-explained"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-unsupervised-dendrogram-explained-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (a) Use two norm or euclidean norm to compute the distance - <span class="math inline">\(\| \cdot \|_2\)</span>
@@ -1033,7 +1035,7 @@ Figure&nbsp;1.4: Colour segmentation for the image of a lady bug.
 <div id="fig-clustering-unsupervised-dendrogram-explained-2" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-clustering-unsupervised-dendrogram-explained-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../_assets/clustering/dendrogram_city.svg" class="lightbox" data-gallery="fig-clustering-unsupervised-dendrogram-explained" title="Figure&nbsp;1.5&nbsp;(b): Use one or cityblock norm to compute the distance - \| \cdot \|_1"><img src="../_assets/clustering/dendrogram_city.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-unsupervised-dendrogram-explained"></a>
+<a href="../_assets/clustering/dendrogram_city.svg" class="lightbox" data-gallery="fig-clustering-unsupervised-dendrogram-explained" title="Figure&nbsp;1.5&nbsp;(b): Use one or cityblock norm to compute the distance - \| \cdot \|_1"><img src="../_assets/clustering/dendrogram_city.svg" class="img-fluid figure-img" style="width:4.62in" data-ref-parent="fig-clustering-unsupervised-dendrogram-explained"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-unsupervised-dendrogram-explained-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (b) Use one or cityblock norm to compute the distance - <span class="math inline">\(\| \cdot \|_1\)</span>
@@ -1096,10 +1098,10 @@ Figure&nbsp;1.5: We always combine the two nearest points and replace them with 
 <div id="fig-clustering-unsupervised_dengrogram-2" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-clustering-unsupervised_dengrogram-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="unsupervised_files/figure-html/fig-clustering-unsupervised_dengrogram-output-2.svg" class="lightbox" data-gallery="fig-clustering-unsupervised_dengrogram" title="Figure&nbsp;1.6&nbsp;(b): Histogram showing the clustering for the euclidean norm."><img src="unsupervised_files/figure-html/fig-clustering-unsupervised_dengrogram-output-2.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-unsupervised_dengrogram"></a>
+<a href="unsupervised_files/figure-html/fig-clustering-unsupervised_dengrogram-output-2.svg" class="lightbox" data-gallery="fig-clustering-unsupervised_dengrogram" title="Figure&nbsp;1.6&nbsp;(b): Histogram for euclidean norm."><img src="unsupervised_files/figure-html/fig-clustering-unsupervised_dengrogram-output-2.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-unsupervised_dengrogram"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-unsupervised_dengrogram-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(b) Histogram showing the clustering for the euclidean norm.
+(b) Histogram for euclidean norm.
 </figcaption>
 </figure>
 </div>
@@ -1122,10 +1124,10 @@ Figure&nbsp;1.5: We always combine the two nearest points and replace them with 
 <div id="fig-clustering-unsupervised_dengrogram-4" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-clustering-unsupervised_dengrogram-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="unsupervised_files/figure-html/fig-clustering-unsupervised_dengrogram-output-4.svg" class="lightbox" data-gallery="fig-clustering-unsupervised_dengrogram" title="Figure&nbsp;1.6&nbsp;(d): Histogram showing the clustering for the cityblock norm."><img src="unsupervised_files/figure-html/fig-clustering-unsupervised_dengrogram-output-4.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-unsupervised_dengrogram"></a>
+<a href="unsupervised_files/figure-html/fig-clustering-unsupervised_dengrogram-output-4.svg" class="lightbox" data-gallery="fig-clustering-unsupervised_dengrogram" title="Figure&nbsp;1.6&nbsp;(d): Histogram for cityblock norm."><img src="unsupervised_files/figure-html/fig-clustering-unsupervised_dengrogram-output-4.svg" class="img-fluid figure-img" data-ref-parent="fig-clustering-unsupervised_dengrogram"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-clustering-unsupervised_dengrogram-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(d) Histogram showing the clustering for the cityblock norm.
+(d) Histogram for cityblock norm.
 </figcaption>
 </figure>
 </div>
@@ -1175,7 +1177,7 @@ Note
 <p><span class="theorem-title"><strong>Exercise 1.2 (Apply the agglomerative clustering to the Fischer Iris dataset)</strong></span> &nbsp;</p>
 <ol type="1">
 <li><p>Work out how to use the <code>scikit-learn</code> alternative.</p></li>
-<li><p>We already looked at the Fischer Iris dataset in <a href="index.html#sec-fischer-iris-data-set" class="quarto-xref"><span>Section 1.1</span></a> and discussed some basic features. Try with only two dimensional data, as well as four dimensional data, to find the three clusters.</p></li>
+<li><p>We already looked at the Fischer Iris dataset (see the introduction this part of the notes) and discussed some basic features. Try with only two dimensional data, as well as four dimensional data, to find the three clusters.</p></li>
 <li><p>For <a href="#fig-clustering-unsupervised_dbscan" class="quarto-xref">Figure&nbsp;<span>1.7</span></a> we will look at the moons dataset. Try working out the clusters in this case, look at the different possibilities with the <code>linkage</code> option as <code>{"ward", "complete", "average", "single"}</code>.</p></li>
 </ol>
 </div>
@@ -1319,7 +1321,7 @@ Note
 <p><span class="theorem-title"><strong>Exercise 1.3 (Application of DBSCAN)</strong></span> &nbsp;</p>
 <ol type="1">
 <li><p>Apply the DBSCAN algorithm to our toy example (the two ellipsoids from <a href="#sec-clustering-usl-kmeans" class="quarto-xref"><span>Section 1.1</span></a>) used through this section, to recover the two clusters as good as possible. Try different <span class="math inline">\(\epsilon\)</span> values as well as different norms (<code>metric</code> parameter).</p></li>
-<li><p>Additionally, for a higher dimensional problem, using DBSCAN to split the Fischer Iris dataset (<a href="index.html#sec-fischer-iris-data-set" class="quarto-xref"><span>Section 1.1</span></a>) into its three clusters of flowers.</p></li>
+<li><p>Additionally, for a higher dimensional problem, using DBSCAN to split the Fischer Iris dataset (see the introduction this part of the notes) into its three clusters of flowers.</p></li>
 </ol>
 </div>
 </div>
@@ -1368,7 +1370,7 @@ L(\Theta) = \sum_{j=1}^n\log f(x_j | \Theta).
 \Sigma_p^{(l+1)} &amp;= \frac{\sum_{j=1}^n \tau_p^{(l)}(x_j)[(x_j - \mu_p^{(l+1)})(x_j - \mu_p^{(l+1)})^\mathrm{T}]}{\sum_{j=1}^n \tau_p^{(l)}(x_j)},
 \end{aligned}
 \]</span> with <span class="math inline">\(\Sigma_p^{(l+1)}\)</span> denotes the covariance matrix. The algorithm now alternates between E and M until convergence is reached.</p>
-<p>Let us try it with the cats and dogs images in wavelet basis from <a href="index.html#sec-clustering-cvd" class="quarto-xref"><span>Section 1.2</span></a> by fitting to the second and forth principal value of the SVD. Note, we directly load the images in wavelet basis and do not recompute them.</p>
+<p>Let us try it with the cats and dogs images in wavelet basis from the introduction by fitting to the second and forth principal value of the SVD. Note, we directly load the images in wavelet basis and do not recompute them.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1549,29 +1551,75 @@ Figure&nbsp;1.9: Fitting of the second and fourth principal value of the cats an
 <p>Before we make the leap to supervised learning, we we introduce a new dataset and see how our unsupervised approach works in this case.</p>
 <p>We do this with the (in)famous MNIST dataset of hand written digits. Lets start by looking at the dataset and establishing some basic properties.</p>
 <p>We load the dataset and look at its description</p>
-<div id="4afbf43e" class="cell styled-output" data-execution_count="10">
+<div id="700a1d84" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_openml</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>mnist <span class="op">=</span> fetch_openml(<span class="st">'mnist_784'</span>, as_frame<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mnist.DESCR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="e397f877" class="cell styled-output" data-execution_count="11">
 <div class="cell-output cell-output-stdout">
-<pre><code>**Author**: Yann LeCun, Corinna Cortes, Christopher J.C. Burges  
-**Source**: [MNIST Website](http://yann.lecun.com/exdb/mnist/) - Date unknown  
-**Please cite**:  
+<pre><code>**Author**: Yann LeCun, Corinna Cortes, Christopher J.C. Burges
+**Source**: [MNIST Website](http://yann.lecun.com/exdb/mnist/) - Date
+unknown
+**Please cite**:
 
-The MNIST database of handwritten digits with 784 features, raw data available at: http://yann.lecun.com/exdb/mnist/. It can be split in a training set of the first 60,000 examples, and a test set of 10,000 examples  
+The MNIST database of handwritten digits with 784 features, raw data
+available at: http://yann.lecun.com/exdb/mnist/. It can be split in a
+training set of the first 60,000 examples, and a test set of 10,000
+examples
 
-It is a subset of a larger set available from NIST. The digits have been size-normalized and centered in a fixed-size image. It is a good database for people who want to try learning techniques and pattern recognition methods on real-world data while spending minimal efforts on preprocessing and formatting. The original black and white (bilevel) images from NIST were size normalized to fit in a 20x20 pixel box while preserving their aspect ratio. The resulting images contain grey levels as a result of the anti-aliasing technique used by the normalization algorithm. the images were centered in a 28x28 image by computing the center of mass of the pixels, and translating the image so as to position this point at the center of the 28x28 field.  
+It is a subset of a larger set available from NIST. The digits have
+been size-normalized and centered in a fixed-size image. It is a good
+database for people who want to try learning techniques and pattern
+recognition methods on real-world data while spending minimal efforts
+on preprocessing and formatting. The original black and white
+(bilevel) images from NIST were size normalized to fit in a 20x20
+pixel box while preserving their aspect ratio. The resulting images
+contain grey levels as a result of the anti-aliasing technique used by
+the normalization algorithm. the images were centered in a 28x28 image
+by computing the center of mass of the pixels, and translating the
+image so as to position this point at the center of the 28x28 field.
 
-With some classification methods (particularly template-based methods, such as SVM and K-nearest neighbors), the error rate improves when the digits are centered by bounding box rather than center of mass. If you do this kind of pre-processing, you should report it in your publications. The MNIST database was constructed from NIST's NIST originally designated SD-3 as their training set and SD-1 as their test set. However, SD-3 is much cleaner and easier to recognize than SD-1. The reason for this can be found on the fact that SD-3 was collected among Census Bureau employees, while SD-1 was collected among high-school students. Drawing sensible conclusions from learning experiments requires that the result be independent of the choice of training set and test among the complete set of samples. Therefore it was necessary to build a new database by mixing NIST's datasets.  
+With some classification methods (particularly template-based methods,
+such as SVM and K-nearest neighbors), the error rate improves when the
+digits are centered by bounding box rather than center of mass. If you
+do this kind of pre-processing, you should report it in your
+publications. The MNIST database was constructed from NIST's NIST
+originally designated SD-3 as their training set and SD-1 as their
+test set. However, SD-3 is much cleaner and easier to recognize than
+SD-1. The reason for this can be found on the fact that SD-3 was
+collected among Census Bureau employees, while SD-1 was collected
+among high-school students. Drawing sensible conclusions from learning
+experiments requires that the result be independent of the choice of
+training set and test among the complete set of samples. Therefore it
+was necessary to build a new database by mixing NIST's datasets.
 
-The MNIST training set is composed of 30,000 patterns from SD-3 and 30,000 patterns from SD-1. Our test set was composed of 5,000 patterns from SD-3 and 5,000 patterns from SD-1. The 60,000 pattern training set contained examples from approximately 250 writers. We made sure that the sets of writers of the training set and test set were disjoint. SD-1 contains 58,527 digit images written by 500 different writers. In contrast to SD-3, where blocks of data from each writer appeared in sequence, the data in SD-1 is scrambled. Writer identities for SD-1 is available and we used this information to unscramble the writers. We then split SD-1 in two: characters written by the first 250 writers went into our new training set. The remaining 250 writers were placed in our test set. Thus we had two sets with nearly 30,000 examples each. The new training set was completed with enough examples from SD-3, starting at pattern # 0, to make a full set of 60,000 training patterns. Similarly, the new test set was completed with SD-3 examples starting at pattern # 35,000 to make a full set with 60,000 test patterns. Only a subset of 10,000 test images (5,000 from SD-1 and 5,000 from SD-3) is available on this site. The full 60,000 sample training set is available.
+The MNIST training set is composed of 30,000 patterns from SD-3 and
+30,000 patterns from SD-1. Our test set was composed of 5,000 patterns
+from SD-3 and 5,000 patterns from SD-1. The 60,000 pattern training
+set contained examples from approximately 250 writers. We made sure
+that the sets of writers of the training set and test set were
+disjoint. SD-1 contains 58,527 digit images written by 500 different
+writers. In contrast to SD-3, where blocks of data from each writer
+appeared in sequence, the data in SD-1 is scrambled. Writer identities
+for SD-1 is available and we used this information to unscramble the
+writers. We then split SD-1 in two: characters written by the first
+250 writers went into our new training set. The remaining 250 writers
+were placed in our test set. Thus we had two sets with nearly 30,000
+examples each. The new training set was completed with enough examples
+from SD-3, starting at pattern # 0, to make a full set of 60,000
+training patterns. Similarly, the new test set was completed with SD-3
+examples starting at pattern # 35,000 to make a full set with 60,000
+test patterns. Only a subset of 10,000 test images (5,000 from SD-1
+and 5,000 from SD-3) is available on this site. The full 60,000 sample
+training set is available.
 
 Downloaded from openml.org.</code></pre>
 </div>
 </div>
 <p>The images are stored in <code>.data</code> and the label in <code>.target</code>. We can look at the first 100 digits</p>
-<div id="cell-fig-clustering-usl-mnist" class="cell" data-execution_count="11">
+<div id="cell-fig-clustering-usl-mnist" class="cell" data-execution_count="12">
 <details class="code-fold">
 <summary>Show the code for the figure</summary>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -1607,12 +1655,12 @@ Figure&nbsp;1.10: First 100 digits from the MNIST dataset.
 <p>As can be seen from <a href="#fig-clustering-usl-mnist" class="quarto-xref">Figure&nbsp;<span>1.10</span></a>, most digits are easy to distinguish for us, but there are some nasty things included. Especially, there are <code>1</code>s with the english style (just one straight line) of writing (1st row, 7th column), but also as a diagonal line (1st row, 4th column), and finally also the german style (connecting line at base and top) of writing (3rd row, 5th column).</p>
 <p>Also the <code>2</code> digit comes in various forms, with loop (1st row, 6th column) and without (3rd row, 6th column). Finally we all know that a <code>3</code> can hide in an <code>8</code>, same as a <code>7</code> and <code>1</code> can hide in a <code>9</code> and much more.</p>
 <p>Now, before we go any further in the investigation we split up the dataset into a training and a test set, we will not use this here but we should establish some way of working right from the start.</p>
-<div id="60d8e5dc" class="cell" data-execution_count="12">
+<div id="d7478b52" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>X_train, X_test <span class="op">=</span> mnist.data[:<span class="dv">60000</span>], mnist.data[<span class="dv">60000</span>:]</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>y_train, y_test <span class="op">=</span> mnist.target[:<span class="dv">60000</span>], mnist.target[<span class="dv">60000</span>:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now let us try with <span class="math inline">\(k\)</span>-means to find the ten digits by finding <span class="math inline">\(10\)</span> clusters.</p>
-<div id="cell-fig-clustering-usl-mnist2" class="cell" data-execution_count="13">
+<div id="cell-fig-clustering-usl-mnist2" class="cell" data-execution_count="14">
 <details class="code-fold">
 <summary>Show the code for the figure</summary>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
