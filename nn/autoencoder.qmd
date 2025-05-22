@@ -225,7 +225,7 @@ Retrain the autoencoder with these training sets and see how it performs (can it
 Rework the above autoencoder in such a fashion that the encoder an decoder can be accessed individually.
 If for the later tasks reworking the model such that the latent space is smaller is beneficial, feel free to do so, e.g. only 2 dimensions.
 
-1. Explore the latent space (e.g. similar to what was done in @sec-clustering-cvd) and see how well the clusters of numbers can be seen.
+1. Explore the latent space (e.g. similar to what was done in the introduction to Clustering and Classification for the cats and dogs dataset) and see how well the clusters of numbers can be seen.
 1. Use the knowledge of the previous task to create a number generator by providing different self generated elements from the latent space to the decoder part of our autoencoder.
 ::::
 :::

@@ -22,7 +22,7 @@ The last _step_ in @sec-clustering-ssl is actually quite a useful illustration t
 We could see that with _wrong_ labels we can not hope to generate correct result.
 Consequently, if we can not say for sure if we had correct labels for the training three months ago we can not validate results.
 
-In addition, if we come to images, we could also see how changing the basis (_raw_ to _wavelet_) changed our results, see @sec-clustering-cvd.
+In addition, if we move to images, we could also see how changing the basis (_raw_ to _wavelet_) changed our results, see the cats and dogs example of the introduction to clustering and classification.
 As each pixel of an image can be considered a feature for our training, we can imagine that changing only a small amount might change our model and our performance. 
 Now consider that most formats for storing images include some kind of image compression (see some discussed in @Kandolf_GDM) we can imagine that this can have major influence on the training and resulting model.
 Therefore, we also need to keep track how these features (our images) are generated and stored if we also want to make sure we do not get unexpected behaviour in our results. 

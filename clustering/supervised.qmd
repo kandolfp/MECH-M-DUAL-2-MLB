@@ -275,7 +275,7 @@ Luckily the `scikit-learn` class/function [`DecisionBoundaryDisplay.from_estimat
 
 1. Apply the LDA algorithm to the toy example (see @fig-clustering-unsupervised_lloyd) to recover the two clusters as good as possible.
 
-1. Additionally, for a higher dimensional problem, using LDA split the Fischer Iris dataset (@sec-fischer-iris-data-set) into two clusters. Try for the harder split between `versicolor` and `virginica` types of flowers.
+1. Additionally, for a higher dimensional problem, using LDA split the Fischer Iris dataset (see the introduction to part of the notes) into two clusters. Try for the harder split between `versicolor` and `virginica` types of flowers.
 ::::
 :::
 

@@ -216,12 +216,12 @@ Both can be found in @Geron2022-xh.
 
 As an exercise, to get some practice for using $k$-means, apply the algorithm to some other datasets to see how it performs.
 
-1. We already looked at the Fischer Iris dataset in @sec-fischer-iris-data-set and discussed some basic features. Try with only two dimensional data, as well as four dimensional data to find the three clusters.
+1. We already looked at the Fischer Iris dataset (see the introduction this part of the notes) and discussed some basic features. Try with only two dimensional data, as well as four dimensional data to find the three clusters.
 
 1. For @fig-clustering-unsupervised_dbscan we will look at the moons dataset.
 Try working out the clusters in this case.
 
-1. Apply the algorithm to the cats and dogs (in wavelet basis, see @sec-clustering-cvd) for various principal components and find the two clusters.
+1. Apply the algorithm to the cats and dogs (in wavelet basis, see the introduction this part of the notes) for various principal components and find the two clusters.
 ::::
 :::
 
@@ -393,7 +393,7 @@ In `scikit-learn` this is supported via the [`sklearn.cluster.AgglomerativeClust
 
 1. Work out how to use the `scikit-learn` alternative.
 
-1. We already looked at the Fischer Iris dataset in @sec-fischer-iris-data-set and discussed some basic features. Try with only two dimensional data, as well as four dimensional data, to find the three clusters.
+1. We already looked at the Fischer Iris dataset (see the introduction this part of the notes) and discussed some basic features. Try with only two dimensional data, as well as four dimensional data, to find the three clusters.
 
 1. For @fig-clustering-unsupervised_dbscan we will look at the moons dataset.
 Try working out the clusters in this case, look at the different possibilities with the `linkage` option as `{"ward", "complete", "average", "single"}`.
@@ -511,7 +511,7 @@ See @Geron2022-xh and  [GitHub](https://github.com/ageron/handson-ml3/blob/main/
 1. Apply the DBSCAN algorithm to our toy example (the two ellipsoids from @sec-clustering-usl-kmeans) used through this section, to recover the two clusters as good as possible.
 Try different $\epsilon$ values as well as different norms (`metric` parameter).
 
-1. Additionally, for a higher dimensional problem, using DBSCAN to split the Fischer Iris dataset (@sec-fischer-iris-data-set) into its three clusters of flowers.
+1. Additionally, for a higher dimensional problem, using DBSCAN to split the Fischer Iris dataset (see the introduction this part of the notes) into its three clusters of flowers.
 ::::
 :::
 
@@ -593,7 +593,7 @@ $$
 with $\Sigma_p^{(l+1)}$ denotes the covariance matrix.
 The algorithm now alternates between E and M until convergence is reached.
 
-Let us try it with the cats and dogs images in wavelet basis from @sec-clustering-cvd by fitting to the second and forth principal value of the SVD.
+Let us try it with the cats and dogs images in wavelet basis from the introduction by fitting to the second and forth principal value of the SVD.
 Note, we directly load the images in wavelet basis and do not recompute them.
 
 ::: {.callout-important}

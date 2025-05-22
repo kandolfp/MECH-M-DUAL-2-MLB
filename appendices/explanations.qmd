@@ -4,7 +4,7 @@ In this section we collect more detailed explanations to help clear up some thin
 
 ## Wavelet decomposition for cats and dogs {#sec-appendix-dvc}
 
-In @sec-clustering-cvd we discuss how to use the wavelet transformation[^wave] to transform the image into a different basis.
+In the introduction of the Clustering and Classification section we discuss how to use the wavelet transformation[^wave] to transform the images of cats and dogs into a different basis.
 Here are the details of how this is performed, with cat _zero_ as example.
 
 [^wave]: see @Kandolf_GDM, Section 10 or follow the direct [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/signal/wavelet.html)

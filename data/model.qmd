@@ -13,7 +13,7 @@ As we mainly work with `scikit-learn` we introduce the concepts with it.
 Our first step is to check the documentation [docs - model persistence](https://scikit-learn.org/stable/model_persistence.html) and we can use it as reference for this introduction.
 We introduce different possibilities, all of them have strengths and weaknesses, unfortunately there is no gold standard.
 
-Let us use the following toy example with our cats and dogs as reference, see @sec-clustering-cvd.
+Let us use the following toy example, see @lst-data-mp-toyexample, with our cats and dogs.
 ```{python}
 #| lst-label: lst-data-mp-toyexample
 #| lst-cap: Code for the toy example
