@@ -275,7 +275,7 @@ The most important `dvc` commands are (we link the docs for an extended referenc
 
 - [`dvc add`](https://dvc.org/doc/command-reference/add) to add a file or directory.
 - [`dvc checkout`](https://dvc.org/doc/command-reference/checkout) brings your work space up to date, according to the `.dvc` files current states.
-- [`dvc commit`](https://dvc.org/doc/command-reference/checkout) updates the `.dvc` files and stores the content in the cache, most of the time called implicitly.
+- [`dvc commit`](https://dvc.org/doc/command-reference/commit) updates the `.dvc` files and stores the content in the cache, most of the time called implicitly.
 - [`dvc config`](https://dvc.org/doc/command-reference/config) view and change the config for the repo or globally for `dvc` on the system.
 - [`dvc data status`](https://dvc.org/doc/command-reference/data/status) chow changes to the files in the work space with respect to the`git HEAD`.
 - [`dvc destroy`](https://dvc.org/doc/command-reference/destroy) remove all files and `dvc` structures for the current project, including the cache. The symlinks will be replaced by the actual data so the current state is preserved.
