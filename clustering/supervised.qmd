@@ -535,7 +535,7 @@ $$
 Stating the optimization function such that it is smooth for a linear SVM is a bit tricky.
 On the other hand, this is needed to allow for most optimization algorithm to work, as they require a gradient to some sort. 
 
-Therefore, the following formulation is quite common.
+Therefore, the following formulation is quite common:
 $$
 \underset{w, b}{\operatorname{argmin}} \sum_j H(y_j, \overline{y}_j) + \frac12\|w\|^2 \quad \text{subject to}\quad \min_j|\langle x_j, w\rangle| = 1,
 $$
