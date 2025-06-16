@@ -754,6 +754,30 @@ This create the file `.dvc/config` with the following content (a toml file).
     url = webdavs://sakai.mci4me.at/dav/Course-ID-SLVA-46549/MECH-M-DUAL-2-MLB-DATA
 ```
 
+::: {.callout-important}
+
+Due to the server structure we need to limit the number of parallel processes for synchronizing the content.
+In order to do so, we limit the default value for the number of jobs:
+
+```bash
+MLB-DATA$ pdm run dvc remote modify myremote jobs 4
+```
+
+This will result in the following toml file:
+
+```toml
+[core]
+    remote = myremote
+['remote "myremote"']
+    url = webdavs://sakai.mci4me.at/dav/Course-ID-SLVA-46549/MECH-M-DUAL-2-MLB-DATA
+    jobs = 4
+
+```
+
+As this issues only occurred late in the project the last line will not show up in the commit [afe0848](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/afe08488167a3a68788f67b64cbd76e7261deee6) and only after [0a98a09](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/0a98a0941c77ed0daa9371904df6bb916a6a45f4) 
+
+:::
+
 To nicely separate the sensitive information for the access, there also exist a `.dvc/config.local` file that is in the `.gitignore` and will not be committed. 
 We add our user information to this file or via a command in the terminal
 
