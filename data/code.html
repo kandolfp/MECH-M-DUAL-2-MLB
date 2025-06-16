@@ -98,9 +98,9 @@ div.csl-indent {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-91269faae8b05e90b72f852b441977e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-e71bfb4db8e3d607a96f8e3c6f00daa1.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-91269faae8b05e90b72f852b441977e9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-396a8ca7a22f3fd420d3bfa4e06e1479.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-ee05651f5575b4d404d9d8b9add92005.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-396a8ca7a22f3fd420d3bfa4e06e1479.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -768,7 +768,7 @@ Note
 <ul>
 <li><a href="https://dvc.org/doc/command-reference/add"><code>dvc add</code></a> to add a file or directory.</li>
 <li><a href="https://dvc.org/doc/command-reference/checkout"><code>dvc checkout</code></a> brings your work space up to date, according to the <code>.dvc</code> files current states.</li>
-<li><a href="https://dvc.org/doc/command-reference/checkout"><code>dvc commit</code></a> updates the <code>.dvc</code> files and stores the content in the cache, most of the time called implicitly.</li>
+<li><a href="https://dvc.org/doc/command-reference/commit"><code>dvc commit</code></a> updates the <code>.dvc</code> files and stores the content in the cache, most of the time called implicitly.</li>
 <li><a href="https://dvc.org/doc/command-reference/config"><code>dvc config</code></a> view and change the config for the repo or globally for <code>dvc</code> on the system.</li>
 <li><a href="https://dvc.org/doc/command-reference/data/status"><code>dvc data status</code></a> chow changes to the files in the work space with respect to the<code>git HEAD</code>.</li>
 <li><a href="https://dvc.org/doc/command-reference/destroy"><code>dvc destroy</code></a> remove all files and <code>dvc</code> structures for the current project, including the cache. The symlinks will be replaced by the actual data so the current state is preserved.</li>
@@ -1189,18 +1189,39 @@ Important
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">remote</span> <span class="op">=</span> <span class="dt">myremote</span></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="kw">['</span><span class="dt">remote "myremote"'</span><span class="kw">]</span></span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">url</span> <span class="op">=</span> <span class="dt">webdavs</span><span class="er">://</span><span class="dt">sakai.mci4me.at</span><span class="er">/</span><span class="dt">dav</span><span class="er">/</span><span class="dt">Course-ID-SLVA-46549</span><span class="er">/</span><span class="dt">MECH-M-DUAL-2-MLB-DATA</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Due to the server structure we need to limit the number of parallel processes for synchronizing the content. In order to do so, we limit the default value for the number of jobs:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc remote modify myremote jobs 4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This will result in the following toml file:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[core]</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">remote</span> <span class="op">=</span> <span class="dt">myremote</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="kw">['</span><span class="dt">remote "myremote"'</span><span class="kw">]</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">url</span> <span class="op">=</span> <span class="dt">webdavs</span><span class="er">://</span><span class="dt">sakai.mci4me.at</span><span class="er">/</span><span class="dt">dav</span><span class="er">/</span><span class="dt">Course-ID-SLVA-46549</span><span class="er">/</span><span class="dt">MECH-M-DUAL-2-MLB-DATA</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">jobs</span> <span class="op">=</span> <span class="dv">4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>As this issues only occurred late in the project the last line will not show up in the commit <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/afe08488167a3a68788f67b64cbd76e7261deee6">afe0848</a> and only after <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/0a98a0941c77ed0daa9371904df6bb916a6a45f4">0a98a09</a></p>
+</div>
+</div>
 <p>To nicely separate the sensitive information for the access, there also exist a <code>.dvc/config.local</code> file that is in the <code>.gitignore</code> and will not be committed. We add our user information to this file or via a command in the terminal</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc remote modify <span class="at">--local</span> myremote user <span class="pp">***</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc remote modify <span class="at">--local</span> myremote password <span class="pp">***</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc remote modify <span class="at">--local</span> myremote user <span class="pp">***</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc remote modify <span class="at">--local</span> myremote password <span class="pp">***</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>(the user is without the <code>@mci4me.at</code>)</p>
 <p>To handle WebDAV <code>dvc</code> requires the package <code>dvc-webdav</code>, install it via <code>pdm</code>. See <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/afe08488167a3a68788f67b64cbd76e7261deee6">afe0848</a> on how this is reflected in our reference project.</p>
 <p>Now we can run <code>dvc push</code> and our data is stored remotely,</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc push</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Collecting</span>                                           <span class="kw">|</span><span class="ex">14.0</span> [00:00,  381entry/s]</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Pushing</span>                                   </span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="ex">10</span> files pushed</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc push</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Collecting</span>                                           <span class="kw">|</span><span class="ex">14.0</span> [00:00,  381entry/s]</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Pushing</span>                                   </span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="ex">10</span> files pushed</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>And of course, <code>dvc pull</code> to get the files on another computer.</p>
 <div class="callout callout-style-simple callout-caution no-icon">
 <div class="callout-body d-flex">
