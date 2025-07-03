@@ -98,9 +98,9 @@ div.csl-indent {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-396a8ca7a22f3fd420d3bfa4e06e1479.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-ee05651f5575b4d404d9d8b9add92005.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-396a8ca7a22f3fd420d3bfa4e06e1479.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-1e3068369e36718fca5120af1b2594eb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-9998c2ee6da4221bd56fa9d29e80e367.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-1e3068369e36718fca5120af1b2594eb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -509,7 +509,7 @@ div.csl-indent {
    
   <ul>
   <li><a href="#externalize-the-parametersconfiguration" id="toc-externalize-the-parametersconfiguration" class="nav-link active" data-scroll-target="#externalize-the-parametersconfiguration"><span class="header-section-number">5.1</span> Externalize the parameters/configuration</a></li>
-  <li><a href="#data-persistence" id="toc-data-persistence" class="nav-link" data-scroll-target="#data-persistence"><span class="header-section-number">5.2</span> Data persistence</a></li>
+  <li><a href="#data-integration-and-versioning" id="toc-data-integration-and-versioning" class="nav-link" data-scroll-target="#data-integration-and-versioning"><span class="header-section-number">5.2</span> Data integration and versioning</a></li>
   <li><a href="#dvclive-for-experiment-management" id="toc-dvclive-for-experiment-management" class="nav-link" data-scroll-target="#dvclive-for-experiment-management"><span class="header-section-number">5.3</span> <code>dvclive</code> for experiment management</a></li>
   <li><a href="#dvc-pipeline" id="toc-dvc-pipeline" class="nav-link" data-scroll-target="#dvc-pipeline"><span class="header-section-number">5.4</span> <code>dvc</code> pipeline</a></li>
   <li><a href="#add-a-remote-for-dvc" id="toc-add-a-remote-for-dvc" class="nav-link" data-scroll-target="#add-a-remote-for-dvc"><span class="header-section-number">5.5</span> Add a remote for <code>dvc</code></a></li>
@@ -680,10 +680,10 @@ Reference repository
 </div>
 <p>Now that the config is externalized we can continue on our quest to persist all aspects of this project together in a useful way.</p>
 </section>
-<section id="data-persistence" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="data-persistence"><span class="header-section-number">5.2</span> Data persistence</h2>
+<section id="data-integration-and-versioning" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="data-integration-and-versioning"><span class="header-section-number">5.2</span> Data integration and versioning</h2>
 <p>Our model depends on the code, the configuration, but crucially also on the input data itself. In order to make sure that we can reliably reproduce a model we also need to make sure our data is reproducible.</p>
-<p>In our reference project we use some files from GitHub (see @<span class="citation" data-cites="Brunton2022">Brunton and Kutz (<a href="../references.html#ref-Brunton2022" role="doc-biblioref">2022</a>)</span> for as reference) but let us still make sure they are tracked within our system.</p>
+<p>In our reference project we use some files from GitHub (see <span class="citation" data-cites="Brunton2022">Brunton and Kutz (<a href="../references.html#ref-Brunton2022" role="doc-biblioref">2022</a>)</span> for as reference) but let us still make sure they are tracked within our system.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
