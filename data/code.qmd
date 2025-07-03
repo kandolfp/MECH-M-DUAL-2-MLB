@@ -179,12 +179,12 @@ Note: If you see an advantage in rewriting the config structure to make your cod
 
 Now that the config is externalized we can continue on our quest to persist all aspects of this project together in a useful way. 
 
-## Data persistence
+## Data integration and versioning
 
 Our model depends on the code, the configuration, but crucially also on the input data itself.
 In order to make sure that we can reliably reproduce a model we also need to make sure our data is reproducible. 
 
-In our reference project we use some files from GitHub (see @@Brunton2022 for as reference) but let us still make sure they are tracked within our system. 
+In our reference project we use some files from GitHub (see @Brunton2022 for as reference) but let us still make sure they are tracked within our system. 
 
 ::: {.callout-important}
 We use a simple tool for the next paragraphs to illustrate the concepts.
