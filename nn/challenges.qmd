@@ -13,7 +13,7 @@ See @Geron2022-xh for more details on many on the mentioned subjects and origina
 - **Vanishing/Exploding gradient**: The _working horse_ of backpropagation is the (stochastic) gradient descent method.
 The problem that might occur is that the gradient becomes smaller and smaller when propagated through the layers and the _change_ for weights becomes almost null during training.
 On the other side it can also run in the opposite direction.
-This problems are often cited for one of the main reasons that NN where abandoned in the early 2000s.
+These problems are often cited for one of the main reasons that NNs were abandoned in the early 2000s.
 In @Geron2022-xh we can find quite a nice introduction in the corresponding chapter. 
 In short, a combination of activation function and initialization of weights caused the problem is some cases.
 By introducing new weight initializations this could be mitigated and therefore it is not such a huge problem, if you see it change the weight init or rethink the choice of activation functions.
@@ -33,11 +33,11 @@ This is often the first layer and helps preparing the data and makes sure everyt
 This might be due to a shift in the input data that is not known or considered.
 E.g. consider changing the camera or updating the software.
 The output might afterwards change in a way we do not see with the naked eye but the model perceives.
-Retraining the model with new input will most likely fix the problem.
-The frequency of required retraining is hard to predict so monitoring the performance of the model is key.
+Retraining the model with new input will likely fix the problem.
+The frequency of required retraining is hard to predict, so monitoring the performance of the model is key.
 
 - **Overfitting**: This is a serious problem that we addressed thought the notes and is listed here as it is often the cause of poor performance and poor generalization.
 There are some common strategies to mitigate it like data augmentation and others. 
 
-- **Underfitting**: Our model can also suffer from underfitting, i.e. poor performance.
-Try training for longer, find better features and if this does not help increase the complexity of the model.
+- **Underfitting**: Our model can also suffer from underfitting, i.e., poor performance.
+Try training for longer, find better features, and, if this does not help, increase the complexity of the model.

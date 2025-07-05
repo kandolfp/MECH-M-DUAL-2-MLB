@@ -454,10 +454,10 @@ At the end, we have an accuracy of `{python} float(np.round(acc  * 100, 2))`% fo
 
 ## Learning rate and momentum
 
-The used optimizer [`SGD`](https://pytorch.org/docs/stable/generated/torch.optim.SGD.html#torch.optim.SGD) has two options we want to investigate further. The learning rate `lr` and the `momentum`.
+The optimizer [`SGD`](https://pytorch.org/docs/stable/generated/torch.optim.SGD.html#torch.optim.SGD) has two options we want to investigate further. The learning rate `lr` and the `momentum`.
 
 1. Change the learning rate and see how this influences performance, you might want to increase `epochs` as well. Try $lr \in [10^{-1}, 10^{-4}]$.
-1. Change the momentum between $0$ and $1$, can this _improve_ the predictions for different learning rates and such that the NN is _more sure_ of its decision (in @fig-nn-nn-dvc-non-linear-2 the bars are not almost equal but lean to one side). 
+1. Change the momentum between $0$ and $1$. Can this _improve_ the predictions for different learning rates and such that the NN is _more sure_ of its decision (in @fig-nn-nn-dvc-non-linear-2 the bars are not almost equal but lean to one side). 
 ::::
 :::
 
@@ -468,7 +468,7 @@ The used optimizer [`SGD`](https://pytorch.org/docs/stable/generated/torch.optim
 
 As we have seen so often before, the optimizer used for the problem can change how fast convergence is reached (if at all). 
 
-1. Have a look at the possibilites provided in the framework [Overview - Optimizers](https://pytorch.org/docs/stable/optim.html#algorithms) - they are basically all improvements on Stochastic Gradient Descent.
+1. Have a look at the possibilities provided in the framework [Overview - Optimizers](https://pytorch.org/docs/stable/optim.html#algorithms) - they are basically all improvements on Stochastic Gradient Descent.
 
 1. Test different approaches, especially one of the Adam (`Adam`, `AdamW`, `Adamax`) and Ada (`Adadelta`, `Adafactor`, `Adagrad`, `SparseAdam`) implementations and record the performance (final accuracy).
 ::::
@@ -502,7 +502,7 @@ Include `softmax` into to model for training and see how the performance is infl
 
 ## Optional: PyTorch Lightning
 
-The module [`pytorch lightning`](https://lightning.ai/docs/pytorch/stable/)[^lightning] promises to streamline the process for the training and to reduce the code.
+The module [`PyTorch Lightning`](https://lightning.ai/docs/pytorch/stable/)[^lightning] promises to streamline the process for the training and to reduce the code.
 
 With the _Lightning in 15 minutes_ (or any other tutorial) rewrite your code to use this framework.
 

@@ -210,7 +210,7 @@ plt.show()
 Rework the `transform` function to include the following additions.
 
 1. Shuffle the pixels of the image with a fixed permutation.
-1. Rotate the image with a fixed rotation angle, extend the image first, rotate and than crop it again.
+1. Rotate the image with a fixed rotation angle, extend the image first, rotate and then crop it again.
 1. Flip the image - mirror with respect to the middle.
 
 Retrain the autoencoder with these training sets and see how it performs (can it handle all of them at the same time?).

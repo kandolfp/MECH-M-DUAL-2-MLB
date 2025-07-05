@@ -114,7 +114,7 @@ To get more into image processing extend the ETL with the following steps:
 1. Extend the store capabilities to store the transformed images in an appropriate image format.
 
 
-1. Extend the load capabilities to only specify a folder (in our case `data/raw`) and the classes as well as the test and training set a generated automatically from these files.
+1. Extend the load capabilities to only specify a folder (in our case `data/raw`), and the classes, as well as the test and training sets, are generated automatically from these files.
 
 ::::
 :::

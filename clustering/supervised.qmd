@@ -483,7 +483,7 @@ Other than that it works similar.
 ## Support Vector Machine (SVM) {#sec-clustering-sv-svm}
 
 The basic idea of Support Vector Machines (SVMs) is to split observations into distinct clusters via hyperplanes.
-The have a long history in data science and come in different forms and fashions.
+They have a long history in data science and come in different forms and fashions.
 Over the years they became more flexible and are still one of the most used tools in industry and science. 
 
 ### Linear SVM
@@ -1170,12 +1170,12 @@ If we rotate the dataset by by 45° we can see a way more complicated separation
 Furthermore, @fig-clustering-sl-tree-rot-3 shows that the `random_state` has an influence as well.
 Finally, if we apply scaling and PCA to the data we more or less end up at our original sample again @fig-clustering-sl-tree-rot-4, showcasing the power of these feature extraction techniques once more.
 
-We note, all the trees make a perfect classification, just the structure is not as easy to recognize as it _could_ be. 
+We note that all the trees make a perfect classification, but the structure is not as easy to recognize as it _could_ be
 :::
 
 As we could see, trees are very sensitive to the observations and the state.
 In order to counteract this phenomenon we can compute multiple trees and average the results.
-This combinations of trees is called _ensemble_ and leads to the next topic.
+This combinations of trees are called an _ensemble_ and leads to the next topic.
 
 ## Ensemble learning and random forests
 

@@ -45,7 +45,7 @@ We discuss this step in more detail in @sec-nn-data-transform.
 Besides these steps that are often part of a data preparation pipeline or directly included in the training there are other important aspects that greatly influence our outcome.
 
 - **Validation and quality assurance**: It is important to have some processes in place that ensure the quality of the data is accurate, especially if data is automatically generated and labelled.
-Making suer the labels are valid, and the quality of the data is as desired makes sure the training can have major impact on the performance.
+Making sure the labels are valid, and the quality of the data is as desired makes sure the training can have major impact on the performance.
 It is also important to keep track of how balanced our dataset is.
 
 - **Scalability and efficiency**: Quite likely our dataset is growing over time and this can cause problems in terms of scalability and efficiency.
@@ -72,12 +72,15 @@ With simple augmentations like:
 - **Random erasing**: by masking out random parts of an image robustness can be improved and it simulates occlusions.
 - **Combination of images**: to create new images for training it is sometimes possible to combine existing images.
 
-we can influence the training and the model drastically.
+We can influence the training and the model drastically.
 For `pytorch` we can find most of these in `torchvison.transforms.v2`, see [docs](https://docs.pytorch.org/vision/stable/transforms.html) for some insights.
 
 The most important aspects influenced by these augmentations are:
 
-1. **Dataset**: With data augmentation we can artificially increase the size of our dataset and therefore expose our network to more training data without the often tedious task of labeling. If we apply this in a _random_ fashion we need to make sure that the seed is set and we can track the changes in case we need to get a deeper understanding of the mechanics behind it. Overall, by always applying some augmentation, overfitting can be drastically reduced. If, for some reason, your dataset is not balanced and one class is less frequent than it should be, these techniques can also produce more instances. This process is called _synthetic minority oversampling techniques_ (SMOTE).
+1. **Dataset**: With data augmentation we can artificially increase the size of our dataset and therefore expose our network to more training data without the often tedious task of labeling. 
+If we apply this in a _random_ fashion we need to make sure that the seed is set and we can track the changes in case we need to get a deeper understanding of the mechanics behind it. 
+Overall, by always applying some augmentation, overfitting can be drastically reduced. 
+If our dataset is not balanced and one class is less frequent than it should be, these techniques can also produce more instances. This process is called _synthetic minority oversampling techniques_ (SMOTE).
 
 1. **Generalization**: With data augmentation we can make sure the model learns on features that are invariant to geometric transformations or something like different zoom levels. Overall, this will lead to a better generalization of the network.
 
@@ -110,7 +113,7 @@ Depending on the task we set out to achieve, the requirements on labelling can b
 The following list covers some tasks and also highlights where specific labels can be problematic.
 
 - **Image classification**: Each image has a single label e.g., _cat_ or _dog_.
-This can cause problems, especially if we decide to move from superclasses like _animal_, _for lagged_, _furry_ to subclasses or specific species of cats. 
+This can cause problems, especially if we decide to move from superclasses like _animal_, _for legged_, _furry_ to subclasses or specific species of cats. 
 
 - **Object detection**: Annotating bounding boxes around objects within an image.
 This can be tricky in the case of objects overlapping each other or for a sequence of images where parts get obfuscated. 
@@ -120,10 +123,10 @@ This can cause problems with class imbalance if e.g. _background_ is the dominat
 Another problem occurs when capturing precise object boundaries and the challenges involved here with down and upsampling.
 Furthermore, generalization can be a problem in these tasks if e.g. background is _always_ black.
 
-- **Instance segmentation**: This builds on sematic segmentation but distinguishes between different individual of the same instance, e.g. two different cats in one image.
+- **Instance segmentation**: This builds on semantic segmentation but distinguishes between different individual of the same instance, e.g. two different cats in one image.
 One obvious challenge here is that even for a human labelling it might not always be clear if a pixel belongs to one instance or the other if the _overlap_.
   
-Above be discussed some specific challenges depending on the topic but there are also more general challenges in the context of labelling image data.
+Above, we discussed some specific challenges depending on the topic but there are also more general challenges in the context of labelling image data.
 
 - **Subjectivity**: Images allow for some form of interpretation what exactly is part of the image, instance.
 This might be where one object begins and another ends, e.g. satellite data and we need do distinguish between a roof with grass and an actual field, not to talk about different plants in the background of image.
@@ -132,7 +135,7 @@ The same is true for abstract concepts.
 
 - **Scalability**: The larger the dataset, the more time consuming and challenging the labelling process becomes.
 This is e.g. why old CAPTCHA algorithms _employed_ users to read text to help improve OCR software[^captcha].
-The task is even more challenging for the pixel labels required for segmentation.
+The task is even more challenging when pixel-level labels are required for segmentation.
 
 [^captcha]: Mix some _known_ letters or words to check if the user is correct and collect the data for the second part to build up a statistically significant classification.
 
@@ -149,8 +152,8 @@ While we can simply _correct_ an error it might also be beneficial to keep track
 
 ## Best practices
 
-In the light of the above challenges it is a good idea keep the following checks in mind. 
-Start of small to establish a process, gave _labeling guidelines_ in place to allow for reproducible results, if possible allow for multiple annotators, implement a quality control, leverage pre-labelled data if possible.
+In light of the above challenges, it is a good idea to keep the following checks in mind. 
+Start small to establish a process, have _labeling guidelines_ in place to allow for reproducible results, if possible allow for multiple annotators, implement a quality control, leverage pre-labelled data if possible.
 
 :::
 

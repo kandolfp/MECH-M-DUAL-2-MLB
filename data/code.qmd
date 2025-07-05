@@ -99,11 +99,11 @@ Optional: Extend the implementation and check if the local repository is not beh
 ## Externalize the parameters/configuration
 
 First thing we do is we externalize the configuration to make sure this is no longer part of our main code source.
-This means we can filter between actual changes to the structure and source and a commit for a _simple experiment_.
+This means we can distinguish between actual changes to the structure, source code, as well as a commit for a _simple experiment_.
 
-`yaml` is the format to go for these aspects, see [Wikipedia](https://en.wikipedia.org/wiki/YAML).
+`YAML` is the format to go for these aspects, see [Wikipedia](https://en.wikipedia.org/wiki/YAML).
 It is a human readable data serialization language. 
-One possible interpretation of the config (among many others is) can be seen in the next code block.
+One possible interpretation of the configuration (among many others) can be seen in the next code block.
 
 ```yaml
 PCA:
@@ -198,7 +198,7 @@ Alternatives include:
 - [Pachyderm](https://www.pachyderm.com/)
 - [lakefs](https://lakefs.io/)
 
-Like always, the _best_ platform depends on the project and the available infrastructure.
+As always, the _best_ platform depends on the project and the available infrastructure.
 :::
 
 One tool for data version control is [`dvc`](https://dvc.org/doc).
@@ -430,7 +430,7 @@ It is also possible provide a _commit message_ to give more details to the exper
 The overview also allows us to see the score for our model and the parameters, this allows us to quickly compare models.
 
 ::: {.callout-note}
-We can see that the parameter from `params.yaml` are automatically added and our code somewhat duplicated them.
+We can see that the parameter from `params.yaml` are automatically added, and our code has somewhat duplicated them.
 :::
 
 `dvclive` relies on `git` to do its magic for files and the `dvc` cache for large files. 
@@ -789,7 +789,7 @@ MLB-DATA$ pdm run dvc remote modify --local myremote password ***
 
 (the user is without the `@mci4me.at`)
 
-To handle WebDAV `dvc` requires the package `dvc-webdav`, install it via `pdm`.
+To handle WebDAV `dvc` requires the package `dvc-webdav`, we install it via `pdm`.
 See [afe0848](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/afe08488167a3a68788f67b64cbd76e7261deee6) on how this is reflected in our reference project.
 
 Now we can run `dvc push` and our data is stored remotely,

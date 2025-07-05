@@ -272,7 +272,7 @@ The simplest way is to use the loaded module as the first element in a `torch.nn
 
 ## Freeze the original network
 
-Instead of including the layers of the original model in the backpropagation try to freeze them and only train a final classifier.
+Instead of including the layers of the original model in the backpropagation, try to freeze them and only train a final classifier.
 
 See if using one of the other EfficientNet versions (e.g. v3) performs better or worse in this scenario.
 ::::
@@ -283,9 +283,10 @@ See if using one of the other EfficientNet versions (e.g. v3) performs better or
 
 ## Padding
 
-Instead of bloating up the image via `Resize` use `Pad` to imped the image with a boundary to make sure to reach the original size constraints.
+Instead of bloating up the image via `Resize` use `Pad` to embed the image with a boundary to make sure to reach the original size constraints.
 
 Try the following scenarios and see if there is a difference in the score:
+
 - Symmetric padding with black background
 - Symmetric padding with white background
 - Asymmetric padding (image in one corner)

@@ -207,7 +207,7 @@ Often a so called _one_hot_ vector is more appropriate, this is supported via `c
 
 As we have seen so often before, the optimizer used for the problem can change how fast convergence is reached (if at all). 
 
-1. Have a look at the possibilites provided in the framework [Overview - Optimizers](https://www.tensorflow.org/api_docs/python/tf/keras/optimizers) - they are basically all improvements on Stochastic Gradient Descent.
+1. Have a look at the possibilities provided in the framework [Overview - Optimizers](https://www.tensorflow.org/api_docs/python/tf/keras/optimizers) - they are basically all improvements on Stochastic Gradient Descent.
 
 1. Test different approaches, especially one of the Adam (`Adam`, `AdamW`, `Adamax`) and Ada (`Adadelta`, `Adafactor`, `Adagrad`) implementations and record the performance (final accuracy).
 ::::

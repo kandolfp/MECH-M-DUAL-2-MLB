@@ -269,7 +269,7 @@ The following dataset and the basic structure of the code is from @Geron2022-xh,
 
 ```{python}
 #| label: fig-clustering-unsupervised-img-seg
-#| fig-cap: "Colour segmentation for the image of a lady bug."
+#| fig-cap: "Colour segmentation for the image of a ladybug."
 #| fig-subcap: 
 #|   - "Original image."
 #|   - "Segmentation by 8 colours."
@@ -408,7 +408,7 @@ Try working out the clusters in this case, look at the different possibilities w
 The algorithm was introduced in @DBSCAN and is an algorithm that finds areas of high density.
 The main idea behind the algorithm is as follows.
 
-Our observations (we will call them points here for consistency) form the basis and they can be in any space but as for all the algorithms presented here, there needs to exist some form to measure distance.
+Our observations (we will call them points here for consistency) form the basis and they can be in any space but as for all the algorithms presented here, there needs to exist some way to measure distance.
 Furthermore, DBSCAN relies on two parameters, $\epsilon$ describing the radius of neighbourhood of a point and $minPts$ the minimum of points needed to form a cluster. 
 With these parameters we perform the following steps:
 
