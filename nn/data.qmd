@@ -12,8 +12,8 @@ Quite often a data pipeline consists of the steps as listed below (the order may
 
 We list here some general techniques with a focus on image processing.
 Depending on the domain in question there are often domain-specific challenges to overcome.
-This includes the domain of processing (computer vision, NLP, time series) but also the domain of you data.
-The challenges in producing industries is different than astrophysics, medicine or metrology.
+This includes the domain of processing (computer vision, NLP, time series) but also the domain of our data.
+The challenges in producing industries are different than astrophysics, medicine or metrology.
 
 :::
 
@@ -27,7 +27,7 @@ The main idea of this step is to have data that can be processed in a standardiz
 Already at this level it is essential, that for example the _test dataset_ is never touched by the training or validation.
 
 - **Class imbalance**: A real-world dataset is often not balanced or not as balanced as it should be for good learning behaviour in NNs.
-The training techniques need to be adapted or a selection needs to be restricted.
+The training techniques need to be adapted or the sample selection needs to be adjusted.
 We discussed some of the problems in @sec-clustering-sl-performance.
 Some of the data augmentation techniques we discuss below @sec-nn-data-transform can help to mitigate these problems. 
 
@@ -53,7 +53,7 @@ You might need to apply batch processing and parallelization techniques to make 
 Furthermore, the way it is stored and provided for the NN can often become the bottleneck of training. 
 
 - **Ethical considerations**: A bias in the dataset can create a bias in the model we train.
-This is especially important if we are working with sensitive information and data.
+This is especially important if we are working with sensitive data.
 Furthermore, ethical considerations and GDPR considerations should never be ignored during data collection and use.
 
 ## Data Augmentation {#sec-nn-data-transform}
@@ -107,7 +107,7 @@ Can you see any of the above described benefits?
 
 Labeling data is a critical step in machine learning projects as the quality directly influences the performance of the model.
 For image data the process of labeling involves assigning meaningful annotations to images (what is in the image, or what classes it belongs to), bounding boxes or masks for objects visible in the image.
-Furthermore, these informations should be easy to process by a machine and keeping a change log is also recommended.
+Furthermore, these information should be easy to process by a machine and keeping a change log is also recommended.
 
 Depending on the task we set out to achieve, the requirements on labelling can be quite different.
 The following list covers some tasks and also highlights where specific labels can be problematic.
@@ -129,7 +129,7 @@ One obvious challenge here is that even for a human labelling it might not alway
 Above, we discussed some specific challenges depending on the topic but there are also more general challenges in the context of labelling image data.
 
 - **Subjectivity**: Images allow for some form of interpretation what exactly is part of the image, instance.
-This might be where one object begins and another ends, e.g. satellite data and we need do distinguish between a roof with grass and an actual field, not to talk about different plants in the background of image.
+This might be where one object begins and another ends, e.g. satellite data and we need to distinguish between a roof with grass and an actual field, not to talk about different plants in the background of image.
 Furthermore, if we try to label emotions this might be hard due to cultural differences.
 The same is true for abstract concepts. 
 
@@ -146,7 +146,7 @@ E.g. there are not a lot of images of snow leopards and those existing might be 
 Such problems can propagate and influence workflow.
 While we can simply _correct_ an error it might also be beneficial to keep track of the wrong labels to make sure we capture model drift and also to work against systematic errors. 
 
-- **Cost**: The costs for high-quality labelled data was made implicitly clear in the above points but we need to mention it separately as it can have serious implications on a project.
+- **Cost**: The costs for high-quality labelled data were made implicitly clear in the above points but we need to mention it separately as it can have serious implications on a project.
 
 ::: {.callout-tip}
 

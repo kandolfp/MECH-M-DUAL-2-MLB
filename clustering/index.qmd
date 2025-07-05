@@ -4,7 +4,7 @@ One aspect of machine learning is binning data into meaningful and distinct cate
 This process is referred to as clustering and classification. 
 To achieve this task the main modus of operation is to find a _low-rank feature space_ that is informative and interpretable.
 
-One way to extract the dominate features from a dataset is the singular value decomposition (SVD) or principal component analysis, see [@Kandolf_GDM].
+One way to extract the dominant features from a dataset is the singular value decomposition (SVD) or principal component analysis, see [@Kandolf_GDM].
 The main idea is, to not work in the high dimensional measurement space, but instead in the low rank feature space.
 This allows us to significantly reduce the cost (of computation or learning) by performing our clustering in this low dimensional space. 
 

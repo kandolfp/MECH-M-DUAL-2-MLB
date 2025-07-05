@@ -11,8 +11,8 @@ The idea is not a comprehensive discussion but rather to give some guidance if p
 See @Geron2022-xh for more details on many on the mentioned subjects and original references.
 
 - **Vanishing/Exploding gradient**: The _working horse_ of backpropagation is the (stochastic) gradient descent method.
-The problem that might occur is that the gradient becomes smaller and smaller when propagated through the layers and the _change_ for weights becomes almost null during training.
-On the other side it can also run in the opposite direction.
+The problem that might occur is that the gradient becomes smaller and smaller when propagated through the layers and the _change_ for weights becomes almost negligible during training.
+On the other hand it can also run in the opposite direction.
 These problems are often cited for one of the main reasons that NNs were abandoned in the early 2000s.
 In @Geron2022-xh we can find quite a nice introduction in the corresponding chapter. 
 In short, a combination of activation function and initialization of weights caused the problem is some cases.
