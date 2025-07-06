@@ -57,6 +57,7 @@ format:
     default-image-extension: svg
   pdf:
     documentclass: scrreprt
+    papersize: a4
     default-image-extension:  png
     code-overflow: wrap
     monofont: "DejaVu Sans Mono"
