@@ -403,7 +403,7 @@ MLB-DATA$ pdm run dvc exp show
 ::: {.content-visible unless-format="html"}
 :::: {.callout-note}
 We truncate the output in this format of the notes.
-Please use the above code to view it.
+Please use the above code to view it in full.
 ::::
 ```bash
 MLB-DATA$ pdm run dvc exp show
@@ -657,7 +657,7 @@ The result can be seen in the experiment list, of course under a new commit SHA.
 ::: {.content-visible unless-format="html"}
 :::: {.callout-note}
 We truncate the output in this format of the notes.
-Please use the above code to view it.
+Please use the above code to view it in full.
 ::::
 ```bash
  ──────────────────────────────────────────────────────────────────────────────────────

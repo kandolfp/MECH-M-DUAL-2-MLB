@@ -530,7 +530,7 @@ As a result each process can be described by two parameters, _mean_ and _varianc
 Each cluster in turn, will be described by an ellipsoidal shape where size, density, orientation, and semi-axis vary. 
 
 Like $k$-means, in the simplest version, GMM is provided with the number of clusters $k$ and starts from an initial guess of the means and corresponding variances.
-The parameters are than iteratively updated to find a (local) maximum.
+The parameters are then iteratively updated to find a (local) maximum.
 There are some problems with this approach, e.g. if we set one of the processes to have zero variance and mean equal to a point.
 To avoid such problems _cross-validation_ can often help to avoid problems stemming from an initialization with a poor initial guess.
 

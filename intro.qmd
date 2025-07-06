@@ -31,7 +31,7 @@ After this general introduction and definition of the necessary terms we discuss
 For each we provide the general idea and showcase the capabilities.
 In @sec-nn-data we address topics regarding the _training data_ and the _labelling_.
 This section is the one with the least code as these topics are of a general form and usually already included for the datasets used here.
-The finish up the section on neural networks, we discuss some @sec-nn-further in the field.
+To finish up the section on neural networks, we discuss some common challenges in the field (@sec-nn-further).
 The idea of this last section is to provide some guidance if something is not working as expected. 
 
 With these notes we can not hope to cover everything of importance with the length it needs but we can give a glimpse into
