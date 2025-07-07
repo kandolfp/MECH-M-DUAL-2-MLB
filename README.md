@@ -1,10 +1,12 @@
 # MECH-M-DUAL-2-MLB - Maschinelles Lernen in der industriellen Bildverarbeitung
 
-Course material for a ~3 * 15 hours (5 ECTS) course on basic concepts for Machine Learning in Industrial Image Processing. All the topics are presented with the Python implementation included.  
+Course material for a ~3 * 15 hours (5 ECTS) course on basic concepts for Machine Learning in Industrial Image Processing. All the topics are presented with the Python implementation included as well as examples for self study sessions. We cover clustering and classification (supervised and unsupervised), basic concepts of data management and data engineering (including dvc for model version control), neural networks (the basics, CNN, Autoencoders, Transfer learning) and some further topics.
 
 # Citing this project
 
-Will be added once the notes are more mature. 
+[Citation information](CITATION.cff)
+
+[![DOI](https://zenodo.org/badge/861305042.svg)](https://zenodo.org/badge/latestdoi/15829336)
 
 # Development
 
@@ -34,4 +36,4 @@ or the html version
  pdm run quarto render --to html
 ```
 
-You can also find a pdf in the [releases](https://github.com/kandolfp/MECH-M-DUAL-1-DBM/releases)
+You can also find a pdf in the [releases](https://github.com/kandolfp/MECH-M-DUAL-2-MLB/releases)

@@ -1,0 +1,23 @@
+{
+  "access_right": "open",
+  "creators": [
+    {
+      "orcid": "0000-0003-3601-0852",
+      "name": "Kandolf, Peter"
+    }
+  ],
+  "description": "Course material for a ~3 * 15 hours (5 ECTS) course on basic concepts for Machine Learning in Industrial Image Processing. All the topics are presented with the Python implementation included as well as examples for self study sessions. We cover clustering and classification (supervised and unsupervised), basic concepts of data management and data engineering (including dvc for model version control), neural networks (the basics, CNN, Autoencoders, Transfer learning) and some further topics.",
+  "keywords": [
+    "image processing",
+    "neural networks",
+    "data management",
+    "classification",
+    "machine learning",
+    "data science",
+    "Python"
+  ],
+  "license": "cc-by-nc-sa-4.0",
+  "publication_date": "2025-07-07",
+  "title": "MECH-M-DUAL-2-MLB - Machine Learning in Industrial Image Processing",
+  "upload_type": "lesson"
+}
