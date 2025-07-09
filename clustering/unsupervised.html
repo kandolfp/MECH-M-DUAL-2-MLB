@@ -616,7 +616,7 @@ Tip
 <li>Repeat, starting from step 2, until the cluster centers stay stable up to some tolerance.</li>
 </ol>
 <p>This algorithm was first introduced in <span class="citation" data-cites="DBLP:journals/tit/Lloyd82">Lloyd (<a href="../references.html#ref-DBLP:journals/tit/Lloyd82" role="doc-biblioref">1982</a>)</span> and is therefore often called Lloyd algorithm.</p>
-<div id="5f97a279" class="cell" data-execution_count="1">
+<div id="b3b24b2d" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code for Lloyd algorithm</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lloyd(data, centers, steps):</span>
@@ -1002,7 +1002,7 @@ Important
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-unsupervised-img-seg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1.4: Colour segmentation for the image of a lady bug.
+Figure&nbsp;1.4: Colour segmentation for the image of a ladybug.
 </figcaption>
 </figure>
 </div>
@@ -1188,7 +1188,7 @@ Note
 <section id="sec-clustering-ul-dbscan" class="level2" data-number="1.3">
 <h2 data-number="1.3" class="anchored" data-anchor-id="sec-clustering-ul-dbscan"><span class="header-section-number">1.3</span> Density-based spatial clustering of applications with noise (DBSCAN)</h2>
 <p>The algorithm was introduced in <span class="citation" data-cites="DBSCAN">Ester et al. (<a href="../references.html#ref-DBSCAN" role="doc-biblioref">1996</a>)</span> and is an algorithm that finds areas of high density. The main idea behind the algorithm is as follows.</p>
-<p>Our observations (we will call them points here for consistency) form the basis and they can be in any space but as for all the algorithms presented here, there needs to exist some form to measure distance. Furthermore, DBSCAN relies on two parameters, <span class="math inline">\(\epsilon\)</span> describing the radius of neighbourhood of a point and <span class="math inline">\(minPts\)</span> the minimum of points needed to form a cluster. With these parameters we perform the following steps:</p>
+<p>Our observations (we will call them points here for consistency) form the basis and they can be in any space but as for all the algorithms presented here, there needs to exist some way to measure distance. Furthermore, DBSCAN relies on two parameters, <span class="math inline">\(\epsilon\)</span> describing the radius of neighbourhood of a point and <span class="math inline">\(minPts\)</span> the minimum of points needed to form a cluster. With these parameters we perform the following steps:</p>
 <ol type="1">
 <li><p>A point <span class="math inline">\(p\)</span> is called a <em>core point</em> if at least <span class="math inline">\(minPts\)</span> (including <span class="math inline">\(p\)</span>) are within distance <span class="math inline">\(\epsilon\)</span> of <span class="math inline">\(p\)</span>. This region is called the <span class="math inline">\(\epsilon\)</span>-neighbourhood of <span class="math inline">\(p\)</span>.</p></li>
 <li><p>A point <span class="math inline">\(q\)</span> is called <em>directly reachable</em> from a core point <span class="math inline">\(p\)</span> iff<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> <span class="math inline">\(q\)</span> is in the <span class="math inline">\(\epsilon\)</span>-neighbourhood of <span class="math inline">\(p\)</span>.</p></li>
@@ -1332,7 +1332,7 @@ Note
 <h2 data-number="1.4" class="anchored" data-anchor-id="finite-mixtures-models"><span class="header-section-number">1.4</span> Finite Mixtures Models</h2>
 <p>Finite mixture models assume that the observations <span class="math inline">\(x_i\)</span> are mixtures of <span class="math inline">\(k\)</span> processes, which combine in the measurement. Each mixture is defined via a probability model with unknown parameters. The aim of the algorithm is to find the parameters such that the <span class="math inline">\(k\)</span> processes best describe the <span class="math inline">\(x_i\)</span> observations. The basis of the algorithm is the so called <em>expectation-maximization</em> (EM) algorithm of <span class="citation" data-cites="dempster1977maximum">Dempster, Laird, and Rubin (<a href="../references.html#ref-dempster1977maximum" role="doc-biblioref">1977</a>)</span>, that is designed to find the <em>maximum-likelihood</em> parameters of the defined statistical models.</p>
 <p>The most common choice for the probability models is the Gaussian distribution<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> and for this choice, the method is better known as <em>Gaussian mixture models</em> (GMM). This is often quite a sensible choice, if nothing more is known about the observations, and a Gaussian distribution is therefore a save bet. As a result each process can be described by two parameters, <em>mean</em> and <em>variance</em>. Each cluster in turn, will be described by an ellipsoidal shape where size, density, orientation, and semi-axis vary.</p>
-<p>Like <span class="math inline">\(k\)</span>-means, in the simplest version, GMM is provided with the number of clusters <span class="math inline">\(k\)</span> and starts from an initial guess of the means and corresponding variances. The parameters are than iteratively updated to find a (local) maximum. There are some problems with this approach, e.g.&nbsp;if we set one of the processes to have zero variance and mean equal to a point. To avoid such problems <em>cross-validation</em> can often help to avoid problems stemming from an initialization with a poor initial guess.</p>
+<p>Like <span class="math inline">\(k\)</span>-means, in the simplest version, GMM is provided with the number of clusters <span class="math inline">\(k\)</span> and starts from an initial guess of the means and corresponding variances. The parameters are then iteratively updated to find a (local) maximum. There are some problems with this approach, e.g.&nbsp;if we set one of the processes to have zero variance and mean equal to a point. To avoid such problems <em>cross-validation</em> can often help to avoid problems stemming from an initialization with a poor initial guess.</p>
 <p>As mentioned, the main idea of the mixture models is that the observations are a linear combination of probability density functions (PDF) <span class="math display">\[
 f(x_j, \Theta) = \sum_{p=1}^k \alpha_p f_p(x_j, \Theta_p),
 \]</span> where <span class="math inline">\(f\)</span> denotes the observed/measured PDF with parameters <span class="math inline">\(\Theta\)</span>, <span class="math inline">\(f_p\)</span> the PDF of mixture <span class="math inline">\(p\)</span> with parameters <span class="math inline">\(\Theta_p\)</span>, and <span class="math inline">\(k\)</span> denotes the number of mixtures. The weights <span class="math inline">\(\alpha_p\)</span> fulfil <span class="math inline">\(\sum_p \alpha_p = 1\)</span>.</p>
@@ -1551,13 +1551,13 @@ Figure&nbsp;1.9: Fitting of the second and fourth principal value of the cats an
 <p>Before we make the leap to supervised learning, we we introduce a new dataset and see how our unsupervised approach works in this case.</p>
 <p>We do this with the (in)famous MNIST dataset of hand written digits. Lets start by looking at the dataset and establishing some basic properties.</p>
 <p>We load the dataset and look at its description</p>
-<div id="421312e3" class="cell" data-execution_count="10">
+<div id="132a0004" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_openml</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>mnist <span class="op">=</span> fetch_openml(<span class="st">'mnist_784'</span>, as_frame<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mnist.DESCR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="b2653cad" class="cell styled-output" data-execution_count="11">
+<div id="678fa7c1" class="cell styled-output" data-execution_count="11">
 <div class="cell-output cell-output-stdout">
 <pre><code>**Author**: Yann LeCun, Corinna Cortes, Christopher J.C. Burges
 **Source**: [MNIST Website](http://yann.lecun.com/exdb/mnist/) - Date
@@ -1655,7 +1655,7 @@ Figure&nbsp;1.10: First 100 digits from the MNIST dataset.
 <p>As can be seen from <a href="#fig-clustering-usl-mnist" class="quarto-xref">Figure&nbsp;<span>1.10</span></a>, most digits are easy to distinguish for us, but there are some nasty things included. Especially, there are <code>1</code>s with the english style (just one straight line) of writing (1st row, 7th column), but also as a diagonal line (1st row, 4th column), and finally also the german style (connecting line at base and top) of writing (3rd row, 5th column).</p>
 <p>Also the <code>2</code> digit comes in various forms, with loop (1st row, 6th column) and without (3rd row, 6th column). Finally we all know that a <code>3</code> can hide in an <code>8</code>, same as a <code>7</code> and <code>1</code> can hide in a <code>9</code> and much more.</p>
 <p>Now, before we go any further in the investigation we split up the dataset into a training and a test set, we will not use this here but we should establish some way of working right from the start.</p>
-<div id="35eaf2e2" class="cell" data-execution_count="13">
+<div id="4e1b7a75" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>X_train, X_test <span class="op">=</span> mnist.data[:<span class="dv">60000</span>], mnist.data[<span class="dv">60000</span>:]</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>y_train, y_test <span class="op">=</span> mnist.target[:<span class="dv">60000</span>], mnist.target[<span class="dv">60000</span>:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>

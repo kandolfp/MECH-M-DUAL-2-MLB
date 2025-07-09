@@ -959,7 +959,7 @@ Note
 </div>
 </div>
 <p>First we load the MNIST dataset again and split it into a training and testing section, see <a href="unsupervised.html#sec-clustering-ul-me" class="quarto-xref"><span>Section 1.5</span></a>.</p>
-<div id="5ef3d12d" class="cell" data-execution_count="4">
+<div id="1cadd0b3" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Show the code for loading and splitting the dataset</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -976,7 +976,7 @@ Note
 </details>
 </div>
 <p>Next, as we only want a binary classifier, we select one number, in our case <code>5</code> and relabel our data. With the new labels we can train our classifier, compare <a href="#def-multiclass-ovr" class="quarto-xref">Definition&nbsp;<span>2.9</span></a>.</p>
-<div id="f052ee45" class="cell" data-execution_count="5">
+<div id="e62aa99e" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>y_train_5 <span class="op">=</span> (y_train <span class="op">==</span> <span class="st">"5"</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>y_test_5 <span class="op">=</span> (y_test <span class="op">==</span> <span class="st">"5"</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -984,11 +984,11 @@ Note
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>SGD.fit(X_train, y_train_5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In order to get a score for our method, we use <span class="math inline">\(k\)</span>-folds cross-validation <a href="#def-crossvalidation" class="quarto-xref">Definition&nbsp;<span>2.1</span></a> and the corresponding <code>scikit-learn</code> function <a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_score.html"><code>cross_val_score</code></a> to perform this task for our model.</p>
-<div id="e8e84ec0" class="cell" data-execution_count="6">
+<div id="d63af911" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> sklearn.model_selection.cross_val_score(</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    SGD, X_train, y_train_5, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">"accuracy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="a217a601" class="cell" data-execution_count="7">
+<div id="1249e3e0" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display" data-execution_count="7">
 <div>
 
@@ -1020,13 +1020,13 @@ Note
 </div>
 </div>
 <p>With scores in the high <span class="math inline">\(90\%\)</span> range the results look promising, if not great, but are they really that good? In order to get a better idea just always guess that we do not see a <code>5</code> that should be the most common class in our case. To simulate this we use the <code>DummyClassifier</code> class.</p>
-<div id="7b59d4ec" class="cell" data-execution_count="8">
+<div id="b84dff66" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>dummy <span class="op">=</span> sklearn.dummy.DummyClassifier()</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>dummy.fit(X_train, y_train_5)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>scores_dummy <span class="op">=</span> sklearn.model_selection.cross_val_score(</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    dummy, X_train, y_train_5, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">"accuracy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="7235365f" class="cell" data-execution_count="9">
+<div id="9b7688c5" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-display" data-execution_count="9">
 <div>
 
@@ -1085,12 +1085,12 @@ Figure&nbsp;2.6: Names and abbreviations for a <span class="math inline">\(2\tim
 </div>
 <p>To compute the confusion matrix we first need predictions. This can be achieved by <a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_predict.html"><code>cross_val_predict</code></a> instead of <code>cross_val_score</code> and than we use <a href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html"><code>confusion_matrix</code></a> from <code>sklearn.metrics</code>.</p>
 <p>Combined, for our example, this reads as:</p>
-<div id="1a5136b6" class="cell" data-execution_count="10">
+<div id="bc5145df" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>y_train_pred <span class="op">=</span> sklearn.model_selection.cross_val_predict(</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                    SGD, X_train, y_train_5, cv<span class="op">=</span><span class="dv">3</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> sklearn.metrics.confusion_matrix(y_train_5, y_train_pred)                   </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="92792719" class="cell" data-execution_count="11">
+<div id="e67ddb3f" class="cell" data-execution_count="11">
 <div class="cell-output cell-output-display" data-execution_count="11">
 <div>
 
@@ -1154,7 +1154,7 @@ F_1 = \frac{2 TP}{2 TP + FP + FN}
 \]</span></p></li>
 </ol>
 <p>In the <a href="https://scikit-learn.org/stable/api/sklearn.metrics.html"><code>sklearn.metrics</code></a> most of these values have a corresponding function. If we look at <em>precission</em>, <em>recall</em>, and the <span class="math inline">\(F_1\)</span> score, for our example we see that our performance is viewed under a different light:</p>
-<div id="8a9be0f8" class="cell styled-output" data-execution_count="12">
+<div id="7a31ae96" class="cell styled-output" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>precision <span class="op">=</span> sklearn.metrics.precision_score(y_train_5, y_train_pred)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>recall <span class="op">=</span> sklearn.metrics.recall_score(y_train_5, y_train_pred)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>f1_score <span class="op">=</span> sklearn.metrics.f1_score(y_train_5, y_train_pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1165,7 +1165,7 @@ F_1 = \frac{2 TP}{2 TP + FP + FN}
 </section>
 <section id="sec-clustering-sv-svm" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="sec-clustering-sv-svm"><span class="header-section-number">2.3</span> Support Vector Machine (SVM)</h2>
-<p>The basic idea of Support Vector Machines (SVMs) is to split observations into distinct clusters via hyperplanes. The have a long history in data science and come in different forms and fashions. Over the years they became more flexible and are still one of the most used tools in industry and science.</p>
+<p>The basic idea of Support Vector Machines (SVMs) is to split observations into distinct clusters via hyperplanes. They have a long history in data science and come in different forms and fashions. Over the years they became more flexible and are still one of the most used tools in industry and science.</p>
 <section id="linear-svm" class="level3" data-number="2.3.1">
 <h3 data-number="2.3.1" class="anchored" data-anchor-id="linear-svm"><span class="header-section-number">2.3.1</span> Linear SVM</h3>
 <p>We start of with the linear SVM where we construct a hyperplane <span class="math display">\[
@@ -1335,7 +1335,7 @@ Pipeline
 <li>apply a scaler to our observations</li>
 <li>apply the Linear SVM</li>
 </ul>
-<div id="2ce6404b" class="cell" data-execution_count="14">
+<div id="d2276f27" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>composit_svm <span class="op">=</span> sklearn.pipeline.make_pipeline(</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    sklearn.preprocessing.PolynomialFeatures(<span class="dv">2</span>),</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    sklearn.preprocessing.StandardScaler(),</span>
@@ -1575,7 +1575,7 @@ Figure&nbsp;2.11: Training a SVM with an RBF kernel for the singular vectors 2 t
 </div>
 </div>
 <p>We get a confusion matrix for our test set as</p>
-<div id="887beb4e" class="cell" data-execution_count="18">
+<div id="a74e0028" class="cell" data-execution_count="18">
 <div class="cell-output cell-output-display" data-execution_count="18">
 <div>
 
@@ -1627,7 +1627,7 @@ Figure&nbsp;2.11: Training a SVM with an RBF kernel for the singular vectors 2 t
 <div class="callout-body-container">
 <div id="exr-nonlinear-SVM-regression" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise 2.5 (Nonlinear SVM for regression)</strong></span> We can use SVM for regression. Have a look at <a href="https://scikit-learn.org/stable/auto_examples/svm/plot_svm_regression.html#sphx-glr-auto-examples-svm-plot-svm-regression-py">docs</a> and use the findings to fit the following observations with various degrees and kernel functions.</p>
-<div id="e5650b07" class="cell" data-execution_count="19">
+<div id="afd1674a" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
@@ -1674,7 +1674,7 @@ Figure&nbsp;2.11: Training a SVM with an RBF kernel for the singular vectors 2 t
 <li>Proceed with the two new branches in the same fashion.</li>
 </ol>
 <p>Let us apply it to the Fischer Iris dataset to better understand what is happening.</p>
-<div id="3095f972" class="cell" data-execution_count="20">
+<div id="fc0650af" class="cell" data-execution_count="20">
 <details class="code-fold">
 <summary>Show the code for the figure</summary>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -1790,7 +1790,7 @@ Figure&nbsp;2.11: Training a SVM with an RBF kernel for the singular vectors 2 t
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-sl-tree-iris-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.12: Decision tree for the Fischer iris dataset and depth 2.
+Figure&nbsp;2.12: Decision tree for the Fischer iris dataset with depth 2.
 </figcaption>
 </figure>
 </div>
@@ -1860,7 +1860,7 @@ Figure&nbsp;2.13: Splits for the Fischer Iris dataset with the first two split f
 </div>
 <p>In <a href="#fig-clustering-sl-tree-iris-split" class="quarto-xref">Figure&nbsp;<span>2.13</span></a> we can see the the first two splits and the next split if we would increase the tree. With the first split, we immediately separate <em>setosa</em> with <span class="math inline">\(100\%\)</span> accuracy. The two other classes are a bit tricky and we can not classify everything correct right away. In total <span class="math inline">\(6\)</span> out of <span class="math inline">\(150\)</span> observations are wrongly classified with this simple tree.</p>
 <p>Let us also apply the tree classification to our cats and dogs example.</p>
-<div id="7c1f1878" class="cell" data-execution_count="22">
+<div id="41ad6f71" class="cell" data-execution_count="22">
 <details class="code-fold">
 <summary>Show the code for the figure</summary>
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -2036,13 +2036,13 @@ Figure&nbsp;2.13: Splits for the Fischer Iris dataset with the first two split f
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-sl-tree-cvsd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.14: Decision tree for the Fischer iris dataset and depth 2.
+Figure&nbsp;2.14: Decision tree for the dogs and cats dataset with depth 2.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<div id="4e1ebbf2" class="cell" data-execution_count="23">
+<div id="21202d7d" class="cell" data-execution_count="23">
 <div class="cell-output cell-output-display" data-execution_count="23">
 <div>
 
@@ -2225,10 +2225,10 @@ Figure&nbsp;2.15: Illustration of the sensitivity to rotation of decision trees.
 </figure>
 </div>
 <p>In <a href="#fig-clustering-sl-tree-rot-1" class="quarto-xref">Figure&nbsp;<span>2.15 (a)</span></a> we see the split for the original dataset - random numbers in <span class="math inline">\([-0.5, 0.5]^2\)</span> and the classes separation for <span class="math inline">\(x_1 &gt; 0\)</span>. A simple line, i.e.&nbsp;one split is enough to make the separation. If we rotate the dataset by by 45° we can see a way more complicated separation line in <a href="#fig-clustering-sl-tree-rot-2" class="quarto-xref">Figure&nbsp;<span>2.15 (b)</span></a>. Furthermore, <a href="#fig-clustering-sl-tree-rot-3" class="quarto-xref">Figure&nbsp;<span>2.15 (c)</span></a> shows that the <code>random_state</code> has an influence as well. Finally, if we apply scaling and PCA to the data we more or less end up at our original sample again <a href="#fig-clustering-sl-tree-rot-4" class="quarto-xref">Figure&nbsp;<span>2.15 (d)</span></a>, showcasing the power of these feature extraction techniques once more.</p>
-<p>We note, all the trees make a perfect classification, just the structure is not as easy to recognize as it <em>could</em> be.</p>
+<p>We note that all the trees make a perfect classification, but the structure is not as easy to recognize as it <em>could</em> be</p>
 </div>
 </div>
-<p>As we could see, trees are very sensitive to the observations and the state. In order to counteract this phenomenon we can compute multiple trees and average the results. This combinations of trees is called <em>ensemble</em> and leads to the next topic.</p>
+<p>As we could see, trees are very sensitive to the observations and the state. In order to counteract this phenomenon we can compute multiple trees and average the results. This combinations of trees are called an <em>ensemble</em> and leads to the next topic.</p>
 </section>
 <section id="ensemble-learning-and-random-forests" class="level2" data-number="2.5">
 <h2 data-number="2.5" class="anchored" data-anchor-id="ensemble-learning-and-random-forests"><span class="header-section-number">2.5</span> Ensemble learning and random forests</h2>

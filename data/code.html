@@ -618,8 +618,8 @@ Reference repository
 </div>
 <section id="externalize-the-parametersconfiguration" class="level2" data-number="5.1">
 <h2 data-number="5.1" class="anchored" data-anchor-id="externalize-the-parametersconfiguration"><span class="header-section-number">5.1</span> Externalize the parameters/configuration</h2>
-<p>First thing we do is we externalize the configuration to make sure this is no longer part of our main code source. This means we can filter between actual changes to the structure and source and a commit for a <em>simple experiment</em>.</p>
-<p><code>yaml</code> is the format to go for these aspects, see <a href="https://en.wikipedia.org/wiki/YAML">Wikipedia</a>. It is a human readable data serialization language. One possible interpretation of the config (among many others is) can be seen in the next code block.</p>
+<p>First thing we do is we externalize the configuration to make sure this is no longer part of our main code source. This means we can distinguish between actual changes to the structure, source code, as well as a commit for a <em>simple experiment</em>.</p>
+<p><code>YAML</code> is the format to go for these aspects, see <a href="https://en.wikipedia.org/wiki/YAML">Wikipedia</a>. It is a human readable data serialization language. One possible interpretation of the configuration (among many others) can be seen in the next code block.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">PCA</span><span class="kw">:</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> sklearn.decomposition.PCA</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">init_args</span><span class="kw">:</span></span>
@@ -702,7 +702,7 @@ Important
 <li><a href="https://www.pachyderm.com/">Pachyderm</a></li>
 <li><a href="https://lakefs.io/">lakefs</a></li>
 </ul>
-<p>Like always, the <em>best</em> platform depends on the project and the available infrastructure.</p>
+<p>As always, the <em>best</em> platform depends on the project and the available infrastructure.</p>
 </div>
 </div>
 <p>One tool for data version control is <a href="https://dvc.org/doc"><code>dvc</code></a>. As it is written in Python we can even add and track the version via our package manager <code>pdm add dvc</code>. Once installed we can initialize it in our project,</p>
@@ -911,7 +911,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>We can see that the parameter from <code>params.yaml</code> are automatically added and our code somewhat duplicated them.</p>
+<p>We can see that the parameter from <code>params.yaml</code> are automatically added, and our code has somewhat duplicated them.</p>
 </div>
 </div>
 <p><code>dvclive</code> relies on <code>git</code> to do its magic for files and the <code>dvc</code> cache for large files. How this works is that a reference inside <code>git</code> is created for each experiment and stores the changes there. We can see this in the above logger output or via git.</p>
@@ -1215,7 +1215,7 @@ Important
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc remote modify <span class="at">--local</span> myremote password <span class="pp">***</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>(the user is without the <code>@mci4me.at</code>)</p>
-<p>To handle WebDAV <code>dvc</code> requires the package <code>dvc-webdav</code>, install it via <code>pdm</code>. See <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/afe08488167a3a68788f67b64cbd76e7261deee6">afe0848</a> on how this is reflected in our reference project.</p>
+<p>To handle WebDAV <code>dvc</code> requires the package <code>dvc-webdav</code>, we install it via <code>pdm</code>. See <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/afe08488167a3a68788f67b64cbd76e7261deee6">afe0848</a> on how this is reflected in our reference project.</p>
 <p>Now we can run <code>dvc push</code> and our data is stored remotely,</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc push</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
