@@ -307,11 +307,21 @@ y_viz = model(x_viz)
 dot = torchviz.make_dot(y_viz, params=dict(model.named_parameters()))
 dot.save("model.dot")
 ```
+::: {.content-visible when-format="html"}
 ```{dot}
 //| label: fig-nn-nn-model-visual
 //| fig-cap: "Model with all its parameters visualized."
 //|file: model.dot
 ```
+:::
+::: {.content-visible unless-format="html"}
+:::: {#fig-nn-nn-model-visual fig-env="figure"}
+
+![](../_assets/nn/model.png){width=3.64in}
+
+Model with all its parameters visualized.
+::::
+:::
 
 In `pytorch` we are responsible for our training function.
 This allows for a lot of flexibility.

@@ -87,11 +87,23 @@ dot = tf.keras.utils.model_to_dot(model, show_shapes=True,
 with open("model.dot", "w") as f:
     f.write(dot.to_string())
 ```
+
+::: {.content-visible when-format="html"}
 ```{dot}
 //| label: fig-appendix-keras-model-visual
 //| fig-cap: "Model with all its parameters visualized."
 //| file: model.dot
 ```
+:::
+::: {.content-visible unless-format="html"}
+:::: {#fig-appendix-keras-model-visual fig-env="figure"}
+
+![](../_assets/appendices/model.png){width=4.64in}
+
+Model with all its parameters visualized.
+::::
+:::
+
 
 ::: {.callout-caution appearance="simple" icon=false}
 :::: {#exr-appendix-keras-params}

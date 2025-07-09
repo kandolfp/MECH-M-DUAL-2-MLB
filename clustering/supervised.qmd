@@ -939,11 +939,20 @@ sklearn.tree.export_graphviz(decision_tree, out_file=dot_data,
                 class_names=iris.target_names,
                 special_characters=True)
 ```
+::: {.content-visible when-format="html"}
 ```{dot}
 //| label: fig-clustering-sl-tree-iris
-//| fig-cap: "Decision tree for the Fischer iris dataset and depth 2."
+//| fig-cap: "Decision tree for the Fischer iris dataset with depth 2."
 //|file: fischer_tree.dot
 ```
+:::
+::: {.content-visible unless-format="html"}
+:::: {#fig-clustering-sl-tree-iris fig-env="figure"}
+![](../_assets/clustering/fischer_tree.png){width=4.32in}
+
+Decision tree for the Fischer iris dataset with depth 2.
+::::
+:::
 ::: {.callout-important}
 
 ## Displaying `dot` files
@@ -1053,11 +1062,22 @@ sklearn.tree.export_graphviz(decision_tree_cvd,
 
 score = decision_tree_cvd.score(xtest, truth)
 ```
+::: {.content-visible when-format="html"}
 ```{dot}
 //| label: fig-clustering-sl-tree-cvsd
-//| fig-cap: "Decision tree for the Fischer iris dataset and depth 2."
+//| fig-cap: "Decision tree for the dogs and cats dataset with depth 2."
 //| file: cvsd_tree.dot
 ```
+:::
+::: {.content-visible unless-format="html"}
+:::: {#fig-clustering-sl-tree-cvsd fig-env="figure"}
+
+![](../_assets/clustering/cvsd_tree.png){width=5.80in}
+
+Decision tree for the dogs and cats dataset with depth 2.
+::::
+:::
+
 ```{python}
 #| echo: false
 df = pd.DataFrame(cm)
