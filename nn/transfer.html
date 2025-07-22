@@ -98,9 +98,9 @@ div.csl-indent {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-1e3068369e36718fca5120af1b2594eb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-9998c2ee6da4221bd56fa9d29e80e367.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-1e3068369e36718fca5120af1b2594eb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b4aa0fe64f76180af77d02d6d1f24540.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-236e2fb7b716bcba7c1826c3f9ba23d4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-b4aa0fe64f76180af77d02d6d1f24540.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
@@ -601,7 +601,7 @@ window.Quarto = {
 <section id="data-preparation" class="level3" data-number="10.1.2">
 <h3 data-number="10.1.2" class="anchored" data-anchor-id="data-preparation"><span class="header-section-number">10.1.2</span> Data preparation</h3>
 <p>As the ImageNet dataset uses <em>normal</em> images we do not use our images in the wavelet basis but our original images.</p>
-<div id="188745e0" class="cell" data-execution_count="1">
+<div id="778d5620" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code for loading the dataset</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -637,7 +637,7 @@ window.Quarto = {
 </details>
 </div>
 <p>First, we need to make sure our input is in a format that can be handled by the NN. As the input size of the image is <span class="math inline">\(256 \times 256\)</span> with RGB channels and with specific normalizations. To do this we use some helper functions from the <code>torchvision.transforms.v2</code> module.</p>
-<div id="ed441849" class="cell" data-execution_count="2">
+<div id="3bb022a1" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="annotated-cell-2"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-2-1" class="code-annotation-target"><a href="#annotated-cell-2-1" aria-hidden="true" tabindex="-1"></a>T <span class="op">=</span> transforms.Compose([</span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-2-2" class="code-annotation-target"><a href="#annotated-cell-2-2" aria-hidden="true" tabindex="-1"></a>    transforms.ToPILImage(),</span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-2-3" class="code-annotation-target"><a href="#annotated-cell-2-3" aria-hidden="true" tabindex="-1"></a>    transforms.Grayscale(num_output_channels<span class="op">=</span><span class="dv">3</span>),</span>
@@ -672,7 +672,7 @@ window.Quarto = {
 </div>
 </div>
 <p>Some steps can not be directly be applied in the above pipeline, therefore we reshape the flattened image to a square and rotate it before we apply the pipeline to each image.</p>
-<div id="f8cf7f22" class="cell" data-execution_count="3">
+<div id="fd093b9a" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>X_train_tensor <span class="op">=</span> torch.tensor(np.array(</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    [T(img.reshape((size, size)).T) <span class="cf">for</span> img <span class="kw">in</span> X_train]))</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>y_train_tensor <span class="op">=</span> torch.tensor(y_train, dtype<span class="op">=</span>torch.uint8)</span>
@@ -682,7 +682,7 @@ window.Quarto = {
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>dataset <span class="op">=</span> TensorDataset(X_train_tensor, y_train_tensor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The functions for preparing the training and validation dataset, the training loop and plotting stay the same.</p>
-<div id="81fc8b01" class="cell" data-execution_count="4">
+<div id="9644d40f" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Show the code for some basic functions for training</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> myplot(y):</span>
@@ -752,7 +752,7 @@ window.Quarto = {
 <section id="model-loading-modification-and-training" class="level3" data-number="10.1.3">
 <h3 data-number="10.1.3" class="anchored" data-anchor-id="model-loading-modification-and-training"><span class="header-section-number">10.1.3</span> Model loading, modification, and training</h3>
 <p>Now, we can finally load our pertained model and modify its final layer.</p>
-<div id="9296fc44" class="cell styled-output" data-execution_count="5">
+<div id="0e62e375" class="cell styled-output" data-execution_count="5">
 <div class="sourceCode cell-code" id="annotated-cell-5"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-5-1" class="code-annotation-target"><a href="#annotated-cell-5-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> tv.models.efficientnet_b0(weights<span class="op">=</span><span class="st">'IMAGENET1K_V1'</span>)</span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-5-2" class="code-annotation-target"><a href="#annotated-cell-5-2" aria-hidden="true" tabindex="-1"></a>num_classes <span class="op">=</span> <span class="dv">2</span></span>
 <span id="annotated-cell-5-3"><a href="#annotated-cell-5-3" aria-hidden="true" tabindex="-1"></a>in_features <span class="op">=</span> model.classifier[<span class="dv">1</span>].in_features</span>
@@ -784,7 +784,7 @@ window.Quarto = {
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Downloading: "https://download.pytorch.org/models/efficientnet_b0_rwightman-7f5810bc.pth" to /home/runner/.cache/torch/hub/checkpoints/efficientnet_b0_rwightman-7f5810bc.pth
-  0%|          | 0.00/20.5M [00:00&lt;?, ?B/s]100%|██████████| 20.5M/20.5M [00:00&lt;00:00, 215MB/s]</code></pre>
+  0%|          | 0.00/20.5M [00:00&lt;?, ?B/s]100%|██████████| 20.5M/20.5M [00:00&lt;00:00, 341MB/s]</code></pre>
 </div>
 </div>
 <p>Now that we have our model and it was trained for 1ß epochs we can have a look at its performance.</p>
