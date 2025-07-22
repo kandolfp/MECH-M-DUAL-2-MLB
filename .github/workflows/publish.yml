@@ -41,6 +41,8 @@ jobs:
         run: |
           set -e
           sudo apt-get install -qq language-pack-de librsvg2-bin
+          # Workaround to allow compiling pdf
+          sudo rm -rf /usr/bin/google-chrome /usr/bin/chromium-browser
           pdm install
           pdm add yq
           pdm run quarto install tinytex
