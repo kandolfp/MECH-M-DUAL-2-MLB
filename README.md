@@ -6,7 +6,7 @@ Course material for a ~3 * 15 hours (5 ECTS) course on basic concepts for Machin
 
 [Citation information](CITATION.cff)
 
-[![DOI](https://zenodo.org/badge/16319881.svg)](https://zenodo.org/badge/latestdoi/16319881)
+[![DOI](https://zenodo.org/badge/921098345.svg)](https://doi.org/10.5281/zenodo.16319881)
 
 # Development
 
