@@ -6,7 +6,7 @@ Course material for a ~3 * 15 hours (5 ECTS) course on basic concepts for Machin
 
 [Citation information](CITATION.cff)
 
-For a DOI see later releases as `zenodo` does not allow for a doi before the release.
+[![DOI](https://zenodo.org/badge/16319881.svg)](https://zenodo.org/badge/latestdoi/16319881)
 
 # Development
 

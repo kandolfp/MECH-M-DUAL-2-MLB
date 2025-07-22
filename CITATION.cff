@@ -15,7 +15,7 @@ authors:
 cff-version: 1.2.0
 identifiers:
   - type: doi
-    value: 
+    value: 10.5281/zenodo.16319881
 keywords:
 - image processing
 - neural networks
