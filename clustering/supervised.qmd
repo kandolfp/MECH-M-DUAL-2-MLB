@@ -939,6 +939,7 @@ sklearn.tree.export_graphviz(decision_tree, out_file=dot_data,
                 class_names=iris.target_names,
                 special_characters=True)
 ```
+
 ::: {.content-visible when-format="html"}
 ```{dot}
 //| label: fig-clustering-sl-tree-iris
@@ -946,6 +947,7 @@ sklearn.tree.export_graphviz(decision_tree, out_file=dot_data,
 //|file: fischer_tree.dot
 ```
 :::
+
 ::: {.content-visible unless-format="html"}
 :::: {#fig-clustering-sl-tree-iris fig-env="figure"}
 ![](../_assets/clustering/fischer_tree.png){width=4.32in}
@@ -953,6 +955,7 @@ sklearn.tree.export_graphviz(decision_tree, out_file=dot_data,
 Decision tree for the Fischer iris dataset with depth 2.
 ::::
 :::
+
 ::: {.callout-important}
 
 ## Displaying `dot` files
