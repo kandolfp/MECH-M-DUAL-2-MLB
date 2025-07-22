@@ -72,6 +72,12 @@ if [[ $(git status --porcelain --untracked-files=no) ]]
     exit 1
 fi
 
+if [ "$#" -ne 2 ]; then
+  echo "Specify version switch and release message"
+    usage
+    exit 1
+fi
+
 workflow pyproject.toml $1
 DATE=$(date '+%Y-%m-%d')
 pdm run yq --arg date "$DATE" '.publication_date = $date' .zenodo.json > .zenodo.json_
