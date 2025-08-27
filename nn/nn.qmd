@@ -39,7 +39,7 @@ We can visualize them and their derivatives (we need them later).
 #| fig-cap: "Different activation functions and their derivatives."
 #| fig-subcap: 
 #|   - "Activation functions."
-#|   - "Numerical derivates of the activation functions."
+#|   - "Numerical derivatives of the activation functions."
 #| code-fold: true
 #| code-summary: "Show the code for the figure"
 import numpy as np
@@ -692,7 +692,7 @@ $$
 for a single sample with the above notation.
 The last line is true to the fact that the sum of the entries of $y$ and $p$ is equal to $1$.
 
-In order to make the computation of the derivates easier we use the variables as described in @fig-nn-nn-cvd_comp.
+In order to make the computation of the derivatives easier we use the variables as described in @fig-nn-nn-cvd_comp.
 
 ![One node, one layer model for illustration of the backpropagation algorithm.](../_assets/nn/cats_vs_dogs_comp){#fig-nn-nn-cvd_comp}
 
