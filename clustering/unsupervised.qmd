@@ -417,7 +417,7 @@ This region is called the $\epsilon$-neighbourhood of $p$.
 
 1. A point $q$ is called _directly reachable_ from a core point $p$ iff[^iff] $q$ is in the $\epsilon$-neighbourhood of $p$.
 
-1. A point $p$ is _reachable_ from $p$, if there exists a sequence of points (path) $p=p_1, p_2,  \ldots, p_n=q$ where each $p_{i+1}$ is directly reachable form $p_i$.
+1. A point $q$ is _reachable_ from $p$, if there exists a sequence of points (path) $p=p_1, p_2,  \ldots, p_n=q$ where each $p_{i+1}$ is directly reachable form $p_i$.
 Consequently, all point on the path, except $p$, need to be core points.
 
 1. A point that is not reachable from any other point is considered an _outlier_ or _noise point_. 
