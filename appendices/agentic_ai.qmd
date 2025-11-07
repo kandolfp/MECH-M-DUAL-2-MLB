@@ -1,0 +1,260 @@
+# Agentic AI in the filed of Data Science - current capabilities and challenges 
+
+In this section, we explore the concept of _Agentic Artificial Intelligence_ (Agentic AI), a recent development that has the potential to transform industries.
+We cover:
+
+- What is it and how does it differ from classical automation?
+- Give a practical example and show the differences to classical automation.
+- Discuss challenges and the question if it is a hype or if it is here to stay.
+
+Before we define what Agentic AI is, let us have a look on its current _relevance_.
+The topic of Agentic AI is one of the main _machine learning_/_artificial intelligence_ trends of 2025 and that is also roughly where the term was first introduced, as can be seen in the [Google Trends](https://trends.google.com/trends) chart below.
+
+```{python}
+# | code-fold: true
+# | code-summary: "Show the code for the figure"
+# | output: false
+import pandas as pd
+import plotly.graph_objects as go
+
+# Load the data
+df = pd.read_csv("../_assets/appendices/multiTimeline.csv", skiprows=2)
+
+# Create a Plotly figure
+fig = go.Figure()
+
+# Add traces for each keyword
+fig.add_trace(
+    go.Scatter(
+        x=df["Woche"], y=df["Agentic AI: (Weltweit)"], mode="lines", name="Agentic AI"
+    )
+)
+fig.add_trace(
+    go.Scatter(
+        x=df["Woche"],
+        y=df["Artificial Intelligence: (Weltweit)"],
+        mode="lines",
+        name="Artificial Intelligence",
+    )
+)
+fig.add_trace(
+    go.Scatter(
+        x=df["Woche"],
+        y=df["Machine learning: (Weltweit)"],
+        mode="lines",
+        name="Machine Learning",
+    )
+)
+
+# Update layout
+fig.update_layout(
+    xaxis_title="Date",
+    yaxis_title="Search Interest",
+    legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01),
+)
+fig.show()
+```
+```{python}
+# | label: fig-appendix-agentic-googletrends
+# | fig-cap: "Google Trends for related three search terms."
+# | echo: false
+fig.show()
+```
+
+As we can see from @fig-appendix-agentic-googletrends, there is an increased interest in Agentic AI, compared to broader terms like artificial intelligence and machine learning. 
+While Agentic AI is relatively new, we can see how it received more attention over time, indicating a wider use.
+
+As usual in the machine learning world it is not completely new but a concept that can be traced back some time. 
+The term _agent-based process management system_ was already introduced in @OBRIEN_WIEGAND_1998 and the concepts presented there are not much different than our current definition.
+But what is the contemporary definition?
+
+::: {.callout appearance="simple"}
+:::: {#def-agenticai}
+## Agentic AI
+
+The term _Agentic AI_ refers to a class of artificial intelligence systems to operate _autonomously_, make decisions and perform tasks with minimal human intervention.
+
+The key feature is the ability to proactively respond to _changing conditions_, produce _fitted results_ or _pursue specific goals_.
+These systems can use reasoning, planning, and tools to complete a task.
+
+In a sense, the AI has agency or _freedom to act_.
+
+::::: {#fig-appendices-agentic-arch fig-env="figure"}
+
+![](../_assets/appendices/agenticAI){width=4.64in}
+
+Visualization of the basic architecture of an Agentic AI.
+:::::
+::::
+:::
+
+From @def-agenticai it is easy to understand why Agetic AI is gaining traction in industry.
+It has the potential to help transform industries with more automation by keeping track of ever growing data and promising _real-time_ action. 
+Of course it also comes with limitations and challenges.
+
+To get a better idea on all of these concepts, we look at an industry example that somewhat relates to machine learning in image processing but also features processing of time series.
+
+
+## Example application
+
+Imagine a manufacturing plant that produces various products, where maintaining quality standards and meeting production schedules are critical.
+The product is assembled partially automated and partially by humans.
+We already have some image and signal processing in place to allow for quality control and we now look at how to introduce Agentic AI to this manufacturing plant to further automate tasks. 
+
+::: {#fig-appendix-agentic-factory fig-env="figure"}
+
+![](../_assets/appendices/factory){width=6.08in}
+
+Visualization of a manufacturing plant producing multiple products that consist of different parts and each part has multiple components. 
+:::
+
+In our little factory @fig-appendix-agentic-factory there are a lot of possibilities to introduce Agentic AI.
+
+
+1. **Quality control and maintenance**:  
+    - In manufacturing, ensuring product quality is critical.
+    We no longer purely rely on manual inspection, we see automation and often with machine learning at hand. 
+    An Agentic AI system can integrate nicely into such a system by using the existing parts together with the process data to not only check for quality but also take action with regards to the results at hand. 
+    E.g. adjust process parameters, trigger a new learning phase for a machine learning model, inform about delays in the process (from in-house to the customer), decide where and how to rework, remove defect parts from the line (controlling a robotic arm), trigger the next stage of production, etc.
+    
+    - As the Agentic AI keeps track of the processes it can also trigger maintenance, like ordering replacement parts.
+
+    - The Agentic AI can track errors and with this knowledge adjust production processes to improve them.
+
+1. **Supply chain management**: 
+    - If we fully connect the warehouse, an Agentic AI can trigger restocking of components.
+   It can ask for a quote from different suppliers.
+   Decide according to price, delivery time, stock, (expected) orders, strategic diversification, etc. 
+
+1. **Scheduling and resource optimization**: 
+    - When new orders come in, the Agentic AI can create a schedule that best utilizes the resources, from the human work force, via part availability or electricity cost to the market prices.
+
+    - If workers call in sick the Agentic AI can look for temporary workers.
+
+1. **Market adaptation**: 
+    - Another Agentic AI could keep track of current trends and adjust products to follow trends (colour, material, ...) and advertise the products. 
+
+
+::: {.callout-important}
+
+There is good reason, that a lot of the above applications for Agentic AI are not implemented.
+If you only believe advertisement of AI companies the above list sounds great but we will see below that there are relevant concerns.
+
+:::
+
+As the concept of Agentic AI seems to be so powerful, we should look under the hood and behind the hype and especially on the downsides and challenges. 
+
+# Comparison to other methods
+
+It is always a good idea to compare a new method or way of working to existing systems.
+
+Before we compare it to existing solutions, let us have a look where Agentic AI systems are located on the artificial intelligence maturity curve.
+
+::: {#fig-appendices-agentic-maturity}
+[![](https://www.capitaliq.spglobal.com/Articles/428642387.png)](https://www.capitaliq.spglobal.com/Articles/428642387.png)
+
+The [AI Agent maturity curve](https://www.capitaliq.spglobal.com/Articles/428642387.png) as outlined by S&P Global in the article @spglobal. Click the image to view the original or use the [direct link to the S&P Global article](https://www.spglobal.com/market-intelligence/en/news-insights/research/the-path-from-llms-to-agentic-ai) (accessed 07.11.2025). 
+:::
+
+
+## Classical automation
+
+::: {#fig-appendices-agentic-classicalaut fig-env="figure"}
+
+![](../_assets/appendices/classicalAutomation){width=6.11in}
+
+Visualization of the basic architecture of classical automation.
+:::
+
+Depending on the effort we put in, a lot of the above applications could be covered by a rule or fuzzy based automation system. 
+The challenge for these systems is to _cover_ all possible outcomes and react accordingly. 
+Here an Agentic AI promises much better adaptation.
+It could react to a situation that was not foreseen when setting up the system.
+On the other hand, maybe in such situations the system should stop the process and a human should investigate what caused this new situation.
+
+Another argument is the ease of _programming_ an Agentic AI.
+As input we can use natural language (because we all know that there is never any room for misinterpretation in language) and employ LLMs (Large Language Models) to contextualize the input together with the data to find an appropriate action.
+In low-code / no-code environments everybody, especially non-programmers and domain experts, can easily create such a system and the system itself knows how to connect to a database or a PROFIBUS[^1] interface of a milling machine. 
+It should be mentioned here, already classical automation tasks where often represented in low-code / no-code systems, so also this development is not completely new.
+
+[^1]: A standard for fieldbus communication in automation technology, see [Wiki](https://en.wikipedia.org/wiki/Profibus) (accessed 07.11.2025).
+
+## Retrieval-Augmented Generation - RAG
+
+::: {#fig-appendices-agentic-rag fig-env="figure"}
+
+![](../_assets/appendices/rag){width=4.84in}
+
+Visualization of the basic RAG architecture.
+:::
+
+In the context of automation Retrieval-Augmented Generation or RAG systems are often seen as the predecessors of Agentic AIs.
+RAG systems retrieve contextualized information from a knowledge base and generate responses based on the input. 
+While RAG systems can suggest actions, they lack the ability to autonomously execute tasks, making them less powerful than Agentic AI. 
+In some cases, RAG systems can complement Agentic AI by providing relevant data for decision-making.
+
+# Challenges
+
+Of course Agentic AI also comes with a lot of challenges.
+Some will only surface over time, but some are already known from the start.
+We group the challenges to make them easier to understand.
+
+## Technical challenges
+
+1. Explainability and trust for the system $\to$ they can be a black box.
+1. A lot of these systems rely on LLMs and they have multiple problems:
+    a. An LLM does not deliver reproducible results which is critical for automation.
+    b. LLMs might hallucinate a solution or follow a wrong path.
+    c. Language is not a precise tool to convey exact instructions, there is always room for interpretation and common phrases or hidden assumptions, that differ from domain to domain (domain experts tend to forget to mention what is obvious).
+    d. Behaviour after update of an LLM or switch to another vendor is not like a normal software update.
+    e. Bias in the training data and therefore the model.
+    f. Prompt injection might occur somewhere in the system.
+1. The data quality and availability needs to be at a certain standard, otherwise the system will have problems.
+
+
+## Operational challenges  
+
+1. Integration with legacy systems.
+1. Availability to process large quantity of data and the costs connected to such systems.
+1. Maintainability of the system over years.
+1. Integration of innovative processes or tools from R&D that the AI does not know.
+
+## Regulatory and ethical challenges
+
+1. Data governance.
+1. Production secrets.
+1. Regulatory and compliance issues.
+1. Hallucination or misinterpretation by LLMs.
+1. Bias in the system.
+
+::: {.callout-tip}
+## Trustworthy AI
+
+These systems need to be accepted and in order to achieve this goal trustworthy AI is a key feature, even if it limits some features of Agentic AI systems. 
+
+> [...] AI systems have yielded unexpected or undesirable outcomes or have been used in questionable manners. As a result, there has been a surge in public and academic discussions about aspects that AI systems must fulfill to be considered trustworthy.
+>
+> see @10.3389/fdata.2024.1467222
+
+:::: {#fig-appendices-agentic-trutworthy}
+[![](https://www.frontiersin.org/files/Articles/1467222/fdata-07-1467222-HTML/image_m/fdata-07-1467222-g001.jpg){width=4in}](https://www.frontiersin.org/journals/big-data/articles/10.3389/fdata.2024.1467222/full)
+
+An illustration of the six requirements of trustworthy AI investigated @10.3389/fdata.2024.1467222. Click the image to view the original or use the [direct link to the article](https://www.frontiersin.org/journals/big-data/articles/10.3389/fdata.2024.1467222/full) (accessed 07.11.2025). 
+::::
+
+:::
+
+# Conclusion
+
+Like so many other machine learning and artificial intelligence topics, the potential of Agentic AI is high, both in industry (Industry 4.0 or even 5.0?) and for personal use.
+It can boost automation, efficiency and adaptability.
+The challenges from technical limitations to ethical concerns are not solved and need to be better understood before such systems can work with little to no oversight.
+
+::: {.callout-tip}
+
+## Current research
+
+Of course research is happening in this field.
+For example [Otera](https://www.otera.ai/) (previously DeepOpinion) developed an approach to create trustworthy agents with the help of first-order logic and a solver to verify e.g. insurance claims, see @peer2025ataneurosymbolicapproachimplement.
+
+:::
