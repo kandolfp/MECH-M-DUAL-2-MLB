@@ -98,9 +98,9 @@ div.csl-indent {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-e57ee088b07dff48f1c0439a71e3cdc5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-21be68b3348ac856999a555b0c9c7c40.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-e57ee088b07dff48f1c0439a71e3cdc5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-f3e4be047f94999836566be8d7fec70b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-ea09258ad5f1d188cc767b8e4d27386e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-f3e4be047f94999836566be8d7fec70b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
@@ -528,6 +528,12 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Our first Neural Network in <code>tensorflow.keras</code></span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices/agentic_ai.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Agentic AI in the filed of Data Science - current capabilities and challenges</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -616,7 +622,7 @@ Tip
 <li>Repeat, starting from step 2, until the cluster centers stay stable up to some tolerance.</li>
 </ol>
 <p>This algorithm was first introduced in <span class="citation" data-cites="DBLP:journals/tit/Lloyd82">Lloyd (<a href="../references.html#ref-DBLP:journals/tit/Lloyd82" role="doc-biblioref">1982</a>)</span> and is therefore often called Lloyd algorithm.</p>
-<div id="05ebb17f" class="cell" data-execution_count="1">
+<div id="e4725708" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code for Lloyd algorithm</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lloyd(data, centers, steps):</span>
@@ -1192,7 +1198,7 @@ Note
 <ol type="1">
 <li><p>A point <span class="math inline">\(p\)</span> is called a <em>core point</em> if at least <span class="math inline">\(minPts\)</span> (including <span class="math inline">\(p\)</span>) are within distance <span class="math inline">\(\epsilon\)</span> of <span class="math inline">\(p\)</span>. This region is called the <span class="math inline">\(\epsilon\)</span>-neighbourhood of <span class="math inline">\(p\)</span>.</p></li>
 <li><p>A point <span class="math inline">\(q\)</span> is called <em>directly reachable</em> from a core point <span class="math inline">\(p\)</span> iff<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> <span class="math inline">\(q\)</span> is in the <span class="math inline">\(\epsilon\)</span>-neighbourhood of <span class="math inline">\(p\)</span>.</p></li>
-<li><p>A point <span class="math inline">\(p\)</span> is <em>reachable</em> from <span class="math inline">\(p\)</span>, if there exists a sequence of points (path) <span class="math inline">\(p=p_1, p_2,  \ldots, p_n=q\)</span> where each <span class="math inline">\(p_{i+1}\)</span> is directly reachable form <span class="math inline">\(p_i\)</span>. Consequently, all point on the path, except <span class="math inline">\(p\)</span>, need to be core points.</p></li>
+<li><p>A point <span class="math inline">\(q\)</span> is <em>reachable</em> from <span class="math inline">\(p\)</span>, if there exists a sequence of points (path) <span class="math inline">\(p=p_1, p_2,  \ldots, p_n=q\)</span> where each <span class="math inline">\(p_{i+1}\)</span> is directly reachable form <span class="math inline">\(p_i\)</span>. Consequently, all point on the path, except <span class="math inline">\(p\)</span>, need to be core points.</p></li>
 <li><p>A point that is not reachable from any other point is considered an <em>outlier</em> or <em>noise point</em>.</p></li>
 </ol>
 <p>Therefore, we get our definition of a cluster: a core point <span class="math inline">\(p\)</span> together with all points that are reachable from <span class="math inline">\(p\)</span>. This includes core points (at least one) and none-core points (boundary points) on the boundary as they can not be used to reach more points.</p>
@@ -1551,13 +1557,13 @@ Figure&nbsp;1.9: Fitting of the second and fourth principal value of the cats an
 <p>Before we make the leap to supervised learning, we we introduce a new dataset and see how our unsupervised approach works in this case.</p>
 <p>We do this with the (in)famous MNIST dataset of hand written digits. Lets start by looking at the dataset and establishing some basic properties.</p>
 <p>We load the dataset and look at its description</p>
-<div id="fbd6baf5" class="cell" data-execution_count="10">
+<div id="c86b8aa0" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_openml</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>mnist <span class="op">=</span> fetch_openml(<span class="st">'mnist_784'</span>, as_frame<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mnist.DESCR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="2e5d41e7" class="cell styled-output" data-execution_count="11">
+<div id="41d1229b" class="cell styled-output" data-execution_count="11">
 <div class="cell-output cell-output-stdout">
 <pre><code>**Author**: Yann LeCun, Corinna Cortes, Christopher J.C. Burges
 **Source**: [MNIST Website](http://yann.lecun.com/exdb/mnist/) - Date
@@ -1655,7 +1661,7 @@ Figure&nbsp;1.10: First 100 digits from the MNIST dataset.
 <p>As can be seen from <a href="#fig-clustering-usl-mnist" class="quarto-xref">Figure&nbsp;<span>1.10</span></a>, most digits are easy to distinguish for us, but there are some nasty things included. Especially, there are <code>1</code>s with the english style (just one straight line) of writing (1st row, 7th column), but also as a diagonal line (1st row, 4th column), and finally also the german style (connecting line at base and top) of writing (3rd row, 5th column).</p>
 <p>Also the <code>2</code> digit comes in various forms, with loop (1st row, 6th column) and without (3rd row, 6th column). Finally we all know that a <code>3</code> can hide in an <code>8</code>, same as a <code>7</code> and <code>1</code> can hide in a <code>9</code> and much more.</p>
 <p>Now, before we go any further in the investigation we split up the dataset into a training and a test set, we will not use this here but we should establish some way of working right from the start.</p>
-<div id="1521e13b" class="cell" data-execution_count="13">
+<div id="898f53b4" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>X_train, X_test <span class="op">=</span> mnist.data[:<span class="dv">60000</span>], mnist.data[<span class="dv">60000</span>:]</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>y_train, y_test <span class="op">=</span> mnist.target[:<span class="dv">60000</span>], mnist.target[<span class="dv">60000</span>:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
