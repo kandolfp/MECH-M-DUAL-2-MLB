@@ -222,6 +222,7 @@ We group the challenges to make them easier to understand.
 
 ### Technical challenges
 
+1. Unknown unknowns, the decision space is very open and it is impossible to account for all possibilities.
 1. Explainability and trust for the system $\to$ they can be a black box.
 1. A lot of these systems rely on LLMs and they have multiple problems:
     a. An LLM does not deliver reproducible results which is critical for automation.
@@ -242,6 +243,7 @@ We group the challenges to make them easier to understand.
 
 ### Regulatory and ethical challenges
 
+1. Accountability - what if an action of the Agentic AI causes damages?
 1. Data governance.
 1. Production secrets.
 1. Regulatory and compliance issues.
