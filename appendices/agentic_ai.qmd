@@ -192,12 +192,15 @@ On the other hand, maybe in such situations the system should stop the process a
 
 Another argument is the ease of _programming_ an Agentic AI.
 As input we can use natural language (because we all know that there is never any room for misinterpretation in language) and employ LLMs (Large Language Models) to contextualize the input together with the data to find an appropriate action.
-In low-code / no-code environments everybody, especially non-programmers and domain experts, can easily create such a system and the system itself knows how to connect to a database or a PROFIBUS[^1] interface of a milling machine. 
-It should be mentioned here, already classical automation tasks where often represented in low-code / no-code systems, so also this development is not completely new.
+In low-code / no-code environments everybody, especially non-programmers and domain experts, can easily create such a system and the system itself knows how to use _tools_ like connect to a database or a PROFIBUS[^1] interface of a milling machine.
+In this context, the _Model Context Protocol_ (MCP)[^2] plays an important role to establish a standard. 
+It should also be mentioned here, already classical automation tasks where often represented in low-code / no-code systems, so also this development is not completely new.
 
 [^1]: A standard for fieldbus communication in automation technology, see [Wiki](https://en.wikipedia.org/wiki/Profibus) (accessed 07.11.2025).
 
-## Retrieval-Augmented Generation - RAG
+[^2]: For an introduction to this open source standard for connection to external systems follow the [link](https://modelcontextprotocol.io/) (accessed 13.11.2025).
+
+### Retrieval-Augmented Generation - RAG
 
 ::: {#fig-appendices-agentic-rag fig-env="figure"}
 
