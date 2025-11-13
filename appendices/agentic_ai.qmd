@@ -261,6 +261,26 @@ An illustration of the six requirements of trustworthy AI investigated @10.3389/
 
 :::
 
+## Popular tools
+
+This field is developing rapidly and a list of popular tools is going to be outdated as soon as it is.
+Anyway, we should mention some tools:
+
+- [n8n](https://n8n.io/) AI Workflow Automation (no-code / low-code)
+- [Stack AI](https://www.stack-ai.com/) Automate operations with AI workers that can analyze data and take actions (no-code / low-code)
+- Google / Google Cloud
+    - [Vertex AI Agent Builder](https://cloud.google.com/products/agent-builder) (no-code / low-code)
+    - [Agent Development Kit](https://google.github.io/adk-docs/)
+- Microsoft / Azure
+    - [Microsoft 365 Copilot Agent Builder](https://learn.microsoft.com/en-us/microsoft-365-copilot/extensibility/agents-overview) (no-code)
+    - [Microsoft Copilot Studio](https://learn.microsoft.com/en-us/microsoft-copilot-studio/) (low-code)
+    - [Azure AI Foundry](https://azure.microsoft.com/en-gb/products/ai-foundry)
+    - [Microsoft Agent Framework](https://github.com/microsoft/agent-framework)
+- Meta
+    - [torchforge](https://meta-pytorch.org/torchforge/main/index.html) tool to build AI Agents
+- Amazon / [AWS](https://aws.amazon.com/ai/agentic-ai/)
+    - [Strands Agents](https://strandsagents.com/latest/) (low-code)
+
 ## Conclusion
 
 Like so many other machine learning and artificial intelligence topics, the potential of Agentic AI is high, both in industry (Industry 4.0 or even 5.0?) and for personal use.
