@@ -1,4 +1,4 @@
-# Agentic AI in the filed of Data Science - current capabilities and challenges 
+# Agentic AI in the field of Data Science - current capabilities and challenges 
 
 In this section, we explore the concept of _Agentic Artificial Intelligence_ (Agentic AI), a recent development that has the potential to transform industries.
 We cover:
@@ -89,7 +89,7 @@ But what is the contemporary definition?
 :::: {#def-agenticai}
 ## Agentic AI
 
-The term _Agentic AI_ refers to a class of artificial intelligence systems to operate _autonomously_, make decisions and perform tasks with minimal human intervention.
+The term _Agentic AI_ refers to a class of artificial intelligence systems that operate _autonomously_, make decisions and perform tasks with minimal human intervention.
 
 The key feature is the ability to proactively respond to _changing conditions_, produce _fitted results_ or _pursue specific goals_.
 These systems can use reasoning, planning, and tools to complete a task.
@@ -161,7 +161,7 @@ If you only believe advertisement of AI companies the above list sounds great bu
 
 As the concept of Agentic AI seems to be so powerful, we should look under the hood and behind the hype and especially on the downsides and challenges. 
 
-# Comparison to other methods
+## Comparison to other methods
 
 It is always a good idea to compare a new method or way of working to existing systems.
 
@@ -174,7 +174,7 @@ The [AI Agent maturity curve](https://www.capitaliq.spglobal.com/Articles/428642
 :::
 
 
-## Classical automation
+### Classical automation
 
 ::: {#fig-appendices-agentic-classicalaut fig-env="figure"}
 
@@ -210,13 +210,13 @@ RAG systems retrieve contextualized information from a knowledge base and genera
 While RAG systems can suggest actions, they lack the ability to autonomously execute tasks, making them less powerful than Agentic AI. 
 In some cases, RAG systems can complement Agentic AI by providing relevant data for decision-making.
 
-# Challenges
+## Challenges
 
 Of course Agentic AI also comes with a lot of challenges.
 Some will only surface over time, but some are already known from the start.
 We group the challenges to make them easier to understand.
 
-## Technical challenges
+### Technical challenges
 
 1. Explainability and trust for the system $\to$ they can be a black box.
 1. A lot of these systems rely on LLMs and they have multiple problems:
@@ -229,14 +229,14 @@ We group the challenges to make them easier to understand.
 1. The data quality and availability needs to be at a certain standard, otherwise the system will have problems.
 
 
-## Operational challenges  
+### Operational challenges  
 
 1. Integration with legacy systems.
 1. Availability to process large quantity of data and the costs connected to such systems.
 1. Maintainability of the system over years.
 1. Integration of innovative processes or tools from R&D that the AI does not know.
 
-## Regulatory and ethical challenges
+### Regulatory and ethical challenges
 
 1. Data governance.
 1. Production secrets.
@@ -261,7 +261,7 @@ An illustration of the six requirements of trustworthy AI investigated @10.3389/
 
 :::
 
-# Conclusion
+## Conclusion
 
 Like so many other machine learning and artificial intelligence topics, the potential of Agentic AI is high, both in industry (Industry 4.0 or even 5.0?) and for personal use.
 It can boost automation, efficiency and adaptability.
