@@ -45,7 +45,24 @@ fig.add_trace(
         name="Machine Learning",
     )
 )
-
+fig.add_trace(
+    go.Scatter(
+        x=df["Woche"],
+        y=df["n8n: (Weltweit)"],
+        mode="lines",
+        name="n8n",
+        visible='legendonly'
+    )
+)
+fig.add_trace(
+    go.Scatter(
+        x=df["Woche"],
+        y=df["MCP: (Weltweit)"],
+        mode="lines",
+        name="MCP",
+        visible='legendonly'
+    )
+)
 # Update layout
 fig.update_layout(
     xaxis_title="Date",
