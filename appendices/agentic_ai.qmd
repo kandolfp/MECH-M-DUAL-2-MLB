@@ -298,6 +298,6 @@ The challenges from technical limitations to ethical concerns are not solved and
 ## Current research
 
 Of course research is happening in this field.
-For example [Otera](https://www.otera.ai/) (previously DeepOpinion) developed an approach to create trustworthy agents with the help of first-order logic and a solver to verify e.g. insurance claims, see @peer2025ataneurosymbolicapproachimplement.
+For example [Otera](https://www.otera.ai/) (previously DeepOpinion) developed an approach to create trustworthy agents with the help of first-order logic and a solver to verify e.g. insurance claims, see @peer2025ataneurosymbolicapproachimplement or find [slides](https://engineeringkiosk.dev/meetup/alps/slides/2511-david-ata.pdf) to a talk of David Peer at the _Engineering Kiosk Alps Meetup Innsbruck_ from 6th November 2025.
 
 :::
