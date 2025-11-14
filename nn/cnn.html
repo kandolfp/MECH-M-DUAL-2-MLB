@@ -808,7 +808,7 @@ Figure&nbsp;8.3: For the input on the left we compute two different pooling func
 <section id="implementation" class="level2" data-number="8.4">
 <h2 data-number="8.4" class="anchored" data-anchor-id="implementation"><span class="header-section-number">8.4</span> Implementation</h2>
 <p>Now that we have discussed the basic structure of a CNN we want to implement it. Luckily we can recycle most of the code from <a href="nn.html#sec-nn-nn-firstnn" class="quarto-xref"><span>Section 7.2</span></a>. In the following we only show where we needed to make some changes.</p>
-<div id="a79db80c" class="cell" data-execution_count="3">
+<div id="74093eef" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="annotated-cell-2"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-2-1"><a href="#annotated-cell-2-1" aria-hidden="true" tabindex="-1"></a>X_train_tensor <span class="op">=</span> torch.tensor(</span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-2-2" class="code-annotation-target"><a href="#annotated-cell-2-2" aria-hidden="true" tabindex="-1"></a>    X_train.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>, size, size).transpose([<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>]),</span>
 <span id="annotated-cell-2-3"><a href="#annotated-cell-2-3" aria-hidden="true" tabindex="-1"></a>    dtype<span class="op">=</span>torch.float32)</span>
@@ -943,7 +943,7 @@ Figure&nbsp;8.4: Performance of our model.
 </div>
 </div>
 <p>In <a href="#fig-nn-cnn-dvc-1" class="quarto-xref">Figure&nbsp;<span>8.4 (a)</span></a> we can see the final classification of our model with regards to the test set. For 10 dogs our model is convinced they are not <em>good dogs</em> but cats, and 3 cats are classified as dogs, in comparison to <a href="nn.html#fig-nn-nn-dvc-non-linear-1" class="quarto-xref">Figure&nbsp;<span>7.5 (a)</span></a> we gained one correct classified dog. If we look at the probabilities <a href="#fig-nn-cnn-dvc-2" class="quarto-xref">Figure&nbsp;<span>8.4 (b)</span></a>, we can see that we have a couple of close calls, but in general our model is quite sure about the classification. Regarding the history of our optimization, we can see learning happen right away with a saturation starting to manifest after about 30 iterations.</p>
-<p>At the end, we have an accuracy of 82.5% for our test set, slightly better than our NN from before <a href="nn.html#fig-nn-nn-dvc-non-linear" class="quarto-xref">Figure&nbsp;<span>7.5</span></a>.</p>
+<p>At the end, we have an accuracy of 78.75% for our test set, slightly better than our NN from before <a href="nn.html#fig-nn-nn-dvc-non-linear" class="quarto-xref">Figure&nbsp;<span>7.5</span></a>.</p>
 <div class="callout callout-style-simple callout-caution no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
