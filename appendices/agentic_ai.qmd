@@ -92,7 +92,8 @@ But what is the contemporary definition?
 The term _Agentic AI_ refers to a class of artificial intelligence systems that operate _autonomously_, make decisions and perform tasks with minimal human intervention.
 
 The key feature is the ability to proactively respond to _changing conditions_ of the environment, produce _fitted results_ or _pursue specific goals_.
-These systems can use reasoning, planning, and tools to complete a task and they the way they _solve_ a problem is not prescribed but up to the AI.
+These systems can use reasoning, planning, and tools to complete a task. 
+The way they _solve_ a problem is not prescribed, but up to the AI.
 
 In a sense, the AI has agency or _freedom to act_.
 
@@ -186,7 +187,7 @@ Visualization of the basic architecture of classical automation.
 
 Depending on the effort we put in, a lot of the above applications could be covered by a rule or fuzzy based automation system. 
 The challenge for these systems is to _cover_ all possible outcomes and react accordingly. 
-Here an Agentic AI promises much better adaptation.
+Here, an Agentic AI promises much better adaptation.
 It could react to a situation that was not foreseen when setting up the system.
 On the other hand, maybe in such situations the system should stop the process and a human should investigate what caused this new situation.
 
