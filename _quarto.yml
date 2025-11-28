@@ -44,6 +44,7 @@ book:
   appendices:
     - appendices/explanations.qmd
     - appendices/keras.qmd
+    - appendices/nn_from_scratch.qmd
     - appendices/agentic_ai.qmd
 
 bibliography: references.bib

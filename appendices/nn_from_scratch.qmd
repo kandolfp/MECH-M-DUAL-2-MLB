@@ -1,0 +1,1467 @@
+# Writing a Neural Network from scratch
+
+In this section we are going to write a small neural network from scratch.
+We use all of the information provided in the according part of this lecture, see @sec-nn-nn but we will give links where appropriate.
+
+::: {.callout-important}
+This section is based on a similar introduction by Gregor Ehrensperger that we generously allowed the authors as a basis.
+:::
+
+A jupyter notebook is available for a convenient implementation of the following parts. 
+Download it [here](../_assets/appendices/nn_from_scratch.ipynb).
+
+In the following codeblock we find our dependencies and we also fix the random number generation such that we fix the seed and therefore get reproducible results.
+
+```{python}
+# | code-fold: false
+# | eval: true
+# | code-summary: "Code fragment for implementation."
+import numpy as np
+import matplotlib.pyplot as plt
+import sklearn.datasets as skd
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
+```
+
+```{python}
+# | code-fold: true
+# | eval: true
+# | code-summary: "Code fragment for implementation."
+def generate_dataset(
+    setName: str, nrPoints: int, noise_factor: float = 0,
+    normalizeData: bool = True):
+    """
+    Argument:
+    setName -- name of set to be generated: blobs, circles, flower, moons,
+               spiral1, spiral2, spiral3
+    nrPoints -- number of sample points
+    noise_factor -- the higher, the more noise; set to 0 for no noise
+    normalizeData -- transforms dataset such that mean is zero and standard
+                     deviation equals 1
+
+    Returns:
+    X -- coordinates of the sampled points
+    Y -- class of the sampled points
+    """
+
+    def generate_dataset_flower(nrPoints):
+        N = int(nrPoints / 2)
+        X = np.zeros((2, nrPoints))
+        Y = np.zeros((1, nrPoints), dtype="uint8")
+
+        for cat in range(2):
+            idx = range(N * cat, N * (cat + 1))
+            theta = np.linspace(cat * np.pi, (cat + 1) * np.pi, N)
+            radius = 4 * np.sin(4 * theta)
+
+            X[0, idx] = radius * np.sin(theta)
+            X[1, idx] = radius * np.cos(theta)
+            Y[0, idx] = cat
+
+        return X, Y
+
+    def generate_archimedesSpiral(nrPoints, rounds):
+        def archimedesSpiral(a, n):
+            phi = np.linspace(2 * np.pi, (rounds * 2 + 2) * np.pi, n)
+            X1 = [a * phi * np.cos(phi)]
+            X2 = [a * phi * np.sin(phi)]
+            X = np.vstack((X1, X2))
+
+            return X
+
+        N = int(nrPoints / 2)
+
+        firstSpiralX = archimedesSpiral(1.25 * np.pi, N)
+
+        secondSpiralX = archimedesSpiral(np.pi, N)
+
+        X = np.hstack((firstSpiralX, secondSpiralX))
+
+        Y = np.ones((1, X.shape[1]))
+        Y[:, : firstSpiralX.shape[1]] = np.zeros_like(firstSpiralX[0, :])
+
+        Y = Y.astype(int)
+
+        return X, Y
+
+    def generate_blobs(nrPoints):
+        X, Y = skd.make_blobs(n_samples=nrPoints, centers=2, n_features=2)
+        X = X.T
+        Y = Y[np.newaxis, :]
+
+        return X, Y
+
+    def generate_circles(nrPoints):
+        X, Y = skd.make_circles(n_samples=nrPoints)
+        X = X.T
+        Y = Y[np.newaxis, :]
+
+        return X, Y
+
+    def generate_moons(nrPoints):
+        X, Y = skd.make_moons(n_samples=nrPoints)
+        X = X.T
+        Y = Y[np.newaxis, :]
+
+        return X, Y
+
+
+    if setName == "flower":
+        X, Y = generate_dataset_flower(nrPoints)
+    elif setName == "spiral1":
+        X, Y = generate_archimedesSpiral(nrPoints, 1)
+    elif setName == "spiral2":
+        X, Y = generate_archimedesSpiral(nrPoints, 1.5)
+    elif setName == "spiral3":
+        X, Y = generate_archimedesSpiral(nrPoints, 2)
+    elif setName == "blobs":
+        X, Y = generate_blobs(nrPoints)
+    elif setName == "circles":
+        X, Y = generate_circles(nrPoints)
+    elif setName == "moons":
+        X, Y = generate_moons(nrPoints)
+    else:
+        raise Exception("Dataset " + setName + " unknown")
+
+    if normalizeData:
+        X = (X - np.mean(X)) / np.std(X)
+
+    X += np.random.randn(X.shape[0], X.shape[1]) * noise_factor * np.std(X)
+
+    return X, Y
+
+
+def plot_decision_boundary(model, X, Y):
+    """
+    Argument:
+    model -- prediction function
+    X -- coordinates of sampled points
+    Y -- class of sampled points
+    """
+    # Set min and max values and give it some padding
+    x_min, x_max = X[0, :].min() - 0.1, X[0, :].max() + 0.1
+    y_min, y_max = X[1, :].min() - 0.1, X[1, :].max() + 0.1
+
+    # Generate a grid of points with distance h between them
+    xx, yy = np.meshgrid(np.linspace(x_min, x_max, 100), 
+                         np.linspace(y_min, y_max, 100))
+
+    # Predict the function value for the whole grid
+    Z = model(np.c_[xx.ravel(), yy.ravel()])
+    Z = Z.reshape(xx.shape)
+
+    # Plot the contour and training examples
+    plt.contourf(xx, yy, Z, cmap=plt.cm.Spectral)
+    plt.ylabel("x2")
+    plt.xlabel("x1")
+    plt.scatter(X[0, :], X[1, :], c=Y[0, :], cmap=plt.cm.Spectral)
+    plt.show()
+```
+
+## Weights and biases
+Our first step in defining a neural network is to define the weights and biases that are required. 
+For this example we implement a network with either three hidden layers. 
+
+To help us in this progress we recall the basic structure for a generic neural network 
+
+![Generic NN with activation functions, weights and biases.](../_assets/nn/generic_nn_withactfun){#fig-appendices-nnfs-get_dim width=5.78in}
+
+We denote the activation functions $f_i$, weights $A_i$, and biases $b_i$, where $i$ corresponds to the layer of the network.
+There are many different ways to initialize the weights and biases of a NN to achieve different properties. 
+For this example we initialize the weights with random numbers from a normal distribution with $\mu=0$ and $\sigma=\tfrac{1}{\sqrt{n}}$ for $n$ being the number of neurons from the previous step, i.e. in @fig-appendices-nnfs-get_dim for $A_1$ $n=8$ as $x$ has $8$ components.
+For the bias we initialize them with all zeros.
+
+
+::: {.callout-caution appearance="simple" collapse="true" icon=false}
+:::: {#exr-appendices-nnfs-self-wb}
+
+## Self implementation: Initialize the weights and biases
+
+The following code snippet is incomplete, fill out the blanks to implement the correct functionality.
+```{python}
+# | code-fold: false
+# | eval: false
+# | code-summary: "Code fragment for implementation."
+def initialize_weights(nodes0, nodes1, nodes2, nodes3):
+    """
+    Argument:
+    nodes0 -- size of the input layer
+    nodes1 -- size of the first hidden layer
+    nodes2 -- size of the second hidden layer
+    nodes3 -- size of the output layer
+
+    Returns:
+    weights -- python dictionary containing weight 
+                and bias matrices
+    """        
+    # initialize the weights and biases as numpy arrays
+    #  with the correct shapes.
+    A1 = # <1>
+    b1 = # <1>
+    A2 = # <1>
+    b2 = # <1>
+    A3 = # <1>
+    b3 = # <1>
+        
+    assert(A1.shape == (nodes1, nodes0))
+    assert(b1.shape == (nodes1, 1))
+    assert(A2.shape == (nodes2, nodes1))
+    assert(b2.shape == (nodes2, 1))
+    assert(A3.shape == (nodes3, nodes2))
+    assert(b3.shape == (nodes3, 1))
+
+
+    weights = {"A1": A1,
+               "b1": b1,
+               "A2": A2,
+               "b2": b2,
+               "A3": A3,
+               "b3": b3}
+    
+    return weights
+```
+1. Please fill in the blanks according to the above description.
+
+::::: {.callout-tip appearance="simple" collapse="true" icon=false}
+
+## Check the implementation of the weights and biases
+
+Run the following code snippet to check the implementation.
+```{python}
+# | code-fold: false
+# | eval: false
+# | code-summary: "Code fragment for implementation."
+np.random.seed(42) # Make sure to have a reproducible result
+weights = initialize_weights(2, 8, 5, 1)
+
+result = np.array([np.mean(weights["A1"]), np.mean(weights["A2"]), 
+                   np.mean(weights["A3"]), np.mean(weights["b1"]),
+                   np.mean(weights["b2"]), np.mean(weights["b3"])])
+reference = np.array([-0.0179896655582674, -0.0798199810455688,
+                   -0.0286928288067441, 0., 0., 0.])
+np.testing.assert_allclose(result, reference)
+print("Looks like your implementation for the weights is working :)")
+```
+:::::
+::::
+:::
+
+
+## Activation functions
+
+Now that we have the weights and biases for our NN we need to define the activation functions. 
+As there are multiple we will restrict ourself to the following:
+
+- linear $$f: x \mapsto x$$
+- sigmoid $$ f: x \mapsto \frac{1}{1 + \exp(-x)}$$
+- ReLU $$f: x \mapsto \begin{cases} 
+            0 & \text{for}\quad x \leq 0,\\
+            x & \text{for}\quad x > 0.\\
+        \end{cases}$$
+- tanh $$f: x \mapsto \tanh(x)$$
+
+Next to the function itself we will also need to implement the derivative.
+For each of these functions it is know how this looks like so we do not need to define it numerically. 
+
+::: {.callout-caution appearance="simple" collapse="false" icon=false}
+:::: {#exr-appendices-nnfs-self-afs}
+
+## Self implementation: Activation functions
+
+```{python}
+# | code-fold: false
+# | eval: false
+# | code-summary: "Code fragment for implementation."
+def actFunctionLinear(x, derivative: bool = False):
+    if derivative:
+        return 
+    else:
+        return
+
+
+def actFunctionSigmoid(x, derivative: bool = False):        
+    if derivative:
+        return 
+    else:
+
+        return 
+
+        
+        
+def actFunctionRelu(x, derivative: bool = False): 
+    if derivative:
+        return 
+    else:
+        return 
+        
+
+def actFunctionTanh(x, derivative: bool = False): 
+    if derivative:
+        return 
+    else:
+        return 
+```
+
+**Hint**: If you visualize the functions you can compare the results to @fig-nn-singlelayer.
+::::
+:::
+
+## Forward step
+
+Now that we have the weights, biases, and the activation function we can define our forward step in the neural network.
+As a little help we recall the visualization:
+
+![Generic NN with activation functions, weights and biases.](../_assets/nn/generic_nn_withactfun){#fig-appendices-nnfs-get_dim2 width=5.78in}
+
+::: {.callout-caution appearance="simple" collapse="false" icon=false}
+:::: {#exr-appendices-nnfs-self-forwards}
+
+## Self implementation: Forward step
+
+```{python}
+# | code-fold: false
+# | eval: false
+# | code-summary: "Code fragment for implementation."
+def forward_propagation(X, weights, f1, f2, f3):
+    """
+    Argument:
+    X -- input data
+    weights -- python dictionary containing the weight and bias matrices
+    f1 -- python function as activation function layer 1
+    f2 -- python function as activation function layer 2
+    f3 -- python function as activation function layer 3
+
+    Returns:
+    outputLayer -- The output of the last layer
+    cache -- a dictionary containing (pre)activations of every layer
+    """    
+    A1 = weights["A1"]
+    b1 = weights["b1"]
+    A2 = weights["A2"]
+    b2 = weights["b2"]
+    A3 = weights["A3"]
+    b3 = weights["b3"]
+    
+    x0 = X
+    z1 = # <1>
+    x1 = # <1>
+    z2 = # <1>
+    x2 = # <1>
+    z3 = # <1>
+    x3 = # <1>
+      
+    outputLayer = x3
+
+    cache = {"x0": x0,
+             "z1": z1,
+             "x1": x1,
+             "z2": z2,
+             "x2": x2,
+             "z3": z3,
+             "x3": x3}
+
+
+    return outputLayer, cache
+```
+1. Please fill in the blanks according to the above description.
+
+**Hint**: In `numpy` the matrix-matrix/matrix-vector multiplication is defined `@`. 
+
+::::: {.callout-tip appearance="simple" collapse="true" icon=false}
+
+## Check the implementation for the forward step
+
+Run the following code snippet to check the implementation, if there is no error the implementation looks good.
+```{python}
+# | code-fold: false
+# | eval: false
+# | code-summary: "Code fragment for implementation."
+f1 = actFunctionLinear # function used for hidden layer 1
+f2 = actFunctionLinear # function used for hidden layer 2
+f3 = actFunctionSigmoid # function used for output layer
+np.random.seed(42) # Make sure to have a reproducible result
+X, Y = generate_dataset("blobs", 1000, 0.5, False)
+np.random.seed(42) # Make sure to have a reproducible result
+weights = initialize_weights(2, 8, 5, 1)
+
+outputLayer, cache = forward_propagation(X, weights, f1, f2, f3)
+result = np.array([np.mean(cache['x0']), np.mean(cache['z1']), 
+                   np.mean(cache['x1']), np.mean(cache['z2']),
+                   np.mean(cache['x2']), np.mean(cache['z3']),
+                   np.mean(cache['x3'])])
+reference = np.array([3.3138498526746014, -0.22806136844696653,
+                     -0.22806136844696653, -1.5318738340852145,
+                     -1.5318738340852145, 1.1329044156610317, 
+                      0.7420574800205959])
+np.testing.assert_allclose(result, reference)
+print("Looks like the forward propagation is working :)")
+```
+
+:::::
+
+::::
+:::
+
+## Backward propagation
+
+We discussed in Section @sec-nn-nn-backprop and looked at it closer in Example @exm-nn-nn-backpropagation as well as Exercise @exr-nn-nn-dvc-backprop. 
+
+Let us recall Example @exm-nn-nn-backpropagation once more.
+
+::: {.callout-tip appearance="simple" collapse="true" icon=false}
+:::: {#exm-appendices-nnfs-backpropagation}
+
+## A simple case
+
+To illustrate the procedure we start with the simplest example, illustrated in @fig-appendices-nnfs-backprop_simple.
+
+![One node, one layer model for illustration of the backpropagation algorithm.](../_assets/nn/backprop_simple){#fig-appendices-nnfs-backprop_simple width=3.0in}
+
+To get the output $y$ from $x$ the following computation is required
+$$
+y = g(z, b) = g(f(x, a), b).
+$$
+
+If we now assume a means square error for the final loss,
+$$
+\mathscr{L} = \frac12 (y_0 - y)^2,
+$$
+we get an error, depending on the weights $a$, $b$, and for $y_0$ being the ground truth or correct result.
+In order to minimize the error according to $a$ and $b$ we need to compute the partial derivatives with respect to these variables
+
+$$
+\begin{aligned}
+\frac{\partial\, \mathscr{L}}{\partial\, a} 
+&= \frac{\partial\, \mathscr{L}}{\partial\, y} \cdot \frac{\partial\, y}{\partial\, a} &=& \big[y = g(z, b)\big]\\
+&= \frac{\partial\, \mathscr{L}}{\partial\, y}\cdot \frac{\partial\, g}{\partial\, z} \cdot \frac{\partial\, z}{\partial\, a} &=& \big[z = f(x, a)\big]\\
+&= \frac{\partial\, \mathscr{L}}{\partial\, y}\cdot \frac{\partial\, g}{\partial\, z} \cdot \frac{\partial\, f}{\partial\, a}
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+\frac{\partial\, \mathscr{L}}{\partial\, b} 
+&= \frac{\partial\, \mathscr{L}}{\partial\, y} \cdot \frac{\partial\, y}{\partial\, b} &=& \big[y = g(z,b)\big] \\
+&= \frac{\partial\, \mathscr{L}}{\partial\, y}\cdot \frac{\partial\, g}{\partial\, b} \phantom{ \cdot \frac{\partial\, f}{\partial\, a}}
+\end{aligned}
+$$
+
+For a particular $\mathscr{L}$, $g$, and $f$ we can compute it explicitly, e.g. $\mathscr{L}=\tfrac12(y_0 - y)^2$, $g(z,b) = b z$, and  $f(x,a) = \tanh(a x)$
+
+$$
+\begin{aligned}
+\frac{\partial\, \mathscr{L}}{\partial\, a} &=  \frac{\partial\, \mathscr{L}}{\partial\, y} \frac{\partial\, g}{\partial\, z}\frac{\partial\, f}{\partial\, a} &=& - (y_0 - y) \cdot b \cdot (1 - \tanh^2(a x)) \cdot x,\\
+\frac{\partial\, \mathscr{L}}{\partial\, b} &=  \frac{\partial\, \mathscr{L}}{\partial\, y} \frac{\partial\, g}{\partial\, b} &=& - (y_0 - y) \cdot \tanh(a x).
+\end{aligned}
+$$
+
+With this information we can define the gradient descent update
+$$
+\begin{aligned}
+a^{(k+1)} &= a^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, a} = a^{(k)} - \delta \left(- (y_0 - y) \cdot b^{(k)} \cdot (1 - \tanh^2(a^{(k)} x)) \cdot x\right), \\
+b^{(k+1)} &= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b} = b^{(k)} - \delta \left( - (y_0 - y) \cdot \tanh(a^{(k)} x)\right).
+\end{aligned}
+$$
+::::
+:::
+
+In the example we simplified but we can extend this to the general case with weight matrices and biases. 
+Furthermore, the combination of the derivatives is an iterative process and we can _reuse_ intermediate results for different parts, giving us some kind of _recursion_.
+Now, if we combine all theses findings we can compute the backpropagation as follows.
+
+First, we define some helper variables with _intermedia_ results.
+The symbol $\odot$ denotes the point wise multiplication of matrices/vectors.
+Furthermore, we will train our network with multiple training values at the same time. 
+To facilitate this we need to dived the difference from our output and the labels by the negative number of samples $N$.
+$$
+\begin{aligned}
+\Delta^{(3)} &= \frac{Y - x^{(3)}}{-N} \\
+\Delta^{(2)} &= \left(A_3^\mathsf{T} \cdot \Delta^{(3)}\right) \odot \partial f_2(z_2) \\
+\Delta^{(1)} &= \left(A_2^\mathsf{T} \cdot \Delta^{(2)}\right) \odot \partial f_1(z_1) \\
+\end{aligned}
+$$
+
+Next, we can define the derivatives of the weights.
+If we extend the formulas from @exm-appendices-nnfs-backpropagation to weight matrices and bias vectors some summation appears, this we can easily solve via matrix-vector multiplication.
+
+For the weight we get
+$$
+\begin{aligned}
+\partial{A_3} &= \Delta^{(3)} \cdot \left(x^{(2)}\right)^\mathsf{T}, \\
+\partial{A_2} &= \Delta^{(2)} \cdot \left(x^{(1)}\right)^\mathsf{T}, \\
+\partial{A_1} &= \Delta^{(1)} \cdot \left(x^{(0)}\right)^\mathsf{T},
+\end{aligned}
+$$
+
+and the biases 
+
+$$
+\begin{aligned}
+\partial{b_3} &= \Delta^{(3)} \cdot \mathbf{1}, \\
+\partial{b_2} &= \Delta^{(2)} \cdot \mathbf{1}, \\
+\partial{b_1} &= \Delta^{(1)} \cdot \mathbf{1}.
+\end{aligned}
+$$
+Where $\mathbf{1}$ is the vector with all ones, i.e.
+$$
+\mathbf{1} = \left(
+                \begin{array}{c}
+                    1\\
+                    1\\
+                    \vdots\\
+                    1
+                \end{array} 
+              \right)\in \mathbb{R}^N.
+$$
+
+::: {.callout-caution appearance="simple" collapse="false" icon=false}
+:::: {#exr-appendices-nnfs-self-backward}
+
+## Self implementation: Backward propagation
+
+```{python}
+# | code-fold: false
+# | eval: false
+# | code-summary: "Code fragment for implementation."
+def backward_propagation(weights, cache, X, Y):
+    """
+    Arguments:
+    weights -- python dictionary containing our weights
+    cache -- a dictionary containing "pA1", "A1", "pA2" and "A2".
+    X -- input data of shape (2, number of examples)
+    Y -- "true" labels vector of shape (1, number of examples)
+
+    Returns:
+    grads -- python dictionary containing your gradients with 
+             respect to different weights
+    """
+
+    A1 = weights["A1"]
+    A2 = weights["A2"]
+    A3 = weights["A3"]
+    
+    b1 = weights["b1"]
+    b2 = weights["b2"]
+    b3 = weights["b3"]
+
+    x0 = cache["x0"]
+    x1 = cache["x1"]
+    x2 = cache["x2"]
+    x3 = cache["x3"]
+
+    z1 = cache["z1"]
+    z2 = cache["z2"]
+    z3 = cache["z3"]
+
+    N = X.shape[1]
+
+    delta3 = # <1>
+    delta2 = # <1>
+    delta1 = # <1>
+    dA3 = # <1>
+    dA2 = # <1>
+    dA1 = # <1>
+    db3 = # <1>
+    db2 = # <1>
+    db1 = # <1>
+    
+    grads = {"dA1": dA1,
+             "db1": db1,
+             "dA2": dA2,
+             "db2": db2,
+             "dA3": dA3,
+             "db3": db3}
+
+    return grads
+```
+1. Please fill in the blanks according to the above description/formula.
+
+::::: {.callout-tip appearance="simple" collapse="true" icon=false}
+
+## Check the implementation for the backward step
+
+Run the following code snippet to check the implementation, if there is no error the implementation looks good.
+```{python}
+# | code-fold: false
+# | eval: false
+# | code-summary: "Code fragment for implementation."
+f1 = actFunctionLinear # function used for hidden layer 1
+f2 = actFunctionLinear # function used for hidden layer 2
+f3 = actFunctionSigmoid # function used for output layer
+np.random.seed(42) # Make sure to have a reproducible result
+X, Y = generate_dataset("blobs", 1000, 0.5, False)
+np.random.seed(42) # Make sure to have a reproducible result
+weights = initialize_weights(2, 8, 5, 1)
+
+outputLayer, cache = forward_propagation(X, weights, f1, f2, f3)
+grads = backward_propagation(weights, cache, X, Y)
+result = np.array([np.mean(grads["dA1"]), np.mean(grads["dA2"]),
+                   np.mean(grads["dA3"]), np.mean(grads["db1"]),
+                   np.mean(grads["db2"]), np.mean(grads["db3"])])
+reference = np.array([0.002965957830197586, 0.004537290504686634,
+                      0.14652013603577085, 0.0008235332844678776,
+                      -0.006945313835622825, 0.24205748002059585])
+
+np.testing.assert_allclose(result, reference)
+print("Looks like backward propagation is working :)")
+```
+
+:::::
+::::
+:::
+
+
+## Update parameters
+
+Now that we have computed the differential of each of the parameters we can use them to update the results.
+For this we recall the definition of the gradient descent method[^1] but we slightly adapt the notation to our purposes.
+
+We express this algorithm in terms of the iterations $\Theta_k$ for guesses of the minimum with the updates
+$$
+\Theta_{k+1} = \Theta_{k} - \delta\, \partial f(\Theta_{k}) 
+$$
+where the parameter $\delta$ defines how far along the gradient descent curve we move and so far we called this _learning rate_.
+Here the $\Theta$ corresponds to the different variables so in our case this applies to each individual, i.e. $A_i$ and $b_i$.
+
+::: {.callout-caution appearance="simple" collapse="false" icon=false}
+:::: {#exr-appendices-nnfs-self-parameterupdate}
+
+## Self implementation: Parameter update
+
+```{python}
+# | code-fold: false
+# | eval: false
+# | code-summary: "Code fragment for implementation."
+def update_weights(weights, grads, learning_rate):
+    """
+    Arguments:
+    weights -- python dictionary containing your weights
+    grads -- python dictionary containing your gradients
+    learning_rate
+
+    Returns:
+    weights -- python dictionary containing your updated weights
+    """
+    A1 = weights["A1"]
+    b1 = weights["b1"]
+    A2 = weights["A2"]
+    b2 = weights["b2"]
+    A3 = weights["A3"]
+    b3 = weights["b3"]
+
+    dA1 = grads["dA1"]
+    db1 = grads["db1"]
+    dA2 = grads["dA2"]
+    db2 = grads["db2"]
+    dA3 = grads["dA3"]
+    db3 = grads["db3"]
+
+    # Update rule for each weight
+    A1 = # <1>
+    b1 = # <1>
+    A2 = # <1>
+    b2 = # <1>
+    A3 = # <1>
+    b3 = # <1>
+
+    weights["A1"] = A1
+    weights["b1"] = b1
+    weights["A2"] = A2
+    weights["b2"] = b2
+    weights["A3"] = A3
+    weights["b3"] = b3
+
+    return weights
+```
+1. Please fill in the blanks according to the above description/formula.
+
+::::: {.callout-tip appearance="simple" collapse="true" icon=false}
+
+## Check the implementation for the parameter update
+
+Run the following code snippet to check the implementation, if there is no error the implementation looks good.
+```{python}
+# | code-fold: false
+# | eval: false
+# | code-summary: "Code fragment for implementation."
+f1 = actFunctionLinear # function used for hidden layer 1
+f2 = actFunctionLinear # function used for hidden layer 2
+f3 = actFunctionSigmoid # function used for output layer
+np.random.seed(42) # Make sure to have a reproducible result
+X, Y = generate_dataset("blobs", 1000, 0.5, True)
+np.random.seed(42) # Make sure to have a reproducible result
+weights = initialize_weights(2, 8, 5, 1)
+
+outputLayer, cache = forward_propagation(X, weights, f1, f2, f3)
+grads = backward_propagation(weights, cache, X, Y)
+weights_upd = update_weights(weights, grads, learning_rate=0.05)
+
+result = np.array([np.mean(weights_upd["A1"]), np.mean(weights_upd["A2"]), 
+                   np.mean(weights_upd["A3"]), np.mean(weights_upd["b1"]),
+                   np.mean(weights_upd["b2"]), np.mean(weights_upd["b3"])])
+reference = np.array([-0.01798925865224338, -0.07985076364711673,
+                      -0.034801399603810054, -2.269537873037303e-06,
+                       1.9140274093792395e-05, -0.0006670751853262199])
+
+np.testing.assert_allclose(result, reference)
+print("Looks like the weights are updated correctly :)")
+```
+
+:::::
+
+::::
+:::
+
+
+To check the results, please run the following code snippet and if there is no error the implementation appears to be correct.
+
+
+
+[^1]: see @Kandolf_GDM, Section 6.1 or follow the direct [Link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/regression/nonlinear.html#sec-regression-nonlinear-gd)
+
+There is not much left to do but some parts are still missing. 
+
+
+## Implement a prediction function
+
+::: {.callout-caution appearance="simple" collapse="false" icon=false}
+:::: {#exr-appendices-nnfs-self-loss}
+
+## Self implementation: Predict function
+
+```{python}
+# | code-fold: false
+# | eval: false
+# | code-summary: "Code fragment for implementation."
+def predict(weights, X, f1, f2, f3):
+    """
+    Using the learned weights, predicts a class for each example in X
+
+    Arguments:
+    weights -- python dictionary containing your weights
+    X -- input data of size (n_x, m) 
+    f1 -- python function as activation function layer 1
+    f2 -- python function as activation function layer 2
+    f3 -- python function as activation function layer 3
+
+    Returns
+    predictions -- vector of predictions of our model (red: 0 / blue: 1)
+    """
+    # 1. Computes probabilities using forward propagation, # <1>
+    # 2. and classifies to 0/1 using 0.5 as the threshold. # <2>
+    return predictions
+```
+1. Computes probabilities using forward propagation,
+1. and classifies to 0/1 using 0.5 as the threshold.
+
+::::: {.callout-tip appearance="simple" collapse="true" icon=false}
+
+## Check the implementation for the predict function
+
+Run the following code snippet to check the implementation, if there is no error the implementation looks good.
+```{python}
+# | code-fold: false
+# | eval: false
+# | code-summary: "Code fragment for implementation."
+f1 = actFunctionLinear # function used for hidden layer 1
+f2 = actFunctionLinear # function used for hidden layer 2
+f3 = actFunctionSigmoid # function used for output layer
+X, Y = generate_dataset("blobs", 1000, 0.5, True)
+weights = initialize_weights(2, 8, 5, 1)
+p = predict(weights, X, f1, f2, f3)
+np.testing.assert_allclose(np.sum(p), 645)
+print("Looks like your implementation is working, congratulation!")
+```
+
+:::::
+
+::::
+:::
+
+
+## Loss function
+
+In order to figure out how _close_ we are to our labels we need some kind of loss function. 
+There are several possibilities, but we will stick to the logarithmic or cross entropy loss:
+
+$$
+\begin{aligned}
+\mathscr{L}(\Theta) &= - \frac1N \sum_{i=1}^N \left(y_i \log(p_i) + (1 - y_i) \log(1 - p_i)\right).
+\end{aligned}
+$$
+
+::: {.callout-caution appearance="simple" collapse="false" icon=false}
+:::: {#exr-appendices-nnfs-self-loss}
+
+## Self implementation: Loss function
+
+```{python}
+# | code-fold: false
+# | eval: false
+# | code-summary: "Code fragment for implementation."
+def compute_loss(nn_output, Y):
+    # This function takes the nn_outputs and Ys of the training set
+    # and returns the log loss
+    
+    return
+```
+
+::::: {.callout-tip appearance="simple" collapse="true" icon=false}
+
+## Check the implementation for the loss function
+Run the following code snippet to check the implementation, if there is no error the implementation looks good.
+```{python}
+# | code-fold: false
+# | eval: false
+# | code-summary: "Code fragment for implementation."
+f1 = actFunctionLinear # function used for hidden layer 1
+f2 = actFunctionLinear # function used for hidden layer 2
+f3 = actFunctionSigmoid # function used for output layer
+X, Y = generate_dataset("blobs", 1000, 0.5, True)
+weights = initialize_weights(2, 8, 5, 1)
+outputLayer, cache = forward_propagation(X, weights, f1, f2, f3)
+result = compute_loss(outputLayer, Y)
+np.testing.assert_allclose(result, 0.7360633961687931)
+print("Looks like your implementation is working, congratulation!")
+```
+
+:::::
+::::
+:::
+
+
+## Implement the network training
+
+Now we have all components together and we can implement the network training.
+For this we need to combine each step
+
+::: {.callout-caution appearance="simple" collapse="false" icon=false}
+:::: {#exr-appendices-nnfs-self-training}
+
+## Self implementation: Network training 
+```{python}
+# | code-fold: false
+# | eval: false
+# | code-summary: "Code fragment for implementation."
+def nn_model(X_train, Y_train, nodes0, nodes1, nodes2, nodes3, 
+             f1, f2, f3, lossfun, learning_rate, predict, 
+             num_iterations, print_cost=False, X_test=None, Y_test=None):
+    """
+    Arguments:
+    X_train -- training dataset of shape (2, number of examples)
+    Y_train -- training labels of shape (1, number of examples)
+    nodes_in -- size of the input layer
+    nodes_h1 -- size of the first hidden layer
+    nodes_h2 -- size of the second hidden layer
+    nodes_out -- size of the input layer
+    f1 -- activation function for the first layer
+    f2 -- activation function for the second layer
+    f3 -- activation function for the third layer
+    num_iterations -- Number of iterations in gradient descent loop
+    print_cost -- if True, print the cost every 1000 iterations
+    X_test, Y_test -- test datasets; when set, accuracy is printed
+
+    Returns:
+    weights -- weights learnt by the model. 
+               They can then be used to predict.
+    """
+
+    np.random.seed(42 if DISABLE_RANDOM_SEED else None)    
+    
+    # Use the previously coded function to generate the weights
+    weights = # <1>
+    
+    # Loop (training with gradient descent)
+    for i in range(1, num_iterations + 1):
+        # 2. forward propagation; the variable holding the network's # <2>
+        #    outputs should be called outputLayer # <2> 
+        # 3. use the results to calculate the backward propagation # <3> 
+        # 4. update the weights according to the results of the # <4>
+        #    backward propagation # <4> 
+
+        # Print the cost and accuracy every 500 iterations
+        if print_cost and i % 500 == 0:      
+            accStr = ''
+            
+            try:
+                predictions = predict(weights, X_test, f1, f2, f3)
+                
+                if (X_test is not None) and (Y_test is not None ):
+                    accuracy = accuracy_score(predictions.flatten(),
+                                              Y_test.flatten())
+                    accStr = "(Acc: %f)" %(accuracy)
+            except:
+                pass # will be implemented later; no action                
+                
+            loss = lossfun(outputLayer, Y_train)
+            print("Cost after iteration %i: %f %s" %(i, loss, accStr))
+
+    return weights
+```
+1. Use the previously coded function to generate the weights
+1. Forward propagation; the variable holding the network's outputs should be called outputLayer
+1. use the results to calculate the backward propagation
+1. update the weights according to the results of the backward propagation
+
+**Hint**: All the parts that need to be implemented here are a one-liner with the help of the previously defined functions.
+
+::::: {.callout-tip appearance="simple" collapse="true" icon=false}
+
+## Check the implementation for the network training
+Run the following code snippet to check the implementation, if there is no error the implementation looks good.
+```{python}
+# | code-fold: false
+# | eval: false
+# | code-summary: "Code fragment for implementation."
+f1 = actFunctionLinear # function used for hidden layer 1
+f2 = actFunctionLinear # function used for hidden layer 2
+f3 = actFunctionSigmoid # function used for output layer
+loss_fun = compute_loss
+predict_fun = predict
+X, Y = generate_dataset("blobs", 1000, 0.4, False)
+weights = nn_model(X, Y, 2, 5, 5, 1, f1, f2, f3, loss_fun, 
+                   0.05, predict_fun, 1000)
+
+result = np.array([np.mean(weights["A1"]), np.mean(weights["A2"]),
+                   np.mean(weights["A3"]), np.mean(weights["b1"]),
+                   np.mean(weights["b2"]), np.mean(weights["b3"])])
+reference = np.array([0.28620967900953265, -0.13481751949641932,
+                     -0.4163217207836666, 0.014763485056667431,
+                     -0.1323179529728214, 0.33857324167613034])
+np.testing.assert_allclose(result, reference)
+print("Looks like your implementation is working, congratulation!")
+```
+
+:::::
+::::
+:::
+
+
+## Our implementation in action
+
+Now it is time to actually use and play around with our implementation of a NN.
+For this we provide some helper functions to make your life easier.
+
+::: {.callout-important appearance="simple" collapse="true" icon=false}
+
+## Reference implementation
+In the following we present a reference implementation.
+This should only be used in case somebody is stuck in the implementation.
+```{python}
+# | code-fold: true
+# | eval: true
+# | code-summary: "Code for initialization of the weights"
+# | classes: styled-output
+def initialize_weights(nodes0, nodes1, nodes2, nodes3):
+    """
+    Argument:
+    nodes0 -- size of the input layer
+    nodes1 -- size of the first hidden layer
+    nodes2 -- size of the second hidden layer
+    nodes3 -- size of the output layer
+
+    Returns:
+    weights -- python dictionary containing weight 
+                and bias matrices
+    """        
+    # initialize the weights and biases as numpy arrays
+    #  with the correct shapes.
+    A1 = np.random.normal(0, 1 / np.sqrt(nodes0), size=(nodes1, nodes0))
+    b1 = np.zeros((nodes1, 1))
+    A2 = np.random.normal(0, 1 / np.sqrt(nodes1), size=(nodes2, nodes1))  
+    b2 = np.zeros((nodes2, 1))
+    A3 = np.random.normal(0, 1 / np.sqrt(nodes2), size=(nodes3, nodes2)) 
+    b3 = np.zeros((nodes3, 1))
+        
+    assert(A1.shape == (nodes1, nodes0))
+    assert(b1.shape == (nodes1, 1))
+    assert(A2.shape == (nodes2, nodes1))
+    assert(b2.shape == (nodes2, 1))
+    assert(A3.shape == (nodes3, nodes2))
+    assert(b3.shape == (nodes3, 1))
+
+
+    weights = {"A1": A1,
+               "b1": b1,
+               "A2": A2,
+               "b2": b2,
+               "A3": A3,
+               "b3": b3}
+    
+    return weights
+
+
+np.random.seed(42) # Make sure to have a reproducible result
+weights = initialize_weights(2, 8, 5, 1)
+
+result = np.array([np.mean(weights["A1"]), np.mean(weights["A2"]), 
+                   np.mean(weights["A3"]), np.mean(weights["b1"]),
+                   np.mean(weights["b2"]), np.mean(weights["b3"])])
+reference = np.array([-0.0179896655582674, -0.0798199810455688,
+                   -0.0286928288067441, 0., 0., 0.])
+np.testing.assert_allclose(result, reference)
+print("Looks like the weights are implemented correct :)")
+```
+
+```{python}
+# | code-fold: true
+# | eval: true
+# | code-summary: "Code for definition of activation functions"
+# | classes: styled-output
+def actFunctionLinear(x, derivative: bool = False):
+    if derivative:
+        return np.ones_like(x)
+    else:
+        return x
+
+
+def actFunctionSigmoid(x, derivative: bool = False):        
+    if derivative:
+         return 1.0 / (1.0 + np.exp(-x)) * (1.0 - 1.0 / (1.0 + np.exp(-x)))
+    else:
+
+        return 1.0 / (1.0 + np.exp(-x))
+        
+        
+def actFunctionRelu(x, derivative: bool = False): 
+    if derivative:
+        return np.array(x > 0).astype(int)
+    else:
+        return np.maximum(0, x)
+        
+
+def actFunctionTanh(x, derivative: bool = False): 
+    if derivative:
+        return 1.0 / np.cosh(x)**2
+    else:
+        return np.tanh(x)
+```
+
+```{python}
+# | code-fold: true
+# | eval: true
+# | code-summary: "Code for definition of forward propagation"
+# | classes: styled-output
+def forward_propagation(X, weights, f1, f2, f3):
+    """
+    Argument:
+    X -- input data
+    weights -- python dictionary containing the weight and bias matrices
+    f1 -- python function as activation function layer 1
+    f2 -- python function as activation function layer 2
+    f3 -- python function as activation function layer 3
+
+    Returns:
+    outputLayer -- The output of the last layer
+    cache -- a dictionary containing (pre)activations of every layer
+    """    
+    A1 = weights["A1"]
+    b1 = weights["b1"]
+    A2 = weights["A2"]
+    b2 = weights["b2"]
+    A3 = weights["A3"]
+    b3 = weights["b3"]
+    
+    x0 = X
+    z1 = A1 @ x0 + b1
+    x1 = f1(z1)
+    z2 = A2 @ x1 + b2
+    x2 = f2(z2)
+    z3 = A3 @ x2 + b3
+    x3 = f3(z3)
+      
+    outputLayer = x3
+
+    cache = {"x0": x0,
+             "z1": z1,
+             "x1": x1,
+             "z2": z2,
+             "x2": x2,
+             "z3": z3,
+             "x3": x3}
+
+
+    return outputLayer, cache
+
+
+f1 = actFunctionLinear # function used for hidden layer 1
+f2 = actFunctionLinear # function used for hidden layer 2
+f3 = actFunctionSigmoid # function used for output layer
+np.random.seed(42) # Make sure to have a reproducible result
+X, Y = generate_dataset("blobs", 1000, 0.5, False)
+np.random.seed(42) # Make sure to have a reproducible result
+weights = initialize_weights(2, 8, 5, 1)
+
+outputLayer, cache = forward_propagation(X, weights, f1, f2, f3)
+result = np.array([np.mean(cache['x0']), np.mean(cache['z1']), 
+                   np.mean(cache['x1']), np.mean(cache['z2']),
+                   np.mean(cache['x2']), np.mean(cache['z3']),
+                   np.mean(cache['x3'])])
+reference = np.array([3.3138498526746014, -0.22806136844696653,
+                     -0.22806136844696653, -1.5318738340852145,
+                     -1.5318738340852145, 1.1329044156610317,
+                      0.7420574800205959])
+np.testing.assert_allclose(result, reference)
+print("Looks like the forward propagation is working :)")
+```
+
+```{python}
+# | code-fold: true
+# | eval: true
+# | code-summary: "Code for definition of backward propagation"
+# | classes: styled-output
+def backward_propagation(weights, cache, X, Y):
+    """
+    Arguments:
+    weights -- python dictionary containing our weights
+    cache -- a dictionary containing "pA1", "A1", "pA2" and "A2".
+    X -- input data of shape (2, number of examples)
+    Y -- "true" labels vector of shape (1, number of examples)
+
+    Returns:
+    grads -- python dictionary containing your gradients with 
+             respect to different weights
+    """
+
+    A1 = weights["A1"]
+    A2 = weights["A2"]
+    A3 = weights["A3"]
+    
+    b1 = weights["b1"]
+    b2 = weights["b2"]
+    b3 = weights["b3"]
+
+    x0 = cache["x0"]
+    x1 = cache["x1"]
+    x2 = cache["x2"]
+    x3 = cache["x3"]
+
+    z1 = cache["z1"]
+    z2 = cache["z2"]
+    z3 = cache["z3"]
+
+    N = X.shape[1]
+
+    delta3 = -1 / N * (Y - x3) 
+    delta2 = (A3.T @ delta3) * f2(z2, True)
+    delta1 = (A2.T @ delta2) * f1(z1, True)
+    dA3 = delta3 @ x2.T
+    dA2 = delta2 @ x1.T 
+    dA1 = delta1 @ x0.T
+    db3 = delta3 @ np.ones_like(Y).T
+    db2 = delta2 @ np.ones_like(Y).T
+    db1 = delta1 @ np.ones_like(Y).T
+    
+    grads = {"dA1": dA1,
+             "db1": db1,
+             "dA2": dA2,
+             "db2": db2,
+             "dA3": dA3,
+             "db3": db3}
+
+    return grads
+
+
+f1 = actFunctionLinear # function used for hidden layer 1
+f2 = actFunctionLinear # function used for hidden layer 2
+f3 = actFunctionSigmoid # function used for output layer
+np.random.seed(42) # Make sure to have a reproducible result
+X, Y = generate_dataset("blobs", 1000, 0.5, False)
+np.random.seed(42) # Make sure to have a reproducible result
+weights = initialize_weights(2, 8, 5, 1)
+
+outputLayer, cache = forward_propagation(X, weights, f1, f2, f3)
+grads = backward_propagation(weights, cache, X, Y)
+result = np.array([np.mean(grads["dA1"]), np.mean(grads["dA2"]),
+                   np.mean(grads["dA3"]), np.mean(grads["db1"]),
+                   np.mean(grads["db2"]), np.mean(grads["db3"])])
+reference = np.array([0.002965957830197586, 0.004537290504686634,
+                      0.14652013603577085, 0.0008235332844678776,
+                      -0.006945313835622825, 0.24205748002059585])
+
+np.testing.assert_allclose(result, reference)
+print("Looks like backward propagation is working :)")
+```
+
+```{python}
+# | code-fold: true
+# | eval: true
+# | code-summary: "Code for definition of updating the parameters"
+# | classes: styled-output
+def update_weights(weights, grads, learning_rate):
+    """
+    Arguments:
+    weights -- python dictionary containing your weights
+    grads -- python dictionary containing your gradients
+    learning_rate
+
+    Returns:
+    weights -- python dictionary containing your updated weights
+    """
+    A1 = weights["A1"]
+    b1 = weights["b1"]
+    A2 = weights["A2"]
+    b2 = weights["b2"]
+    A3 = weights["A3"]
+    b3 = weights["b3"]
+
+    dA1 = grads["dA1"]
+    db1 = grads["db1"]
+    dA2 = grads["dA2"]
+    db2 = grads["db2"]
+    dA3 = grads["dA3"]
+    db3 = grads["db3"]
+
+    # Update rule for each weight
+    A1 = A1 - learning_rate * dA1
+    b1 = b1 - learning_rate * db1 
+    A2 = A2 - learning_rate * dA2
+    b2 = b2 - learning_rate * db2
+    A3 = A3 - learning_rate * dA3
+    b3 = b3 - learning_rate * db3
+
+    weights["A1"] = A1
+    weights["b1"] = b1
+    weights["A2"] = A2
+    weights["b2"] = b2
+    weights["A3"] = A3
+    weights["b3"] = b3
+
+    return weights
+
+
+f1 = actFunctionLinear # function used for hidden layer 1
+f2 = actFunctionLinear # function used for hidden layer 2
+f3 = actFunctionSigmoid # function used for output layer
+np.random.seed(42) # Make sure to have a reproducible result
+X, Y = generate_dataset("blobs", 1000, 0.5, True)
+np.random.seed(42) # Make sure to have a reproducible result
+weights = initialize_weights(2, 8, 5, 1)
+
+outputLayer, cache = forward_propagation(X, weights, f1, f2, f3)
+grads = backward_propagation(weights, cache, X, Y)
+weights_upd = update_weights(weights, grads, learning_rate=0.05)
+
+result = np.array([np.mean(weights_upd["A1"]), np.mean(weights_upd["A2"]), 
+                   np.mean(weights_upd["A3"]), np.mean(weights_upd["b1"]),
+                   np.mean(weights_upd["b2"]), np.mean(weights_upd["b3"])])
+reference = np.array([-0.01798925865224338, -0.07985076364711673,
+                      -0.034801399603810054, -2.269537873037303e-06,
+                       1.9140274093792395e-05, -0.0006670751853262199])
+
+np.testing.assert_allclose(result, reference)
+print("Looks like the weights are updated correctly :)")
+```
+
+```{python}
+# | code-fold: true
+# | eval: true
+# | code-summary: "Code for making a prediction"
+# | classes: styled-output
+def predict(weights, X, f1, f2, f3):
+    """
+    Using the learned weights, predicts a class for each example in X
+
+    Arguments:
+    weights -- python dictionary containing your weights
+    X -- input data of size (n_x, m) 
+    f1 -- python function as activation function layer 1
+    f2 -- python function as activation function layer 2
+    f3 -- python function as activation function layer 3
+
+    Returns
+    predictions -- vector of predictions of our model (red: 0 / blue: 1)
+    """
+    # Computes probabilities using forward propagation, 
+    # and classifies to 0/1 using 0.5 as the threshold.
+    
+    outputLayer, _ = forward_propagation(X, weights, f1, f2, f3)
+    predictions = (outputLayer > 0.5).astype(int)
+    return predictions
+
+
+f1 = actFunctionLinear # function used for hidden layer 1
+f2 = actFunctionLinear # function used for hidden layer 2
+f3 = actFunctionSigmoid # function used for output layer
+np.random.seed(42) # Make sure to have a reproducible result
+X, Y = generate_dataset("blobs", 1000, 0.5, True)
+np.random.seed(42) # Make sure to have a reproducible result
+weights = initialize_weights(2, 8, 5, 1)
+p = predict(weights, X, f1, f2, f3)
+np.testing.assert_allclose(np.sum(p), 645)
+print("Looks like prediction is working :)")
+```
+
+```{python}
+# | code-fold: true
+# | eval: true
+# | code-summary: "Code for making a loss function"
+# | classes: styled-output
+def compute_loss(nn_output, Y):
+    # This function takes the nn_outputs and Ys of the training set
+    # and returns the log loss
+    N = Y.shape[1]
+    return (-1 / N) * np.sum(Y * np.log(nn_output) + 
+                             (1 - Y) * np.log(1 - nn_output))
+
+
+f1 = actFunctionLinear # function used for hidden layer 1
+f2 = actFunctionLinear # function used for hidden layer 2
+f3 = actFunctionSigmoid # function used for output layer
+np.random.seed(42) # Make sure to have a reproducible result
+X, Y = generate_dataset("blobs", 1000, 0.5, True)
+np.random.seed(42) # Make sure to have a reproducible result
+weights = initialize_weights(2, 8, 5, 1)
+outputLayer, cache = forward_propagation(X, weights, f1, f2, f3)
+
+result = compute_loss(outputLayer, Y)
+np.testing.assert_allclose(result, 0.7360633961687931)
+print("Looks like the loss function is working!")
+```
+
+```{python}
+# | code-fold: true
+# | eval: true
+# | code-summary: "Code for doing the network training"
+# | classes: styled-output
+def nn_model(X_train, Y_train, nodes0, nodes1, nodes2, nodes3, 
+             f1, f2, f3, lossfun, learning_rate, predict, 
+             num_iterations, print_cost=False, X_test=None, Y_test=None):
+    """
+    Arguments:
+    X_train -- training dataset of shape (2, number of examples)
+    Y_train -- training labels of shape (1, number of examples)
+    nodes_in -- size of the input layer
+    nodes_h1 -- size of the first hidden layer
+    nodes_h2 -- size of the second hidden layer
+    nodes_out -- size of the input layer
+    f1 -- activation function for the first layer
+    f2 -- activation function for the second layer
+    f3 -- activation function for the third layer
+    num_iterations -- Number of iterations in gradient descent loop
+    print_cost -- if True, print the cost every 1000 iterations
+    X_test, Y_test -- test datasets; when set, accuracy is printed
+
+    Returns:
+    weights -- weights learnt by the model. 
+               They can then be used to predict.
+    """
+
+    
+    # Use the previously coded function to generate the weights
+    weights = initialize_weights(nodes0, nodes1, nodes2, nodes3)
+    
+    # Loop (training with gradient descent)
+    for i in range(1, num_iterations + 1):
+        # 2. forward propagation; the variable holding the network's # <2>
+        #    outputs should be called outputLayer # <2> 
+        # 3. use the results to calculate the backward propagation # <3> 
+        # 4. update the weights according to the results of the # <4>
+        #    backward propagation # <4> 
+        outputLayer, cache = forward_propagation(X_train, weights, f1, f2, f3)
+        grads = backward_propagation(weights, cache, X_train, Y_train)
+        weights = update_weights(weights, grads, learning_rate)
+        # Print the cost and accuracy every 500 iterations
+        if print_cost and i % 500 == 0:      
+            accStr = ''
+            
+            try:
+                predictions = predict(weights, X_test, f1, f2, f3)
+                
+                if (X_test is not None) and (Y_test is not None ):
+                    accuracy = accuracy_score(predictions.flatten(),
+                                              Y_test.flatten())
+                    accStr = "(Acc: %f)" %(accuracy)
+            except:
+                pass # will be implemented later; no action                
+                
+            loss = lossfun(outputLayer, Y_train)
+            print("Cost after iteration %i: %f %s" %(i, loss, accStr))
+
+    return weights
+
+
+f1 = actFunctionLinear # function used for hidden layer 1
+f2 = actFunctionLinear # function used for hidden layer 2
+f3 = actFunctionSigmoid # function used for output layer
+loss_fun = compute_loss
+predict_fun = predict
+
+np.random.seed(42) # Make sure to have a reproducible result
+X, Y = generate_dataset("blobs", 1000, 0.4, False)
+
+np.random.seed(42) # Make sure to have a reproducible result
+weights = nn_model(X, Y, 2, 5, 5, 1, f1, f2, f3, loss_fun, 
+                   0.05, predict_fun, 1000)
+
+result = np.array([np.mean(weights["A1"]), np.mean(weights["A2"]),
+                   np.mean(weights["A3"]), np.mean(weights["b1"]),
+                   np.mean(weights["b2"]), np.mean(weights["b3"])])
+reference = np.array([0.28620967900953265, -0.13481751949641932,
+                     -0.4163217207836666, 0.014763485056667431,
+                     -0.1323179529728214, 0.33857324167613034])
+np.testing.assert_allclose(result, reference)
+print("Looks like the network training is working :)")
+```
+
+:::
+
+First we define some training settings.
+```{python}
+# | code-fold: false
+# | eval: true
+# | code-summary: "Click to see the code for the figure"
+# | classes: styled-output
+datasetName = 'flower' # see function generateDataset()
+nrSamplePoints = 1000
+noise_factor = 0.1
+normalize_data = True
+
+# neural network architecture options
+f1 = actFunctionRelu
+f2 = actFunctionRelu
+
+# learning options
+learning_rate = 0.1
+nrIterations = 10000
+```
+
+The next part is not to be modified. We define the required functions and the dataset.
+```{python}
+# | code-fold: false
+# | eval: true
+# | code-summary: "Click to see the code for the figure"
+# | classes: styled-output
+# do not change the following settings
+f3 = actFunctionSigmoid
+nodes0 = 2 # nr of nodes of the input layer
+nodes3 = 1 # nr of nodes of the output layer
+np.random.seed(42) # Make sure to have a reproducible result
+X, y = generate_dataset(datasetName, nrSamplePoints, 
+                        noise_factor, normalize_data)
+X_train, X_test, y_train, y_test = train_test_split(X.T, y.T, 
+                        test_size=0.2, random_state=42)
+X_train = X_train.T
+X_test = X_test.T
+y_train = y_train.T
+y_test = y_test.T
+```
+
+Now, we have liberty in the dimension of the hidden nodes. 
+```{python}
+# | code-fold: false
+# | eval: true
+# | code-summary: "Click to see the code for the figure"
+# | classes: styled-output
+nodes1 = 15
+nodes2 = 10
+
+np.random.seed(42) # Make sure to have a reproducible result
+weights = nn_model(X_train, y_train, nodes0, nodes1, nodes2, nodes3,
+                   f1, f2, f3, loss_fun, learning_rate, predict_fun,
+                   nrIterations, True, X_test, y_test)
+plot_decision_boundary(lambda x: predict(weights, x.T, f1, f2, f3),
+                       X_train, y_train)
+predictions = predict(weights, X_test, f1, f2, f3)
+accuracy = accuracy_score(predictions.flatten(), y_test.flatten())
+```
