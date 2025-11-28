@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Appendix C — Agentic AI in the field of Data Science - current capabilities and challenges – Machine Learning in Industrial Image Processing</title>
+<title>Appendix D — Agentic AI in the field of Data Science - current capabilities and challenges – Machine Learning in Industrial Image Processing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -85,7 +85,7 @@ div.csl-indent {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../appendices/keras.html" rel="prev">
+<link href="../appendices/nn_from_scratch.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -346,7 +346,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../appendices/explanations.html">Appendices</a></li><li class="breadcrumb-item"><a href="../appendices/agentic_ai.html"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Agentic AI in the field of Data Science - current capabilities and challenges</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../appendices/explanations.html">Appendices</a></li><li class="breadcrumb-item"><a href="../appendices/agentic_ai.html"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Agentic AI in the field of Data Science - current capabilities and challenges</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -532,8 +532,14 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../appendices/nn_from_scratch.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Writing a Neural Network from scratch</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../appendices/agentic_ai.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Agentic AI in the field of Data Science - current capabilities and challenges</span></span></a>
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Agentic AI in the field of Data Science - current capabilities and challenges</span></span></a>
   </div>
 </li>
       </ul>
@@ -548,20 +554,20 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#example-application" id="toc-example-application" class="nav-link active" data-scroll-target="#example-application"><span class="header-section-number">C.1</span> Example application</a></li>
-  <li><a href="#comparison-to-other-methods" id="toc-comparison-to-other-methods" class="nav-link" data-scroll-target="#comparison-to-other-methods"><span class="header-section-number">C.2</span> Comparison to other methods</a>
+  <li><a href="#example-application" id="toc-example-application" class="nav-link active" data-scroll-target="#example-application"><span class="header-section-number">D.1</span> Example application</a></li>
+  <li><a href="#comparison-to-other-methods" id="toc-comparison-to-other-methods" class="nav-link" data-scroll-target="#comparison-to-other-methods"><span class="header-section-number">D.2</span> Comparison to other methods</a>
   <ul class="collapse">
-  <li><a href="#classical-automation" id="toc-classical-automation" class="nav-link" data-scroll-target="#classical-automation"><span class="header-section-number">C.2.1</span> Classical automation</a></li>
-  <li><a href="#retrieval-augmented-generation---rag" id="toc-retrieval-augmented-generation---rag" class="nav-link" data-scroll-target="#retrieval-augmented-generation---rag"><span class="header-section-number">C.2.2</span> Retrieval-Augmented Generation - RAG</a></li>
+  <li><a href="#classical-automation" id="toc-classical-automation" class="nav-link" data-scroll-target="#classical-automation"><span class="header-section-number">D.2.1</span> Classical automation</a></li>
+  <li><a href="#retrieval-augmented-generation---rag" id="toc-retrieval-augmented-generation---rag" class="nav-link" data-scroll-target="#retrieval-augmented-generation---rag"><span class="header-section-number">D.2.2</span> Retrieval-Augmented Generation - RAG</a></li>
   </ul></li>
-  <li><a href="#challenges" id="toc-challenges" class="nav-link" data-scroll-target="#challenges"><span class="header-section-number">C.3</span> Challenges</a>
+  <li><a href="#challenges" id="toc-challenges" class="nav-link" data-scroll-target="#challenges"><span class="header-section-number">D.3</span> Challenges</a>
   <ul class="collapse">
-  <li><a href="#technical-challenges" id="toc-technical-challenges" class="nav-link" data-scroll-target="#technical-challenges"><span class="header-section-number">C.3.1</span> Technical challenges</a></li>
-  <li><a href="#operational-challenges" id="toc-operational-challenges" class="nav-link" data-scroll-target="#operational-challenges"><span class="header-section-number">C.3.2</span> Operational challenges</a></li>
-  <li><a href="#regulatory-and-ethical-challenges" id="toc-regulatory-and-ethical-challenges" class="nav-link" data-scroll-target="#regulatory-and-ethical-challenges"><span class="header-section-number">C.3.3</span> Regulatory and ethical challenges</a></li>
+  <li><a href="#technical-challenges" id="toc-technical-challenges" class="nav-link" data-scroll-target="#technical-challenges"><span class="header-section-number">D.3.1</span> Technical challenges</a></li>
+  <li><a href="#operational-challenges" id="toc-operational-challenges" class="nav-link" data-scroll-target="#operational-challenges"><span class="header-section-number">D.3.2</span> Operational challenges</a></li>
+  <li><a href="#regulatory-and-ethical-challenges" id="toc-regulatory-and-ethical-challenges" class="nav-link" data-scroll-target="#regulatory-and-ethical-challenges"><span class="header-section-number">D.3.3</span> Regulatory and ethical challenges</a></li>
   </ul></li>
-  <li><a href="#popular-tools" id="toc-popular-tools" class="nav-link" data-scroll-target="#popular-tools"><span class="header-section-number">C.4</span> Popular tools</a></li>
-  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">C.5</span> Conclusion</a></li>
+  <li><a href="#popular-tools" id="toc-popular-tools" class="nav-link" data-scroll-target="#popular-tools"><span class="header-section-number">D.4</span> Popular tools</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">D.5</span> Conclusion</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/edit/main/appendices/agentic_ai.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -569,9 +575,9 @@ window.Quarto = {
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../appendices/explanations.html">Appendices</a></li><li class="breadcrumb-item"><a href="../appendices/agentic_ai.html"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Agentic AI in the field of Data Science - current capabilities and challenges</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../appendices/explanations.html">Appendices</a></li><li class="breadcrumb-item"><a href="../appendices/agentic_ai.html"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Agentic AI in the field of Data Science - current capabilities and challenges</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Appendix C — Agentic AI in the field of Data Science - current capabilities and challenges</h1>
+<h1 class="title">Appendix D — Agentic AI in the field of Data Science - current capabilities and challenges</h1>
 </div>
 
 
@@ -595,7 +601,7 @@ window.Quarto = {
 <li>Discuss challenges and the question if it is a hype or if it is here to stay.</li>
 </ul>
 <p>Before we define what Agentic AI is, let us have a look on its current <em>relevance</em>. The topic of Agentic AI is one of the main <em>machine learning</em>/<em>artificial intelligence</em> trends of 2025 and that is also roughly where the term was first introduced, as can be seen in the <a href="https://trends.google.com/trends">Google Trends</a> chart below.</p>
-<div id="e29cd6ec" class="cell" data-execution_count="1">
+<div id="762c3c50" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code for the figure</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -661,9 +667,9 @@ window.Quarto = {
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-appendix-agentic-googletrends-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>            <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG"></script><script type="text/javascript">if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}</script>                <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
-        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.0.1.min.js"></script>                <div id="c229b112-29db-4cdc-81c0-b025ee0a0d3b" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("c229b112-29db-4cdc-81c0-b025ee0a0d3b")) {                    Plotly.newPlot(                        "c229b112-29db-4cdc-81c0-b025ee0a0d3b",                        [{"mode":"lines","name":"Agentic AI","x":["2024-11-10","2024-11-17","2024-11-24","2024-12-01","2024-12-08","2024-12-15","2024-12-22","2024-12-29","2025-01-05","2025-01-12","2025-01-19","2025-01-26","2025-02-02","2025-02-09","2025-02-16","2025-02-23","2025-03-02","2025-03-09","2025-03-16","2025-03-23","2025-03-30","2025-04-06","2025-04-13","2025-04-20","2025-04-27","2025-05-04","2025-05-11","2025-05-18","2025-05-25","2025-06-01","2025-06-08","2025-06-15","2025-06-22","2025-06-29","2025-07-06","2025-07-13","2025-07-20","2025-07-27","2025-08-03","2025-08-10","2025-08-17","2025-08-24","2025-08-31","2025-09-07","2025-09-14","2025-09-21","2025-09-28","2025-10-05","2025-10-12","2025-10-19","2025-10-26","2025-11-02","2025-11-09"],"y":{"dtype":"i1","bdata":"AQEBAQEBAQEDAwMDAwMDBAQEBAQEBAQEBAUFBgYHCAcIBwgJCQoOERAMDQ0OFBISERAMBwk="},"type":"scatter"},{"mode":"lines","name":"Artificial Intelligence","x":["2024-11-10","2024-11-17","2024-11-24","2024-12-01","2024-12-08","2024-12-15","2024-12-22","2024-12-29","2025-01-05","2025-01-12","2025-01-19","2025-01-26","2025-02-02","2025-02-09","2025-02-16","2025-02-23","2025-03-02","2025-03-09","2025-03-16","2025-03-23","2025-03-30","2025-04-06","2025-04-13","2025-04-20","2025-04-27","2025-05-04","2025-05-11","2025-05-18","2025-05-25","2025-06-01","2025-06-08","2025-06-15","2025-06-22","2025-06-29","2025-07-06","2025-07-13","2025-07-20","2025-07-27","2025-08-03","2025-08-10","2025-08-17","2025-08-24","2025-08-31","2025-09-07","2025-09-14","2025-09-21","2025-09-28","2025-10-05","2025-10-12","2025-10-19","2025-10-26","2025-11-02","2025-11-09"],"y":{"dtype":"i1","bdata":"GhsbHh0cGBgdHBwcHB0cHBwaHBoZGhkcGhsaGhoeICIfHyAlJi05R0c5Pz02SUY8Pz4sGhk="},"type":"scatter"},{"mode":"lines","name":"Machine Learning","x":["2024-11-10","2024-11-17","2024-11-24","2024-12-01","2024-12-08","2024-12-15","2024-12-22","2024-12-29","2025-01-05","2025-01-12","2025-01-19","2025-01-26","2025-02-02","2025-02-09","2025-02-16","2025-02-23","2025-03-02","2025-03-09","2025-03-16","2025-03-23","2025-03-30","2025-04-06","2025-04-13","2025-04-20","2025-04-27","2025-05-04","2025-05-11","2025-05-18","2025-05-25","2025-06-01","2025-06-08","2025-06-15","2025-06-22","2025-06-29","2025-07-06","2025-07-13","2025-07-20","2025-07-27","2025-08-03","2025-08-10","2025-08-17","2025-08-24","2025-08-31","2025-09-07","2025-09-14","2025-09-21","2025-09-28","2025-10-05","2025-10-12","2025-10-19","2025-10-26","2025-11-02","2025-11-09"],"y":{"dtype":"i1","bdata":"IyQkIiMhGhskICMiIyQkIyIfJCMgIiAgIiAjIiAgKygnJSMnLDBAWVRESEdESEhDR0MzHyE="},"type":"scatter"},{"mode":"lines","name":"n8n","visible":"legendonly","x":["2024-11-10","2024-11-17","2024-11-24","2024-12-01","2024-12-08","2024-12-15","2024-12-22","2024-12-29","2025-01-05","2025-01-12","2025-01-19","2025-01-26","2025-02-02","2025-02-09","2025-02-16","2025-02-23","2025-03-02","2025-03-09","2025-03-16","2025-03-23","2025-03-30","2025-04-06","2025-04-13","2025-04-20","2025-04-27","2025-05-04","2025-05-11","2025-05-18","2025-05-25","2025-06-01","2025-06-08","2025-06-15","2025-06-22","2025-06-29","2025-07-06","2025-07-13","2025-07-20","2025-07-27","2025-08-03","2025-08-10","2025-08-17","2025-08-24","2025-08-31","2025-09-07","2025-09-14","2025-09-21","2025-09-28","2025-10-05","2025-10-12","2025-10-19","2025-10-26","2025-11-02","2025-11-09"],"y":{"dtype":"i1","bdata":"AwMDBAQEBAQFBgcJCw0OEBAREhISFBQVFRcZHR8kLCgoKScrKy9GY1NHRkM9PURDQT0wJic="},"type":"scatter"},{"mode":"lines","name":"MCP","visible":"legendonly","x":["2024-11-10","2024-11-17","2024-11-24","2024-12-01","2024-12-08","2024-12-15","2024-12-22","2024-12-29","2025-01-05","2025-01-12","2025-01-19","2025-01-26","2025-02-02","2025-02-09","2025-02-16","2025-02-23","2025-03-02","2025-03-09","2025-03-16","2025-03-23","2025-03-30","2025-04-06","2025-04-13","2025-04-20","2025-04-27","2025-05-04","2025-05-11","2025-05-18","2025-05-25","2025-06-01","2025-06-08","2025-06-15","2025-06-22","2025-06-29","2025-07-06","2025-07-13","2025-07-20","2025-07-27","2025-08-03","2025-08-10","2025-08-17","2025-08-24","2025-08-31","2025-09-07","2025-09-14","2025-09-21","2025-09-28","2025-10-05","2025-10-12","2025-10-19","2025-10-26","2025-11-02","2025-11-09"],"y":{"dtype":"i1","bdata":"BQUGBgUGBQUGBgYGBgcHCQwSGRsiJyUhHR4hJSMoLS4tKywvLS9GZFNHQkI\u002fTElDSEQxJCU="},"type":"scatter"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"legend":{"yanchor":"top","y":0.99,"xanchor":"left","x":0.01},"xaxis":{"title":{"text":"Date"}},"yaxis":{"title":{"text":"Search Interest"}}},                        {"responsive": true}                    ).then(function(){
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.0.1.min.js"></script>                <div id="d1ddb5d8-735a-4002-8583-44cc965fffd5" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("d1ddb5d8-735a-4002-8583-44cc965fffd5")) {                    Plotly.newPlot(                        "d1ddb5d8-735a-4002-8583-44cc965fffd5",                        [{"mode":"lines","name":"Agentic AI","x":["2024-11-10","2024-11-17","2024-11-24","2024-12-01","2024-12-08","2024-12-15","2024-12-22","2024-12-29","2025-01-05","2025-01-12","2025-01-19","2025-01-26","2025-02-02","2025-02-09","2025-02-16","2025-02-23","2025-03-02","2025-03-09","2025-03-16","2025-03-23","2025-03-30","2025-04-06","2025-04-13","2025-04-20","2025-04-27","2025-05-04","2025-05-11","2025-05-18","2025-05-25","2025-06-01","2025-06-08","2025-06-15","2025-06-22","2025-06-29","2025-07-06","2025-07-13","2025-07-20","2025-07-27","2025-08-03","2025-08-10","2025-08-17","2025-08-24","2025-08-31","2025-09-07","2025-09-14","2025-09-21","2025-09-28","2025-10-05","2025-10-12","2025-10-19","2025-10-26","2025-11-02","2025-11-09"],"y":{"dtype":"i1","bdata":"AQEBAQEBAQEDAwMDAwMDBAQEBAQEBAQEBAUFBgYHCAcIBwgJCQoOERAMDQ0OFBISERAMBwk="},"type":"scatter"},{"mode":"lines","name":"Artificial Intelligence","x":["2024-11-10","2024-11-17","2024-11-24","2024-12-01","2024-12-08","2024-12-15","2024-12-22","2024-12-29","2025-01-05","2025-01-12","2025-01-19","2025-01-26","2025-02-02","2025-02-09","2025-02-16","2025-02-23","2025-03-02","2025-03-09","2025-03-16","2025-03-23","2025-03-30","2025-04-06","2025-04-13","2025-04-20","2025-04-27","2025-05-04","2025-05-11","2025-05-18","2025-05-25","2025-06-01","2025-06-08","2025-06-15","2025-06-22","2025-06-29","2025-07-06","2025-07-13","2025-07-20","2025-07-27","2025-08-03","2025-08-10","2025-08-17","2025-08-24","2025-08-31","2025-09-07","2025-09-14","2025-09-21","2025-09-28","2025-10-05","2025-10-12","2025-10-19","2025-10-26","2025-11-02","2025-11-09"],"y":{"dtype":"i1","bdata":"GhsbHh0cGBgdHBwcHB0cHBwaHBoZGhkcGhsaGhoeICIfHyAlJi05R0c5Pz02SUY8Pz4sGhk="},"type":"scatter"},{"mode":"lines","name":"Machine Learning","x":["2024-11-10","2024-11-17","2024-11-24","2024-12-01","2024-12-08","2024-12-15","2024-12-22","2024-12-29","2025-01-05","2025-01-12","2025-01-19","2025-01-26","2025-02-02","2025-02-09","2025-02-16","2025-02-23","2025-03-02","2025-03-09","2025-03-16","2025-03-23","2025-03-30","2025-04-06","2025-04-13","2025-04-20","2025-04-27","2025-05-04","2025-05-11","2025-05-18","2025-05-25","2025-06-01","2025-06-08","2025-06-15","2025-06-22","2025-06-29","2025-07-06","2025-07-13","2025-07-20","2025-07-27","2025-08-03","2025-08-10","2025-08-17","2025-08-24","2025-08-31","2025-09-07","2025-09-14","2025-09-21","2025-09-28","2025-10-05","2025-10-12","2025-10-19","2025-10-26","2025-11-02","2025-11-09"],"y":{"dtype":"i1","bdata":"IyQkIiMhGhskICMiIyQkIyIfJCMgIiAgIiAjIiAgKygnJSMnLDBAWVRESEdESEhDR0MzHyE="},"type":"scatter"},{"mode":"lines","name":"n8n","visible":"legendonly","x":["2024-11-10","2024-11-17","2024-11-24","2024-12-01","2024-12-08","2024-12-15","2024-12-22","2024-12-29","2025-01-05","2025-01-12","2025-01-19","2025-01-26","2025-02-02","2025-02-09","2025-02-16","2025-02-23","2025-03-02","2025-03-09","2025-03-16","2025-03-23","2025-03-30","2025-04-06","2025-04-13","2025-04-20","2025-04-27","2025-05-04","2025-05-11","2025-05-18","2025-05-25","2025-06-01","2025-06-08","2025-06-15","2025-06-22","2025-06-29","2025-07-06","2025-07-13","2025-07-20","2025-07-27","2025-08-03","2025-08-10","2025-08-17","2025-08-24","2025-08-31","2025-09-07","2025-09-14","2025-09-21","2025-09-28","2025-10-05","2025-10-12","2025-10-19","2025-10-26","2025-11-02","2025-11-09"],"y":{"dtype":"i1","bdata":"AwMDBAQEBAQFBgcJCw0OEBAREhISFBQVFRcZHR8kLCgoKScrKy9GY1NHRkM9PURDQT0wJic="},"type":"scatter"},{"mode":"lines","name":"MCP","visible":"legendonly","x":["2024-11-10","2024-11-17","2024-11-24","2024-12-01","2024-12-08","2024-12-15","2024-12-22","2024-12-29","2025-01-05","2025-01-12","2025-01-19","2025-01-26","2025-02-02","2025-02-09","2025-02-16","2025-02-23","2025-03-02","2025-03-09","2025-03-16","2025-03-23","2025-03-30","2025-04-06","2025-04-13","2025-04-20","2025-04-27","2025-05-04","2025-05-11","2025-05-18","2025-05-25","2025-06-01","2025-06-08","2025-06-15","2025-06-22","2025-06-29","2025-07-06","2025-07-13","2025-07-20","2025-07-27","2025-08-03","2025-08-10","2025-08-17","2025-08-24","2025-08-31","2025-09-07","2025-09-14","2025-09-21","2025-09-28","2025-10-05","2025-10-12","2025-10-19","2025-10-26","2025-11-02","2025-11-09"],"y":{"dtype":"i1","bdata":"BQUGBgUGBQUGBgYGBgcHCQwSGRsiJyUhHR4hJSMoLS4tKywvLS9GZFNHQkI\u002fTElDSEQxJCU="},"type":"scatter"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"legend":{"yanchor":"top","y":0.99,"xanchor":"left","x":0.01},"xaxis":{"title":{"text":"Date"}},"yaxis":{"title":{"text":"Search Interest"}}},                        {"responsive": true}                    ).then(function(){
                             
-var gd = document.getElementById('c229b112-29db-4cdc-81c0-b025ee0a0d3b');
+var gd = document.getElementById('d1ddb5d8-735a-4002-8583-44cc965fffd5');
 var x = new MutationObserver(function (mutations, observer) {{
         var display = window.getComputedStyle(gd).display;
         if (!display || display === 'none') {{
@@ -688,12 +694,12 @@ if (outputEl) {{
                         })                };            </script>        </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-appendix-agentic-googletrends-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;C.1: Google Trends for related three search terms.
+Figure&nbsp;D.1: Google Trends for related three search terms.
 </figcaption>
 </figure>
 </div>
 </div>
-<p>As we can see from <a href="#fig-appendix-agentic-googletrends" class="quarto-xref">Figure&nbsp;<span>C.1</span></a>, there is an increased interest in Agentic AI, compared to broader terms like artificial intelligence and machine learning. While Agentic AI is relatively new, we can see how it received more attention over time, indicating a wider use.</p>
+<p>As we can see from <a href="#fig-appendix-agentic-googletrends" class="quarto-xref">Figure&nbsp;<span>D.1</span></a>, there is an increased interest in Agentic AI, compared to broader terms like artificial intelligence and machine learning. While Agentic AI is relatively new, we can see how it received more attention over time, indicating a wider use.</p>
 <p>As usual in the machine learning world it is not completely new but a concept that can be traced back some time. The term <em>agent-based process management system</em> was already introduced in <span class="citation" data-cites="OBRIEN_WIEGAND_1998">O’Brien and Wiesgand (<a href="../references.html#ref-OBRIEN_WIEGAND_1998" role="doc-biblioref">1998</a>)</span> and the concepts presented there are not much different than our current definition. But what is the contemporary definition?</p>
 <div class="callout callout-style-simple callout-none no-icon">
 <div class="callout-body d-flex">
@@ -702,16 +708,16 @@ Figure&nbsp;C.1: Google Trends for related three search terms.
 </div>
 <div class="callout-body-container">
 <div id="def-agenticai" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition C.1 (Agentic AI)</strong></span> The term <em>Agentic AI</em> refers to a class of artificial intelligence systems that operate <em>autonomously</em>, make decisions and perform tasks with minimal human intervention.</p>
+<p><span class="theorem-title"><strong>Definition D.1 (Agentic AI)</strong></span> The term <em>Agentic AI</em> refers to a class of artificial intelligence systems that operate <em>autonomously</em>, make decisions and perform tasks with minimal human intervention.</p>
 <p>The key feature is the ability to proactively respond to <em>changing conditions</em> of the environment, produce <em>fitted results</em> or <em>pursue specific goals</em>. These systems can use reasoning, planning, and tools to complete a task. The way they <em>solve</em> a problem is not prescribed, but up to the AI.</p>
 <p>In a sense, the AI has agency or <em>freedom to act</em>.</p>
 <div id="fig-appendices-agentic-arch" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-env="figure">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-appendices-agentic-arch-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../_assets/appendices/agenticAI.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;C.2: Visualization of the basic architecture of an Agentic AI."><img src="../_assets/appendices/agenticAI.svg" class="img-fluid figure-img" style="width:4.64in"></a>
+<a href="../_assets/appendices/agenticAI.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;D.2: Visualization of the basic architecture of an Agentic AI."><img src="../_assets/appendices/agenticAI.svg" class="img-fluid figure-img" style="width:4.64in"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-appendices-agentic-arch-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;C.2: Visualization of the basic architecture of an Agentic AI.
+Figure&nbsp;D.2: Visualization of the basic architecture of an Agentic AI.
 </figcaption>
 </figure>
 </div>
@@ -719,22 +725,22 @@ Figure&nbsp;C.2: Visualization of the basic architecture of an Agentic AI.
 </div>
 </div>
 </div>
-<p>From <a href="#def-agenticai" class="quarto-xref">Definition&nbsp;<span>C.1</span></a> it is easy to understand why Agetic AI is gaining traction in industry. It increases the decision space in comparison to classical methods and allows for flexibility and adaptation to changing conditions. It has the potential to help transform industries with more automation by keeping track of ever growing data and promising <em>real-time</em> action. Of course it also comes with limitations and challenges.</p>
+<p>From <a href="#def-agenticai" class="quarto-xref">Definition&nbsp;<span>D.1</span></a> it is easy to understand why Agetic AI is gaining traction in industry. It increases the decision space in comparison to classical methods and allows for flexibility and adaptation to changing conditions. It has the potential to help transform industries with more automation by keeping track of ever growing data and promising <em>real-time</em> action. Of course it also comes with limitations and challenges.</p>
 <p>To get a better idea on all of these concepts, we look at an industry example that somewhat relates to machine learning in image processing but also features processing of time series.</p>
-<section id="example-application" class="level2" data-number="C.1">
-<h2 data-number="C.1" class="anchored" data-anchor-id="example-application"><span class="header-section-number">C.1</span> Example application</h2>
+<section id="example-application" class="level2" data-number="D.1">
+<h2 data-number="D.1" class="anchored" data-anchor-id="example-application"><span class="header-section-number">D.1</span> Example application</h2>
 <p>Imagine a manufacturing plant that produces various products, where maintaining quality standards and meeting production schedules are critical. The product is assembled partially automated and partially by humans. We already have some image and signal processing in place to allow for quality control and we now look at how to introduce Agentic AI to this manufacturing plant to further automate tasks.</p>
 <div id="fig-appendix-agentic-factory" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-env="figure">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-appendix-agentic-factory-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../_assets/appendices/factory.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figure&nbsp;C.3: Visualization of a manufacturing plant producing multiple products that consist of different parts and each part has multiple components."><img src="../_assets/appendices/factory.svg" class="img-fluid figure-img" style="width:6.08in"></a>
+<a href="../_assets/appendices/factory.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figure&nbsp;D.3: Visualization of a manufacturing plant producing multiple products that consist of different parts and each part has multiple components."><img src="../_assets/appendices/factory.svg" class="img-fluid figure-img" style="width:6.08in"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-appendix-agentic-factory-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;C.3: Visualization of a manufacturing plant producing multiple products that consist of different parts and each part has multiple components.
+Figure&nbsp;D.3: Visualization of a manufacturing plant producing multiple products that consist of different parts and each part has multiple components.
 </figcaption>
 </figure>
 </div>
-<p>In our little factory <a href="#fig-appendix-agentic-factory" class="quarto-xref">Figure&nbsp;<span>C.3</span></a> there are a lot of possibilities to introduce Agentic AI.</p>
+<p>In our little factory <a href="#fig-appendix-agentic-factory" class="quarto-xref">Figure&nbsp;<span>D.3</span></a> there are a lot of possibilities to introduce Agentic AI.</p>
 <ol type="1">
 <li><strong>Quality control and maintenance</strong>:
 <ul>
@@ -771,8 +777,8 @@ Important
 </div>
 <p>As the concept of Agentic AI seems to be so powerful, we should look under the hood and behind the hype and especially on the downsides and challenges.</p>
 </section>
-<section id="comparison-to-other-methods" class="level2" data-number="C.2">
-<h2 data-number="C.2" class="anchored" data-anchor-id="comparison-to-other-methods"><span class="header-section-number">C.2</span> Comparison to other methods</h2>
+<section id="comparison-to-other-methods" class="level2" data-number="D.2">
+<h2 data-number="D.2" class="anchored" data-anchor-id="comparison-to-other-methods"><span class="header-section-number">D.2</span> Comparison to other methods</h2>
 <p>It is always a good idea to compare a new method or way of working to existing systems.</p>
 <p>Before we compare it to existing solutions, let us have a look where Agentic AI systems are located on the artificial intelligence maturity curve.</p>
 <div id="fig-appendices-agentic-maturity" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -781,45 +787,45 @@ Important
 <p><a href="https://www.capitaliq.spglobal.com/Articles/428642387.png"><span class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="https://www.capitaliq.spglobal.com/Articles/428642387.png" class="img-fluid figure-img"></span></a></p>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-appendices-agentic-maturity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;C.4: The <a href="https://www.capitaliq.spglobal.com/Articles/428642387.png">AI Agent maturity curve</a> as outlined by S&amp;P Global in the article <span class="citation" data-cites="spglobal">Incera (<a href="../references.html#ref-spglobal" role="doc-biblioref">2024</a>)</span>. Click the image to view the original or use the <a href="https://www.spglobal.com/market-intelligence/en/news-insights/research/the-path-from-llms-to-agentic-ai">direct link to the S&amp;P Global article</a> (accessed 07.11.2025).
+Figure&nbsp;D.4: The <a href="https://www.capitaliq.spglobal.com/Articles/428642387.png">AI Agent maturity curve</a> as outlined by S&amp;P Global in the article <span class="citation" data-cites="spglobal">Incera (<a href="../references.html#ref-spglobal" role="doc-biblioref">2024</a>)</span>. Click the image to view the original or use the <a href="https://www.spglobal.com/market-intelligence/en/news-insights/research/the-path-from-llms-to-agentic-ai">direct link to the S&amp;P Global article</a> (accessed 07.11.2025).
 </figcaption>
 </figure>
 </div>
-<section id="classical-automation" class="level3" data-number="C.2.1">
-<h3 data-number="C.2.1" class="anchored" data-anchor-id="classical-automation"><span class="header-section-number">C.2.1</span> Classical automation</h3>
+<section id="classical-automation" class="level3" data-number="D.2.1">
+<h3 data-number="D.2.1" class="anchored" data-anchor-id="classical-automation"><span class="header-section-number">D.2.1</span> Classical automation</h3>
 <div id="fig-appendices-agentic-classicalaut" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-env="figure">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-appendices-agentic-classicalaut-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../_assets/appendices/classicalAutomation.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Figure&nbsp;C.5: Visualization of the basic architecture of classical automation."><img src="../_assets/appendices/classicalAutomation.svg" class="img-fluid figure-img" style="width:6.11in"></a>
+<a href="../_assets/appendices/classicalAutomation.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Figure&nbsp;D.5: Visualization of the basic architecture of classical automation."><img src="../_assets/appendices/classicalAutomation.svg" class="img-fluid figure-img" style="width:6.11in"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-appendices-agentic-classicalaut-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;C.5: Visualization of the basic architecture of classical automation.
+Figure&nbsp;D.5: Visualization of the basic architecture of classical automation.
 </figcaption>
 </figure>
 </div>
 <p>Depending on the effort we put in, a lot of the above applications could be covered by a rule or fuzzy based automation system. The challenge for these systems is to <em>cover</em> all possible outcomes and react accordingly. Here, an Agentic AI promises much better adaptation. It could react to a situation that was not foreseen when setting up the system. On the other hand, maybe in such situations the system should stop the process and a human should investigate what caused this new situation.</p>
 <p>Another argument is the ease of <em>programming</em> an Agentic AI. As input we can use natural language (because we all know that there is never any room for misinterpretation in language) and employ LLMs (Large Language Models) to contextualize the input together with the data to find an appropriate action. In low-code / no-code environments everybody, especially non-programmers and domain experts, can easily create such a system and the system itself knows how to use <em>tools</em> like connect to a database or a PROFIBUS<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> interface of a milling machine. In this context, the <em>Model Context Protocol</em> (MCP)<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> plays an important role to establish a standard. It should also be mentioned here, already classical automation tasks where often represented in low-code / no-code systems, so also this development is not completely new.</p>
 </section>
-<section id="retrieval-augmented-generation---rag" class="level3" data-number="C.2.2">
-<h3 data-number="C.2.2" class="anchored" data-anchor-id="retrieval-augmented-generation---rag"><span class="header-section-number">C.2.2</span> Retrieval-Augmented Generation - RAG</h3>
+<section id="retrieval-augmented-generation---rag" class="level3" data-number="D.2.2">
+<h3 data-number="D.2.2" class="anchored" data-anchor-id="retrieval-augmented-generation---rag"><span class="header-section-number">D.2.2</span> Retrieval-Augmented Generation - RAG</h3>
 <div id="fig-appendices-agentic-rag" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-env="figure">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-appendices-agentic-rag-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../_assets/appendices/rag.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Figure&nbsp;C.6: Visualization of the basic RAG architecture."><img src="../_assets/appendices/rag.svg" class="img-fluid figure-img" style="width:4.84in"></a>
+<a href="../_assets/appendices/rag.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Figure&nbsp;D.6: Visualization of the basic RAG architecture."><img src="../_assets/appendices/rag.svg" class="img-fluid figure-img" style="width:4.84in"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-appendices-agentic-rag-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;C.6: Visualization of the basic RAG architecture.
+Figure&nbsp;D.6: Visualization of the basic RAG architecture.
 </figcaption>
 </figure>
 </div>
 <p>In the context of automation Retrieval-Augmented Generation or RAG systems are often seen as the predecessors of Agentic AIs. RAG systems retrieve contextualized information from a knowledge base and generate responses based on the input. While RAG systems can suggest actions, they lack the ability to autonomously execute tasks, making them less powerful than Agentic AI. In some cases, RAG systems can complement Agentic AI by providing relevant data for decision-making.</p>
 </section>
 </section>
-<section id="challenges" class="level2" data-number="C.3">
-<h2 data-number="C.3" class="anchored" data-anchor-id="challenges"><span class="header-section-number">C.3</span> Challenges</h2>
+<section id="challenges" class="level2" data-number="D.3">
+<h2 data-number="D.3" class="anchored" data-anchor-id="challenges"><span class="header-section-number">D.3</span> Challenges</h2>
 <p>Of course Agentic AI also comes with a lot of challenges. Some will only surface over time, but some are already known from the start. We group the challenges to make them easier to understand.</p>
-<section id="technical-challenges" class="level3" data-number="C.3.1">
-<h3 data-number="C.3.1" class="anchored" data-anchor-id="technical-challenges"><span class="header-section-number">C.3.1</span> Technical challenges</h3>
+<section id="technical-challenges" class="level3" data-number="D.3.1">
+<h3 data-number="D.3.1" class="anchored" data-anchor-id="technical-challenges"><span class="header-section-number">D.3.1</span> Technical challenges</h3>
 <ol type="1">
 <li>Unknown unknowns, the decision space is very open and it is impossible to account for all possibilities.</li>
 <li>Explainability and trust for the system <span class="math inline">\(\to\)</span> they can be a black box.</li>
@@ -835,8 +841,8 @@ Figure&nbsp;C.6: Visualization of the basic RAG architecture.
 <li>The data quality and availability needs to be at a certain standard, otherwise the system will have problems.</li>
 </ol>
 </section>
-<section id="operational-challenges" class="level3" data-number="C.3.2">
-<h3 data-number="C.3.2" class="anchored" data-anchor-id="operational-challenges"><span class="header-section-number">C.3.2</span> Operational challenges</h3>
+<section id="operational-challenges" class="level3" data-number="D.3.2">
+<h3 data-number="D.3.2" class="anchored" data-anchor-id="operational-challenges"><span class="header-section-number">D.3.2</span> Operational challenges</h3>
 <ol type="1">
 <li>Integration with legacy systems.</li>
 <li>Availability to process large quantity of data and the costs connected to such systems.</li>
@@ -844,8 +850,8 @@ Figure&nbsp;C.6: Visualization of the basic RAG architecture.
 <li>Integration of innovative processes or tools from R&amp;D that the AI does not know.</li>
 </ol>
 </section>
-<section id="regulatory-and-ethical-challenges" class="level3" data-number="C.3.3">
-<h3 data-number="C.3.3" class="anchored" data-anchor-id="regulatory-and-ethical-challenges"><span class="header-section-number">C.3.3</span> Regulatory and ethical challenges</h3>
+<section id="regulatory-and-ethical-challenges" class="level3" data-number="D.3.3">
+<h3 data-number="D.3.3" class="anchored" data-anchor-id="regulatory-and-ethical-challenges"><span class="header-section-number">D.3.3</span> Regulatory and ethical challenges</h3>
 <ol type="1">
 <li>Accountability - what if an action of the Agentic AI causes damages?</li>
 <li>Data governance.</li>
@@ -875,7 +881,7 @@ Trustworthy AI
 <p><a href="https://www.frontiersin.org/journals/big-data/articles/10.3389/fdata.2024.1467222/full"><span class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img src="https://www.frontiersin.org/files/Articles/1467222/fdata-07-1467222-HTML/image_m/fdata-07-1467222-g001.jpg" class="img-fluid figure-img" style="width:4in"></span></a></p>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-appendices-agentic-trutworthy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;C.7: An illustration of the six requirements of trustworthy AI investigated <span class="citation" data-cites="10.3389/fdata.2024.1467222">Kowald et al. (<a href="../references.html#ref-10.3389/fdata.2024.1467222" role="doc-biblioref">2024</a>)</span>. Click the image to view the original or use the <a href="https://www.frontiersin.org/journals/big-data/articles/10.3389/fdata.2024.1467222/full">direct link to the article</a> (accessed 07.11.2025).
+Figure&nbsp;D.7: An illustration of the six requirements of trustworthy AI investigated <span class="citation" data-cites="10.3389/fdata.2024.1467222">Kowald et al. (<a href="../references.html#ref-10.3389/fdata.2024.1467222" role="doc-biblioref">2024</a>)</span>. Click the image to view the original or use the <a href="https://www.frontiersin.org/journals/big-data/articles/10.3389/fdata.2024.1467222/full">direct link to the article</a> (accessed 07.11.2025).
 </figcaption>
 </figure>
 </div>
@@ -883,8 +889,8 @@ Figure&nbsp;C.7: An illustration of the six requirements of trustworthy AI inves
 </div>
 </section>
 </section>
-<section id="popular-tools" class="level2" data-number="C.4">
-<h2 data-number="C.4" class="anchored" data-anchor-id="popular-tools"><span class="header-section-number">C.4</span> Popular tools</h2>
+<section id="popular-tools" class="level2" data-number="D.4">
+<h2 data-number="D.4" class="anchored" data-anchor-id="popular-tools"><span class="header-section-number">D.4</span> Popular tools</h2>
 <p>This field is developing rapidly and a list of popular tools is going to be outdated as soon as it is. Anyway, we should mention some tools:</p>
 <ul>
 <li><a href="https://n8n.io/">n8n</a> AI Workflow Automation (no-code / low-code)</li>
@@ -911,8 +917,8 @@ Figure&nbsp;C.7: An illustration of the six requirements of trustworthy AI inves
 </ul></li>
 </ul>
 </section>
-<section id="conclusion" class="level2" data-number="C.5">
-<h2 data-number="C.5" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">C.5</span> Conclusion</h2>
+<section id="conclusion" class="level2" data-number="D.5">
+<h2 data-number="D.5" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">D.5</span> Conclusion</h2>
 <p>Like so many other machine learning and artificial intelligence topics, the potential of Agentic AI is high, both in industry (Industry 4.0 or even 5.0?) and for personal use. It can boost automation, efficiency and adaptability. The challenges from technical limitations to ethical concerns are not solved and need to be better understood before such systems can work with little to no oversight.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -1367,8 +1373,8 @@ Peer, David, and Sebastian Stabinger. 2025. <span>“ATA: A Neuro-Symbolic Appro
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../appendices/keras.html" class="pagination-link" aria-label="Our first Neural Network in `tensorflow.keras`">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Our first Neural Network in <code>tensorflow.keras</code></span></span>
+      <a href="../appendices/nn_from_scratch.html" class="pagination-link" aria-label="Writing a Neural Network from scratch">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Writing a Neural Network from scratch</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
