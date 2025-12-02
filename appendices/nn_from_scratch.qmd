@@ -1460,8 +1460,17 @@ np.random.seed(42) # Make sure to have a reproducible result
 weights = nn_model(X_train, y_train, nodes0, nodes1, nodes2, nodes3,
                    f1, f2, f3, loss_fun, learning_rate, predict_fun,
                    nrIterations, True, X_test, y_test)
-plot_decision_boundary(lambda x: predict(weights, x.T, f1, f2, f3),
-                       X_train, y_train)
 predictions = predict(weights, X_test, f1, f2, f3)
 accuracy = accuracy_score(predictions.flatten(), y_test.flatten())
+```
+```{python}
+# | code-fold: true
+# | eval: true
+# | label: fig-appendices-nnfs-final-classification
+# | fig-cap: "Performance of our model."
+# | code-summary: "Click to see the code for the figure"
+%config InlineBackend.figure_formats = ["svg"]
+
+plot_decision_boundary(lambda x: predict(weights, x.T, f1, f2, f3),
+                       X_train, y_train)
 ```
