@@ -603,14 +603,14 @@ Important
 </div>
 <p>A jupyter notebook is available for a convenient implementation of the following parts. Download it <a href="../_assets/appendices/nn_from_scratch.ipynb">here</a>.</p>
 <p>In the following codeblock we find our dependencies and we also fix the random number generation such that we fix the seed and therefore get reproducible results.</p>
-<div id="f23089fd" class="cell" data-execution_count="1">
+<div id="53aedf14" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sklearn.datasets <span class="im">as</span> skd</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="238b3019" class="cell" data-execution_count="2">
+<div id="6490dc7f" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code fragment for implementation.</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_dataset(</span>
@@ -767,49 +767,49 @@ Figure&nbsp;C.1: Generic NN with activation functions, weights and biases.
 <div class="callout-body-container">
 <div id="exr-appendices-nnfs-self-wb" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise C.1 (Self implementation: Initialize the weights and biases)</strong></span> The following code snippet is incomplete, fill out the blanks to implement the correct functionality.</p>
-<div id="7ceb6454" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="annotated-cell-6"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-6-1"><a href="#annotated-cell-6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> initialize_weights(nodes0, nodes1, nodes2, nodes3):</span>
-<span id="annotated-cell-6-2"><a href="#annotated-cell-6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="annotated-cell-6-3"><a href="#annotated-cell-6-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Argument:</span></span>
-<span id="annotated-cell-6-4"><a href="#annotated-cell-6-4" aria-hidden="true" tabindex="-1"></a><span class="co">    nodes0 -- size of the input layer</span></span>
-<span id="annotated-cell-6-5"><a href="#annotated-cell-6-5" aria-hidden="true" tabindex="-1"></a><span class="co">    nodes1 -- size of the first hidden layer</span></span>
-<span id="annotated-cell-6-6"><a href="#annotated-cell-6-6" aria-hidden="true" tabindex="-1"></a><span class="co">    nodes2 -- size of the second hidden layer</span></span>
-<span id="annotated-cell-6-7"><a href="#annotated-cell-6-7" aria-hidden="true" tabindex="-1"></a><span class="co">    nodes3 -- size of the output layer</span></span>
-<span id="annotated-cell-6-8"><a href="#annotated-cell-6-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-6-9"><a href="#annotated-cell-6-9" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
-<span id="annotated-cell-6-10"><a href="#annotated-cell-6-10" aria-hidden="true" tabindex="-1"></a><span class="co">    weights -- python dictionary containing weight </span></span>
-<span id="annotated-cell-6-11"><a href="#annotated-cell-6-11" aria-hidden="true" tabindex="-1"></a><span class="co">                and bias matrices</span></span>
-<span id="annotated-cell-6-12"><a href="#annotated-cell-6-12" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span>        </span>
-<span id="annotated-cell-6-13"><a href="#annotated-cell-6-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># initialize the weights and biases as numpy arrays</span></span>
-<span id="annotated-cell-6-14"><a href="#annotated-cell-6-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">#  with the correct shapes.</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-6-15" class="code-annotation-target"><a href="#annotated-cell-6-15" aria-hidden="true" tabindex="-1"></a>    A1 <span class="op">=</span></span>
-<span id="annotated-cell-6-16"><a href="#annotated-cell-6-16" aria-hidden="true" tabindex="-1"></a>    b1 <span class="op">=</span></span>
-<span id="annotated-cell-6-17"><a href="#annotated-cell-6-17" aria-hidden="true" tabindex="-1"></a>    A2 <span class="op">=</span></span>
-<span id="annotated-cell-6-18"><a href="#annotated-cell-6-18" aria-hidden="true" tabindex="-1"></a>    b2 <span class="op">=</span></span>
-<span id="annotated-cell-6-19"><a href="#annotated-cell-6-19" aria-hidden="true" tabindex="-1"></a>    A3 <span class="op">=</span></span>
-<span id="annotated-cell-6-20"><a href="#annotated-cell-6-20" aria-hidden="true" tabindex="-1"></a>    b3 <span class="op">=</span></span>
-<span id="annotated-cell-6-21"><a href="#annotated-cell-6-21" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="annotated-cell-6-22"><a href="#annotated-cell-6-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span>(A1.shape <span class="op">==</span> (nodes1, nodes0))</span>
-<span id="annotated-cell-6-23"><a href="#annotated-cell-6-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span>(b1.shape <span class="op">==</span> (nodes1, <span class="dv">1</span>))</span>
-<span id="annotated-cell-6-24"><a href="#annotated-cell-6-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span>(A2.shape <span class="op">==</span> (nodes2, nodes1))</span>
-<span id="annotated-cell-6-25"><a href="#annotated-cell-6-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span>(b2.shape <span class="op">==</span> (nodes2, <span class="dv">1</span>))</span>
-<span id="annotated-cell-6-26"><a href="#annotated-cell-6-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span>(A3.shape <span class="op">==</span> (nodes3, nodes2))</span>
-<span id="annotated-cell-6-27"><a href="#annotated-cell-6-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span>(b3.shape <span class="op">==</span> (nodes3, <span class="dv">1</span>))</span>
-<span id="annotated-cell-6-28"><a href="#annotated-cell-6-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-6-29"><a href="#annotated-cell-6-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-6-30"><a href="#annotated-cell-6-30" aria-hidden="true" tabindex="-1"></a>    weights <span class="op">=</span> {<span class="st">"A1"</span>: A1,</span>
-<span id="annotated-cell-6-31"><a href="#annotated-cell-6-31" aria-hidden="true" tabindex="-1"></a>               <span class="st">"b1"</span>: b1,</span>
-<span id="annotated-cell-6-32"><a href="#annotated-cell-6-32" aria-hidden="true" tabindex="-1"></a>               <span class="st">"A2"</span>: A2,</span>
-<span id="annotated-cell-6-33"><a href="#annotated-cell-6-33" aria-hidden="true" tabindex="-1"></a>               <span class="st">"b2"</span>: b2,</span>
-<span id="annotated-cell-6-34"><a href="#annotated-cell-6-34" aria-hidden="true" tabindex="-1"></a>               <span class="st">"A3"</span>: A3,</span>
-<span id="annotated-cell-6-35"><a href="#annotated-cell-6-35" aria-hidden="true" tabindex="-1"></a>               <span class="st">"b3"</span>: b3}</span>
-<span id="annotated-cell-6-36"><a href="#annotated-cell-6-36" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="annotated-cell-6-37"><a href="#annotated-cell-6-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> weights</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="94a5be91" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="annotated-cell-7"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-7-1"><a href="#annotated-cell-7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> initialize_weights(nodes0, nodes1, nodes2, nodes3):</span>
+<span id="annotated-cell-7-2"><a href="#annotated-cell-7-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="annotated-cell-7-3"><a href="#annotated-cell-7-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Argument:</span></span>
+<span id="annotated-cell-7-4"><a href="#annotated-cell-7-4" aria-hidden="true" tabindex="-1"></a><span class="co">    nodes0 -- size of the input layer</span></span>
+<span id="annotated-cell-7-5"><a href="#annotated-cell-7-5" aria-hidden="true" tabindex="-1"></a><span class="co">    nodes1 -- size of the first hidden layer</span></span>
+<span id="annotated-cell-7-6"><a href="#annotated-cell-7-6" aria-hidden="true" tabindex="-1"></a><span class="co">    nodes2 -- size of the second hidden layer</span></span>
+<span id="annotated-cell-7-7"><a href="#annotated-cell-7-7" aria-hidden="true" tabindex="-1"></a><span class="co">    nodes3 -- size of the output layer</span></span>
+<span id="annotated-cell-7-8"><a href="#annotated-cell-7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-7-9"><a href="#annotated-cell-7-9" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="annotated-cell-7-10"><a href="#annotated-cell-7-10" aria-hidden="true" tabindex="-1"></a><span class="co">    weights -- python dictionary containing weight </span></span>
+<span id="annotated-cell-7-11"><a href="#annotated-cell-7-11" aria-hidden="true" tabindex="-1"></a><span class="co">                and bias matrices</span></span>
+<span id="annotated-cell-7-12"><a href="#annotated-cell-7-12" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span>        </span>
+<span id="annotated-cell-7-13"><a href="#annotated-cell-7-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># initialize the weights and biases as numpy arrays</span></span>
+<span id="annotated-cell-7-14"><a href="#annotated-cell-7-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">#  with the correct shapes.</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-7-15" class="code-annotation-target"><a href="#annotated-cell-7-15" aria-hidden="true" tabindex="-1"></a>    A1 <span class="op">=</span></span>
+<span id="annotated-cell-7-16"><a href="#annotated-cell-7-16" aria-hidden="true" tabindex="-1"></a>    b1 <span class="op">=</span></span>
+<span id="annotated-cell-7-17"><a href="#annotated-cell-7-17" aria-hidden="true" tabindex="-1"></a>    A2 <span class="op">=</span></span>
+<span id="annotated-cell-7-18"><a href="#annotated-cell-7-18" aria-hidden="true" tabindex="-1"></a>    b2 <span class="op">=</span></span>
+<span id="annotated-cell-7-19"><a href="#annotated-cell-7-19" aria-hidden="true" tabindex="-1"></a>    A3 <span class="op">=</span></span>
+<span id="annotated-cell-7-20"><a href="#annotated-cell-7-20" aria-hidden="true" tabindex="-1"></a>    b3 <span class="op">=</span></span>
+<span id="annotated-cell-7-21"><a href="#annotated-cell-7-21" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="annotated-cell-7-22"><a href="#annotated-cell-7-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span>(A1.shape <span class="op">==</span> (nodes1, nodes0))</span>
+<span id="annotated-cell-7-23"><a href="#annotated-cell-7-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span>(b1.shape <span class="op">==</span> (nodes1, <span class="dv">1</span>))</span>
+<span id="annotated-cell-7-24"><a href="#annotated-cell-7-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span>(A2.shape <span class="op">==</span> (nodes2, nodes1))</span>
+<span id="annotated-cell-7-25"><a href="#annotated-cell-7-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span>(b2.shape <span class="op">==</span> (nodes2, <span class="dv">1</span>))</span>
+<span id="annotated-cell-7-26"><a href="#annotated-cell-7-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span>(A3.shape <span class="op">==</span> (nodes3, nodes2))</span>
+<span id="annotated-cell-7-27"><a href="#annotated-cell-7-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span>(b3.shape <span class="op">==</span> (nodes3, <span class="dv">1</span>))</span>
+<span id="annotated-cell-7-28"><a href="#annotated-cell-7-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-7-29"><a href="#annotated-cell-7-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-7-30"><a href="#annotated-cell-7-30" aria-hidden="true" tabindex="-1"></a>    weights <span class="op">=</span> {<span class="st">"A1"</span>: A1,</span>
+<span id="annotated-cell-7-31"><a href="#annotated-cell-7-31" aria-hidden="true" tabindex="-1"></a>               <span class="st">"b1"</span>: b1,</span>
+<span id="annotated-cell-7-32"><a href="#annotated-cell-7-32" aria-hidden="true" tabindex="-1"></a>               <span class="st">"A2"</span>: A2,</span>
+<span id="annotated-cell-7-33"><a href="#annotated-cell-7-33" aria-hidden="true" tabindex="-1"></a>               <span class="st">"b2"</span>: b2,</span>
+<span id="annotated-cell-7-34"><a href="#annotated-cell-7-34" aria-hidden="true" tabindex="-1"></a>               <span class="st">"A3"</span>: A3,</span>
+<span id="annotated-cell-7-35"><a href="#annotated-cell-7-35" aria-hidden="true" tabindex="-1"></a>               <span class="st">"b3"</span>: b3}</span>
+<span id="annotated-cell-7-36"><a href="#annotated-cell-7-36" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="annotated-cell-7-37"><a href="#annotated-cell-7-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> weights</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-6" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-7" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-6" data-code-lines="15,16,17,18,19,20" data-code-annotation="1">Please fill in the blanks according to the above description.</span>
+<span data-code-cell="annotated-cell-7" data-code-lines="15,16,17,18,19,20" data-code-annotation="1">Please fill in the blanks according to the above description.</span>
 </dd>
 </dl>
 </div>
@@ -827,7 +827,7 @@ Check the implementation of the weights and biases
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Run the following code snippet to check the implementation.</p>
-<div id="0e858efe" class="cell" data-execution_count="4">
+<div id="91f6920b" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>) <span class="co"># Make sure to have a reproducible result</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>weights <span class="op">=</span> initialize_weights(<span class="dv">2</span>, <span class="dv">8</span>, <span class="dv">5</span>, <span class="dv">1</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -868,7 +868,7 @@ Check the implementation of the weights and biases
 <div class="callout-body-container">
 <div id="exr-appendices-nnfs-self-afs" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise C.2 (Self implementation: Activation functions)</strong></span> &nbsp;</p>
-<div id="337ffbe2" class="cell" data-execution_count="5">
+<div id="55e45117" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> actFunctionLinear(x, derivative: <span class="bu">bool</span> <span class="op">=</span> <span class="va">False</span>):</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> derivative:</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> </span>
@@ -925,52 +925,52 @@ Figure&nbsp;C.2: Generic NN with activation functions, weights and biases.
 <div class="callout-body-container">
 <div id="exr-appendices-nnfs-self-forwards" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise C.3 (Self implementation: Forward step)</strong></span> &nbsp;</p>
-<div id="cfd99430" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="annotated-cell-9"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-9-1"><a href="#annotated-cell-9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> forward_propagation(X, weights, f1, f2, f3):</span>
-<span id="annotated-cell-9-2"><a href="#annotated-cell-9-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="annotated-cell-9-3"><a href="#annotated-cell-9-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Argument:</span></span>
-<span id="annotated-cell-9-4"><a href="#annotated-cell-9-4" aria-hidden="true" tabindex="-1"></a><span class="co">    X -- input data</span></span>
-<span id="annotated-cell-9-5"><a href="#annotated-cell-9-5" aria-hidden="true" tabindex="-1"></a><span class="co">    weights -- python dictionary containing the weight and bias matrices</span></span>
-<span id="annotated-cell-9-6"><a href="#annotated-cell-9-6" aria-hidden="true" tabindex="-1"></a><span class="co">    f1 -- python function as activation function layer 1</span></span>
-<span id="annotated-cell-9-7"><a href="#annotated-cell-9-7" aria-hidden="true" tabindex="-1"></a><span class="co">    f2 -- python function as activation function layer 2</span></span>
-<span id="annotated-cell-9-8"><a href="#annotated-cell-9-8" aria-hidden="true" tabindex="-1"></a><span class="co">    f3 -- python function as activation function layer 3</span></span>
-<span id="annotated-cell-9-9"><a href="#annotated-cell-9-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-9-10"><a href="#annotated-cell-9-10" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
-<span id="annotated-cell-9-11"><a href="#annotated-cell-9-11" aria-hidden="true" tabindex="-1"></a><span class="co">    outputLayer -- The output of the last layer</span></span>
-<span id="annotated-cell-9-12"><a href="#annotated-cell-9-12" aria-hidden="true" tabindex="-1"></a><span class="co">    cache -- a dictionary containing (pre)activations of every layer</span></span>
-<span id="annotated-cell-9-13"><a href="#annotated-cell-9-13" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span>    </span>
-<span id="annotated-cell-9-14"><a href="#annotated-cell-9-14" aria-hidden="true" tabindex="-1"></a>    A1 <span class="op">=</span> weights[<span class="st">"A1"</span>]</span>
-<span id="annotated-cell-9-15"><a href="#annotated-cell-9-15" aria-hidden="true" tabindex="-1"></a>    b1 <span class="op">=</span> weights[<span class="st">"b1"</span>]</span>
-<span id="annotated-cell-9-16"><a href="#annotated-cell-9-16" aria-hidden="true" tabindex="-1"></a>    A2 <span class="op">=</span> weights[<span class="st">"A2"</span>]</span>
-<span id="annotated-cell-9-17"><a href="#annotated-cell-9-17" aria-hidden="true" tabindex="-1"></a>    b2 <span class="op">=</span> weights[<span class="st">"b2"</span>]</span>
-<span id="annotated-cell-9-18"><a href="#annotated-cell-9-18" aria-hidden="true" tabindex="-1"></a>    A3 <span class="op">=</span> weights[<span class="st">"A3"</span>]</span>
-<span id="annotated-cell-9-19"><a href="#annotated-cell-9-19" aria-hidden="true" tabindex="-1"></a>    b3 <span class="op">=</span> weights[<span class="st">"b3"</span>]</span>
-<span id="annotated-cell-9-20"><a href="#annotated-cell-9-20" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="annotated-cell-9-21"><a href="#annotated-cell-9-21" aria-hidden="true" tabindex="-1"></a>    x0 <span class="op">=</span> X</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-9" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-9-22" class="code-annotation-target"><a href="#annotated-cell-9-22" aria-hidden="true" tabindex="-1"></a>    z1 <span class="op">=</span></span>
-<span id="annotated-cell-9-23"><a href="#annotated-cell-9-23" aria-hidden="true" tabindex="-1"></a>    x1 <span class="op">=</span></span>
-<span id="annotated-cell-9-24"><a href="#annotated-cell-9-24" aria-hidden="true" tabindex="-1"></a>    z2 <span class="op">=</span></span>
-<span id="annotated-cell-9-25"><a href="#annotated-cell-9-25" aria-hidden="true" tabindex="-1"></a>    x2 <span class="op">=</span></span>
-<span id="annotated-cell-9-26"><a href="#annotated-cell-9-26" aria-hidden="true" tabindex="-1"></a>    z3 <span class="op">=</span></span>
-<span id="annotated-cell-9-27"><a href="#annotated-cell-9-27" aria-hidden="true" tabindex="-1"></a>    x3 <span class="op">=</span></span>
-<span id="annotated-cell-9-28"><a href="#annotated-cell-9-28" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="annotated-cell-9-29"><a href="#annotated-cell-9-29" aria-hidden="true" tabindex="-1"></a>    outputLayer <span class="op">=</span> x3</span>
-<span id="annotated-cell-9-30"><a href="#annotated-cell-9-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-9-31"><a href="#annotated-cell-9-31" aria-hidden="true" tabindex="-1"></a>    cache <span class="op">=</span> {<span class="st">"x0"</span>: x0,</span>
-<span id="annotated-cell-9-32"><a href="#annotated-cell-9-32" aria-hidden="true" tabindex="-1"></a>             <span class="st">"z1"</span>: z1,</span>
-<span id="annotated-cell-9-33"><a href="#annotated-cell-9-33" aria-hidden="true" tabindex="-1"></a>             <span class="st">"x1"</span>: x1,</span>
-<span id="annotated-cell-9-34"><a href="#annotated-cell-9-34" aria-hidden="true" tabindex="-1"></a>             <span class="st">"z2"</span>: z2,</span>
-<span id="annotated-cell-9-35"><a href="#annotated-cell-9-35" aria-hidden="true" tabindex="-1"></a>             <span class="st">"x2"</span>: x2,</span>
-<span id="annotated-cell-9-36"><a href="#annotated-cell-9-36" aria-hidden="true" tabindex="-1"></a>             <span class="st">"z3"</span>: z3,</span>
-<span id="annotated-cell-9-37"><a href="#annotated-cell-9-37" aria-hidden="true" tabindex="-1"></a>             <span class="st">"x3"</span>: x3}</span>
-<span id="annotated-cell-9-38"><a href="#annotated-cell-9-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-9-39"><a href="#annotated-cell-9-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-9-40"><a href="#annotated-cell-9-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> outputLayer, cache</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="7c90c865" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="annotated-cell-10"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-10-1"><a href="#annotated-cell-10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> forward_propagation(X, weights, f1, f2, f3):</span>
+<span id="annotated-cell-10-2"><a href="#annotated-cell-10-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="annotated-cell-10-3"><a href="#annotated-cell-10-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Argument:</span></span>
+<span id="annotated-cell-10-4"><a href="#annotated-cell-10-4" aria-hidden="true" tabindex="-1"></a><span class="co">    X -- input data</span></span>
+<span id="annotated-cell-10-5"><a href="#annotated-cell-10-5" aria-hidden="true" tabindex="-1"></a><span class="co">    weights -- python dictionary containing the weight and bias matrices</span></span>
+<span id="annotated-cell-10-6"><a href="#annotated-cell-10-6" aria-hidden="true" tabindex="-1"></a><span class="co">    f1 -- python function as activation function layer 1</span></span>
+<span id="annotated-cell-10-7"><a href="#annotated-cell-10-7" aria-hidden="true" tabindex="-1"></a><span class="co">    f2 -- python function as activation function layer 2</span></span>
+<span id="annotated-cell-10-8"><a href="#annotated-cell-10-8" aria-hidden="true" tabindex="-1"></a><span class="co">    f3 -- python function as activation function layer 3</span></span>
+<span id="annotated-cell-10-9"><a href="#annotated-cell-10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-10-10"><a href="#annotated-cell-10-10" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="annotated-cell-10-11"><a href="#annotated-cell-10-11" aria-hidden="true" tabindex="-1"></a><span class="co">    outputLayer -- The output of the last layer</span></span>
+<span id="annotated-cell-10-12"><a href="#annotated-cell-10-12" aria-hidden="true" tabindex="-1"></a><span class="co">    cache -- a dictionary containing (pre)activations of every layer</span></span>
+<span id="annotated-cell-10-13"><a href="#annotated-cell-10-13" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span>    </span>
+<span id="annotated-cell-10-14"><a href="#annotated-cell-10-14" aria-hidden="true" tabindex="-1"></a>    A1 <span class="op">=</span> weights[<span class="st">"A1"</span>]</span>
+<span id="annotated-cell-10-15"><a href="#annotated-cell-10-15" aria-hidden="true" tabindex="-1"></a>    b1 <span class="op">=</span> weights[<span class="st">"b1"</span>]</span>
+<span id="annotated-cell-10-16"><a href="#annotated-cell-10-16" aria-hidden="true" tabindex="-1"></a>    A2 <span class="op">=</span> weights[<span class="st">"A2"</span>]</span>
+<span id="annotated-cell-10-17"><a href="#annotated-cell-10-17" aria-hidden="true" tabindex="-1"></a>    b2 <span class="op">=</span> weights[<span class="st">"b2"</span>]</span>
+<span id="annotated-cell-10-18"><a href="#annotated-cell-10-18" aria-hidden="true" tabindex="-1"></a>    A3 <span class="op">=</span> weights[<span class="st">"A3"</span>]</span>
+<span id="annotated-cell-10-19"><a href="#annotated-cell-10-19" aria-hidden="true" tabindex="-1"></a>    b3 <span class="op">=</span> weights[<span class="st">"b3"</span>]</span>
+<span id="annotated-cell-10-20"><a href="#annotated-cell-10-20" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="annotated-cell-10-21"><a href="#annotated-cell-10-21" aria-hidden="true" tabindex="-1"></a>    x0 <span class="op">=</span> X</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-10" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-10-22" class="code-annotation-target"><a href="#annotated-cell-10-22" aria-hidden="true" tabindex="-1"></a>    z1 <span class="op">=</span></span>
+<span id="annotated-cell-10-23"><a href="#annotated-cell-10-23" aria-hidden="true" tabindex="-1"></a>    x1 <span class="op">=</span></span>
+<span id="annotated-cell-10-24"><a href="#annotated-cell-10-24" aria-hidden="true" tabindex="-1"></a>    z2 <span class="op">=</span></span>
+<span id="annotated-cell-10-25"><a href="#annotated-cell-10-25" aria-hidden="true" tabindex="-1"></a>    x2 <span class="op">=</span></span>
+<span id="annotated-cell-10-26"><a href="#annotated-cell-10-26" aria-hidden="true" tabindex="-1"></a>    z3 <span class="op">=</span></span>
+<span id="annotated-cell-10-27"><a href="#annotated-cell-10-27" aria-hidden="true" tabindex="-1"></a>    x3 <span class="op">=</span></span>
+<span id="annotated-cell-10-28"><a href="#annotated-cell-10-28" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="annotated-cell-10-29"><a href="#annotated-cell-10-29" aria-hidden="true" tabindex="-1"></a>    outputLayer <span class="op">=</span> x3</span>
+<span id="annotated-cell-10-30"><a href="#annotated-cell-10-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-10-31"><a href="#annotated-cell-10-31" aria-hidden="true" tabindex="-1"></a>    cache <span class="op">=</span> {<span class="st">"x0"</span>: x0,</span>
+<span id="annotated-cell-10-32"><a href="#annotated-cell-10-32" aria-hidden="true" tabindex="-1"></a>             <span class="st">"z1"</span>: z1,</span>
+<span id="annotated-cell-10-33"><a href="#annotated-cell-10-33" aria-hidden="true" tabindex="-1"></a>             <span class="st">"x1"</span>: x1,</span>
+<span id="annotated-cell-10-34"><a href="#annotated-cell-10-34" aria-hidden="true" tabindex="-1"></a>             <span class="st">"z2"</span>: z2,</span>
+<span id="annotated-cell-10-35"><a href="#annotated-cell-10-35" aria-hidden="true" tabindex="-1"></a>             <span class="st">"x2"</span>: x2,</span>
+<span id="annotated-cell-10-36"><a href="#annotated-cell-10-36" aria-hidden="true" tabindex="-1"></a>             <span class="st">"z3"</span>: z3,</span>
+<span id="annotated-cell-10-37"><a href="#annotated-cell-10-37" aria-hidden="true" tabindex="-1"></a>             <span class="st">"x3"</span>: x3}</span>
+<span id="annotated-cell-10-38"><a href="#annotated-cell-10-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-10-39"><a href="#annotated-cell-10-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-10-40"><a href="#annotated-cell-10-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> outputLayer, cache</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-9" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-10" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-9" data-code-lines="22,23,24,25,26,27" data-code-annotation="1">Please fill in the blanks according to the above description.</span>
+<span data-code-cell="annotated-cell-10" data-code-lines="22,23,24,25,26,27" data-code-annotation="1">Please fill in the blanks according to the above description.</span>
 </dd>
 </dl>
 </div>
@@ -989,7 +989,7 @@ Check the implementation for the forward step
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Run the following code snippet to check the implementation, if there is no error the implementation looks good.</p>
-<div id="3cf5a950" class="cell" data-execution_count="7">
+<div id="17c705cc" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> actFunctionLinear <span class="co"># function used for hidden layer 1</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>f2 <span class="op">=</span> actFunctionLinear <span class="co"># function used for hidden layer 2</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>f3 <span class="op">=</span> actFunctionSigmoid <span class="co"># function used for output layer</span></span>
@@ -1119,62 +1119,62 @@ b^{(k+1)} &amp;= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b} = 
 <div class="callout-body-container">
 <div id="exr-appendices-nnfs-self-backward" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise C.4 (Self implementation: Backward propagation)</strong></span> &nbsp;</p>
-<div id="cdcda51e" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="annotated-cell-11"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-11-1"><a href="#annotated-cell-11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> backward_propagation(weights, cache, X, Y):</span>
-<span id="annotated-cell-11-2"><a href="#annotated-cell-11-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="annotated-cell-11-3"><a href="#annotated-cell-11-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Arguments:</span></span>
-<span id="annotated-cell-11-4"><a href="#annotated-cell-11-4" aria-hidden="true" tabindex="-1"></a><span class="co">    weights -- python dictionary containing our weights</span></span>
-<span id="annotated-cell-11-5"><a href="#annotated-cell-11-5" aria-hidden="true" tabindex="-1"></a><span class="co">    cache -- a dictionary containing "pA1", "A1", "pA2" and "A2".</span></span>
-<span id="annotated-cell-11-6"><a href="#annotated-cell-11-6" aria-hidden="true" tabindex="-1"></a><span class="co">    X -- input data of shape (2, number of examples)</span></span>
-<span id="annotated-cell-11-7"><a href="#annotated-cell-11-7" aria-hidden="true" tabindex="-1"></a><span class="co">    Y -- "true" labels vector of shape (1, number of examples)</span></span>
-<span id="annotated-cell-11-8"><a href="#annotated-cell-11-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-11-9"><a href="#annotated-cell-11-9" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
-<span id="annotated-cell-11-10"><a href="#annotated-cell-11-10" aria-hidden="true" tabindex="-1"></a><span class="co">    grads -- python dictionary containing your gradients with </span></span>
-<span id="annotated-cell-11-11"><a href="#annotated-cell-11-11" aria-hidden="true" tabindex="-1"></a><span class="co">             respect to different weights</span></span>
-<span id="annotated-cell-11-12"><a href="#annotated-cell-11-12" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="annotated-cell-11-13"><a href="#annotated-cell-11-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-11-14"><a href="#annotated-cell-11-14" aria-hidden="true" tabindex="-1"></a>    A1 <span class="op">=</span> weights[<span class="st">"A1"</span>]</span>
-<span id="annotated-cell-11-15"><a href="#annotated-cell-11-15" aria-hidden="true" tabindex="-1"></a>    A2 <span class="op">=</span> weights[<span class="st">"A2"</span>]</span>
-<span id="annotated-cell-11-16"><a href="#annotated-cell-11-16" aria-hidden="true" tabindex="-1"></a>    A3 <span class="op">=</span> weights[<span class="st">"A3"</span>]</span>
-<span id="annotated-cell-11-17"><a href="#annotated-cell-11-17" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="annotated-cell-11-18"><a href="#annotated-cell-11-18" aria-hidden="true" tabindex="-1"></a>    b1 <span class="op">=</span> weights[<span class="st">"b1"</span>]</span>
-<span id="annotated-cell-11-19"><a href="#annotated-cell-11-19" aria-hidden="true" tabindex="-1"></a>    b2 <span class="op">=</span> weights[<span class="st">"b2"</span>]</span>
-<span id="annotated-cell-11-20"><a href="#annotated-cell-11-20" aria-hidden="true" tabindex="-1"></a>    b3 <span class="op">=</span> weights[<span class="st">"b3"</span>]</span>
-<span id="annotated-cell-11-21"><a href="#annotated-cell-11-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-11-22"><a href="#annotated-cell-11-22" aria-hidden="true" tabindex="-1"></a>    x0 <span class="op">=</span> cache[<span class="st">"x0"</span>]</span>
-<span id="annotated-cell-11-23"><a href="#annotated-cell-11-23" aria-hidden="true" tabindex="-1"></a>    x1 <span class="op">=</span> cache[<span class="st">"x1"</span>]</span>
-<span id="annotated-cell-11-24"><a href="#annotated-cell-11-24" aria-hidden="true" tabindex="-1"></a>    x2 <span class="op">=</span> cache[<span class="st">"x2"</span>]</span>
-<span id="annotated-cell-11-25"><a href="#annotated-cell-11-25" aria-hidden="true" tabindex="-1"></a>    x3 <span class="op">=</span> cache[<span class="st">"x3"</span>]</span>
-<span id="annotated-cell-11-26"><a href="#annotated-cell-11-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-11-27"><a href="#annotated-cell-11-27" aria-hidden="true" tabindex="-1"></a>    z1 <span class="op">=</span> cache[<span class="st">"z1"</span>]</span>
-<span id="annotated-cell-11-28"><a href="#annotated-cell-11-28" aria-hidden="true" tabindex="-1"></a>    z2 <span class="op">=</span> cache[<span class="st">"z2"</span>]</span>
-<span id="annotated-cell-11-29"><a href="#annotated-cell-11-29" aria-hidden="true" tabindex="-1"></a>    z3 <span class="op">=</span> cache[<span class="st">"z3"</span>]</span>
-<span id="annotated-cell-11-30"><a href="#annotated-cell-11-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-11-31"><a href="#annotated-cell-11-31" aria-hidden="true" tabindex="-1"></a>    N <span class="op">=</span> X.shape[<span class="dv">1</span>]</span>
-<span id="annotated-cell-11-32"><a href="#annotated-cell-11-32" aria-hidden="true" tabindex="-1"></a></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-11" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-11-33" class="code-annotation-target"><a href="#annotated-cell-11-33" aria-hidden="true" tabindex="-1"></a>    delta3 <span class="op">=</span></span>
-<span id="annotated-cell-11-34"><a href="#annotated-cell-11-34" aria-hidden="true" tabindex="-1"></a>    delta2 <span class="op">=</span></span>
-<span id="annotated-cell-11-35"><a href="#annotated-cell-11-35" aria-hidden="true" tabindex="-1"></a>    delta1 <span class="op">=</span></span>
-<span id="annotated-cell-11-36"><a href="#annotated-cell-11-36" aria-hidden="true" tabindex="-1"></a>    dA3 <span class="op">=</span></span>
-<span id="annotated-cell-11-37"><a href="#annotated-cell-11-37" aria-hidden="true" tabindex="-1"></a>    dA2 <span class="op">=</span></span>
-<span id="annotated-cell-11-38"><a href="#annotated-cell-11-38" aria-hidden="true" tabindex="-1"></a>    dA1 <span class="op">=</span></span>
-<span id="annotated-cell-11-39"><a href="#annotated-cell-11-39" aria-hidden="true" tabindex="-1"></a>    db3 <span class="op">=</span></span>
-<span id="annotated-cell-11-40"><a href="#annotated-cell-11-40" aria-hidden="true" tabindex="-1"></a>    db2 <span class="op">=</span></span>
-<span id="annotated-cell-11-41"><a href="#annotated-cell-11-41" aria-hidden="true" tabindex="-1"></a>    db1 <span class="op">=</span></span>
-<span id="annotated-cell-11-42"><a href="#annotated-cell-11-42" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="annotated-cell-11-43"><a href="#annotated-cell-11-43" aria-hidden="true" tabindex="-1"></a>    grads <span class="op">=</span> {<span class="st">"dA1"</span>: dA1,</span>
-<span id="annotated-cell-11-44"><a href="#annotated-cell-11-44" aria-hidden="true" tabindex="-1"></a>             <span class="st">"db1"</span>: db1,</span>
-<span id="annotated-cell-11-45"><a href="#annotated-cell-11-45" aria-hidden="true" tabindex="-1"></a>             <span class="st">"dA2"</span>: dA2,</span>
-<span id="annotated-cell-11-46"><a href="#annotated-cell-11-46" aria-hidden="true" tabindex="-1"></a>             <span class="st">"db2"</span>: db2,</span>
-<span id="annotated-cell-11-47"><a href="#annotated-cell-11-47" aria-hidden="true" tabindex="-1"></a>             <span class="st">"dA3"</span>: dA3,</span>
-<span id="annotated-cell-11-48"><a href="#annotated-cell-11-48" aria-hidden="true" tabindex="-1"></a>             <span class="st">"db3"</span>: db3}</span>
-<span id="annotated-cell-11-49"><a href="#annotated-cell-11-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-11-50"><a href="#annotated-cell-11-50" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> grads</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="95ae44b3" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="annotated-cell-12"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-12-1"><a href="#annotated-cell-12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> backward_propagation(weights, cache, X, Y):</span>
+<span id="annotated-cell-12-2"><a href="#annotated-cell-12-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="annotated-cell-12-3"><a href="#annotated-cell-12-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Arguments:</span></span>
+<span id="annotated-cell-12-4"><a href="#annotated-cell-12-4" aria-hidden="true" tabindex="-1"></a><span class="co">    weights -- python dictionary containing our weights</span></span>
+<span id="annotated-cell-12-5"><a href="#annotated-cell-12-5" aria-hidden="true" tabindex="-1"></a><span class="co">    cache -- a dictionary containing "pA1", "A1", "pA2" and "A2".</span></span>
+<span id="annotated-cell-12-6"><a href="#annotated-cell-12-6" aria-hidden="true" tabindex="-1"></a><span class="co">    X -- input data of shape (2, number of examples)</span></span>
+<span id="annotated-cell-12-7"><a href="#annotated-cell-12-7" aria-hidden="true" tabindex="-1"></a><span class="co">    Y -- "true" labels vector of shape (1, number of examples)</span></span>
+<span id="annotated-cell-12-8"><a href="#annotated-cell-12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-12-9"><a href="#annotated-cell-12-9" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="annotated-cell-12-10"><a href="#annotated-cell-12-10" aria-hidden="true" tabindex="-1"></a><span class="co">    grads -- python dictionary containing your gradients with </span></span>
+<span id="annotated-cell-12-11"><a href="#annotated-cell-12-11" aria-hidden="true" tabindex="-1"></a><span class="co">             respect to different weights</span></span>
+<span id="annotated-cell-12-12"><a href="#annotated-cell-12-12" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="annotated-cell-12-13"><a href="#annotated-cell-12-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-12-14"><a href="#annotated-cell-12-14" aria-hidden="true" tabindex="-1"></a>    A1 <span class="op">=</span> weights[<span class="st">"A1"</span>]</span>
+<span id="annotated-cell-12-15"><a href="#annotated-cell-12-15" aria-hidden="true" tabindex="-1"></a>    A2 <span class="op">=</span> weights[<span class="st">"A2"</span>]</span>
+<span id="annotated-cell-12-16"><a href="#annotated-cell-12-16" aria-hidden="true" tabindex="-1"></a>    A3 <span class="op">=</span> weights[<span class="st">"A3"</span>]</span>
+<span id="annotated-cell-12-17"><a href="#annotated-cell-12-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="annotated-cell-12-18"><a href="#annotated-cell-12-18" aria-hidden="true" tabindex="-1"></a>    b1 <span class="op">=</span> weights[<span class="st">"b1"</span>]</span>
+<span id="annotated-cell-12-19"><a href="#annotated-cell-12-19" aria-hidden="true" tabindex="-1"></a>    b2 <span class="op">=</span> weights[<span class="st">"b2"</span>]</span>
+<span id="annotated-cell-12-20"><a href="#annotated-cell-12-20" aria-hidden="true" tabindex="-1"></a>    b3 <span class="op">=</span> weights[<span class="st">"b3"</span>]</span>
+<span id="annotated-cell-12-21"><a href="#annotated-cell-12-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-12-22"><a href="#annotated-cell-12-22" aria-hidden="true" tabindex="-1"></a>    x0 <span class="op">=</span> cache[<span class="st">"x0"</span>]</span>
+<span id="annotated-cell-12-23"><a href="#annotated-cell-12-23" aria-hidden="true" tabindex="-1"></a>    x1 <span class="op">=</span> cache[<span class="st">"x1"</span>]</span>
+<span id="annotated-cell-12-24"><a href="#annotated-cell-12-24" aria-hidden="true" tabindex="-1"></a>    x2 <span class="op">=</span> cache[<span class="st">"x2"</span>]</span>
+<span id="annotated-cell-12-25"><a href="#annotated-cell-12-25" aria-hidden="true" tabindex="-1"></a>    x3 <span class="op">=</span> cache[<span class="st">"x3"</span>]</span>
+<span id="annotated-cell-12-26"><a href="#annotated-cell-12-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-12-27"><a href="#annotated-cell-12-27" aria-hidden="true" tabindex="-1"></a>    z1 <span class="op">=</span> cache[<span class="st">"z1"</span>]</span>
+<span id="annotated-cell-12-28"><a href="#annotated-cell-12-28" aria-hidden="true" tabindex="-1"></a>    z2 <span class="op">=</span> cache[<span class="st">"z2"</span>]</span>
+<span id="annotated-cell-12-29"><a href="#annotated-cell-12-29" aria-hidden="true" tabindex="-1"></a>    z3 <span class="op">=</span> cache[<span class="st">"z3"</span>]</span>
+<span id="annotated-cell-12-30"><a href="#annotated-cell-12-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-12-31"><a href="#annotated-cell-12-31" aria-hidden="true" tabindex="-1"></a>    N <span class="op">=</span> X.shape[<span class="dv">1</span>]</span>
+<span id="annotated-cell-12-32"><a href="#annotated-cell-12-32" aria-hidden="true" tabindex="-1"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-12" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-12-33" class="code-annotation-target"><a href="#annotated-cell-12-33" aria-hidden="true" tabindex="-1"></a>    delta3 <span class="op">=</span></span>
+<span id="annotated-cell-12-34"><a href="#annotated-cell-12-34" aria-hidden="true" tabindex="-1"></a>    delta2 <span class="op">=</span></span>
+<span id="annotated-cell-12-35"><a href="#annotated-cell-12-35" aria-hidden="true" tabindex="-1"></a>    delta1 <span class="op">=</span></span>
+<span id="annotated-cell-12-36"><a href="#annotated-cell-12-36" aria-hidden="true" tabindex="-1"></a>    dA3 <span class="op">=</span></span>
+<span id="annotated-cell-12-37"><a href="#annotated-cell-12-37" aria-hidden="true" tabindex="-1"></a>    dA2 <span class="op">=</span></span>
+<span id="annotated-cell-12-38"><a href="#annotated-cell-12-38" aria-hidden="true" tabindex="-1"></a>    dA1 <span class="op">=</span></span>
+<span id="annotated-cell-12-39"><a href="#annotated-cell-12-39" aria-hidden="true" tabindex="-1"></a>    db3 <span class="op">=</span></span>
+<span id="annotated-cell-12-40"><a href="#annotated-cell-12-40" aria-hidden="true" tabindex="-1"></a>    db2 <span class="op">=</span></span>
+<span id="annotated-cell-12-41"><a href="#annotated-cell-12-41" aria-hidden="true" tabindex="-1"></a>    db1 <span class="op">=</span></span>
+<span id="annotated-cell-12-42"><a href="#annotated-cell-12-42" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="annotated-cell-12-43"><a href="#annotated-cell-12-43" aria-hidden="true" tabindex="-1"></a>    grads <span class="op">=</span> {<span class="st">"dA1"</span>: dA1,</span>
+<span id="annotated-cell-12-44"><a href="#annotated-cell-12-44" aria-hidden="true" tabindex="-1"></a>             <span class="st">"db1"</span>: db1,</span>
+<span id="annotated-cell-12-45"><a href="#annotated-cell-12-45" aria-hidden="true" tabindex="-1"></a>             <span class="st">"dA2"</span>: dA2,</span>
+<span id="annotated-cell-12-46"><a href="#annotated-cell-12-46" aria-hidden="true" tabindex="-1"></a>             <span class="st">"db2"</span>: db2,</span>
+<span id="annotated-cell-12-47"><a href="#annotated-cell-12-47" aria-hidden="true" tabindex="-1"></a>             <span class="st">"dA3"</span>: dA3,</span>
+<span id="annotated-cell-12-48"><a href="#annotated-cell-12-48" aria-hidden="true" tabindex="-1"></a>             <span class="st">"db3"</span>: db3}</span>
+<span id="annotated-cell-12-49"><a href="#annotated-cell-12-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-12-50"><a href="#annotated-cell-12-50" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> grads</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-11" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-12" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-11" data-code-lines="33,34,35,36,37,38,39,40,41" data-code-annotation="1">Please fill in the blanks according to the above description/formula.</span>
+<span data-code-cell="annotated-cell-12" data-code-lines="33,34,35,36,37,38,39,40,41" data-code-annotation="1">Please fill in the blanks according to the above description/formula.</span>
 </dd>
 </dl>
 </div>
@@ -1192,7 +1192,7 @@ Check the implementation for the backward step
 <div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Run the following code snippet to check the implementation, if there is no error the implementation looks good.</p>
-<div id="ec9b8568" class="cell" data-execution_count="9">
+<div id="36a09913" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> actFunctionLinear <span class="co"># function used for hidden layer 1</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>f2 <span class="op">=</span> actFunctionLinear <span class="co"># function used for hidden layer 2</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>f3 <span class="op">=</span> actFunctionSigmoid <span class="co"># function used for output layer</span></span>
@@ -1235,52 +1235,52 @@ Check the implementation for the backward step
 <div class="callout-body-container">
 <div id="exr-appendices-nnfs-self-parameterupdate" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise C.5 (Self implementation: Parameter update)</strong></span> &nbsp;</p>
-<div id="0abfbae8" class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="annotated-cell-13"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-13-1"><a href="#annotated-cell-13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> update_weights(weights, grads, learning_rate):</span>
-<span id="annotated-cell-13-2"><a href="#annotated-cell-13-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="annotated-cell-13-3"><a href="#annotated-cell-13-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Arguments:</span></span>
-<span id="annotated-cell-13-4"><a href="#annotated-cell-13-4" aria-hidden="true" tabindex="-1"></a><span class="co">    weights -- python dictionary containing your weights</span></span>
-<span id="annotated-cell-13-5"><a href="#annotated-cell-13-5" aria-hidden="true" tabindex="-1"></a><span class="co">    grads -- python dictionary containing your gradients</span></span>
-<span id="annotated-cell-13-6"><a href="#annotated-cell-13-6" aria-hidden="true" tabindex="-1"></a><span class="co">    learning_rate</span></span>
-<span id="annotated-cell-13-7"><a href="#annotated-cell-13-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-13-8"><a href="#annotated-cell-13-8" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
-<span id="annotated-cell-13-9"><a href="#annotated-cell-13-9" aria-hidden="true" tabindex="-1"></a><span class="co">    weights -- python dictionary containing your updated weights</span></span>
-<span id="annotated-cell-13-10"><a href="#annotated-cell-13-10" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="annotated-cell-13-11"><a href="#annotated-cell-13-11" aria-hidden="true" tabindex="-1"></a>    A1 <span class="op">=</span> weights[<span class="st">"A1"</span>]</span>
-<span id="annotated-cell-13-12"><a href="#annotated-cell-13-12" aria-hidden="true" tabindex="-1"></a>    b1 <span class="op">=</span> weights[<span class="st">"b1"</span>]</span>
-<span id="annotated-cell-13-13"><a href="#annotated-cell-13-13" aria-hidden="true" tabindex="-1"></a>    A2 <span class="op">=</span> weights[<span class="st">"A2"</span>]</span>
-<span id="annotated-cell-13-14"><a href="#annotated-cell-13-14" aria-hidden="true" tabindex="-1"></a>    b2 <span class="op">=</span> weights[<span class="st">"b2"</span>]</span>
-<span id="annotated-cell-13-15"><a href="#annotated-cell-13-15" aria-hidden="true" tabindex="-1"></a>    A3 <span class="op">=</span> weights[<span class="st">"A3"</span>]</span>
-<span id="annotated-cell-13-16"><a href="#annotated-cell-13-16" aria-hidden="true" tabindex="-1"></a>    b3 <span class="op">=</span> weights[<span class="st">"b3"</span>]</span>
-<span id="annotated-cell-13-17"><a href="#annotated-cell-13-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-13-18"><a href="#annotated-cell-13-18" aria-hidden="true" tabindex="-1"></a>    dA1 <span class="op">=</span> grads[<span class="st">"dA1"</span>]</span>
-<span id="annotated-cell-13-19"><a href="#annotated-cell-13-19" aria-hidden="true" tabindex="-1"></a>    db1 <span class="op">=</span> grads[<span class="st">"db1"</span>]</span>
-<span id="annotated-cell-13-20"><a href="#annotated-cell-13-20" aria-hidden="true" tabindex="-1"></a>    dA2 <span class="op">=</span> grads[<span class="st">"dA2"</span>]</span>
-<span id="annotated-cell-13-21"><a href="#annotated-cell-13-21" aria-hidden="true" tabindex="-1"></a>    db2 <span class="op">=</span> grads[<span class="st">"db2"</span>]</span>
-<span id="annotated-cell-13-22"><a href="#annotated-cell-13-22" aria-hidden="true" tabindex="-1"></a>    dA3 <span class="op">=</span> grads[<span class="st">"dA3"</span>]</span>
-<span id="annotated-cell-13-23"><a href="#annotated-cell-13-23" aria-hidden="true" tabindex="-1"></a>    db3 <span class="op">=</span> grads[<span class="st">"db3"</span>]</span>
-<span id="annotated-cell-13-24"><a href="#annotated-cell-13-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-13-25"><a href="#annotated-cell-13-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Update rule for each weight</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-13" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-13-26" class="code-annotation-target"><a href="#annotated-cell-13-26" aria-hidden="true" tabindex="-1"></a>    A1 <span class="op">=</span></span>
-<span id="annotated-cell-13-27"><a href="#annotated-cell-13-27" aria-hidden="true" tabindex="-1"></a>    b1 <span class="op">=</span></span>
-<span id="annotated-cell-13-28"><a href="#annotated-cell-13-28" aria-hidden="true" tabindex="-1"></a>    A2 <span class="op">=</span></span>
-<span id="annotated-cell-13-29"><a href="#annotated-cell-13-29" aria-hidden="true" tabindex="-1"></a>    b2 <span class="op">=</span></span>
-<span id="annotated-cell-13-30"><a href="#annotated-cell-13-30" aria-hidden="true" tabindex="-1"></a>    A3 <span class="op">=</span></span>
-<span id="annotated-cell-13-31"><a href="#annotated-cell-13-31" aria-hidden="true" tabindex="-1"></a>    b3 <span class="op">=</span></span>
-<span id="annotated-cell-13-32"><a href="#annotated-cell-13-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-13-33"><a href="#annotated-cell-13-33" aria-hidden="true" tabindex="-1"></a>    weights[<span class="st">"A1"</span>] <span class="op">=</span> A1</span>
-<span id="annotated-cell-13-34"><a href="#annotated-cell-13-34" aria-hidden="true" tabindex="-1"></a>    weights[<span class="st">"b1"</span>] <span class="op">=</span> b1</span>
-<span id="annotated-cell-13-35"><a href="#annotated-cell-13-35" aria-hidden="true" tabindex="-1"></a>    weights[<span class="st">"A2"</span>] <span class="op">=</span> A2</span>
-<span id="annotated-cell-13-36"><a href="#annotated-cell-13-36" aria-hidden="true" tabindex="-1"></a>    weights[<span class="st">"b2"</span>] <span class="op">=</span> b2</span>
-<span id="annotated-cell-13-37"><a href="#annotated-cell-13-37" aria-hidden="true" tabindex="-1"></a>    weights[<span class="st">"A3"</span>] <span class="op">=</span> A3</span>
-<span id="annotated-cell-13-38"><a href="#annotated-cell-13-38" aria-hidden="true" tabindex="-1"></a>    weights[<span class="st">"b3"</span>] <span class="op">=</span> b3</span>
-<span id="annotated-cell-13-39"><a href="#annotated-cell-13-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-13-40"><a href="#annotated-cell-13-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> weights</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="fed6eb2b" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="annotated-cell-14"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-14-1"><a href="#annotated-cell-14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> update_weights(weights, grads, learning_rate):</span>
+<span id="annotated-cell-14-2"><a href="#annotated-cell-14-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="annotated-cell-14-3"><a href="#annotated-cell-14-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Arguments:</span></span>
+<span id="annotated-cell-14-4"><a href="#annotated-cell-14-4" aria-hidden="true" tabindex="-1"></a><span class="co">    weights -- python dictionary containing your weights</span></span>
+<span id="annotated-cell-14-5"><a href="#annotated-cell-14-5" aria-hidden="true" tabindex="-1"></a><span class="co">    grads -- python dictionary containing your gradients</span></span>
+<span id="annotated-cell-14-6"><a href="#annotated-cell-14-6" aria-hidden="true" tabindex="-1"></a><span class="co">    learning_rate</span></span>
+<span id="annotated-cell-14-7"><a href="#annotated-cell-14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-14-8"><a href="#annotated-cell-14-8" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="annotated-cell-14-9"><a href="#annotated-cell-14-9" aria-hidden="true" tabindex="-1"></a><span class="co">    weights -- python dictionary containing your updated weights</span></span>
+<span id="annotated-cell-14-10"><a href="#annotated-cell-14-10" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="annotated-cell-14-11"><a href="#annotated-cell-14-11" aria-hidden="true" tabindex="-1"></a>    A1 <span class="op">=</span> weights[<span class="st">"A1"</span>]</span>
+<span id="annotated-cell-14-12"><a href="#annotated-cell-14-12" aria-hidden="true" tabindex="-1"></a>    b1 <span class="op">=</span> weights[<span class="st">"b1"</span>]</span>
+<span id="annotated-cell-14-13"><a href="#annotated-cell-14-13" aria-hidden="true" tabindex="-1"></a>    A2 <span class="op">=</span> weights[<span class="st">"A2"</span>]</span>
+<span id="annotated-cell-14-14"><a href="#annotated-cell-14-14" aria-hidden="true" tabindex="-1"></a>    b2 <span class="op">=</span> weights[<span class="st">"b2"</span>]</span>
+<span id="annotated-cell-14-15"><a href="#annotated-cell-14-15" aria-hidden="true" tabindex="-1"></a>    A3 <span class="op">=</span> weights[<span class="st">"A3"</span>]</span>
+<span id="annotated-cell-14-16"><a href="#annotated-cell-14-16" aria-hidden="true" tabindex="-1"></a>    b3 <span class="op">=</span> weights[<span class="st">"b3"</span>]</span>
+<span id="annotated-cell-14-17"><a href="#annotated-cell-14-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-14-18"><a href="#annotated-cell-14-18" aria-hidden="true" tabindex="-1"></a>    dA1 <span class="op">=</span> grads[<span class="st">"dA1"</span>]</span>
+<span id="annotated-cell-14-19"><a href="#annotated-cell-14-19" aria-hidden="true" tabindex="-1"></a>    db1 <span class="op">=</span> grads[<span class="st">"db1"</span>]</span>
+<span id="annotated-cell-14-20"><a href="#annotated-cell-14-20" aria-hidden="true" tabindex="-1"></a>    dA2 <span class="op">=</span> grads[<span class="st">"dA2"</span>]</span>
+<span id="annotated-cell-14-21"><a href="#annotated-cell-14-21" aria-hidden="true" tabindex="-1"></a>    db2 <span class="op">=</span> grads[<span class="st">"db2"</span>]</span>
+<span id="annotated-cell-14-22"><a href="#annotated-cell-14-22" aria-hidden="true" tabindex="-1"></a>    dA3 <span class="op">=</span> grads[<span class="st">"dA3"</span>]</span>
+<span id="annotated-cell-14-23"><a href="#annotated-cell-14-23" aria-hidden="true" tabindex="-1"></a>    db3 <span class="op">=</span> grads[<span class="st">"db3"</span>]</span>
+<span id="annotated-cell-14-24"><a href="#annotated-cell-14-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-14-25"><a href="#annotated-cell-14-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Update rule for each weight</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-14" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-14-26" class="code-annotation-target"><a href="#annotated-cell-14-26" aria-hidden="true" tabindex="-1"></a>    A1 <span class="op">=</span></span>
+<span id="annotated-cell-14-27"><a href="#annotated-cell-14-27" aria-hidden="true" tabindex="-1"></a>    b1 <span class="op">=</span></span>
+<span id="annotated-cell-14-28"><a href="#annotated-cell-14-28" aria-hidden="true" tabindex="-1"></a>    A2 <span class="op">=</span></span>
+<span id="annotated-cell-14-29"><a href="#annotated-cell-14-29" aria-hidden="true" tabindex="-1"></a>    b2 <span class="op">=</span></span>
+<span id="annotated-cell-14-30"><a href="#annotated-cell-14-30" aria-hidden="true" tabindex="-1"></a>    A3 <span class="op">=</span></span>
+<span id="annotated-cell-14-31"><a href="#annotated-cell-14-31" aria-hidden="true" tabindex="-1"></a>    b3 <span class="op">=</span></span>
+<span id="annotated-cell-14-32"><a href="#annotated-cell-14-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-14-33"><a href="#annotated-cell-14-33" aria-hidden="true" tabindex="-1"></a>    weights[<span class="st">"A1"</span>] <span class="op">=</span> A1</span>
+<span id="annotated-cell-14-34"><a href="#annotated-cell-14-34" aria-hidden="true" tabindex="-1"></a>    weights[<span class="st">"b1"</span>] <span class="op">=</span> b1</span>
+<span id="annotated-cell-14-35"><a href="#annotated-cell-14-35" aria-hidden="true" tabindex="-1"></a>    weights[<span class="st">"A2"</span>] <span class="op">=</span> A2</span>
+<span id="annotated-cell-14-36"><a href="#annotated-cell-14-36" aria-hidden="true" tabindex="-1"></a>    weights[<span class="st">"b2"</span>] <span class="op">=</span> b2</span>
+<span id="annotated-cell-14-37"><a href="#annotated-cell-14-37" aria-hidden="true" tabindex="-1"></a>    weights[<span class="st">"A3"</span>] <span class="op">=</span> A3</span>
+<span id="annotated-cell-14-38"><a href="#annotated-cell-14-38" aria-hidden="true" tabindex="-1"></a>    weights[<span class="st">"b3"</span>] <span class="op">=</span> b3</span>
+<span id="annotated-cell-14-39"><a href="#annotated-cell-14-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-14-40"><a href="#annotated-cell-14-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> weights</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-13" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-14" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-13" data-code-lines="26,27,28,29,30,31" data-code-annotation="1">Please fill in the blanks according to the above description/formula.</span>
+<span data-code-cell="annotated-cell-14" data-code-lines="26,27,28,29,30,31" data-code-annotation="1">Please fill in the blanks according to the above description/formula.</span>
 </dd>
 </dl>
 </div>
@@ -1298,7 +1298,7 @@ Check the implementation for the parameter update
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Run the following code snippet to check the implementation, if there is no error the implementation looks good.</p>
-<div id="ba3b72ea" class="cell" data-execution_count="11">
+<div id="6164d6d0" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> actFunctionLinear <span class="co"># function used for hidden layer 1</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>f2 <span class="op">=</span> actFunctionLinear <span class="co"># function used for hidden layer 2</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>f3 <span class="op">=</span> actFunctionSigmoid <span class="co"># function used for output layer</span></span>
@@ -1341,33 +1341,33 @@ Check the implementation for the parameter update
 <div class="callout-body-container">
 <div id="exr-appendices-nnfs-self-loss" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise C.6 (Self implementation: Predict function)</strong></span> &nbsp;</p>
-<div id="d3e7f8d0" class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="annotated-cell-15"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-15-1"><a href="#annotated-cell-15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> predict(weights, X, f1, f2, f3):</span>
-<span id="annotated-cell-15-2"><a href="#annotated-cell-15-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="annotated-cell-15-3"><a href="#annotated-cell-15-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Using the learned weights, predicts a class for each example in X</span></span>
-<span id="annotated-cell-15-4"><a href="#annotated-cell-15-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-15-5"><a href="#annotated-cell-15-5" aria-hidden="true" tabindex="-1"></a><span class="co">    Arguments:</span></span>
-<span id="annotated-cell-15-6"><a href="#annotated-cell-15-6" aria-hidden="true" tabindex="-1"></a><span class="co">    weights -- python dictionary containing your weights</span></span>
-<span id="annotated-cell-15-7"><a href="#annotated-cell-15-7" aria-hidden="true" tabindex="-1"></a><span class="co">    X -- input data of size (n_x, m) </span></span>
-<span id="annotated-cell-15-8"><a href="#annotated-cell-15-8" aria-hidden="true" tabindex="-1"></a><span class="co">    f1 -- python function as activation function layer 1</span></span>
-<span id="annotated-cell-15-9"><a href="#annotated-cell-15-9" aria-hidden="true" tabindex="-1"></a><span class="co">    f2 -- python function as activation function layer 2</span></span>
-<span id="annotated-cell-15-10"><a href="#annotated-cell-15-10" aria-hidden="true" tabindex="-1"></a><span class="co">    f3 -- python function as activation function layer 3</span></span>
-<span id="annotated-cell-15-11"><a href="#annotated-cell-15-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-15-12"><a href="#annotated-cell-15-12" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns</span></span>
-<span id="annotated-cell-15-13"><a href="#annotated-cell-15-13" aria-hidden="true" tabindex="-1"></a><span class="co">    predictions -- vector of predictions of our model (red: 0 / blue: 1)</span></span>
-<span id="annotated-cell-15-14"><a href="#annotated-cell-15-14" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-15" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-15-15" class="code-annotation-target"><a href="#annotated-cell-15-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1. Computes probabilities using forward propagation,</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-15" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-15-16" class="code-annotation-target"><a href="#annotated-cell-15-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 2. and classifies to 0/1 using 0.5 as the threshold.</span></span>
-<span id="annotated-cell-15-17"><a href="#annotated-cell-15-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> predictions</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="e8a2e381" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="annotated-cell-16"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-16-1"><a href="#annotated-cell-16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> predict(weights, X, f1, f2, f3):</span>
+<span id="annotated-cell-16-2"><a href="#annotated-cell-16-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="annotated-cell-16-3"><a href="#annotated-cell-16-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Using the learned weights, predicts a class for each example in X</span></span>
+<span id="annotated-cell-16-4"><a href="#annotated-cell-16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-16-5"><a href="#annotated-cell-16-5" aria-hidden="true" tabindex="-1"></a><span class="co">    Arguments:</span></span>
+<span id="annotated-cell-16-6"><a href="#annotated-cell-16-6" aria-hidden="true" tabindex="-1"></a><span class="co">    weights -- python dictionary containing your weights</span></span>
+<span id="annotated-cell-16-7"><a href="#annotated-cell-16-7" aria-hidden="true" tabindex="-1"></a><span class="co">    X -- input data of size (n_x, m) </span></span>
+<span id="annotated-cell-16-8"><a href="#annotated-cell-16-8" aria-hidden="true" tabindex="-1"></a><span class="co">    f1 -- python function as activation function layer 1</span></span>
+<span id="annotated-cell-16-9"><a href="#annotated-cell-16-9" aria-hidden="true" tabindex="-1"></a><span class="co">    f2 -- python function as activation function layer 2</span></span>
+<span id="annotated-cell-16-10"><a href="#annotated-cell-16-10" aria-hidden="true" tabindex="-1"></a><span class="co">    f3 -- python function as activation function layer 3</span></span>
+<span id="annotated-cell-16-11"><a href="#annotated-cell-16-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-16-12"><a href="#annotated-cell-16-12" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns</span></span>
+<span id="annotated-cell-16-13"><a href="#annotated-cell-16-13" aria-hidden="true" tabindex="-1"></a><span class="co">    predictions -- vector of predictions of our model (red: 0 / blue: 1)</span></span>
+<span id="annotated-cell-16-14"><a href="#annotated-cell-16-14" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-16" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-16-15" class="code-annotation-target"><a href="#annotated-cell-16-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1. Computes probabilities using forward propagation,</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-16" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-16-16" class="code-annotation-target"><a href="#annotated-cell-16-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 2. and classifies to 0/1 using 0.5 as the threshold.</span></span>
+<span id="annotated-cell-16-17"><a href="#annotated-cell-16-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> predictions</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-15" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-16" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-15" data-code-lines="15" data-code-annotation="1">Computes probabilities using forward propagation,</span>
+<span data-code-cell="annotated-cell-16" data-code-lines="15" data-code-annotation="1">Computes probabilities using forward propagation,</span>
 </dd>
-<dt data-target-cell="annotated-cell-15" data-target-annotation="2">2</dt>
+<dt data-target-cell="annotated-cell-16" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-15" data-code-lines="16" data-code-annotation="2">and classifies to 0/1 using 0.5 as the threshold.</span>
+<span data-code-cell="annotated-cell-16" data-code-lines="16" data-code-annotation="2">and classifies to 0/1 using 0.5 as the threshold.</span>
 </dd>
 </dl>
 </div>
@@ -1385,7 +1385,7 @@ Check the implementation for the predict function
 <div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Run the following code snippet to check the implementation, if there is no error the implementation looks good.</p>
-<div id="20f138dc" class="cell" data-execution_count="13">
+<div id="230d431a" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> actFunctionLinear <span class="co"># function used for hidden layer 1</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>f2 <span class="op">=</span> actFunctionLinear <span class="co"># function used for hidden layer 2</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>f3 <span class="op">=</span> actFunctionSigmoid <span class="co"># function used for output layer</span></span>
@@ -1419,7 +1419,7 @@ Check the implementation for the predict function
 <div class="callout-body-container">
 <div id="exr-appendices-nnfs-self-loss" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise C.7 (Self implementation: Loss function)</strong></span> &nbsp;</p>
-<div id="502f2251" class="cell" data-execution_count="14">
+<div id="f70378e7" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_loss(nn_output, Y):</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># This function takes the nn_outputs and Ys of the training set</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># and returns the log loss</span></span>
@@ -1439,7 +1439,7 @@ Check the implementation for the loss function
 <div id="callout-7" class="callout-7-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Run the following code snippet to check the implementation, if there is no error the implementation looks good.</p>
-<div id="c5979fc3" class="cell" data-execution_count="15">
+<div id="f82b88c3" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> actFunctionLinear <span class="co"># function used for hidden layer 1</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>f2 <span class="op">=</span> actFunctionLinear <span class="co"># function used for hidden layer 2</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>f3 <span class="op">=</span> actFunctionSigmoid <span class="co"># function used for output layer</span></span>
@@ -1469,78 +1469,78 @@ Check the implementation for the loss function
 <div class="callout-body-container">
 <div id="exr-appendices-nnfs-self-training" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise C.8 (Self implementation: Network training)</strong></span> &nbsp;</p>
-<div id="41dca934" class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="annotated-cell-19"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-19-1"><a href="#annotated-cell-19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> nn_model(X_train, Y_train, nodes0, nodes1, nodes2, nodes3, </span>
-<span id="annotated-cell-19-2"><a href="#annotated-cell-19-2" aria-hidden="true" tabindex="-1"></a>             f1, f2, f3, lossfun, learning_rate, predict, </span>
-<span id="annotated-cell-19-3"><a href="#annotated-cell-19-3" aria-hidden="true" tabindex="-1"></a>             num_iterations, print_cost<span class="op">=</span><span class="va">False</span>, X_test<span class="op">=</span><span class="va">None</span>, Y_test<span class="op">=</span><span class="va">None</span>):</span>
-<span id="annotated-cell-19-4"><a href="#annotated-cell-19-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="annotated-cell-19-5"><a href="#annotated-cell-19-5" aria-hidden="true" tabindex="-1"></a><span class="co">    Arguments:</span></span>
-<span id="annotated-cell-19-6"><a href="#annotated-cell-19-6" aria-hidden="true" tabindex="-1"></a><span class="co">    X_train -- training dataset of shape (2, number of examples)</span></span>
-<span id="annotated-cell-19-7"><a href="#annotated-cell-19-7" aria-hidden="true" tabindex="-1"></a><span class="co">    Y_train -- training labels of shape (1, number of examples)</span></span>
-<span id="annotated-cell-19-8"><a href="#annotated-cell-19-8" aria-hidden="true" tabindex="-1"></a><span class="co">    nodes_in -- size of the input layer</span></span>
-<span id="annotated-cell-19-9"><a href="#annotated-cell-19-9" aria-hidden="true" tabindex="-1"></a><span class="co">    nodes_h1 -- size of the first hidden layer</span></span>
-<span id="annotated-cell-19-10"><a href="#annotated-cell-19-10" aria-hidden="true" tabindex="-1"></a><span class="co">    nodes_h2 -- size of the second hidden layer</span></span>
-<span id="annotated-cell-19-11"><a href="#annotated-cell-19-11" aria-hidden="true" tabindex="-1"></a><span class="co">    nodes_out -- size of the input layer</span></span>
-<span id="annotated-cell-19-12"><a href="#annotated-cell-19-12" aria-hidden="true" tabindex="-1"></a><span class="co">    f1 -- activation function for the first layer</span></span>
-<span id="annotated-cell-19-13"><a href="#annotated-cell-19-13" aria-hidden="true" tabindex="-1"></a><span class="co">    f2 -- activation function for the second layer</span></span>
-<span id="annotated-cell-19-14"><a href="#annotated-cell-19-14" aria-hidden="true" tabindex="-1"></a><span class="co">    f3 -- activation function for the third layer</span></span>
-<span id="annotated-cell-19-15"><a href="#annotated-cell-19-15" aria-hidden="true" tabindex="-1"></a><span class="co">    num_iterations -- Number of iterations in gradient descent loop</span></span>
-<span id="annotated-cell-19-16"><a href="#annotated-cell-19-16" aria-hidden="true" tabindex="-1"></a><span class="co">    print_cost -- if True, print the cost every 1000 iterations</span></span>
-<span id="annotated-cell-19-17"><a href="#annotated-cell-19-17" aria-hidden="true" tabindex="-1"></a><span class="co">    X_test, Y_test -- test datasets; when set, accuracy is printed</span></span>
-<span id="annotated-cell-19-18"><a href="#annotated-cell-19-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-19-19"><a href="#annotated-cell-19-19" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
-<span id="annotated-cell-19-20"><a href="#annotated-cell-19-20" aria-hidden="true" tabindex="-1"></a><span class="co">    weights -- weights learnt by the model. </span></span>
-<span id="annotated-cell-19-21"><a href="#annotated-cell-19-21" aria-hidden="true" tabindex="-1"></a><span class="co">               They can then be used to predict.</span></span>
-<span id="annotated-cell-19-22"><a href="#annotated-cell-19-22" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="annotated-cell-19-23"><a href="#annotated-cell-19-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-19-24"><a href="#annotated-cell-19-24" aria-hidden="true" tabindex="-1"></a>    np.random.seed(<span class="dv">42</span> <span class="cf">if</span> DISABLE_RANDOM_SEED <span class="cf">else</span> <span class="va">None</span>)    </span>
-<span id="annotated-cell-19-25"><a href="#annotated-cell-19-25" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="annotated-cell-19-26"><a href="#annotated-cell-19-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Use the previously coded function to generate the weights</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-19" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-19-27" class="code-annotation-target"><a href="#annotated-cell-19-27" aria-hidden="true" tabindex="-1"></a>    weights <span class="op">=</span></span>
-<span id="annotated-cell-19-28"><a href="#annotated-cell-19-28" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="annotated-cell-19-29"><a href="#annotated-cell-19-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Loop (training with gradient descent)</span></span>
-<span id="annotated-cell-19-30"><a href="#annotated-cell-19-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, num_iterations <span class="op">+</span> <span class="dv">1</span>):</span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-19" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-19-31" class="code-annotation-target"><a href="#annotated-cell-19-31" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 2. forward propagation; the variable holding the network's</span></span>
-<span id="annotated-cell-19-32"><a href="#annotated-cell-19-32" aria-hidden="true" tabindex="-1"></a>        <span class="co">#    outputs should be called outputLayer</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-19" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-19-33" class="code-annotation-target"><a href="#annotated-cell-19-33" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 3. use the results to calculate the backward propagation</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-19" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-19-34" class="code-annotation-target"><a href="#annotated-cell-19-34" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 4. update the weights according to the results of the</span></span>
-<span id="annotated-cell-19-35"><a href="#annotated-cell-19-35" aria-hidden="true" tabindex="-1"></a>        <span class="co">#    backward propagation</span></span>
-<span id="annotated-cell-19-36"><a href="#annotated-cell-19-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-19-37"><a href="#annotated-cell-19-37" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Print the cost and accuracy every 500 iterations</span></span>
-<span id="annotated-cell-19-38"><a href="#annotated-cell-19-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> print_cost <span class="kw">and</span> i <span class="op">%</span> <span class="dv">500</span> <span class="op">==</span> <span class="dv">0</span>:      </span>
-<span id="annotated-cell-19-39"><a href="#annotated-cell-19-39" aria-hidden="true" tabindex="-1"></a>            accStr <span class="op">=</span> <span class="st">''</span></span>
-<span id="annotated-cell-19-40"><a href="#annotated-cell-19-40" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="annotated-cell-19-41"><a href="#annotated-cell-19-41" aria-hidden="true" tabindex="-1"></a>            <span class="cf">try</span>:</span>
-<span id="annotated-cell-19-42"><a href="#annotated-cell-19-42" aria-hidden="true" tabindex="-1"></a>                predictions <span class="op">=</span> predict(weights, X_test, f1, f2, f3)</span>
-<span id="annotated-cell-19-43"><a href="#annotated-cell-19-43" aria-hidden="true" tabindex="-1"></a>                </span>
-<span id="annotated-cell-19-44"><a href="#annotated-cell-19-44" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> (X_test <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>) <span class="kw">and</span> (Y_test <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span> ):</span>
-<span id="annotated-cell-19-45"><a href="#annotated-cell-19-45" aria-hidden="true" tabindex="-1"></a>                    accuracy <span class="op">=</span> accuracy_score(predictions.flatten(),</span>
-<span id="annotated-cell-19-46"><a href="#annotated-cell-19-46" aria-hidden="true" tabindex="-1"></a>                                              Y_test.flatten())</span>
-<span id="annotated-cell-19-47"><a href="#annotated-cell-19-47" aria-hidden="true" tabindex="-1"></a>                    accStr <span class="op">=</span> <span class="st">"(Acc: </span><span class="sc">%f</span><span class="st">)"</span> <span class="op">%</span>(accuracy)</span>
-<span id="annotated-cell-19-48"><a href="#annotated-cell-19-48" aria-hidden="true" tabindex="-1"></a>            <span class="cf">except</span>:</span>
-<span id="annotated-cell-19-49"><a href="#annotated-cell-19-49" aria-hidden="true" tabindex="-1"></a>                <span class="cf">pass</span> <span class="co"># will be implemented later; no action                </span></span>
-<span id="annotated-cell-19-50"><a href="#annotated-cell-19-50" aria-hidden="true" tabindex="-1"></a>                </span>
-<span id="annotated-cell-19-51"><a href="#annotated-cell-19-51" aria-hidden="true" tabindex="-1"></a>            loss <span class="op">=</span> lossfun(outputLayer, Y_train)</span>
-<span id="annotated-cell-19-52"><a href="#annotated-cell-19-52" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">"Cost after iteration </span><span class="sc">%i</span><span class="st">: </span><span class="sc">%f</span><span class="st"> </span><span class="sc">%s</span><span class="st">"</span> <span class="op">%</span>(i, loss, accStr))</span>
-<span id="annotated-cell-19-53"><a href="#annotated-cell-19-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-19-54"><a href="#annotated-cell-19-54" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> weights</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="5e8edd28" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="annotated-cell-20"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-20-1"><a href="#annotated-cell-20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> nn_model(X_train, Y_train, nodes0, nodes1, nodes2, nodes3, </span>
+<span id="annotated-cell-20-2"><a href="#annotated-cell-20-2" aria-hidden="true" tabindex="-1"></a>             f1, f2, f3, lossfun, learning_rate, predict, </span>
+<span id="annotated-cell-20-3"><a href="#annotated-cell-20-3" aria-hidden="true" tabindex="-1"></a>             num_iterations, print_cost<span class="op">=</span><span class="va">False</span>, X_test<span class="op">=</span><span class="va">None</span>, Y_test<span class="op">=</span><span class="va">None</span>):</span>
+<span id="annotated-cell-20-4"><a href="#annotated-cell-20-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="annotated-cell-20-5"><a href="#annotated-cell-20-5" aria-hidden="true" tabindex="-1"></a><span class="co">    Arguments:</span></span>
+<span id="annotated-cell-20-6"><a href="#annotated-cell-20-6" aria-hidden="true" tabindex="-1"></a><span class="co">    X_train -- training dataset of shape (2, number of examples)</span></span>
+<span id="annotated-cell-20-7"><a href="#annotated-cell-20-7" aria-hidden="true" tabindex="-1"></a><span class="co">    Y_train -- training labels of shape (1, number of examples)</span></span>
+<span id="annotated-cell-20-8"><a href="#annotated-cell-20-8" aria-hidden="true" tabindex="-1"></a><span class="co">    nodes_in -- size of the input layer</span></span>
+<span id="annotated-cell-20-9"><a href="#annotated-cell-20-9" aria-hidden="true" tabindex="-1"></a><span class="co">    nodes_h1 -- size of the first hidden layer</span></span>
+<span id="annotated-cell-20-10"><a href="#annotated-cell-20-10" aria-hidden="true" tabindex="-1"></a><span class="co">    nodes_h2 -- size of the second hidden layer</span></span>
+<span id="annotated-cell-20-11"><a href="#annotated-cell-20-11" aria-hidden="true" tabindex="-1"></a><span class="co">    nodes_out -- size of the input layer</span></span>
+<span id="annotated-cell-20-12"><a href="#annotated-cell-20-12" aria-hidden="true" tabindex="-1"></a><span class="co">    f1 -- activation function for the first layer</span></span>
+<span id="annotated-cell-20-13"><a href="#annotated-cell-20-13" aria-hidden="true" tabindex="-1"></a><span class="co">    f2 -- activation function for the second layer</span></span>
+<span id="annotated-cell-20-14"><a href="#annotated-cell-20-14" aria-hidden="true" tabindex="-1"></a><span class="co">    f3 -- activation function for the third layer</span></span>
+<span id="annotated-cell-20-15"><a href="#annotated-cell-20-15" aria-hidden="true" tabindex="-1"></a><span class="co">    num_iterations -- Number of iterations in gradient descent loop</span></span>
+<span id="annotated-cell-20-16"><a href="#annotated-cell-20-16" aria-hidden="true" tabindex="-1"></a><span class="co">    print_cost -- if True, print the cost every 1000 iterations</span></span>
+<span id="annotated-cell-20-17"><a href="#annotated-cell-20-17" aria-hidden="true" tabindex="-1"></a><span class="co">    X_test, Y_test -- test datasets; when set, accuracy is printed</span></span>
+<span id="annotated-cell-20-18"><a href="#annotated-cell-20-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-20-19"><a href="#annotated-cell-20-19" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="annotated-cell-20-20"><a href="#annotated-cell-20-20" aria-hidden="true" tabindex="-1"></a><span class="co">    weights -- weights learnt by the model. </span></span>
+<span id="annotated-cell-20-21"><a href="#annotated-cell-20-21" aria-hidden="true" tabindex="-1"></a><span class="co">               They can then be used to predict.</span></span>
+<span id="annotated-cell-20-22"><a href="#annotated-cell-20-22" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="annotated-cell-20-23"><a href="#annotated-cell-20-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-20-24"><a href="#annotated-cell-20-24" aria-hidden="true" tabindex="-1"></a>    np.random.seed(<span class="dv">42</span> <span class="cf">if</span> DISABLE_RANDOM_SEED <span class="cf">else</span> <span class="va">None</span>)    </span>
+<span id="annotated-cell-20-25"><a href="#annotated-cell-20-25" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="annotated-cell-20-26"><a href="#annotated-cell-20-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Use the previously coded function to generate the weights</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-20" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-20-27" class="code-annotation-target"><a href="#annotated-cell-20-27" aria-hidden="true" tabindex="-1"></a>    weights <span class="op">=</span></span>
+<span id="annotated-cell-20-28"><a href="#annotated-cell-20-28" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="annotated-cell-20-29"><a href="#annotated-cell-20-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Loop (training with gradient descent)</span></span>
+<span id="annotated-cell-20-30"><a href="#annotated-cell-20-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, num_iterations <span class="op">+</span> <span class="dv">1</span>):</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-20" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-20-31" class="code-annotation-target"><a href="#annotated-cell-20-31" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 2. forward propagation; the variable holding the network's</span></span>
+<span id="annotated-cell-20-32"><a href="#annotated-cell-20-32" aria-hidden="true" tabindex="-1"></a>        <span class="co">#    outputs should be called outputLayer</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-20" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-20-33" class="code-annotation-target"><a href="#annotated-cell-20-33" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 3. use the results to calculate the backward propagation</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-20" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-20-34" class="code-annotation-target"><a href="#annotated-cell-20-34" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 4. update the weights according to the results of the</span></span>
+<span id="annotated-cell-20-35"><a href="#annotated-cell-20-35" aria-hidden="true" tabindex="-1"></a>        <span class="co">#    backward propagation</span></span>
+<span id="annotated-cell-20-36"><a href="#annotated-cell-20-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-20-37"><a href="#annotated-cell-20-37" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Print the cost and accuracy every 500 iterations</span></span>
+<span id="annotated-cell-20-38"><a href="#annotated-cell-20-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> print_cost <span class="kw">and</span> i <span class="op">%</span> <span class="dv">500</span> <span class="op">==</span> <span class="dv">0</span>:      </span>
+<span id="annotated-cell-20-39"><a href="#annotated-cell-20-39" aria-hidden="true" tabindex="-1"></a>            accStr <span class="op">=</span> <span class="st">''</span></span>
+<span id="annotated-cell-20-40"><a href="#annotated-cell-20-40" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="annotated-cell-20-41"><a href="#annotated-cell-20-41" aria-hidden="true" tabindex="-1"></a>            <span class="cf">try</span>:</span>
+<span id="annotated-cell-20-42"><a href="#annotated-cell-20-42" aria-hidden="true" tabindex="-1"></a>                predictions <span class="op">=</span> predict(weights, X_test, f1, f2, f3)</span>
+<span id="annotated-cell-20-43"><a href="#annotated-cell-20-43" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="annotated-cell-20-44"><a href="#annotated-cell-20-44" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> (X_test <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>) <span class="kw">and</span> (Y_test <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span> ):</span>
+<span id="annotated-cell-20-45"><a href="#annotated-cell-20-45" aria-hidden="true" tabindex="-1"></a>                    accuracy <span class="op">=</span> accuracy_score(predictions.flatten(),</span>
+<span id="annotated-cell-20-46"><a href="#annotated-cell-20-46" aria-hidden="true" tabindex="-1"></a>                                              Y_test.flatten())</span>
+<span id="annotated-cell-20-47"><a href="#annotated-cell-20-47" aria-hidden="true" tabindex="-1"></a>                    accStr <span class="op">=</span> <span class="st">"(Acc: </span><span class="sc">%f</span><span class="st">)"</span> <span class="op">%</span>(accuracy)</span>
+<span id="annotated-cell-20-48"><a href="#annotated-cell-20-48" aria-hidden="true" tabindex="-1"></a>            <span class="cf">except</span>:</span>
+<span id="annotated-cell-20-49"><a href="#annotated-cell-20-49" aria-hidden="true" tabindex="-1"></a>                <span class="cf">pass</span> <span class="co"># will be implemented later; no action                </span></span>
+<span id="annotated-cell-20-50"><a href="#annotated-cell-20-50" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="annotated-cell-20-51"><a href="#annotated-cell-20-51" aria-hidden="true" tabindex="-1"></a>            loss <span class="op">=</span> lossfun(outputLayer, Y_train)</span>
+<span id="annotated-cell-20-52"><a href="#annotated-cell-20-52" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">"Cost after iteration </span><span class="sc">%i</span><span class="st">: </span><span class="sc">%f</span><span class="st"> </span><span class="sc">%s</span><span class="st">"</span> <span class="op">%</span>(i, loss, accStr))</span>
+<span id="annotated-cell-20-53"><a href="#annotated-cell-20-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-20-54"><a href="#annotated-cell-20-54" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> weights</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-19" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-20" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-19" data-code-lines="27" data-code-annotation="1">Use the previously coded function to generate the weights</span>
+<span data-code-cell="annotated-cell-20" data-code-lines="27" data-code-annotation="1">Use the previously coded function to generate the weights</span>
 </dd>
-<dt data-target-cell="annotated-cell-19" data-target-annotation="2">2</dt>
+<dt data-target-cell="annotated-cell-20" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-19" data-code-lines="31,32" data-code-annotation="2">Forward propagation; the variable holding the network’s outputs should be called outputLayer</span>
+<span data-code-cell="annotated-cell-20" data-code-lines="31,32" data-code-annotation="2">Forward propagation; the variable holding the network’s outputs should be called outputLayer</span>
 </dd>
-<dt data-target-cell="annotated-cell-19" data-target-annotation="3">3</dt>
+<dt data-target-cell="annotated-cell-20" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="annotated-cell-19" data-code-lines="33" data-code-annotation="3">use the results to calculate the backward propagation</span>
+<span data-code-cell="annotated-cell-20" data-code-lines="33" data-code-annotation="3">use the results to calculate the backward propagation</span>
 </dd>
-<dt data-target-cell="annotated-cell-19" data-target-annotation="4">4</dt>
+<dt data-target-cell="annotated-cell-20" data-target-annotation="4">4</dt>
 <dd>
-<span data-code-cell="annotated-cell-19" data-code-lines="34,35" data-code-annotation="4">update the weights according to the results of the backward propagation</span>
+<span data-code-cell="annotated-cell-20" data-code-lines="34,35" data-code-annotation="4">update the weights according to the results of the backward propagation</span>
 </dd>
 </dl>
 </div>
@@ -1559,7 +1559,7 @@ Check the implementation for the network training
 <div id="callout-8" class="callout-8-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Run the following code snippet to check the implementation, if there is no error the implementation looks good.</p>
-<div id="8b8e8f71" class="cell" data-execution_count="17">
+<div id="e841fdee" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> actFunctionLinear <span class="co"># function used for hidden layer 1</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>f2 <span class="op">=</span> actFunctionLinear <span class="co"># function used for hidden layer 2</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>f3 <span class="op">=</span> actFunctionSigmoid <span class="co"># function used for output layer</span></span>
@@ -1602,7 +1602,7 @@ Reference implementation
 <div id="callout-9" class="callout-9-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>In the following we present a reference implementation. This should only be used in case somebody is stuck in the implementation.</p>
-<div id="909c107f" class="cell styled-output" data-execution_count="18">
+<div id="3329c974" class="cell styled-output" data-execution_count="18">
 <details class="code-fold">
 <summary>Code for initialization of the weights</summary>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> initialize_weights(nodes0, nodes1, nodes2, nodes3):</span>
@@ -1659,7 +1659,7 @@ Reference implementation
 <pre><code>Looks like the weights are implemented correct :)</code></pre>
 </div>
 </div>
-<div id="67b72531" class="cell styled-output" data-execution_count="19">
+<div id="0e01f0d0" class="cell styled-output" data-execution_count="19">
 <details class="code-fold">
 <summary>Code for definition of activation functions</summary>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> actFunctionLinear(x, derivative: <span class="bu">bool</span> <span class="op">=</span> <span class="va">False</span>):</span>
@@ -1691,7 +1691,7 @@ Reference implementation
 <span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> np.tanh(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="f85c9de4" class="cell styled-output" data-execution_count="20">
+<div id="6d915e50" class="cell styled-output" data-execution_count="20">
 <details class="code-fold">
 <summary>Code for definition of forward propagation</summary>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> forward_propagation(X, weights, f1, f2, f3):</span>
@@ -1760,7 +1760,7 @@ Reference implementation
 <pre><code>Looks like the forward propagation is working :)</code></pre>
 </div>
 </div>
-<div id="c9521757" class="cell styled-output" data-execution_count="21">
+<div id="a7aa4e9c" class="cell styled-output" data-execution_count="21">
 <details class="code-fold">
 <summary>Code for definition of backward propagation</summary>
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> backward_propagation(weights, cache, X, Y):</span>
@@ -1839,7 +1839,7 @@ Reference implementation
 <pre><code>Looks like backward propagation is working :)</code></pre>
 </div>
 </div>
-<div id="faecdc87" class="cell styled-output" data-execution_count="22">
+<div id="f57783f4" class="cell styled-output" data-execution_count="22">
 <details class="code-fold">
 <summary>Code for definition of updating the parameters</summary>
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> update_weights(weights, grads, learning_rate):</span>
@@ -1910,7 +1910,7 @@ Reference implementation
 <pre><code>Looks like the weights are updated correctly :)</code></pre>
 </div>
 </div>
-<div id="5229f42f" class="cell styled-output" data-execution_count="23">
+<div id="c0aa88f7" class="cell styled-output" data-execution_count="23">
 <details class="code-fold">
 <summary>Code for making a prediction</summary>
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> predict(weights, X, f1, f2, f3):</span>
@@ -1950,7 +1950,7 @@ Reference implementation
 <pre><code>Looks like prediction is working :)</code></pre>
 </div>
 </div>
-<div id="19929829" class="cell styled-output" data-execution_count="24">
+<div id="8ecc4b7c" class="cell styled-output" data-execution_count="24">
 <details class="code-fold">
 <summary>Code for making a loss function</summary>
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_loss(nn_output, Y):</span>
@@ -1978,87 +1978,87 @@ Reference implementation
 <pre><code>Looks like the loss function is working!</code></pre>
 </div>
 </div>
-<div id="9813b9fb" class="cell styled-output" data-execution_count="25">
+<div id="e1b5be1b" class="cell styled-output" data-execution_count="25">
 <details class="code-fold">
 <summary>Code for doing the network training</summary>
-<div class="sourceCode cell-code" id="annotated-cell-28"><pre class="sourceCode python code-annotation-code code-with-copy"><code class="sourceCode python"><span id="annotated-cell-28-1"><a href="#annotated-cell-28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> nn_model(X_train, Y_train, nodes0, nodes1, nodes2, nodes3, </span>
-<span id="annotated-cell-28-2"><a href="#annotated-cell-28-2" aria-hidden="true" tabindex="-1"></a>             f1, f2, f3, lossfun, learning_rate, predict, </span>
-<span id="annotated-cell-28-3"><a href="#annotated-cell-28-3" aria-hidden="true" tabindex="-1"></a>             num_iterations, print_cost<span class="op">=</span><span class="va">False</span>, X_test<span class="op">=</span><span class="va">None</span>, Y_test<span class="op">=</span><span class="va">None</span>):</span>
-<span id="annotated-cell-28-4"><a href="#annotated-cell-28-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="annotated-cell-28-5"><a href="#annotated-cell-28-5" aria-hidden="true" tabindex="-1"></a><span class="co">    Arguments:</span></span>
-<span id="annotated-cell-28-6"><a href="#annotated-cell-28-6" aria-hidden="true" tabindex="-1"></a><span class="co">    X_train -- training dataset of shape (2, number of examples)</span></span>
-<span id="annotated-cell-28-7"><a href="#annotated-cell-28-7" aria-hidden="true" tabindex="-1"></a><span class="co">    Y_train -- training labels of shape (1, number of examples)</span></span>
-<span id="annotated-cell-28-8"><a href="#annotated-cell-28-8" aria-hidden="true" tabindex="-1"></a><span class="co">    nodes_in -- size of the input layer</span></span>
-<span id="annotated-cell-28-9"><a href="#annotated-cell-28-9" aria-hidden="true" tabindex="-1"></a><span class="co">    nodes_h1 -- size of the first hidden layer</span></span>
-<span id="annotated-cell-28-10"><a href="#annotated-cell-28-10" aria-hidden="true" tabindex="-1"></a><span class="co">    nodes_h2 -- size of the second hidden layer</span></span>
-<span id="annotated-cell-28-11"><a href="#annotated-cell-28-11" aria-hidden="true" tabindex="-1"></a><span class="co">    nodes_out -- size of the input layer</span></span>
-<span id="annotated-cell-28-12"><a href="#annotated-cell-28-12" aria-hidden="true" tabindex="-1"></a><span class="co">    f1 -- activation function for the first layer</span></span>
-<span id="annotated-cell-28-13"><a href="#annotated-cell-28-13" aria-hidden="true" tabindex="-1"></a><span class="co">    f2 -- activation function for the second layer</span></span>
-<span id="annotated-cell-28-14"><a href="#annotated-cell-28-14" aria-hidden="true" tabindex="-1"></a><span class="co">    f3 -- activation function for the third layer</span></span>
-<span id="annotated-cell-28-15"><a href="#annotated-cell-28-15" aria-hidden="true" tabindex="-1"></a><span class="co">    num_iterations -- Number of iterations in gradient descent loop</span></span>
-<span id="annotated-cell-28-16"><a href="#annotated-cell-28-16" aria-hidden="true" tabindex="-1"></a><span class="co">    print_cost -- if True, print the cost every 1000 iterations</span></span>
-<span id="annotated-cell-28-17"><a href="#annotated-cell-28-17" aria-hidden="true" tabindex="-1"></a><span class="co">    X_test, Y_test -- test datasets; when set, accuracy is printed</span></span>
-<span id="annotated-cell-28-18"><a href="#annotated-cell-28-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-28-19"><a href="#annotated-cell-28-19" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
-<span id="annotated-cell-28-20"><a href="#annotated-cell-28-20" aria-hidden="true" tabindex="-1"></a><span class="co">    weights -- weights learnt by the model. </span></span>
-<span id="annotated-cell-28-21"><a href="#annotated-cell-28-21" aria-hidden="true" tabindex="-1"></a><span class="co">               They can then be used to predict.</span></span>
-<span id="annotated-cell-28-22"><a href="#annotated-cell-28-22" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="annotated-cell-28-23"><a href="#annotated-cell-28-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-28-24"><a href="#annotated-cell-28-24" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="annotated-cell-28-25"><a href="#annotated-cell-28-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Use the previously coded function to generate the weights</span></span>
-<span id="annotated-cell-28-26"><a href="#annotated-cell-28-26" aria-hidden="true" tabindex="-1"></a>    weights <span class="op">=</span> initialize_weights(nodes0, nodes1, nodes2, nodes3)</span>
-<span id="annotated-cell-28-27"><a href="#annotated-cell-28-27" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="annotated-cell-28-28"><a href="#annotated-cell-28-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Loop (training with gradient descent)</span></span>
-<span id="annotated-cell-28-29"><a href="#annotated-cell-28-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, num_iterations <span class="op">+</span> <span class="dv">1</span>):</span>
-<span id="annotated-cell-28-30"><a href="#annotated-cell-28-30" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 2. forward propagation; the variable holding the network's</span></span>
-<span id="annotated-cell-28-31"><a href="#annotated-cell-28-31" aria-hidden="true" tabindex="-1"></a>        <span class="co">#    outputs should be called outputLayer</span></span>
-<span id="annotated-cell-28-32"><a href="#annotated-cell-28-32" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 3. use the results to calculate the backward propagation</span></span>
-<span id="annotated-cell-28-33"><a href="#annotated-cell-28-33" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 4. update the weights according to the results of the</span></span>
-<span id="annotated-cell-28-34"><a href="#annotated-cell-28-34" aria-hidden="true" tabindex="-1"></a>        <span class="co">#    backward propagation</span></span>
-<span id="annotated-cell-28-35"><a href="#annotated-cell-28-35" aria-hidden="true" tabindex="-1"></a>        outputLayer, cache <span class="op">=</span> forward_propagation(X_train, weights, f1, f2, f3)</span>
-<span id="annotated-cell-28-36"><a href="#annotated-cell-28-36" aria-hidden="true" tabindex="-1"></a>        grads <span class="op">=</span> backward_propagation(weights, cache, X_train, Y_train)</span>
-<span id="annotated-cell-28-37"><a href="#annotated-cell-28-37" aria-hidden="true" tabindex="-1"></a>        weights <span class="op">=</span> update_weights(weights, grads, learning_rate)</span>
-<span id="annotated-cell-28-38"><a href="#annotated-cell-28-38" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Print the cost and accuracy every 500 iterations</span></span>
-<span id="annotated-cell-28-39"><a href="#annotated-cell-28-39" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> print_cost <span class="kw">and</span> i <span class="op">%</span> <span class="dv">500</span> <span class="op">==</span> <span class="dv">0</span>:      </span>
-<span id="annotated-cell-28-40"><a href="#annotated-cell-28-40" aria-hidden="true" tabindex="-1"></a>            accStr <span class="op">=</span> <span class="st">''</span></span>
-<span id="annotated-cell-28-41"><a href="#annotated-cell-28-41" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="annotated-cell-28-42"><a href="#annotated-cell-28-42" aria-hidden="true" tabindex="-1"></a>            <span class="cf">try</span>:</span>
-<span id="annotated-cell-28-43"><a href="#annotated-cell-28-43" aria-hidden="true" tabindex="-1"></a>                predictions <span class="op">=</span> predict(weights, X_test, f1, f2, f3)</span>
-<span id="annotated-cell-28-44"><a href="#annotated-cell-28-44" aria-hidden="true" tabindex="-1"></a>                </span>
-<span id="annotated-cell-28-45"><a href="#annotated-cell-28-45" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> (X_test <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>) <span class="kw">and</span> (Y_test <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span> ):</span>
-<span id="annotated-cell-28-46"><a href="#annotated-cell-28-46" aria-hidden="true" tabindex="-1"></a>                    accuracy <span class="op">=</span> accuracy_score(predictions.flatten(),</span>
-<span id="annotated-cell-28-47"><a href="#annotated-cell-28-47" aria-hidden="true" tabindex="-1"></a>                                              Y_test.flatten())</span>
-<span id="annotated-cell-28-48"><a href="#annotated-cell-28-48" aria-hidden="true" tabindex="-1"></a>                    accStr <span class="op">=</span> <span class="st">"(Acc: </span><span class="sc">%f</span><span class="st">)"</span> <span class="op">%</span>(accuracy)</span>
-<span id="annotated-cell-28-49"><a href="#annotated-cell-28-49" aria-hidden="true" tabindex="-1"></a>            <span class="cf">except</span>:</span>
-<span id="annotated-cell-28-50"><a href="#annotated-cell-28-50" aria-hidden="true" tabindex="-1"></a>                <span class="cf">pass</span> <span class="co"># will be implemented later; no action                </span></span>
-<span id="annotated-cell-28-51"><a href="#annotated-cell-28-51" aria-hidden="true" tabindex="-1"></a>                </span>
-<span id="annotated-cell-28-52"><a href="#annotated-cell-28-52" aria-hidden="true" tabindex="-1"></a>            loss <span class="op">=</span> lossfun(outputLayer, Y_train)</span>
-<span id="annotated-cell-28-53"><a href="#annotated-cell-28-53" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">"Cost after iteration </span><span class="sc">%i</span><span class="st">: </span><span class="sc">%f</span><span class="st"> </span><span class="sc">%s</span><span class="st">"</span> <span class="op">%</span>(i, loss, accStr))</span>
-<span id="annotated-cell-28-54"><a href="#annotated-cell-28-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-28-55"><a href="#annotated-cell-28-55" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> weights</span>
-<span id="annotated-cell-28-56"><a href="#annotated-cell-28-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-28-57"><a href="#annotated-cell-28-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-28-58"><a href="#annotated-cell-28-58" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> actFunctionLinear <span class="co"># function used for hidden layer 1</span></span>
-<span id="annotated-cell-28-59"><a href="#annotated-cell-28-59" aria-hidden="true" tabindex="-1"></a>f2 <span class="op">=</span> actFunctionLinear <span class="co"># function used for hidden layer 2</span></span>
-<span id="annotated-cell-28-60"><a href="#annotated-cell-28-60" aria-hidden="true" tabindex="-1"></a>f3 <span class="op">=</span> actFunctionSigmoid <span class="co"># function used for output layer</span></span>
-<span id="annotated-cell-28-61"><a href="#annotated-cell-28-61" aria-hidden="true" tabindex="-1"></a>loss_fun <span class="op">=</span> compute_loss</span>
-<span id="annotated-cell-28-62"><a href="#annotated-cell-28-62" aria-hidden="true" tabindex="-1"></a>predict_fun <span class="op">=</span> predict</span>
-<span id="annotated-cell-28-63"><a href="#annotated-cell-28-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-28-64"><a href="#annotated-cell-28-64" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>) <span class="co"># Make sure to have a reproducible result</span></span>
-<span id="annotated-cell-28-65"><a href="#annotated-cell-28-65" aria-hidden="true" tabindex="-1"></a>X, Y <span class="op">=</span> generate_dataset(<span class="st">"blobs"</span>, <span class="dv">1000</span>, <span class="fl">0.4</span>, <span class="va">False</span>)</span>
-<span id="annotated-cell-28-66"><a href="#annotated-cell-28-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-28-67"><a href="#annotated-cell-28-67" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>) <span class="co"># Make sure to have a reproducible result</span></span>
-<span id="annotated-cell-28-68"><a href="#annotated-cell-28-68" aria-hidden="true" tabindex="-1"></a>weights <span class="op">=</span> nn_model(X, Y, <span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">1</span>, f1, f2, f3, loss_fun, </span>
-<span id="annotated-cell-28-69"><a href="#annotated-cell-28-69" aria-hidden="true" tabindex="-1"></a>                   <span class="fl">0.05</span>, predict_fun, <span class="dv">1000</span>)</span>
-<span id="annotated-cell-28-70"><a href="#annotated-cell-28-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-28-71"><a href="#annotated-cell-28-71" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> np.array([np.mean(weights[<span class="st">"A1"</span>]), np.mean(weights[<span class="st">"A2"</span>]),</span>
-<span id="annotated-cell-28-72"><a href="#annotated-cell-28-72" aria-hidden="true" tabindex="-1"></a>                   np.mean(weights[<span class="st">"A3"</span>]), np.mean(weights[<span class="st">"b1"</span>]),</span>
-<span id="annotated-cell-28-73"><a href="#annotated-cell-28-73" aria-hidden="true" tabindex="-1"></a>                   np.mean(weights[<span class="st">"b2"</span>]), np.mean(weights[<span class="st">"b3"</span>])])</span>
-<span id="annotated-cell-28-74"><a href="#annotated-cell-28-74" aria-hidden="true" tabindex="-1"></a>reference <span class="op">=</span> np.array([<span class="fl">0.28620967900953265</span>, <span class="op">-</span><span class="fl">0.13481751949641932</span>,</span>
-<span id="annotated-cell-28-75"><a href="#annotated-cell-28-75" aria-hidden="true" tabindex="-1"></a>                     <span class="op">-</span><span class="fl">0.4163217207836666</span>, <span class="fl">0.014763485056667431</span>,</span>
-<span id="annotated-cell-28-76"><a href="#annotated-cell-28-76" aria-hidden="true" tabindex="-1"></a>                     <span class="op">-</span><span class="fl">0.1323179529728214</span>, <span class="fl">0.33857324167613034</span>])</span>
-<span id="annotated-cell-28-77"><a href="#annotated-cell-28-77" aria-hidden="true" tabindex="-1"></a>np.testing.assert_allclose(result, reference)</span>
-<span id="annotated-cell-28-78"><a href="#annotated-cell-28-78" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Looks like the network training is working :)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="annotated-cell-29"><pre class="sourceCode python code-annotation-code code-with-copy"><code class="sourceCode python"><span id="annotated-cell-29-1"><a href="#annotated-cell-29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> nn_model(X_train, Y_train, nodes0, nodes1, nodes2, nodes3, </span>
+<span id="annotated-cell-29-2"><a href="#annotated-cell-29-2" aria-hidden="true" tabindex="-1"></a>             f1, f2, f3, lossfun, learning_rate, predict, </span>
+<span id="annotated-cell-29-3"><a href="#annotated-cell-29-3" aria-hidden="true" tabindex="-1"></a>             num_iterations, print_cost<span class="op">=</span><span class="va">False</span>, X_test<span class="op">=</span><span class="va">None</span>, Y_test<span class="op">=</span><span class="va">None</span>):</span>
+<span id="annotated-cell-29-4"><a href="#annotated-cell-29-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="annotated-cell-29-5"><a href="#annotated-cell-29-5" aria-hidden="true" tabindex="-1"></a><span class="co">    Arguments:</span></span>
+<span id="annotated-cell-29-6"><a href="#annotated-cell-29-6" aria-hidden="true" tabindex="-1"></a><span class="co">    X_train -- training dataset of shape (2, number of examples)</span></span>
+<span id="annotated-cell-29-7"><a href="#annotated-cell-29-7" aria-hidden="true" tabindex="-1"></a><span class="co">    Y_train -- training labels of shape (1, number of examples)</span></span>
+<span id="annotated-cell-29-8"><a href="#annotated-cell-29-8" aria-hidden="true" tabindex="-1"></a><span class="co">    nodes_in -- size of the input layer</span></span>
+<span id="annotated-cell-29-9"><a href="#annotated-cell-29-9" aria-hidden="true" tabindex="-1"></a><span class="co">    nodes_h1 -- size of the first hidden layer</span></span>
+<span id="annotated-cell-29-10"><a href="#annotated-cell-29-10" aria-hidden="true" tabindex="-1"></a><span class="co">    nodes_h2 -- size of the second hidden layer</span></span>
+<span id="annotated-cell-29-11"><a href="#annotated-cell-29-11" aria-hidden="true" tabindex="-1"></a><span class="co">    nodes_out -- size of the input layer</span></span>
+<span id="annotated-cell-29-12"><a href="#annotated-cell-29-12" aria-hidden="true" tabindex="-1"></a><span class="co">    f1 -- activation function for the first layer</span></span>
+<span id="annotated-cell-29-13"><a href="#annotated-cell-29-13" aria-hidden="true" tabindex="-1"></a><span class="co">    f2 -- activation function for the second layer</span></span>
+<span id="annotated-cell-29-14"><a href="#annotated-cell-29-14" aria-hidden="true" tabindex="-1"></a><span class="co">    f3 -- activation function for the third layer</span></span>
+<span id="annotated-cell-29-15"><a href="#annotated-cell-29-15" aria-hidden="true" tabindex="-1"></a><span class="co">    num_iterations -- Number of iterations in gradient descent loop</span></span>
+<span id="annotated-cell-29-16"><a href="#annotated-cell-29-16" aria-hidden="true" tabindex="-1"></a><span class="co">    print_cost -- if True, print the cost every 1000 iterations</span></span>
+<span id="annotated-cell-29-17"><a href="#annotated-cell-29-17" aria-hidden="true" tabindex="-1"></a><span class="co">    X_test, Y_test -- test datasets; when set, accuracy is printed</span></span>
+<span id="annotated-cell-29-18"><a href="#annotated-cell-29-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-29-19"><a href="#annotated-cell-29-19" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="annotated-cell-29-20"><a href="#annotated-cell-29-20" aria-hidden="true" tabindex="-1"></a><span class="co">    weights -- weights learnt by the model. </span></span>
+<span id="annotated-cell-29-21"><a href="#annotated-cell-29-21" aria-hidden="true" tabindex="-1"></a><span class="co">               They can then be used to predict.</span></span>
+<span id="annotated-cell-29-22"><a href="#annotated-cell-29-22" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="annotated-cell-29-23"><a href="#annotated-cell-29-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-29-24"><a href="#annotated-cell-29-24" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="annotated-cell-29-25"><a href="#annotated-cell-29-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Use the previously coded function to generate the weights</span></span>
+<span id="annotated-cell-29-26"><a href="#annotated-cell-29-26" aria-hidden="true" tabindex="-1"></a>    weights <span class="op">=</span> initialize_weights(nodes0, nodes1, nodes2, nodes3)</span>
+<span id="annotated-cell-29-27"><a href="#annotated-cell-29-27" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="annotated-cell-29-28"><a href="#annotated-cell-29-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Loop (training with gradient descent)</span></span>
+<span id="annotated-cell-29-29"><a href="#annotated-cell-29-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, num_iterations <span class="op">+</span> <span class="dv">1</span>):</span>
+<span id="annotated-cell-29-30"><a href="#annotated-cell-29-30" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 2. forward propagation; the variable holding the network's</span></span>
+<span id="annotated-cell-29-31"><a href="#annotated-cell-29-31" aria-hidden="true" tabindex="-1"></a>        <span class="co">#    outputs should be called outputLayer</span></span>
+<span id="annotated-cell-29-32"><a href="#annotated-cell-29-32" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 3. use the results to calculate the backward propagation</span></span>
+<span id="annotated-cell-29-33"><a href="#annotated-cell-29-33" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 4. update the weights according to the results of the</span></span>
+<span id="annotated-cell-29-34"><a href="#annotated-cell-29-34" aria-hidden="true" tabindex="-1"></a>        <span class="co">#    backward propagation</span></span>
+<span id="annotated-cell-29-35"><a href="#annotated-cell-29-35" aria-hidden="true" tabindex="-1"></a>        outputLayer, cache <span class="op">=</span> forward_propagation(X_train, weights, f1, f2, f3)</span>
+<span id="annotated-cell-29-36"><a href="#annotated-cell-29-36" aria-hidden="true" tabindex="-1"></a>        grads <span class="op">=</span> backward_propagation(weights, cache, X_train, Y_train)</span>
+<span id="annotated-cell-29-37"><a href="#annotated-cell-29-37" aria-hidden="true" tabindex="-1"></a>        weights <span class="op">=</span> update_weights(weights, grads, learning_rate)</span>
+<span id="annotated-cell-29-38"><a href="#annotated-cell-29-38" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Print the cost and accuracy every 500 iterations</span></span>
+<span id="annotated-cell-29-39"><a href="#annotated-cell-29-39" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> print_cost <span class="kw">and</span> i <span class="op">%</span> <span class="dv">500</span> <span class="op">==</span> <span class="dv">0</span>:      </span>
+<span id="annotated-cell-29-40"><a href="#annotated-cell-29-40" aria-hidden="true" tabindex="-1"></a>            accStr <span class="op">=</span> <span class="st">''</span></span>
+<span id="annotated-cell-29-41"><a href="#annotated-cell-29-41" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="annotated-cell-29-42"><a href="#annotated-cell-29-42" aria-hidden="true" tabindex="-1"></a>            <span class="cf">try</span>:</span>
+<span id="annotated-cell-29-43"><a href="#annotated-cell-29-43" aria-hidden="true" tabindex="-1"></a>                predictions <span class="op">=</span> predict(weights, X_test, f1, f2, f3)</span>
+<span id="annotated-cell-29-44"><a href="#annotated-cell-29-44" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="annotated-cell-29-45"><a href="#annotated-cell-29-45" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> (X_test <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>) <span class="kw">and</span> (Y_test <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span> ):</span>
+<span id="annotated-cell-29-46"><a href="#annotated-cell-29-46" aria-hidden="true" tabindex="-1"></a>                    accuracy <span class="op">=</span> accuracy_score(predictions.flatten(),</span>
+<span id="annotated-cell-29-47"><a href="#annotated-cell-29-47" aria-hidden="true" tabindex="-1"></a>                                              Y_test.flatten())</span>
+<span id="annotated-cell-29-48"><a href="#annotated-cell-29-48" aria-hidden="true" tabindex="-1"></a>                    accStr <span class="op">=</span> <span class="st">"(Acc: </span><span class="sc">%f</span><span class="st">)"</span> <span class="op">%</span>(accuracy)</span>
+<span id="annotated-cell-29-49"><a href="#annotated-cell-29-49" aria-hidden="true" tabindex="-1"></a>            <span class="cf">except</span>:</span>
+<span id="annotated-cell-29-50"><a href="#annotated-cell-29-50" aria-hidden="true" tabindex="-1"></a>                <span class="cf">pass</span> <span class="co"># will be implemented later; no action                </span></span>
+<span id="annotated-cell-29-51"><a href="#annotated-cell-29-51" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="annotated-cell-29-52"><a href="#annotated-cell-29-52" aria-hidden="true" tabindex="-1"></a>            loss <span class="op">=</span> lossfun(outputLayer, Y_train)</span>
+<span id="annotated-cell-29-53"><a href="#annotated-cell-29-53" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">"Cost after iteration </span><span class="sc">%i</span><span class="st">: </span><span class="sc">%f</span><span class="st"> </span><span class="sc">%s</span><span class="st">"</span> <span class="op">%</span>(i, loss, accStr))</span>
+<span id="annotated-cell-29-54"><a href="#annotated-cell-29-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-29-55"><a href="#annotated-cell-29-55" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> weights</span>
+<span id="annotated-cell-29-56"><a href="#annotated-cell-29-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-29-57"><a href="#annotated-cell-29-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-29-58"><a href="#annotated-cell-29-58" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> actFunctionLinear <span class="co"># function used for hidden layer 1</span></span>
+<span id="annotated-cell-29-59"><a href="#annotated-cell-29-59" aria-hidden="true" tabindex="-1"></a>f2 <span class="op">=</span> actFunctionLinear <span class="co"># function used for hidden layer 2</span></span>
+<span id="annotated-cell-29-60"><a href="#annotated-cell-29-60" aria-hidden="true" tabindex="-1"></a>f3 <span class="op">=</span> actFunctionSigmoid <span class="co"># function used for output layer</span></span>
+<span id="annotated-cell-29-61"><a href="#annotated-cell-29-61" aria-hidden="true" tabindex="-1"></a>loss_fun <span class="op">=</span> compute_loss</span>
+<span id="annotated-cell-29-62"><a href="#annotated-cell-29-62" aria-hidden="true" tabindex="-1"></a>predict_fun <span class="op">=</span> predict</span>
+<span id="annotated-cell-29-63"><a href="#annotated-cell-29-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-29-64"><a href="#annotated-cell-29-64" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>) <span class="co"># Make sure to have a reproducible result</span></span>
+<span id="annotated-cell-29-65"><a href="#annotated-cell-29-65" aria-hidden="true" tabindex="-1"></a>X, Y <span class="op">=</span> generate_dataset(<span class="st">"blobs"</span>, <span class="dv">1000</span>, <span class="fl">0.4</span>, <span class="va">False</span>)</span>
+<span id="annotated-cell-29-66"><a href="#annotated-cell-29-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-29-67"><a href="#annotated-cell-29-67" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>) <span class="co"># Make sure to have a reproducible result</span></span>
+<span id="annotated-cell-29-68"><a href="#annotated-cell-29-68" aria-hidden="true" tabindex="-1"></a>weights <span class="op">=</span> nn_model(X, Y, <span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">1</span>, f1, f2, f3, loss_fun, </span>
+<span id="annotated-cell-29-69"><a href="#annotated-cell-29-69" aria-hidden="true" tabindex="-1"></a>                   <span class="fl">0.05</span>, predict_fun, <span class="dv">1000</span>)</span>
+<span id="annotated-cell-29-70"><a href="#annotated-cell-29-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-29-71"><a href="#annotated-cell-29-71" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> np.array([np.mean(weights[<span class="st">"A1"</span>]), np.mean(weights[<span class="st">"A2"</span>]),</span>
+<span id="annotated-cell-29-72"><a href="#annotated-cell-29-72" aria-hidden="true" tabindex="-1"></a>                   np.mean(weights[<span class="st">"A3"</span>]), np.mean(weights[<span class="st">"b1"</span>]),</span>
+<span id="annotated-cell-29-73"><a href="#annotated-cell-29-73" aria-hidden="true" tabindex="-1"></a>                   np.mean(weights[<span class="st">"b2"</span>]), np.mean(weights[<span class="st">"b3"</span>])])</span>
+<span id="annotated-cell-29-74"><a href="#annotated-cell-29-74" aria-hidden="true" tabindex="-1"></a>reference <span class="op">=</span> np.array([<span class="fl">0.28620967900953265</span>, <span class="op">-</span><span class="fl">0.13481751949641932</span>,</span>
+<span id="annotated-cell-29-75"><a href="#annotated-cell-29-75" aria-hidden="true" tabindex="-1"></a>                     <span class="op">-</span><span class="fl">0.4163217207836666</span>, <span class="fl">0.014763485056667431</span>,</span>
+<span id="annotated-cell-29-76"><a href="#annotated-cell-29-76" aria-hidden="true" tabindex="-1"></a>                     <span class="op">-</span><span class="fl">0.1323179529728214</span>, <span class="fl">0.33857324167613034</span>])</span>
+<span id="annotated-cell-29-77"><a href="#annotated-cell-29-77" aria-hidden="true" tabindex="-1"></a>np.testing.assert_allclose(result, reference)</span>
+<span id="annotated-cell-29-78"><a href="#annotated-cell-29-78" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Looks like the network training is working :)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Looks like the network training is working :)</code></pre>
@@ -2068,7 +2068,7 @@ Reference implementation
 </div>
 </div>
 <p>First we define some training settings.</p>
-<div id="c669885a" class="cell styled-output" data-execution_count="26">
+<div id="9cc2e80e" class="cell styled-output" data-execution_count="26">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>datasetName <span class="op">=</span> <span class="st">'flower'</span> <span class="co"># see function generateDataset()</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>nrSamplePoints <span class="op">=</span> <span class="dv">1000</span></span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>noise_factor <span class="op">=</span> <span class="fl">0.1</span></span>
@@ -2083,7 +2083,7 @@ Reference implementation
 <span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>nrIterations <span class="op">=</span> <span class="dv">10000</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The next part is not to be modified. We define the required functions and the dataset.</p>
-<div id="aec1a19a" class="cell styled-output" data-execution_count="27">
+<div id="432f4169" class="cell styled-output" data-execution_count="27">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># do not change the following settings</span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>f3 <span class="op">=</span> actFunctionSigmoid</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>nodes0 <span class="op">=</span> <span class="dv">2</span> <span class="co"># nr of nodes of the input layer</span></span>
@@ -2099,7 +2099,7 @@ Reference implementation
 <span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>y_test <span class="op">=</span> y_test.T</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now, we have liberty in the dimension of the hidden nodes.</p>
-<div id="7d6e95a5" class="cell styled-output" data-execution_count="28">
+<div id="b9426067" class="cell styled-output" data-execution_count="28">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>nodes1 <span class="op">=</span> <span class="dv">15</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>nodes2 <span class="op">=</span> <span class="dv">10</span></span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -2107,10 +2107,8 @@ Reference implementation
 <span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>weights <span class="op">=</span> nn_model(X_train, y_train, nodes0, nodes1, nodes2, nodes3,</span>
 <span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>                   f1, f2, f3, loss_fun, learning_rate, predict_fun,</span>
 <span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>                   nrIterations, <span class="va">True</span>, X_test, y_test)</span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>plot_decision_boundary(<span class="kw">lambda</span> x: predict(weights, x.T, f1, f2, f3),</span>
-<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>                       X_train, y_train)</span>
-<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> predict(weights, X_test, f1, f2, f3)</span>
-<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>accuracy <span class="op">=</span> accuracy_score(predictions.flatten(), y_test.flatten())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> predict(weights, X_test, f1, f2, f3)</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>accuracy <span class="op">=</span> accuracy_score(predictions.flatten(), y_test.flatten())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Cost after iteration 500: 0.240941 (Acc: 0.895000)
 Cost after iteration 1000: 0.184200 (Acc: 0.895000)
@@ -2133,10 +2131,24 @@ Cost after iteration 9000: 0.162991 (Acc: 0.880000)
 Cost after iteration 9500: 0.162671 (Acc: 0.880000)
 Cost after iteration 10000: 0.162360 (Acc: 0.870000)</code></pre>
 </div>
+</div>
+<div id="cell-fig-appendices-nnfs-final-classification" class="cell" data-execution_count="29">
+<details class="code-fold">
+<summary>Click to see the code for the figure</summary>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>plot_decision_boundary(<span class="kw">lambda</span> x: predict(weights, x.T, f1, f2, f3),</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>                       X_train, y_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><a href="nn_from_scratch_files/figure-html/cell-29-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="nn_from_scratch_files/figure-html/cell-29-output-2.png" width="600" height="429" class="figure-img"></a></p>
+<div id="fig-appendices-nnfs-final-classification" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-appendices-nnfs-final-classification-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="nn_from_scratch_files/figure-html/fig-appendices-nnfs-final-classification-output-1.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Figure&nbsp;C.4: Performance of our model."><img src="nn_from_scratch_files/figure-html/fig-appendices-nnfs-final-classification-output-1.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-appendices-nnfs-final-classification-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;C.4: Performance of our model.
+</figcaption>
 </figure>
 </div>
 </div>
