@@ -554,7 +554,7 @@ It is also possible to export the model in the ONNX format, see @sec-data-model-
 
 [^lightning]: Install it via `pdm add lightning`.
 
-## Backward Propagation of Error - Backpropagation
+## Backward Propagation of Error - Backpropagation {#sec-nn-nn-backprop}
 
 Our first NN is a success, but how did it learn the necessary parameters to perform its task? 
 
