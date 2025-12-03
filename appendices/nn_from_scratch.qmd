@@ -766,7 +766,9 @@ Run the following code snippet to check the implementation, if there is no error
 f1 = actFunctionLinear # function used for hidden layer 1
 f2 = actFunctionLinear # function used for hidden layer 2
 f3 = actFunctionSigmoid # function used for output layer
+np.random.seed(42) # Make sure to have a reproducible result
 X, Y = generate_dataset("blobs", 1000, 0.5, True)
+np.random.seed(42) # Make sure to have a reproducible result
 weights = initialize_weights(2, 8, 5, 1)
 p = predict(weights, X, f1, f2, f3)
 np.testing.assert_allclose(np.sum(p), 645)
@@ -817,7 +819,9 @@ Run the following code snippet to check the implementation, if there is no error
 f1 = actFunctionLinear # function used for hidden layer 1
 f2 = actFunctionLinear # function used for hidden layer 2
 f3 = actFunctionSigmoid # function used for output layer
+np.random.seed(42) # Make sure to have a reproducible result
 X, Y = generate_dataset("blobs", 1000, 0.5, True)
+np.random.seed(42) # Make sure to have a reproducible result
 weights = initialize_weights(2, 8, 5, 1)
 outputLayer, cache = forward_propagation(X, weights, f1, f2, f3)
 result = compute_loss(outputLayer, Y)
@@ -864,10 +868,7 @@ def nn_model(X_train, Y_train, nodes0, nodes1, nodes2, nodes3,
     Returns:
     weights -- weights learnt by the model. 
                They can then be used to predict.
-    """
-
-    np.random.seed(42 if DISABLE_RANDOM_SEED else None)    
-    
+    """    
     # Use the previously coded function to generate the weights
     weights = # <1>
     
@@ -918,7 +919,9 @@ f2 = actFunctionLinear # function used for hidden layer 2
 f3 = actFunctionSigmoid # function used for output layer
 loss_fun = compute_loss
 predict_fun = predict
+np.random.seed(42) # Make sure to have a reproducible result
 X, Y = generate_dataset("blobs", 1000, 0.4, False)
+np.random.seed(42) # Make sure to have a reproducible result
 weights = nn_model(X, Y, 2, 5, 5, 1, f1, f2, f3, loss_fun, 
                    0.05, predict_fun, 1000)
 
