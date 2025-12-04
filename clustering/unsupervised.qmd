@@ -742,7 +742,7 @@ We load the dataset and look at its description
 #| output: false
 from sklearn.datasets import fetch_openml
 
-mnist = fetch_openml('mnist_784', as_frame=False)
+mnist = fetch_openml(data_id=554, as_frame=False)
 print(mnist.DESCR)
 ```
 ::: {.content-visible when-format="html"}
@@ -775,7 +775,7 @@ from sklearn.datasets import fetch_openml
 import matplotlib.pyplot as plt
 %config InlineBackend.figure_formats = ["svg"]
 
-mnist = fetch_openml('mnist_784', as_frame=False)
+mnist = fetch_openml(data_id=554, as_frame=False)
 
 im = np.zeros((10 * 28, 10 * 28), int)
 for i in range(10):

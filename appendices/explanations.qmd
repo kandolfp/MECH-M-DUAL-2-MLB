@@ -153,7 +153,7 @@ from sklearn.datasets import fetch_openml
 from sklearn.linear_model import SGDClassifier
 np.random.seed(6020)
 
-mnist = fetch_openml('mnist_784', as_frame=False)
+mnist = fetch_openml(data_id=554, as_frame=False)
 
 X_train, X_test = mnist.data[:60000], mnist.data[60000:]
 y_train, y_test = mnist.target[:60000], mnist.target[60000:]
