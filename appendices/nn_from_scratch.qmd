@@ -4,7 +4,7 @@ In this section we are going to write a small neural network from scratch.
 We use all of the information provided in the according part of this lecture, see @sec-nn-nn but we will give links where appropriate.
 
 ::: {.callout-important}
-This section is based on a similar introduction by Gregor Ehrensperger that we generously allowed the authors as a basis.
+This section is based on a similar introduction by Gregor Ehrensperger that he generously provided the authors as a basis.
 :::
 
 A jupyter notebook is available for a convenient implementation of the following parts. 
