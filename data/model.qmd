@@ -132,7 +132,7 @@ print(f"We have a train_score of {score} for the recovered model.")
 #| echo: false
 %%bash
 # Code to remove above files
-rm model.onnxfory
+rm model.onnx
 ```
 As we can see, the score is actually better than before, which is odd and definitely not intended. 
 
