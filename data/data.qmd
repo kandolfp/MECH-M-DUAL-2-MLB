@@ -36,7 +36,7 @@ Separating these tasks has some advantages.
 1. Depending on our use-case we can extend this list.
 
 We illustrate this task in the context of our example project.
-This means, instead of directly using `catData_w.mat` we start of from the _raw_ data `catData.mat`, see [b097ba6](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/b097ba6cba3e150eb1587ce62b861ed91d866b76) for the implementation details.
+This means that, instead of directly using `catData_w.mat` we start of from the _raw_ data `catData.mat`, see [b097ba6](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/b097ba6cba3e150eb1587ce62b861ed91d866b76) for the implementation details.
 
 We introduce a new module called `etl` with three files plus the module file to accomplish this task. 
 
@@ -56,16 +56,16 @@ Now a simple call to `etl.load("catData_w.mat")` will run the following chain:
 
 1. If the file does not exist:
     a. **extract**:
-        - access `catData.mat` and extract the content as a `np.array`
+        - access `catData.mat` and extract the content as an `np.array`
     b. **transform**:
         - transform the image in the same fashion as described in @sec-appendix-dvc 
         - store the data in the `.mat` format in `catData_w.mat`
 1. **load**:
-    - return the content as a `np.array
+    - return the content as an `np.array
 
 We try to only store the processed data and not the _raw_ data itself, as this would be a duplication. 
 In this case, we therefore do not store `catData.mat` locally but just the _final_ result.
-Depending on your ETL you might build up a buffer _locally_ to optimize processing time over access time. 
+Depending on your ETL, you might build up a buffer _locally_ to optimize processing time over access time. 
 
 ::: {.callout-note}
 
@@ -74,10 +74,10 @@ Depending on your ETL you might build up a buffer _locally_ to optimize processi
 While for image processing, computational resources are often called out as _the bottleneck_, the influence of storage and the correct structure of data should not be ignored.
 
 Modern GPU architectures are designed for high data throughput.
-This comes with the drawback that we need to provide the data as quickly as it gets processed.
+This comes with the drawback that we need to provide the data as quickly as it is processed.
 Consequently, a high throughput for storage is required or the performance is not optimal.
 
-Note: as `dvc` uses a cache and links the data, this means the performance of the cache location is important. 
+Note: As `dvc` uses a cache and links the data, this means the performance of the cache location is important. 
 :::
 
 ::: {.callout-caution appearance="simple" icon=false}
@@ -111,10 +111,9 @@ To get more into image processing extend the ETL with the following steps:
 
 1. Extend the transformation capabilities to allow an image as input.
 
-1. Extend the store capabilities to store the transformed images in an appropriate image format.
+1. Extend the storage capabilities to store the transformed images in an appropriate image format.
 
-
-1. Extend the load capabilities to only specify a folder (in our case `data/raw`), and the classes, as well as the test and training sets, are generated automatically from these files.
+1. Extend the load capabilities so that only a folder needs to be specified (in our case `data/raw`), and the classes, as well as the test and training sets, are generated automatically from these files.
 
 ::::
 :::
@@ -128,6 +127,6 @@ To get more into image processing extend the ETL with the following steps:
 **Optional**: If we rerun our training, we can see that the results change slightly.
 Find out what has changed.
 
-Note: This is not optimal but the upside is we control the ETL so we can actually make sure that a new image is processed in the same fashion and we do not need to ask the authors of @Brunton2022 to help us out.
+Note: This is not optimal, but the upside is we control the ETL so we can actually make sure that a new image is processed in the same fashion and we do not need to ask the authors of @Brunton2022 to help us out.
 ::::
 :::

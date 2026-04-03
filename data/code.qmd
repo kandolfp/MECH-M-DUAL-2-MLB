@@ -1,10 +1,10 @@
 # Code persistence {#sec-data-repro}
 
-When talking about storing the model we quickly realise that there is more to this task than simply calling `pickle.dump`.
+, we quickly realise that there is more to this task than simply calling `pickle.dump`.
 The same is true for persisting the model, data, and code together. 
 
 Luckily, we already have the perfect tool for controlling the code in use, `git`[^git].
-We can make sure to commit our source files and when using a proper package manager like `pdm`[^pdm] we can hope to reproduce our environment for the formats that require these features. 
+We can make sure to commit our source files and, when using a proper package manager like `pdm`[^pdm] we can hope to reproduce our environment for the formats that require these features. 
 
 To illustrate this, we move the code from @lst-data-mp-toyexample into a project.
 In this process we move from the dense script to a proper file structure by splitting up the source script into several parts.
@@ -19,14 +19,14 @@ Please use it as reference and move along the corresponding commit SHAs to see c
 
 This also means some of the code included below is not interactively created but static with regard to the execution time and state. 
 
-To emphasise that we are in the context of this reference repository the prompt for the terminal will always start with `MLB-DATA$`.
+To emphasise that we are in the context of this reference repository, the prompt for the terminal will always start with `MLB-DATA$`.
 
-The code is called with respect to the root director of the project as seen in the next output block.
+The code is called with respect to the root directory of the project as seen in the next output block.
 
 If you decide not to write your own code but rather use the reference repository for the following exercise, it is advisable to implement the exercise at the same SHA mentioned prior to the exercise, in order to avoid getting ahead of yourself.
 :::
 
-After the redesign we get a structure looking something like the following, see [`22788a6`](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/22788a608b76d0b3180728c36c0351cc531b1def) for reference and file content:
+After the redesign, we get a structure looking something like the following, see [`22788a6`](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/22788a608b76d0b3180728c36c0351cc531b1def) for reference and file content:
 
 ```{.bash}
 MLB-DATA$ tree
@@ -72,16 +72,16 @@ INFO:root: We have a hard voting score of 0.8
 ```
 
 Now we can start connecting the model and the code.
-Our model was created at commit [`22788a6`](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/22788a608b76d0b3180728c36c0351cc531b1def) and stored into the directory `model`.
+Our model was created at commit [`22788a6`](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/22788a608b76d0b3180728c36c0351cc531b1def) and stored in the directory `model`.
 
 Now there are several things we can do to make sure this is reflected within our little project.
 
 1. We can share experiments and models with other people and they can reproduce them.
-1. Make the convention to never train and store an experiment for later use as long as we have uncommitted changes in our code (easier said than done).
+1. Establish the convention to never train and store an experiment for later use as long as we have uncommitted changes in our code (easier said than done).
 1. Make sure to note somewhere what commit SHA is the current HEAD when storing the model.
-This allows us to reproduce it in case of data corruption or loss and for comparison with other models. 
-1. When running inference we can check for the commit SHA and switch to it in case the project dependencies have changed and we get problems loading the file. 
-1. Every time we change a parameter, we get a new commit, which is not very nice for our code but can be used to note the intend of the experiment in the commit message.
+This allows us to reproduce it in case of data corruption or loss, and for comparison with other models. 
+1. When running inference, we can check for the commit SHA and switch to it in case the project dependencies have changed and we encounter problems loading the file. 
+1. Every time we change a parameter, we get a new commit, which is not very nice for our code but can be used to note the intent of the experiment in the commit message.
 
 This is rather cumbersome and requires a lot of discipline, it will also become tricky if several people work on the same project and run experiments with different parameters. 
 
@@ -142,7 +142,7 @@ SVC:
 
 We can use the Python package [`omegaconf`](https://omegaconf.readthedocs.io/en/2.3_branch/) to load and use it.
 
-One feature of the `OmegaConf`class is that we can use _unpacking_[^docs] and therefore write a line like:
+One feature of the `OmegaConf` class is that we can use _unpacking_[^docs] and therefore write a line like:
 
 ```{.python}
 PCA(**params["PCA"].init_args)
@@ -150,7 +150,7 @@ PCA(**params["PCA"].init_args)
 
 dramatically simplifying our code.
 Have a look at commit [9f7dead](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/9f7dead95663d9cef7a7cc21ec8133b03acb650c) to see this implemented and in action.
-As a our default parameter template we include the above parameters as `params.yaml` in the main directory of our project.
+As our default parameter template we include the above parameters as `params.yaml` in the main directory of our project.
 
 
 ::: {.callout-caution appearance="simple" icon=false}
@@ -184,7 +184,7 @@ Now that the config is externalized we can continue on our quest to persist all 
 Our model depends on the code, the configuration, but crucially also on the input data itself.
 In order to make sure that we can reliably reproduce a model we also need to make sure our data is reproducible. 
 
-In our reference project we use some files from GitHub (see @Brunton2022 for as reference) but let us still make sure they are tracked within our system. 
+In our reference project we use some files from GitHub (see @Brunton2022 as a reference) but let us still make sure they are tracked within our system. 
 
 ::: {.callout-important}
 We use a simple tool for the next paragraphs to illustrate the concepts.
@@ -202,7 +202,7 @@ As always, the _best_ platform depends on the project and the available infrastr
 :::
 
 One tool for data version control is [`dvc`](https://dvc.org/doc).
-As it is written in Python we can even add and track the version via our package manager `pdm add dvc`. 
+As it is written in Python, we can even add and track the version via our package manager `pdm add dvc`. 
 Once installed we can initialize it in our project,
 
 ```bash
@@ -227,7 +227,7 @@ What's next?
 - Star us on GitHub: <https://github.com/iterative/dvc>
 ```
 
-To make the changes permanent we commit the directory `.dvc` (with all the files included) to `git` and therefore our project now runs with `dvc`, see commit [df38086](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/df38086b756ed27e70fa2573b8d01c51ea69086c) for reference.
+To make the changes permanent we commit the directory `.dvc` (there is an `.gitignore` in `.dvc` that will make sure to not include e.g. `.dvc/cache`) to `git` and therefore our project now runs with `dvc`, see commit [df38086](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/df38086b756ed27e70fa2573b8d01c51ea69086c) for reference.
 
 To add the `data` directory simply run
 
@@ -307,7 +307,7 @@ In all its facets this is quite advanced and can be introduced when our project 
 `dvclive` works best with the big ML Frameworks like `keras` or `pytorch` but we can also utilize it for our example project.
 The introduction to the experiment management from the `dvc` perspective can be found in the [docs](https://dvc.org/doc/start/experiments).
 
-To show some of the `dvclive` features we reworked to code, see commit [519a85](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/519a8544c82667cec5356f92ddde77993f0a0e76) for the changes (including `pdm add dvclive`).
+To show some of the `dvclive` features we reworked the code, see commit [519a85](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/519a8544c82667cec5356f92ddde77993f0a0e76) for the changes (including `pdm add dvclive`).
 Now, when we run our job once more it will create the `dvclive` directory with a couple of subdirectories containing our metrics, looking like the following output.
 
 ```bash
@@ -321,7 +321,7 @@ INFO:root: We have a hard voting test-score of 0.8
 ::: {.callout collapse="true"}
 ## Output with logger on DEBUG.
 ```bash
-MLB-DATA$ pdm run python src/MECH-M-DUAL-2-MLB-DATA/train.py
+MLB-DATA$ pdm run src/MECH-M-DUAL-2-MLB-DATA/train.py
 
 DEBUG:root: Loaded the data with Split of 60 to 20 per category.
 DEBUG:root: Load config
@@ -418,19 +418,19 @@ MLB-DATA$ pdm run dvc exp show
 :::
 
 ::: {.callout-note}
-`dvc exp show` provides an overview of the experiments base on the `git` commit SHAs. The output can be counter intuitive.
-Check out the option ( `dvc exp show --help`), especially `--num` and `-A` to control where to search for experiments.
+`dvc exp show` provides an overview of the experiments based on the `git` commit SHAs. The output can be counter intuitive.
+Check out the options ( `dvc exp show --help`), especially `--num` and `-A` to control where to search for experiments.
 
 Each experiment has a unique name, as we did not specify anything a random name is created.
 In our case `sural-cyma` (they are often fun but can be hard to infer meaning and speaking names are most the time more useful, see `-n` option).
 
-It is also possible provide a _commit message_ to give more details to the experiment.
+It is also possible to provide a _commit message_ to give more details to the experiment.
 :::
 
 The overview also allows us to see the score for our model and the parameters, this allows us to quickly compare models.
 
 ::: {.callout-note}
-We can see that the parameter from `params.yaml` are automatically added, and our code has somewhat duplicated them.
+We can see that the parameters from `params.yaml` are automatically added, and our code has somewhat duplicated them.
 :::
 
 `dvclive` relies on `git` to do its magic for files and the `dvc` cache for large files. 
@@ -451,7 +451,7 @@ MLB-DATA$ git lg # <1>
 ```
 1. This is a shorthand see[^shorthand].
 
-Furthermore, we did not commit our changes to git (bad practice!!!) but they are stored alongside with the experiment, so no information is lost (we can find them in `.git/refs` , see below.)
+Furthermore, we did not commit our changes to git (bad practice!!!) but they are stored alongside the experiment, so no information is lost (we can find them in `.git/refs` , see below.)
 
 To clean up, we commit our changes as we know they work and then rerun the code for a new experiment, see [519a854](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/519a8544c82667cec5356f92ddde77993f0a0e76).
 We can remove the previous version with `dvc exp rm <name>`.
@@ -536,7 +536,7 @@ The pipeline features we are after are part of the `dvc stage` command and we ad
 MLB-DATA$ pdm run dvc stage add --name train \                             # <1>
           --deps data --deps src/MECH-M-DUAL-2-MLB-DATA/ --deps params.yaml \  # <2>
           --outs dvclive \  # <3>
-          pdm run python src/MECH-M-DUAL-2-MLB-DATA/train.py # <4>
+          pdm run src/MECH-M-DUAL-2-MLB-DATA/train.py # <4>
 
 Added stage 'train' in 'dvc.yaml'                                     
 
@@ -562,7 +562,7 @@ It keeps track of the dependencies (see above explanations):
 schema: '2.0'
 stages:
   train:
-    cmd: pdm run python src/MECH-M-DUAL-2-MLB-DATA/train.py
+    cmd: pdm run src/MECH-M-DUAL-2-MLB-DATA/train.py
     deps:
     - path: data
       hash: md5
@@ -616,7 +616,7 @@ Comparing indexes                                   |15.0 [00:00, 1.20kentry/s] 
 Applying changes                                     |6.00 [00:00,   391file/s] # <1>
 'data.dvc' didn't change, skipping                                              # <1>
 Running stage 'train':
-> pdm run python src/MECH-M-DUAL-2-MLB-DATA/train.py                            # <2>
+> pdm run src/MECH-M-DUAL-2-MLB-DATA/train.py                            # <2>
 DEBUG:root: Loaded the data with Split of 60 to 20 per category.
 DEBUG:root: Load config
 DEBUG:root: Create classifier
@@ -745,7 +745,7 @@ MLB-DATA$ pdm run dvc remote add -d myremote \
 Setting 'myremote' as a default remote.
 ```
 
-This create the file `.dvc/config` with the following content (a toml file). 
+This creates the file `.dvc/config` with the following content (a TOML file). 
 
 ```toml
 [core]
@@ -763,7 +763,7 @@ In order to do so, we limit the default value for the number of jobs:
 MLB-DATA$ pdm run dvc remote modify myremote jobs 4
 ```
 
-This will result in the following toml file:
+This will result in the following TOML file:
 
 ```toml
 [core]
@@ -774,7 +774,7 @@ This will result in the following toml file:
 
 ```
 
-As this issues only occurred late in the project the last line will not show up in the commit [afe0848](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/afe08488167a3a68788f67b64cbd76e7261deee6) and only after [0a98a09](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/0a98a0941c77ed0daa9371904df6bb916a6a45f4) 
+As this issue only occurred late in the project the last line will not show up in the commit [afe0848](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/afe08488167a3a68788f67b64cbd76e7261deee6) and only after [0a98a09](https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/0a98a0941c77ed0daa9371904df6bb916a6a45f4) 
 
 :::
 

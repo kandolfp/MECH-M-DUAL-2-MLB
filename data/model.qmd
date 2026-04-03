@@ -6,11 +6,11 @@ Therefore, we start by looking into ways to persist the models we generated.
 The general idea is to simply store the object we generate and load it at some later time. 
 Nevertheless, this can be quite tricky as we will see in the following.
 
-For example it might be that we do our training in a different environment than the _inference or prediction_.
-It might even be the case, that we switch programming language for these tasks to extract the best performance.
+For example, it might be that we do our training in a different environment than the _inference or prediction_.
+It might even be the case that we switch programming language for these tasks to extract the best performance.
 
-As we mainly work with `scikit-learn` we introduce the concepts with it.
-Our first step is to check the documentation [docs - model persistence](https://scikit-learn.org/stable/model_persistence.html) and we can use it as reference for this introduction.
+As we mainly work with `scikit-learn`, we introduce the concepts with it.
+Our first step is to check the documentation [docs - model persistence](https://scikit-learn.org/stable/model_persistence.html) and we can use it as a reference for this introduction.
 We introduce different possibilities, all of them have strengths and weaknesses, unfortunately there is no gold standard.
 
 Let us use the following toy example, see @lst-data-mp-toyexample, with our cats and dogs.
@@ -69,7 +69,7 @@ print(f"We have a hard voting score of {score}")
 ```
 
 ::: {.callout-note}
-In the next couple of exercises we create different version of our model and persist it to storage.
+In the next couple of exercises we create different versions of our model and persist it to storage.
 Try to keep track of what model version corresponds to which exercise/code block.
 :::
 
@@ -103,7 +103,7 @@ with open("model.onnx", "wb") as f:
 ```
 1. Not all data types are supported, so we need to convert our reference training sample to `int64` (potentially increasing storage demands).
 
-As mentioned, the file format is binary so it does not make a lot of sense to actually read the resulting file in plain text but we can have a look at the size.
+As mentioned, the file format is binary, so it does not make a lot of sense to actually read the resulting file in plain text but we can have a look at the size.
 ```{python}
 #| classes: styled-output
 #| echo: false
@@ -111,7 +111,7 @@ As mentioned, the file format is binary so it does not make a lot of sense to ac
 du -h model.onnx
 ```
 
-Unfortunately, there is no method to convert back to our `scikit-learn`.
+Unfortunately, there is no method to convert back to our `scikit-learn` model.
 What we can do is to use the `onnxruntime` and see if we still get the same score as before.
 ```{python}
 #| classes: styled-output
@@ -122,17 +122,17 @@ input_name = model.get_inputs()[0].name
 predictions = model.run(None, {input_name: X_test.astype(np.int64)})
 
 score = sklearn.metrics.accuracy_score(y_test, predictions[0])
-print(f"We have a test_score of for {score} for the recovered model.")
+print(f"We have a test_score of {score} for the recovered model.")
 predictions = model.run(None, {input_name: X_train.astype(np.int64)})
 score = sklearn.metrics.accuracy_score(y_train, predictions[0])
-print(f"We have a train_score of for {score} for the recovered model.")
+print(f"We have a train_score of {score} for the recovered model.")
 ```
 
 ```{python}
 #| echo: false
 %%bash
 # Code to remove above files
-rm model.onnx
+rm model.onnxfory
 ```
 As we can see, the score is actually better than before, which is odd and definitely not intended. 
 
@@ -186,13 +186,13 @@ The downside is, that we need to absolutely trust the source of our model.
 We need to trust all steps from the storage provider, through the network to our own infrastructure.
 
 Furthermore, the environment we load the model into needs to be the same as the one we stored it from.
-As we have already seen how the _dependency hell_[^dh] influences our development, we bring import these issues together with the `pickle` file.
+As we have already seen how the _dependency hell_[^dh] influences our development, we import these issues together with the `pickle` file.
 
-This notably implies, it is not guaranteed that a model can be loaded with a different `scikit-learn` version or let alone a different `numpy` version, that is only a sub-dependency of `scikit-learn`.
-Furthermore, if a different hardware is involved there might be problems as well, e.g. a different architecture of an integer or float. 
-As a consequence, if we use `pickle` a thorough version control with package management is key!
+This notably implies it is not guaranteed that a model can be loaded with a different `scikit-learn` version or let alone a different `numpy` version, which is only a sub-dependency of `scikit-learn`.
+Furthermore, if different hardware is involved there might be problems as well, e.g. a different architecture of an integer or float. 
+As a consequence, if we use `pickle` a thorough version control with package management is key, and a lock file really helps!
 
-If we have a model that moves around different processes via the disc or is restored frequently from storage but can not be permanently in storage and therefore performance for loading and storing is of interest we can also use [`joblib`](https://joblib.readthedocs.io/en/latest/index.html#module-joblib) as a more performant alternative.
+If we have a model that moves between different processes via the disc or is restored frequently from storage but can not be permanently in storage and therefore performance for loading and storing is of interest we can also use [`joblib`](https://joblib.readthedocs.io/en/latest/index.html#module-joblib) as a more performant alternative.
 
 [^dh]: see [MECH-M-DUAL-1-SWD, Section 4.1](https://kandolfp.github.io/MECH-M-DUAL-1-SWD/basics/epilogue.html#sec-intro-pm-reproducibility)
 
@@ -319,7 +319,7 @@ Hint: look at `voting_clf[0].components_`.
 
 ## Comparison of the different approaches
 
-The [docs](https://scikit-learn.org/stable/model_persistence.html#summarizing-the-key-points) are doing an excellent job in summarizing the key differences.
+The [docs](https://scikit-learn.org/stable/model_persistence.html#summarizing-the-key-points) do an excellent job in summarizing the key differences.
 
 > Based on the different approaches for model persistence, the key points for each approach can be summarized as follows:
 > 
@@ -343,5 +343,5 @@ In the previous exercises we created multiple versions of _our model_ and stored
 If we now look at the different files, do we still know which version corresponds to which code block? 
 
 As we experiment with different parameters for our composite method - in pursuit of better results - we’ll likely generate even more model variations.
-To ensure reproducibility, we need a way to track our models alongside the code and parameters that produces them.
+To ensure reproducibility, we need a way to track our models alongside the code and parameters that produce them.
 This is what we are going to look into in the next section. 
