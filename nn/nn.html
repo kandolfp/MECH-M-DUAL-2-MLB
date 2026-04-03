@@ -98,9 +98,9 @@ div.csl-indent {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-f3e4be047f94999836566be8d7fec70b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-ea09258ad5f1d188cc767b8e4d27386e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-f3e4be047f94999836566be8d7fec70b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-fcef3a217c2dc59de9b524d1d56553e6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-28552b72345800c07c123eae77d1b5c4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-fcef3a217c2dc59de9b524d1d56553e6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
@@ -745,7 +745,7 @@ Note
 </div>
 </div>
 <p>Let us start with the input and how to prepare our data for for the model to-be. Before we load everything into the <code>pytorch</code> specific structures, we split our data into a training and test set. This time it is important that we rescale scale our image to <span class="math inline">\([0, 1]\)</span>, otherwise the optimization algorithms perform poorly. We scale by <span class="math inline">\(255\)</span>, our theoretical maximum in a generic image.</p>
-<div id="6db97433" class="cell" data-execution_count="2">
+<div id="b304d81c" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="annotated-cell-2"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-2-1"><a href="#annotated-cell-2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="annotated-cell-2-2"><a href="#annotated-cell-2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy</span>
 <span id="annotated-cell-2-3"><a href="#annotated-cell-2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
@@ -793,7 +793,7 @@ Note
 </div>
 </div>
 <p>The easiest way to provide data for training is to use the mentioned <code>DataLoader</code> class. As we have only a very limited number of training data, we split our available data into a training and validation. We do so new and random in each epoch (optimization step). To provide a better overview, we use a dedicated function for this procedure. This function will be called during each optimization step in our training.</p>
-<div id="73e80786" class="cell" data-execution_count="3">
+<div id="8172882e" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch.utils.data <span class="im">import</span> DataLoader, random_split</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -842,7 +842,7 @@ Tip
 <p>For the following code snippet, we keep it in as a comment to show where it would be included.</p>
 </div>
 </div>
-<div id="bbacb11c" class="cell" data-execution_count="4">
+<div id="ee175b04" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="annotated-cell-4"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-4-1"><a href="#annotated-cell-4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
 <span id="annotated-cell-4-2"><a href="#annotated-cell-4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-4-3"><a href="#annotated-cell-4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -885,7 +885,7 @@ Tip
 </div>
 </div>
 <p>Of course it is important to check if the code corresponds to the model we have in mind. For this <a href="https://github.com/TylerYep/torchinfo"><code>torchinfo</code></a> is quite a useful tool. It provides a tabular overview.</p>
-<div id="ccd248ad" class="cell styled-output" data-execution_count="5">
+<div id="2fa1eba0" class="cell styled-output" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torchinfo</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> MyFirstNN(X_train.shape[<span class="dv">1</span>])</span>
@@ -924,7 +924,7 @@ Estimated Total Size (MB): 0.04
 <div class="callout-body-container">
 <div id="exr-nn-nn-params" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise 7.2 (Explain the output of <code>.summary()</code>)</strong></span> For the (extended) output of <code>.summary()</code> in the following listing answer the questions below.</p>
-<div id="ac9a7cdf" class="cell styled-output" data-execution_count="6">
+<div id="4f9ab3b7" class="cell styled-output" data-execution_count="6">
 <details class="code-fold">
 <summary>Show the code for the slightly extended summary.</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torchinfo</span>
@@ -972,8 +972,8 @@ The estimated total size in KB 8.03125</code></pre>
 </div>
 </div>
 </div>
-<p>It is often also quite useful to export the model as an image. Here the <a href="https://github.com/szagoruyko/pytorchviz"><code>torchviz</code></a> package comes in handy. In our case we can work again with a <code>dot</code> file, that is rendered as <a href="#fig-nn-nn-model-visual" class="quarto-xref">Figure&nbsp;<span>7.4</span></a>.</p>
-<div id="08970f31" class="cell" data-execution_count="7">
+<p>It is often also quite useful to export the model as an image. Here the <a href="https://github.com/szagoruyko/pytorchviz"><code>torchviz</code></a> package comes in handy. In our case, we can work again with a <code>dot</code> file, that is rendered as <a href="#fig-nn-nn-model-visual" class="quarto-xref">Figure&nbsp;<span>7.4</span></a>.</p>
+<div id="8305be5c" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torchviz</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">eval</span>()</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -991,169 +991,169 @@ The estimated total size in KB 8.03125</code></pre>
 <svg width="672" height="480" viewbox="0.00 0.00 299.30 424.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 420)">
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-420 295.3,-420 295.3,4 -4,4"></polygon>
-<!-- 140614637796352 -->
+<!-- 140324418688960 -->
 <g id="node1" class="node">
-<title>140614637796352</title>
+<title>140324418688960</title>
 <polygon fill="#caff70" stroke="black" points="170.15,-32 116.15,-32 116.15,0 170.15,0 170.15,-32"></polygon>
 <text text-anchor="middle" x="143.15" y="-7" font-family="monospace" font-size="10.00"> (1, 2)</text>
 </g>
-<!-- 140614639150960 -->
+<!-- 140324418632096 -->
 <g id="node2" class="node">
-<title>140614639150960</title>
+<title>140324418632096</title>
 <polygon fill="lightgrey" stroke="black" points="190.47,-88 95.83,-88 95.83,-68 190.47,-68 190.47,-88"></polygon>
 <text text-anchor="middle" x="143.15" y="-75" font-family="monospace" font-size="10.00">AddmmBackward0</text>
 </g>
-<!-- 140614639150960&#45;&gt;140614637796352 -->
+<!-- 140324418632096&#45;&gt;140324418688960 -->
 <g id="edge13" class="edge">
-<title>140614639150960-&gt;140614637796352</title>
+<title>140324418632096-&gt;140324418688960</title>
 <path fill="none" stroke="black" d="M143.15,-67.89C143.15,-61.1 143.15,-51.48 143.15,-42.44"></path>
 <polygon fill="black" stroke="black" points="146.65,-42.28 143.15,-32.28 139.65,-42.28 146.65,-42.28"></polygon>
 </g>
-<!-- 140614636794640 -->
+<!-- 140324421133568 -->
 <g id="node3" class="node">
-<title>140614636794640</title>
+<title>140324421133568</title>
 <polygon fill="lightgrey" stroke="black" points="84.45,-144 -0.15,-144 -0.15,-124 84.45,-124 84.45,-144"></polygon>
 <text text-anchor="middle" x="42.15" y="-131" font-family="monospace" font-size="10.00">AccumulateGrad</text>
 </g>
-<!-- 140614636794640&#45;&gt;140614639150960 -->
+<!-- 140324421133568&#45;&gt;140324418632096 -->
 <g id="edge1" class="edge">
-<title>140614636794640-&gt;140614639150960</title>
+<title>140324421133568-&gt;140324418632096</title>
 <path fill="none" stroke="black" d="M59.28,-123.84C75.2,-115.33 99.11,-102.55 117.33,-92.8"></path>
 <polygon fill="black" stroke="black" points="119.1,-95.83 126.27,-88.03 115.8,-89.65 119.1,-95.83"></polygon>
 </g>
-<!-- 140615382095008 -->
+<!-- 140324421648624 -->
 <g id="node4" class="node">
-<title>140615382095008</title>
+<title>140324421648624</title>
 <polygon fill="lightblue" stroke="black" points="75.75,-212 8.55,-212 8.55,-180 75.75,-180 75.75,-212"></polygon>
 <text text-anchor="middle" x="42.15" y="-199" font-family="monospace" font-size="10.00">model.2.bias</text>
 <text text-anchor="middle" x="42.15" y="-187" font-family="monospace" font-size="10.00"> (2)</text>
 </g>
-<!-- 140615382095008&#45;&gt;140614636794640 -->
+<!-- 140324421648624&#45;&gt;140324421133568 -->
 <g id="edge2" class="edge">
-<title>140615382095008-&gt;140614636794640</title>
+<title>140324421648624-&gt;140324421133568</title>
 <path fill="none" stroke="black" d="M42.15,-179.86C42.15,-172.13 42.15,-162.63 42.15,-154.37"></path>
 <polygon fill="black" stroke="black" points="45.65,-154.15 42.15,-144.15 38.65,-154.15 45.65,-154.15"></polygon>
 </g>
-<!-- 140614643712064 -->
+<!-- 140324419810544 -->
 <g id="node5" class="node">
-<title>140614643712064</title>
+<title>140324419810544</title>
 <polygon fill="lightgrey" stroke="black" points="184.23,-144 102.07,-144 102.07,-124 184.23,-124 184.23,-144"></polygon>
 <text text-anchor="middle" x="143.15" y="-131" font-family="monospace" font-size="10.00">TanhBackward0</text>
 </g>
-<!-- 140614643712064&#45;&gt;140614639150960 -->
+<!-- 140324419810544&#45;&gt;140324418632096 -->
 <g id="edge3" class="edge">
-<title>140614643712064-&gt;140614639150960</title>
+<title>140324419810544-&gt;140324418632096</title>
 <path fill="none" stroke="black" d="M143.15,-123.59C143.15,-116.7 143.15,-107.1 143.15,-98.57"></path>
 <polygon fill="black" stroke="black" points="146.65,-98.3 143.15,-88.3 139.65,-98.3 146.65,-98.3"></polygon>
 </g>
-<!-- 140614647727200 -->
+<!-- 140324418410128 -->
 <g id="node6" class="node">
-<title>140614647727200</title>
+<title>140324418410128</title>
 <polygon fill="lightgrey" stroke="black" points="189.47,-206 94.83,-206 94.83,-186 189.47,-186 189.47,-206"></polygon>
 <text text-anchor="middle" x="142.15" y="-193" font-family="monospace" font-size="10.00">AddmmBackward0</text>
 </g>
-<!-- 140614647727200&#45;&gt;140614643712064 -->
+<!-- 140324418410128&#45;&gt;140324419810544 -->
 <g id="edge4" class="edge">
-<title>140614647727200-&gt;140614643712064</title>
+<title>140324418410128-&gt;140324419810544</title>
 <path fill="none" stroke="black" d="M142.3,-185.89C142.44,-177.52 142.65,-164.84 142.83,-154.23"></path>
 <polygon fill="black" stroke="black" points="146.33,-154.26 143,-144.2 139.33,-154.14 146.33,-154.26"></polygon>
 </g>
-<!-- 140614635123760 -->
+<!-- 140324418405328 -->
 <g id="node7" class="node">
-<title>140614635123760</title>
+<title>140324418405328</title>
 <polygon fill="lightgrey" stroke="black" points="98.45,-274 13.85,-274 13.85,-254 98.45,-254 98.45,-274"></polygon>
 <text text-anchor="middle" x="56.15" y="-261" font-family="monospace" font-size="10.00">AccumulateGrad</text>
 </g>
-<!-- 140614635123760&#45;&gt;140614647727200 -->
+<!-- 140324418405328&#45;&gt;140324418410128 -->
 <g id="edge5" class="edge">
-<title>140614635123760-&gt;140614647727200</title>
+<title>140324418405328-&gt;140324418410128</title>
 <path fill="none" stroke="black" d="M68.11,-253.82C82.1,-243.09 105.48,-225.14 122.23,-212.29"></path>
 <polygon fill="black" stroke="black" points="124.49,-214.96 130.29,-206.1 120.23,-209.41 124.49,-214.96"></polygon>
 </g>
-<!-- 140614637984480 -->
+<!-- 140324418689840 -->
 <g id="node8" class="node">
-<title>140614637984480</title>
+<title>140324418689840</title>
 <polygon fill="lightblue" stroke="black" points="89.75,-348 22.55,-348 22.55,-316 89.75,-316 89.75,-348"></polygon>
 <text text-anchor="middle" x="56.15" y="-335" font-family="monospace" font-size="10.00">model.0.bias</text>
 <text text-anchor="middle" x="56.15" y="-323" font-family="monospace" font-size="10.00"> (2)</text>
 </g>
-<!-- 140614637984480&#45;&gt;140614635123760 -->
+<!-- 140324418689840&#45;&gt;140324418405328 -->
 <g id="edge6" class="edge">
-<title>140614637984480-&gt;140614635123760</title>
+<title>140324418689840-&gt;140324418405328</title>
 <path fill="none" stroke="black" d="M56.15,-315.69C56.15,-306.4 56.15,-294.44 56.15,-284.47"></path>
 <polygon fill="black" stroke="black" points="59.65,-284.32 56.15,-274.32 52.65,-284.32 59.65,-284.32"></polygon>
 </g>
-<!-- 140614635123664 -->
+<!-- 140324418410368 -->
 <g id="node9" class="node">
-<title>140614635123664</title>
+<title>140324418410368</title>
 <polygon fill="lightgrey" stroke="black" points="183.8,-274 116.5,-274 116.5,-254 183.8,-254 183.8,-274"></polygon>
 <text text-anchor="middle" x="150.15" y="-261" font-family="monospace" font-size="10.00">TBackward0</text>
 </g>
-<!-- 140614635123664&#45;&gt;140614647727200 -->
+<!-- 140324418410368&#45;&gt;140324418410128 -->
 <g id="edge7" class="edge">
-<title>140614635123664-&gt;140614647727200</title>
+<title>140324418410368-&gt;140324418410128</title>
 <path fill="none" stroke="black" d="M149.04,-253.82C147.87,-244.17 145.99,-228.69 144.49,-216.32"></path>
 <polygon fill="black" stroke="black" points="147.93,-215.61 143.25,-206.1 140.98,-216.45 147.93,-215.61"></polygon>
 </g>
-<!-- 140614635667360 -->
+<!-- 140324418407680 -->
 <g id="node10" class="node">
-<title>140614635667360</title>
+<title>140324418407680</title>
 <polygon fill="lightgrey" stroke="black" points="192.45,-342 107.85,-342 107.85,-322 192.45,-322 192.45,-342"></polygon>
 <text text-anchor="middle" x="150.15" y="-329" font-family="monospace" font-size="10.00">AccumulateGrad</text>
 </g>
-<!-- 140614635667360&#45;&gt;140614635123664 -->
+<!-- 140324418407680&#45;&gt;140324418410368 -->
 <g id="edge8" class="edge">
-<title>140614635667360-&gt;140614635123664</title>
+<title>140324418407680-&gt;140324418410368</title>
 <path fill="none" stroke="black" d="M150.15,-321.82C150.15,-312.17 150.15,-296.69 150.15,-284.32"></path>
 <polygon fill="black" stroke="black" points="153.65,-284.1 150.15,-274.1 146.65,-284.1 153.65,-284.1"></polygon>
 </g>
-<!-- 140614637983840 -->
+<!-- 140324418689280 -->
 <g id="node11" class="node">
-<title>140614637983840</title>
+<title>140324418689280</title>
 <polygon fill="lightblue" stroke="black" points="189.36,-416 110.94,-416 110.94,-384 189.36,-384 189.36,-416"></polygon>
 <text text-anchor="middle" x="150.15" y="-403" font-family="monospace" font-size="10.00">model.0.weight</text>
 <text text-anchor="middle" x="150.15" y="-391" font-family="monospace" font-size="10.00"> (2, 1024)</text>
 </g>
-<!-- 140614637983840&#45;&gt;140614635667360 -->
+<!-- 140324418689280&#45;&gt;140324418407680 -->
 <g id="edge9" class="edge">
-<title>140614637983840-&gt;140614635667360</title>
+<title>140324418689280-&gt;140324418407680</title>
 <path fill="none" stroke="black" d="M150.15,-383.69C150.15,-374.4 150.15,-362.44 150.15,-352.47"></path>
 <polygon fill="black" stroke="black" points="153.65,-352.32 150.15,-342.32 146.65,-352.32 153.65,-352.32"></polygon>
 </g>
-<!-- 140614648400192 -->
+<!-- 140324418419824 -->
 <g id="node12" class="node">
-<title>140614648400192</title>
+<title>140324418419824</title>
 <polygon fill="lightgrey" stroke="black" points="275.8,-144 208.5,-144 208.5,-124 275.8,-124 275.8,-144"></polygon>
 <text text-anchor="middle" x="242.15" y="-131" font-family="monospace" font-size="10.00">TBackward0</text>
 </g>
-<!-- 140614648400192&#45;&gt;140614639150960 -->
+<!-- 140324418419824&#45;&gt;140324418632096 -->
 <g id="edge10" class="edge">
-<title>140614648400192-&gt;140614639150960</title>
+<title>140324418419824-&gt;140324418632096</title>
 <path fill="none" stroke="black" d="M225.36,-123.84C209.9,-115.41 186.75,-102.78 168.95,-93.07"></path>
 <polygon fill="black" stroke="black" points="170.15,-89.74 159.7,-88.03 166.8,-95.89 170.15,-89.74"></polygon>
 </g>
-<!-- 140614635123808 -->
+<!-- 140324418410224 -->
 <g id="node13" class="node">
-<title>140614635123808</title>
+<title>140324418410224</title>
 <polygon fill="lightgrey" stroke="black" points="291.45,-206 206.85,-206 206.85,-186 291.45,-186 291.45,-206"></polygon>
 <text text-anchor="middle" x="249.15" y="-193" font-family="monospace" font-size="10.00">AccumulateGrad</text>
 </g>
-<!-- 140614635123808&#45;&gt;140614648400192 -->
+<!-- 140324418410224&#45;&gt;140324418419824 -->
 <g id="edge11" class="edge">
-<title>140614635123808-&gt;140614648400192</title>
+<title>140324418410224-&gt;140324418419824</title>
 <path fill="none" stroke="black" d="M248.09,-185.89C247.11,-177.52 245.63,-164.84 244.39,-154.23"></path>
 <polygon fill="black" stroke="black" points="247.86,-153.73 243.22,-144.2 240.91,-154.54 247.86,-153.73"></polygon>
 </g>
-<!-- 140616164144896 -->
+<!-- 140324824442320 -->
 <g id="node14" class="node">
-<title>140616164144896</title>
+<title>140324824442320</title>
 <polygon fill="lightblue" stroke="black" points="288.36,-280 209.94,-280 209.94,-248 288.36,-248 288.36,-280"></polygon>
 <text text-anchor="middle" x="249.15" y="-267" font-family="monospace" font-size="10.00">model.2.weight</text>
 <text text-anchor="middle" x="249.15" y="-255" font-family="monospace" font-size="10.00"> (2, 2)</text>
 </g>
-<!-- 140616164144896&#45;&gt;140614635123808 -->
+<!-- 140324824442320&#45;&gt;140324418410224 -->
 <g id="edge12" class="edge">
-<title>140616164144896-&gt;140614635123808</title>
+<title>140324824442320-&gt;140324418410224</title>
 <path fill="none" stroke="black" d="M249.15,-247.69C249.15,-238.4 249.15,-226.44 249.15,-216.47"></path>
 <polygon fill="black" stroke="black" points="252.65,-216.32 249.15,-206.32 245.65,-216.32 252.65,-216.32"></polygon>
 </g>
@@ -1169,7 +1169,7 @@ Figure&nbsp;7.4: Model with all its parameters visualized.
 </div>
 </div>
 <p>In <code>pytorch</code> we are responsible for our training function. This allows for a lot of flexibility. The structure is always quite similar.</p>
-<div id="f45f7fe3" class="cell" data-execution_count="8">
+<div id="3e4c416a" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="annotated-cell-7"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-7-1"><a href="#annotated-cell-7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> train_model(model, dataset, loss_fn, optimizer,</span>
 <span id="annotated-cell-7-2"><a href="#annotated-cell-7-2" aria-hidden="true" tabindex="-1"></a>                epochs<span class="op">=</span><span class="dv">250</span>, validation_split<span class="op">=</span><span class="fl">0.1</span>, </span>
 <span id="annotated-cell-7-3"><a href="#annotated-cell-7-3" aria-hidden="true" tabindex="-1"></a>                batch_size<span class="op">=</span><span class="dv">8</span>):</span>
@@ -1243,7 +1243,7 @@ Figure&nbsp;7.4: Model with all its parameters visualized.
 </div>
 </div>
 <p>Now all parts are available and we can finally train our model.</p>
-<div id="4a8cb93e" class="cell" data-execution_count="9">
+<div id="aad5d8f7" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="annotated-cell-8"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-8-1" class="code-annotation-target"><a href="#annotated-cell-8-1" aria-hidden="true" tabindex="-1"></a>loss_fn <span class="op">=</span> torch.nn.CrossEntropyLoss()</span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-8-2" class="code-annotation-target"><a href="#annotated-cell-8-2" aria-hidden="true" tabindex="-1"></a>optimizer <span class="op">=</span> torch.optim.SGD(model.parameters(), lr<span class="op">=</span><span class="fl">1e-2</span>)</span>
 <span id="annotated-cell-8-3"><a href="#annotated-cell-8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1271,7 +1271,7 @@ Figure&nbsp;7.4: Model with all its parameters visualized.
 </div>
 <p>This looks like a lot, but actually it is boiler plate code if needed and allows for quite a lot of flexibility if required.</p>
 <p>Now that training is complete we can have a look at the performance.</p>
-<div id="cf5b801b" class="cell" data-execution_count="10">
+<div id="bd31f76c" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="annotated-cell-9"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-9" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-9-1" class="code-annotation-target"><a href="#annotated-cell-9-1" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">eval</span>()</span>
 <span id="annotated-cell-9-2"><a href="#annotated-cell-9-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():</span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-9" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-9-3" class="code-annotation-target"><a href="#annotated-cell-9-3" aria-hidden="true" tabindex="-1"></a>    y_proba <span class="op">=</span> torch.nn.Softmax(dim<span class="op">=</span><span class="dv">1</span>)(model(X_test_tensor))</span>
@@ -1383,7 +1383,7 @@ Figure&nbsp;7.5: Performance of our model.
 </figure>
 </div>
 </div>
-<p>In <a href="#fig-nn-nn-dvc-non-linear-1" class="quarto-xref">Figure&nbsp;<span>7.5 (a)</span></a> we can see the final classification of our model with regards to the test set. For 11 dogs our model is convinced they are not <em>good dogs</em> but cats, and 3 cats are classified as dogs. If we look at the probabilities <a href="#fig-nn-nn-dvc-non-linear-2" class="quarto-xref">Figure&nbsp;<span>7.5 (b)</span></a>, we can see that we have a couple of close calls, but in general our model is quite sure about the classification. Regarding the history of our optimization, we can see three phases, first our accuracy stays constant, right about for the first 80 iterations. Than the network starts learning up to 120 and after that only the loss function declines, but accuracy stays high.</p>
+<p>In <a href="#fig-nn-nn-dvc-non-linear-1" class="quarto-xref">Figure&nbsp;<span>7.5 (a)</span></a> we can see the final classification of our model with regards to the test set. For 11 dogs our model is convinced they are not <em>good dogs</em> but cats, and 3 cats are classified as dogs. If we look at the probabilities <a href="#fig-nn-nn-dvc-non-linear-2" class="quarto-xref">Figure&nbsp;<span>7.5 (b)</span></a>, we can see that we have a couple of close calls, but in general our model is quite sure about the classification. Regarding the history of our optimization, we can see three phases, first our accuracy stays constant, for about the first 80 iterations. Then the network starts learning up to 120 and after that only the loss function declines, but accuracy stays high.</p>
 <p>At the end, we have an accuracy of 82.5% for our test set, a bit better than with our linear models <a href="#fig-nn-singlelayer" class="quarto-xref">Figure&nbsp;<span>7.1</span></a>.</p>
 <div class="callout callout-style-simple callout-caution no-icon">
 <div class="callout-body d-flex">
@@ -1392,10 +1392,10 @@ Figure&nbsp;7.5: Performance of our model.
 </div>
 <div class="callout-body-container">
 <div id="exr-nn-nn-dvc-lr" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 7.3 (Learning rate and momentum)</strong></span> The optimizer <a href="https://pytorch.org/docs/stable/generated/torch.optim.SGD.html#torch.optim.SGD"><code>SGD</code></a> has two options we want to investigate further. The learning rate <code>lr</code> and the <code>momentum</code>.</p>
+<p><span class="theorem-title"><strong>Exercise 7.3 (Learning rate and momentum)</strong></span> The optimizer <a href="https://pytorch.org/docs/stable/generated/torch.optim.SGD.html#torch.optim.SGD"><code>SGD</code></a> has two options we want to investigate further: the learning rate <code>lr</code> and the <code>momentum</code>.</p>
 <ol type="1">
 <li>Change the learning rate and see how this influences performance, you might want to increase <code>epochs</code> as well. Try <span class="math inline">\(lr \in [10^{-1}, 10^{-4}]\)</span>.</li>
-<li>Change the momentum between <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span>. Can this <em>improve</em> the predictions for different learning rates and such that the NN is <em>more sure</em> of its decision (in <a href="#fig-nn-nn-dvc-non-linear-2" class="quarto-xref">Figure&nbsp;<span>7.5 (b)</span></a> the bars are not almost equal but lean to one side).</li>
+<li>Change the momentum between <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span>. Can this <em>improve</em> the predictions for different learning rates and such that the NN is <em>more confident</em> in its decision (in <a href="#fig-nn-nn-dvc-non-linear-2" class="quarto-xref">Figure&nbsp;<span>7.5 (b)</span></a> the bars are not almost equal but lean to one side).</li>
 </ol>
 </div>
 </div>
@@ -1498,7 +1498,7 @@ Store the model as <code>ONNX</code>
 <section id="sec-nn-nn-backprop" class="level2" data-number="7.4">
 <h2 data-number="7.4" class="anchored" data-anchor-id="sec-nn-nn-backprop"><span class="header-section-number">7.4</span> Backward Propagation of Error - Backpropagation</h2>
 <p>Our first NN is a success, but how did it learn the necessary parameters to perform its task?</p>
-<p>The answer is a technique called <em>Backward Propagation of Error</em> or in short <em>Backpropagation</em>. This essential component of for machine learning helps us to work out how the loss we compute translates into changes of the weights and biases in our network. In our training loop <code>train_model</code> the lines</p>
+<p>The answer is a technique called <em>Backward Propagation of Error</em> or in short <em>Backpropagation</em>. This essential component of machine learning helps us to work out how the loss we compute translates into changes of the weights and biases in our network. In our training loop <code>train_model</code> the lines</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> model(X_batch)            <span class="co"># Forward pass through the model</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>loss <span class="op">=</span> loss_fn(y_pred, y_batch)    <span class="co"># Compute the loss</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>loss.backward()                    <span class="co"># Backpropagation</span></span>
@@ -1519,7 +1519,7 @@ Important
 <p>An introduction closer to the mathematics is shown in <span class="citation" data-cites="Brunton2022">(<a href="../references.html#ref-Brunton2022" role="doc-biblioref">Brunton and Kutz 2022, chap. 6.3</a>)</span>.</p>
 </div>
 </div>
-<p>The introduction of the technique is contributed to the paper of <span class="citation" data-cites="Rumelhart1986">Rumelhart, Hinton, and Williams (<a href="../references.html#ref-Rumelhart1986" role="doc-biblioref">1986</a>)</span>. As usual, predecessors and independent similar proposals go back to the 1960s. As we have seen, our NN can mathematically be described by nested functions, that are called inside the loss function, <span class="math inline">\(\mathscr{L}(\Theta)\)</span>, for <span class="math inline">\(\Theta\)</span> being all trainable parameters.</p>
+<p>The introduction of the technique is attributed to the paper of <span class="citation" data-cites="Rumelhart1986">Rumelhart, Hinton, and Williams (<a href="../references.html#ref-Rumelhart1986" role="doc-biblioref">1986</a>)</span>. As usual, predecessors and independent similar proposals go back to the 1960s. As we have seen, our NN can be described mathematically by nested functions, that are called inside the loss function, <span class="math inline">\(\mathscr{L}(\Theta)\)</span>, for <span class="math inline">\(\Theta\)</span> being all trainable parameters.</p>
 <p>During the training, we can compute the <em>change</em> between the NN output and the provided label and use it in a gradient descent method<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. The result is the following iteration <span class="math display">\[
 \Theta^{(n+1)} = \Theta^{(n)} - \delta \nabla \mathscr{L}\left(\Theta^{(n)}\right),
 \]</span> where <span class="math inline">\(\delta\)</span> is called the <em>learning rate</em> and it is prescribed.</p>
@@ -1596,14 +1596,14 @@ Note
 </div>
 <div class="callout-body-container callout-body">
 <div id="def-nn-backdrop" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 7.1 (Backpropagation)</strong></span> Now that we have a better understanding we can define the backdrop procedure, see <span class="citation" data-cites="Brunton2022">Brunton and Kutz (<a href="../references.html#ref-Brunton2022" role="doc-biblioref">2022</a>)</span> as reference:</p>
+<p><span class="theorem-title"><strong>Definition 7.1 (Backpropagation)</strong></span> Now that we have a better understanding we can define the backpropagation procedure, see <span class="citation" data-cites="Brunton2022">Brunton and Kutz (<a href="../references.html#ref-Brunton2022" role="doc-biblioref">2022</a>)</span> as reference:</p>
 <ol type="1">
 <li>Specify the NN along with the labeled training data.</li>
-<li>Initialize the weights and biases of the NN with random values. If they are initialized with zero the gradient method will update all of them in the same fashion which is not what we are looking for.</li>
+<li>Initialize the weights and biases of the NN with random values. If they are initialized with zero, the gradient method will update all of them in the same fashion, which is not what we are looking for.</li>
 <li>In a loop until convergence or a maximum of iterations is achieved:
 <ol type="i">
 <li>Run the training data through the NN to compute <span class="math inline">\(y\)</span>. Compute the according loss and its derivatives with respect to each weight and bias.</li>
-<li>For a given learning rate <span class="math inline">\(\delta\)</span> update the NN parameters via the gradient method.</li>
+<li>For a given learning rate <span class="math inline">\(\delta\)</span>, update the NN parameters via the gradient method.</li>
 </ol></li>
 </ol>
 </div>
@@ -1617,7 +1617,7 @@ Note
 </div>
 <div class="callout-body-container">
 <div id="exr-nn-nn-dvc-backprop" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 7.9 (Dogs and cats)</strong></span> Let us translate this findings to our example visualized in <a href="#fig-nn-cvd-nl" class="quarto-xref">Figure&nbsp;<span>7.3</span></a>. In order to do so, we need to specify our variables in more detail. To simplify it a bit we set the biases to the zero vector.</p>
+<p><span class="theorem-title"><strong>Exercise 7.9 (Dogs and cats)</strong></span> Let us translate these findings to our example visualized in <a href="#fig-nn-cvd-nl" class="quarto-xref">Figure&nbsp;<span>7.3</span></a>. In order to do so, we need to specify our variables in more detail. To simplify it a bit we set the biases to the zero vector.</p>
 <p>First, we call our output <span class="math inline">\(p = [p_1, p_2]\)</span> and our labels are encoded in one-hot encoding <span class="math inline">\(y = [y_1, y_2]\)</span> where <span class="math inline">\(y_1=1\)</span> and <span class="math inline">\(y_2=0\)</span> if the image is a dog, and vice versa if the image is a cat.</p>
 <p>As our loss function we use cross-entropy <span class="math display">\[
 \begin{aligned}
@@ -1636,7 +1636,7 @@ Figure&nbsp;7.7: One node, one layer model for illustration of the backpropagati
 </figcaption>
 </figure>
 </div>
-<p>Therefore, we get <span class="math inline">\(p = g(z)=\sigma(B v)\)</span> (softmax), and <span class="math inline">\(v = f(u)= \tanh(A x)\)</span>. Overall we want to compute the change in <span class="math inline">\(B_{i, j}\)</span> (for some fixed indices <span class="math inline">\(i\)</span>, and <span class="math inline">\(j\)</span>). <span class="math display">\[
+<p>Therefore, we get <span class="math inline">\(p = g(z)=\sigma(B v)\)</span> (softmax), and <span class="math inline">\(v = f(u)= \tanh(A x)\)</span>. Overall, we want to compute the change in <span class="math inline">\(B_{i, j}\)</span> (for some fixed indices <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>). <span class="math display">\[
 \frac{\partial\, \mathscr{L}}{\partial \, B_{i, j}} = \frac{\partial\, \mathscr{L}}{\partial \, p} \cdot \frac{\partial\, p}{\partial \, z} \cdot \frac{\partial\, z}{\partial \, B_{i, j}}
 \]</span></p>
 <p>Perform this task in the following steps:</p>

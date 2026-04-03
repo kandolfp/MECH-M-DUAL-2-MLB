@@ -98,9 +98,9 @@ div.csl-indent {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-f3e4be047f94999836566be8d7fec70b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-ea09258ad5f1d188cc767b8e4d27386e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-f3e4be047f94999836566be8d7fec70b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-fcef3a217c2dc59de9b524d1d56553e6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-28552b72345800c07c123eae77d1b5c4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-fcef3a217c2dc59de9b524d1d56553e6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -551,8 +551,8 @@ div.csl-indent {
 </header>
 
 
-<p>When talking about storing the model we quickly realise that there is more to this task than simply calling <code>pickle.dump</code>. The same is true for persisting the model, data, and code together.</p>
-<p>Luckily, we already have the perfect tool for controlling the code in use, <code>git</code><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. We can make sure to commit our source files and when using a proper package manager like <code>pdm</code><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> we can hope to reproduce our environment for the formats that require these features.</p>
+<p>, we quickly realise that there is more to this task than simply calling <code>pickle.dump</code>. The same is true for persisting the model, data, and code together.</p>
+<p>Luckily, we already have the perfect tool for controlling the code in use, <code>git</code><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. We can make sure to commit our source files and, when using a proper package manager like <code>pdm</code><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> we can hope to reproduce our environment for the formats that require these features.</p>
 <p>To illustrate this, we move the code from <a href="model.html#lst-data-mp-toyexample" class="quarto-xref">Listing&nbsp;<span>4.1</span></a> into a project. In this process we move from the dense script to a proper file structure by splitting up the source script into several parts. Furthermore, we rework some of the details, like only downloading the data once.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -567,12 +567,12 @@ Reference repository
 <p>The following example is referenced according to the GitHub repository <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA">kandolfp/MECH-M-DUAL-2-MLB-DATA</a> on GitHub.</p>
 <p>Please use it as reference and move along the corresponding commit SHAs to see certain reference points as we continuously rework the code to adapt to the new requirements and situation.</p>
 <p>This also means some of the code included below is not interactively created but static with regard to the execution time and state.</p>
-<p>To emphasise that we are in the context of this reference repository the prompt for the terminal will always start with <code>MLB-DATA$</code>.</p>
-<p>The code is called with respect to the root director of the project as seen in the next output block.</p>
+<p>To emphasise that we are in the context of this reference repository, the prompt for the terminal will always start with <code>MLB-DATA$</code>.</p>
+<p>The code is called with respect to the root directory of the project as seen in the next output block.</p>
 <p>If you decide not to write your own code but rather use the reference repository for the following exercise, it is advisable to implement the exercise at the same SHA mentioned prior to the exercise, in order to avoid getting ahead of yourself.</p>
 </div>
 </div>
-<p>After the redesign we get a structure looking something like the following, see <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/22788a608b76d0b3180728c36c0351cc531b1def"><code>22788a6</code></a> for reference and file content:</p>
+<p>After the redesign, we get a structure looking something like the following, see <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/22788a608b76d0b3180728c36c0351cc531b1def"><code>22788a6</code></a> for reference and file content:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> tree</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">.</span></span>
@@ -605,14 +605,14 @@ Reference repository
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ex">WARNING:root:</span> Unknown type at 0 is sklearn.utils._bunch.Bunch.</span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="ex">DEBUG:root:</span> Score classifier</span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="ex">INFO:root:</span> We have a hard voting score of 0.8</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Now we can start connecting the model and the code. Our model was created at commit <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/22788a608b76d0b3180728c36c0351cc531b1def"><code>22788a6</code></a> and stored into the directory <code>model</code>.</p>
+<p>Now we can start connecting the model and the code. Our model was created at commit <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/22788a608b76d0b3180728c36c0351cc531b1def"><code>22788a6</code></a> and stored in the directory <code>model</code>.</p>
 <p>Now there are several things we can do to make sure this is reflected within our little project.</p>
 <ol type="1">
 <li>We can share experiments and models with other people and they can reproduce them.</li>
-<li>Make the convention to never train and store an experiment for later use as long as we have uncommitted changes in our code (easier said than done).</li>
-<li>Make sure to note somewhere what commit SHA is the current HEAD when storing the model. This allows us to reproduce it in case of data corruption or loss and for comparison with other models.</li>
-<li>When running inference we can check for the commit SHA and switch to it in case the project dependencies have changed and we get problems loading the file.</li>
-<li>Every time we change a parameter, we get a new commit, which is not very nice for our code but can be used to note the intend of the experiment in the commit message.</li>
+<li>Establish the convention to never train and store an experiment for later use as long as we have uncommitted changes in our code (easier said than done).</li>
+<li>Make sure to note somewhere what commit SHA is the current HEAD when storing the model. This allows us to reproduce it in case of data corruption or loss, and for comparison with other models.</li>
+<li>When running inference, we can check for the commit SHA and switch to it in case the project dependencies have changed and we encounter problems loading the file.</li>
+<li>Every time we change a parameter, we get a new commit, which is not very nice for our code but can be used to note the intent of the experiment in the commit message.</li>
 </ol>
 <p>This is rather cumbersome and requires a lot of discipline, it will also become tricky if several people work on the same project and run experiments with different parameters.</p>
 <div class="callout callout-style-simple callout-caution no-icon">
@@ -665,9 +665,9 @@ Reference repository
 <span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">probability</span><span class="kw">:</span><span class="at"> </span><span class="ch">True</span></span>
 <span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">random_state</span><span class="kw">:</span><span class="at"> </span><span class="dv">6020</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>We can use the Python package <a href="https://omegaconf.readthedocs.io/en/2.3_branch/"><code>omegaconf</code></a> to load and use it.</p>
-<p>One feature of the <code>OmegaConf</code>class is that we can use <em>unpacking</em><a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> and therefore write a line like:</p>
+<p>One feature of the <code>OmegaConf</code> class is that we can use <em>unpacking</em><a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> and therefore write a line like:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>PCA(<span class="op">**</span>params[<span class="st">"PCA"</span>].init_args)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>dramatically simplifying our code. Have a look at commit <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/9f7dead95663d9cef7a7cc21ec8133b03acb650c">9f7dead</a> to see this implemented and in action. As a our default parameter template we include the above parameters as <code>params.yaml</code> in the main directory of our project.</p>
+<p>dramatically simplifying our code. Have a look at commit <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/9f7dead95663d9cef7a7cc21ec8133b03acb650c">9f7dead</a> to see this implemented and in action. As our default parameter template we include the above parameters as <code>params.yaml</code> in the main directory of our project.</p>
 <div class="callout callout-style-simple callout-caution no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -695,7 +695,7 @@ Reference repository
 <section id="data-integration-and-versioning" class="level2" data-number="5.2">
 <h2 data-number="5.2" class="anchored" data-anchor-id="data-integration-and-versioning"><span class="header-section-number">5.2</span> Data integration and versioning</h2>
 <p>Our model depends on the code, the configuration, but crucially also on the input data itself. In order to make sure that we can reliably reproduce a model we also need to make sure our data is reproducible.</p>
-<p>In our reference project we use some files from GitHub (see <span class="citation" data-cites="Brunton2022">Brunton and Kutz (<a href="../references.html#ref-Brunton2022" role="doc-biblioref">2022</a>)</span> for as reference) but let us still make sure they are tracked within our system.</p>
+<p>In our reference project we use some files from GitHub (see <span class="citation" data-cites="Brunton2022">Brunton and Kutz (<a href="../references.html#ref-Brunton2022" role="doc-biblioref">2022</a>)</span> as a reference) but let us still make sure they are tracked within our system.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -717,7 +717,7 @@ Important
 <p>As always, the <em>best</em> platform depends on the project and the available infrastructure.</p>
 </div>
 </div>
-<p>One tool for data version control is <a href="https://dvc.org/doc"><code>dvc</code></a>. As it is written in Python we can even add and track the version via our package manager <code>pdm add dvc</code>. Once installed we can initialize it in our project,</p>
+<p>One tool for data version control is <a href="https://dvc.org/doc"><code>dvc</code></a>. As it is written in Python, we can even add and track the version via our package manager <code>pdm add dvc</code>. Once installed we can initialize it in our project,</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc init</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Initialized</span> DVC repository.</span>
@@ -737,7 +737,7 @@ Important
 <span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="st">- Check out the documentation: &lt;https://dvc.org/doc&gt;</span></span>
 <span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="st">- Get help and share ideas: &lt;https://dvc.org/chat&gt;</span></span>
 <span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="st">- Star us on GitHub: &lt;https://github.com/iterative/dvc&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>To make the changes permanent we commit the directory <code>.dvc</code> (with all the files included) to <code>git</code> and therefore our project now runs with <code>dvc</code>, see commit <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/df38086b756ed27e70fa2573b8d01c51ea69086c">df38086</a> for reference.</p>
+<p>To make the changes permanent we commit the directory <code>.dvc</code> (there is an <code>.gitignore</code> in <code>.dvc</code> that will make sure to not include e.g.&nbsp;<code>.dvc/cache</code>) to <code>git</code> and therefore our project now runs with <code>dvc</code>, see commit <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/df38086b756ed27e70fa2573b8d01c51ea69086c">df38086</a> for reference.</p>
 <p>To add the <code>data</code> directory simply run</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc add data</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -810,7 +810,7 @@ Note
 <section id="dvclive-for-experiment-management" class="level2" data-number="5.3">
 <h2 data-number="5.3" class="anchored" data-anchor-id="dvclive-for-experiment-management"><span class="header-section-number">5.3</span> <code>dvclive</code> for experiment management</h2>
 <p><code>dvclive</code> works best with the big ML Frameworks like <code>keras</code> or <code>pytorch</code> but we can also utilize it for our example project. The introduction to the experiment management from the <code>dvc</code> perspective can be found in the <a href="https://dvc.org/doc/start/experiments">docs</a>.</p>
-<p>To show some of the <code>dvclive</code> features we reworked to code, see commit <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/519a8544c82667cec5356f92ddde77993f0a0e76">519a85</a> for the changes (including <code>pdm add dvclive</code>). Now, when we run our job once more it will create the <code>dvclive</code> directory with a couple of subdirectories containing our metrics, looking like the following output.</p>
+<p>To show some of the <code>dvclive</code> features we reworked the code, see commit <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/519a8544c82667cec5356f92ddde77993f0a0e76">519a85</a> for the changes (including <code>pdm add dvclive</code>). Now, when we run our job once more it will create the <code>dvclive</code> directory with a couple of subdirectories containing our metrics, looking like the following output.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run src/MECH-M-DUAL-2-MLB-DATA/train.py</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="ex">INFO:root:</span> We have a hard voting train-score of 1.0</span>
@@ -828,7 +828,7 @@ Output with logger on DEBUG.
 </div>
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run python src/MECH-M-DUAL-2-MLB-DATA/train.py</span>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run src/MECH-M-DUAL-2-MLB-DATA/train.py</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ex">DEBUG:root:</span> Loaded the data with Split of 60 to 20 per category.</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="ex">DEBUG:root:</span> Load config</span>
@@ -907,9 +907,9 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><code>dvc exp show</code> provides an overview of the experiments base on the <code>git</code> commit SHAs. The output can be counter intuitive. Check out the option ( <code>dvc exp show --help</code>), especially <code>--num</code> and <code>-A</code> to control where to search for experiments.</p>
+<p><code>dvc exp show</code> provides an overview of the experiments based on the <code>git</code> commit SHAs. The output can be counter intuitive. Check out the options ( <code>dvc exp show --help</code>), especially <code>--num</code> and <code>-A</code> to control where to search for experiments.</p>
 <p>Each experiment has a unique name, as we did not specify anything a random name is created. In our case <code>sural-cyma</code> (they are often fun but can be hard to infer meaning and speaking names are most the time more useful, see <code>-n</code> option).</p>
-<p>It is also possible provide a <em>commit message</em> to give more details to the experiment.</p>
+<p>It is also possible to provide a <em>commit message</em> to give more details to the experiment.</p>
 </div>
 </div>
 <p>The overview also allows us to see the score for our model and the parameters, this allows us to quickly compare models.</p>
@@ -923,7 +923,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>We can see that the parameter from <code>params.yaml</code> are automatically added, and our code has somewhat duplicated them.</p>
+<p>We can see that the parameters from <code>params.yaml</code> are automatically added, and our code has somewhat duplicated them.</p>
 </div>
 </div>
 <p><code>dvclive</code> relies on <code>git</code> to do its magic for files and the <code>dvc</code> cache for large files. How this works is that a reference inside <code>git</code> is created for each experiment and stores the changes there. We can see this in the above logger output or via git.</p>
@@ -943,7 +943,7 @@ Note
 <span data-code-cell="annotated-cell-11" data-code-lines="1" data-code-annotation="1">This is a shorthand see<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>.</span>
 </dd>
 </dl>
-<p>Furthermore, we did not commit our changes to git (bad practice!!!) but they are stored alongside with the experiment, so no information is lost (we can find them in <code>.git/refs</code> , see below.)</p>
+<p>Furthermore, we did not commit our changes to git (bad practice!!!) but they are stored alongside the experiment, so no information is lost (we can find them in <code>.git/refs</code> , see below.)</p>
 <p>To clean up, we commit our changes as we know they work and then rerun the code for a new experiment, see <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/519a8544c82667cec5356f92ddde77993f0a0e76">519a854</a>. We can remove the previous version with <code>dvc exp rm &lt;name&gt;</code>.</p>
 <p>By default, this is not moved to the <code>git</code> remote, to do so we need to run <code>dvc exp push &lt;git remote&gt;</code>.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc exp push origin</span>
@@ -1014,7 +1014,7 @@ Important
 <div class="sourceCode" id="annotated-cell-16"><pre class="sourceCode bash code-annotation-code code-with-copy code-annotated"><code class="sourceCode bash"><a class="code-annotation-anchor" data-target-cell="annotated-cell-16" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-16-1" class="code-annotation-target"><a href="#annotated-cell-16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc stage add <span class="at">--name</span> train <span class="dt">\</span></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-16" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-16-2" class="code-annotation-target"><a href="#annotated-cell-16-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">--deps</span> data <span class="at">--deps</span> src/MECH-M-DUAL-2-MLB-DATA/ <span class="at">--deps</span> params.yaml <span class="dt">\</span></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-16" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-16-3" class="code-annotation-target"><a href="#annotated-cell-16-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">--outs</span> dvclive <span class="dt">\</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-16" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-16-4" class="code-annotation-target"><a href="#annotated-cell-16-4" aria-hidden="true" tabindex="-1"></a>          pdm run python src/MECH-M-DUAL-2-MLB-DATA/train.py</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-16" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-16-4" class="code-annotation-target"><a href="#annotated-cell-16-4" aria-hidden="true" tabindex="-1"></a>          pdm run src/MECH-M-DUAL-2-MLB-DATA/train.py</span>
 <span id="annotated-cell-16-5"><a href="#annotated-cell-16-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-16-6"><a href="#annotated-cell-16-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Added</span> stage <span class="st">'train'</span> in <span class="st">'dvc.yaml'</span>                                     </span>
 <span id="annotated-cell-16-7"><a href="#annotated-cell-16-7" aria-hidden="true" tabindex="-1"></a></span>
@@ -1045,7 +1045,7 @@ Important
 <div class="sourceCode" id="cb19"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">schema</span><span class="kw">:</span><span class="at"> </span><span class="st">'2.0'</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">stages</span><span class="kw">:</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">train</span><span class="kw">:</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">cmd</span><span class="kw">:</span><span class="at"> pdm run python src/MECH-M-DUAL-2-MLB-DATA/train.py</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">cmd</span><span class="kw">:</span><span class="at"> pdm run src/MECH-M-DUAL-2-MLB-DATA/train.py</span></span>
 <span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">deps</span><span class="kw">:</span></span>
 <span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">path</span><span class="kw">:</span><span class="at"> data</span></span>
 <span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">hash</span><span class="kw">:</span><span class="at"> md5</span></span>
@@ -1089,7 +1089,7 @@ Important
 <span id="annotated-cell-20-6"><a href="#annotated-cell-20-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Applying</span> changes                                     <span class="kw">|</span><span class="ex">6.00</span> [00:00,   391file/s]</span>
 <span id="annotated-cell-20-7"><a href="#annotated-cell-20-7" aria-hidden="true" tabindex="-1"></a><span class="st">'data.dvc'</span> didn<span class="st">'t change, skipping</span></span>
 <span id="annotated-cell-20-8"><a href="#annotated-cell-20-8" aria-hidden="true" tabindex="-1"></a><span class="st">Running stage '</span>train<span class="st">':</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-20" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-20-9" class="code-annotation-target"><a href="#annotated-cell-20-9" aria-hidden="true" tabindex="-1"></a><span class="st">&gt; pdm run python src/MECH-M-DUAL-2-MLB-DATA/train.py</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-20" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-20-9" class="code-annotation-target"><a href="#annotated-cell-20-9" aria-hidden="true" tabindex="-1"></a><span class="st">&gt; pdm run src/MECH-M-DUAL-2-MLB-DATA/train.py</span></span>
 <span id="annotated-cell-20-10"><a href="#annotated-cell-20-10" aria-hidden="true" tabindex="-1"></a><span class="st">DEBUG:root: Loaded the data with Split of 60 to 20 per category.</span></span>
 <span id="annotated-cell-20-11"><a href="#annotated-cell-20-11" aria-hidden="true" tabindex="-1"></a><span class="st">DEBUG:root: Load config</span></span>
 <span id="annotated-cell-20-12"><a href="#annotated-cell-20-12" aria-hidden="true" tabindex="-1"></a><span class="st">DEBUG:root: Create classifier</span></span>
@@ -1196,7 +1196,7 @@ Important
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    webdavs://sakai.mci4me.at/dav/Course-ID-SLVA-46549/MECH-M-DUAL-2-MLB-DATA</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Setting</span> <span class="st">'myremote'</span> as a default remote.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>This create the file <code>.dvc/config</code> with the following content (a toml file).</p>
+<p>This creates the file <code>.dvc/config</code> with the following content (a TOML file).</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[core]</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">remote</span> <span class="op">=</span> <span class="dt">myremote</span></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="kw">['</span><span class="dt">remote "myremote"'</span><span class="kw">]</span></span>
@@ -1213,13 +1213,13 @@ Important
 <div class="callout-body-container callout-body">
 <p>Due to the server structure we need to limit the number of parallel processes for synchronizing the content. In order to do so, we limit the default value for the number of jobs:</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc remote modify myremote jobs 4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>This will result in the following toml file:</p>
+<p>This will result in the following TOML file:</p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[core]</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">remote</span> <span class="op">=</span> <span class="dt">myremote</span></span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="kw">['</span><span class="dt">remote "myremote"'</span><span class="kw">]</span></span>
 <span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">url</span> <span class="op">=</span> <span class="dt">webdavs</span><span class="er">://</span><span class="dt">sakai.mci4me.at</span><span class="er">/</span><span class="dt">dav</span><span class="er">/</span><span class="dt">Course-ID-SLVA-46549</span><span class="er">/</span><span class="dt">MECH-M-DUAL-2-MLB-DATA</span></span>
 <span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">jobs</span> <span class="op">=</span> <span class="dv">4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>As this issues only occurred late in the project the last line will not show up in the commit <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/afe08488167a3a68788f67b64cbd76e7261deee6">afe0848</a> and only after <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/0a98a0941c77ed0daa9371904df6bb916a6a45f4">0a98a09</a></p>
+<p>As this issue only occurred late in the project the last line will not show up in the commit <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/afe08488167a3a68788f67b64cbd76e7261deee6">afe0848</a> and only after <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/0a98a0941c77ed0daa9371904df6bb916a6a45f4">0a98a09</a></p>
 </div>
 </div>
 <p>To nicely separate the sensitive information for the access, there also exist a <code>.dvc/config.local</code> file that is in the <code>.gitignore</code> and will not be committed. We add our user information to this file or via a command in the terminal</p>

@@ -43,9 +43,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-f3e4be047f94999836566be8d7fec70b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-ea09258ad5f1d188cc767b8e4d27386e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-f3e4be047f94999836566be8d7fec70b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-fcef3a217c2dc59de9b524d1d56553e6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-28552b72345800c07c123eae77d1b5c4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-fcef3a217c2dc59de9b524d1d56553e6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -466,9 +466,9 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#sec-nn-data-transform" id="toc-sec-nn-data-transform" class="nav-link active" data-scroll-target="#sec-nn-data-transform"><span class="header-section-number">11.1</span> Data Augmentation</a></li>
-  <li><a href="#sec-nn-data-labelling" id="toc-sec-nn-data-labelling" class="nav-link" data-scroll-target="#sec-nn-data-labelling"><span class="header-section-number">11.2</span> Data Labeling</a>
+  <li><a href="#sec-nn-data-labelling" id="toc-sec-nn-data-labelling" class="nav-link" data-scroll-target="#sec-nn-data-labelling"><span class="header-section-number">11.2</span> Data Labelling</a>
   <ul class="collapse">
-  <li><a href="#tools-for-labeling" id="toc-tools-for-labeling" class="nav-link" data-scroll-target="#tools-for-labeling"><span class="header-section-number">11.2.1</span> Tools for Labeling</a></li>
+  <li><a href="#tools-for-labelling" id="toc-tools-for-labelling" class="nav-link" data-scroll-target="#tools-for-labelling"><span class="header-section-number">11.2.1</span> Tools for Labelling</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/edit/main/nn/data.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -496,7 +496,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Now that we know how to design, train and work with neural networks we need to talk about one of the most important topic: data. We could see throughout this notes that the algorithms need to have data to <em>learn</em>. This includes labelled and unlabelled data.</p>
+<p>Now that we know how to design, train and work with neural networks we need to talk about one of the most important topics: data. We could see throughout these notes that the algorithms need to have data to <em>learn</em>. This includes labelled and unlabelled data.</p>
 <p>There are several topics that need to be addressed when a project does not simply include training on available datasets. We briefly discuss several important topics (some of which we have already heard) before some more extended discussion on a selection. Quite often a data pipeline consists of the steps as listed below (the order may differ).</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -512,17 +512,17 @@ Note
 </div>
 </div>
 <ul>
-<li><p><strong>Cleaning and preprocessing</strong>: The raw data often needs some cleaning and preprocessing. For images this starts with an appropriate image format - remember that most formats include some form of compression, that can lead to artifacts. We might also need to handle missing, blurry, out of focus, fuzzy, hazy, or grainy images. It might also be the useful that we detect the region of interest and cut the image to the appropriate dimensions to reduce the size of our problem already on this stage. The main idea of this step is to have data that can be processed in a standardized way.</p></li>
-<li><p><strong>Dataset splitting</strong>: The split of the available data is important. Already at this level it is essential, that for example the <em>test dataset</em> is never touched by the training or validation.</p></li>
+<li><p><strong>Cleaning and preprocessing</strong>: The raw data often needs some cleaning and preprocessing. For images this starts with an appropriate image format - remember that most formats include some form of compression that can lead to artifacts. We might also need to handle missing, blurry, out of focus, fuzzy, hazy, or grainy images. It might also be useful that we detect the region of interest and cut the image to the appropriate dimensions to reduce the size of our problem already at this stage. The main idea of this step is to have data that can be processed in a standardized way.</p></li>
+<li><p><strong>Dataset splitting</strong>: The split of the available data is important. Already at this level it is essential that, for example, the <em>test dataset</em> is never touched by the training or validation.</p></li>
 <li><p><strong>Class imbalance</strong>: A real-world dataset is often not balanced or not as balanced as it should be for good learning behaviour in NNs. The training techniques need to be adapted or the sample selection needs to be adjusted. We discussed some of the problems in <a href="../clustering/supervised.html#sec-clustering-sl-performance" class="quarto-xref"><span>Section 2.2</span></a>. Some of the data augmentation techniques we discuss below <a href="#sec-nn-data-transform" class="quarto-xref"><span>Section 11.1</span></a> can help to mitigate these problems.</p></li>
 <li><p><strong>Feature engineering</strong>: While NNs can be used to detect the important features it does not mean that for every application we can skip feature engineering. We might want to create new features from existing ones (e.g.&nbsp;transforming to wavelet basis to highlight vertical and horizontal features) or reduce to the most important features like only the edges.</p></li>
-<li><p><strong>Labeling</strong>: The process of labeling data can be tedious and time consuming. Arguably it is the most important part as all supervised learning relies on the quality of the labels. We discuss this in more detail below, <a href="#sec-nn-data-labelling" class="quarto-xref"><span>Section 11.2</span></a>.</p></li>
-<li><p><strong>Augmentation</strong>: By augmenting the data we have we can also greatly influence the training of our NNs. In short, we can use geometric transformations, colour adjustments, artificial noise, and random erasing to augment our data and create new data from the NNs point of view. We discuss this step in more detail in <a href="#sec-nn-data-transform" class="quarto-xref"><span>Section 11.1</span></a>.</p></li>
+<li><p><strong>Labelling</strong>: The process of labelling data can be tedious and time consuming. Arguably, it is the most important part as all supervised learning relies on the quality of the labels. We discuss this in more detail below, <a href="#sec-nn-data-labelling" class="quarto-xref"><span>Section 11.2</span></a>.</p></li>
+<li><p><strong>Augmentation</strong>: By augmenting the data we have, we can also greatly influence the training of our NNs. In short, we can use geometric transformations, colour adjustments, artificial noise, and random erasing to augment our data and create new data from the NN’s point of view. We discuss this step in more detail in <a href="#sec-nn-data-transform" class="quarto-xref"><span>Section 11.1</span></a>.</p></li>
 </ul>
 <p>Besides these steps that are often part of a data preparation pipeline or directly included in the training there are other important aspects that greatly influence our outcome.</p>
 <ul>
-<li><p><strong>Validation and quality assurance</strong>: It is important to have some processes in place that ensure the quality of the data is accurate, especially if data is automatically generated and labelled. Making sure the labels are valid, and the quality of the data is as desired makes sure the training can have major impact on the performance. It is also important to keep track of how balanced our dataset is.</p></li>
-<li><p><strong>Scalability and efficiency</strong>: Quite likely our dataset is growing over time and this can cause problems in terms of scalability and efficiency. You might need to apply batch processing and parallelization techniques to make sure the data can be processed at all. Furthermore, the way it is stored and provided for the NN can often become the bottleneck of training.</p></li>
+<li><p><strong>Validation and quality assurance</strong>: It is important to have some processes in place that ensure the quality of the data is accurate, especially if data is automatically generated and labelled. Making sure the labels are valid, and the quality of the data is as desired makes sure the training can have a major impact on the performance. It is also important to keep track of how balanced our dataset is.</p></li>
+<li><p><strong>Scalability and efficiency</strong>: It is quite likely, that our dataset is growing over time and this can cause problems in terms of scalability and efficiency. You might need to apply batch processing and parallelization techniques to make sure the data can be processed at all. Furthermore, the way it is stored and provided for the NN can often become the bottleneck in training.</p></li>
 <li><p><strong>Ethical considerations</strong>: A bias in the dataset can create a bias in the model we train. This is especially important if we are working with sensitive data. Furthermore, ethical considerations and GDPR considerations should never be ignored during data collection and use.</p></li>
 </ul>
 <section id="sec-nn-data-transform" class="level2" data-number="11.1">
@@ -540,7 +540,7 @@ Note
 <p>We can influence the training and the model drastically. For <code>pytorch</code> we can find most of these in <code>torchvison.transforms.v2</code>, see <a href="https://docs.pytorch.org/vision/stable/transforms.html">docs</a> for some insights.</p>
 <p>The most important aspects influenced by these augmentations are:</p>
 <ol type="1">
-<li><p><strong>Dataset</strong>: With data augmentation we can artificially increase the size of our dataset and therefore expose our network to more training data without the often tedious task of labeling. If we apply this in a <em>random</em> fashion we need to make sure that the seed is set and we can track the changes in case we need to get a deeper understanding of the mechanics behind it. Overall, by always applying some augmentation, overfitting can be drastically reduced. If our dataset is not balanced and one class is less frequent than it should be, these techniques can also produce more instances. This process is called <em>synthetic minority oversampling techniques</em> (SMOTE).</p></li>
+<li><p><strong>Dataset</strong>: With data augmentation we can artificially increase the size of our dataset and therefore expose our network to more training data without the often tedious task of labelling. If we apply this in a <em>random</em> fashion we need to make sure that the seed is set and we can track the changes in case we need to get a deeper understanding of the mechanics behind it. Overall, by always applying some augmentation, overfitting can be drastically reduced. If our dataset is not balanced and one class is less frequent than it should be, these techniques can also produce more instances. This process is called <em>Synthetic Minority Oversampling Technique</em> (SMOTE).</p></li>
 <li><p><strong>Generalization</strong>: With data augmentation we can make sure the model learns on features that are invariant to geometric transformations or something like different zoom levels. Overall, this will lead to a better generalization of the network.</p></li>
 <li><p><strong>Overfitting</strong>: Especially for small dataset overfitting is a serious problem and the augmentation techniques are a reliable tool to mitigate the risk of overfitting to your training set.</p></li>
 <li><p><strong>Performance</strong>: Quite often it also helps to introduce data augmentations during training achieve better results on several performance metrics like accuracy.</p></li>
@@ -554,30 +554,30 @@ Note
 </div>
 <div class="callout-body-container">
 <div id="exr-nn-data-augmentation-1" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 11.1 (Use data augmentation to improve our models)</strong></span> Similar to the pipeline use in <a href="transfer.html" class="quarto-xref"><span>Chapter 10</span></a> create a pipeline to include some of the above described data augmentations and retrain the models we created with this pipeline in place for the training set. Can you see any of the above described benefits?</p>
+<p><span class="theorem-title"><strong>Exercise 11.1 (Use data augmentation to improve our models)</strong></span> Similar to the pipeline use in <a href="transfer.html" class="quarto-xref"><span>Chapter 10</span></a>, create a pipeline to include some of the above described data augmentations and retrain the models we created with this pipeline in place for the training set. Can you see any of the above described benefits?</p>
 </div>
 </div>
 </div>
 </div>
 </section>
 <section id="sec-nn-data-labelling" class="level2" data-number="11.2">
-<h2 data-number="11.2" class="anchored" data-anchor-id="sec-nn-data-labelling"><span class="header-section-number">11.2</span> Data Labeling</h2>
-<p>Labeling data is a critical step in machine learning projects as the quality directly influences the performance of the model. For image data the process of labeling involves assigning meaningful annotations to images (what is in the image, or what classes it belongs to), bounding boxes or masks for objects visible in the image. Furthermore, these information should be easy to process by a machine and keeping a change log is also recommended.</p>
+<h2 data-number="11.2" class="anchored" data-anchor-id="sec-nn-data-labelling"><span class="header-section-number">11.2</span> Data Labelling</h2>
+<p>Labelling data is a critical step in machine learning projects as the quality directly influences the performance of the model. For image data the process of labelling involves assigning meaningful annotations to images (what is in the image, or what classes it belongs to), bounding boxes or masks for objects visible in the image. Furthermore, this information should be easy to process by a machine and keeping a changelog is also recommended.</p>
 <p>Depending on the task we set out to achieve, the requirements on labelling can be quite different. The following list covers some tasks and also highlights where specific labels can be problematic.</p>
 <ul>
-<li><p><strong>Image classification</strong>: Each image has a single label e.g., <em>cat</em> or <em>dog</em>. This can cause problems, especially if we decide to move from superclasses like <em>animal</em>, <em>for legged</em>, <em>furry</em> to subclasses or specific species of cats.</p></li>
+<li><p><strong>Image classification</strong>: Each image has a single label e.g., <em>cat</em> or <em>dog</em>. This can cause problems, especially if we decide to move from superclasses like <em>animal</em>, <em>four-legged</em>, <em>furry</em> to subclasses or specific species of cats.</p></li>
 <li><p><strong>Object detection</strong>: Annotating bounding boxes around objects within an image. This can be tricky in the case of objects overlapping each other or for a sequence of images where parts get obfuscated.</p></li>
-<li><p><strong>Semantic segmentation</strong>: Assigning a class label to each pixel in an image. This can cause problems with class imbalance if e.g.&nbsp;<em>background</em> is the dominate class. Another problem occurs when capturing precise object boundaries and the challenges involved here with down and upsampling. Furthermore, generalization can be a problem in these tasks if e.g.&nbsp;background is <em>always</em> black.</p></li>
-<li><p><strong>Instance segmentation</strong>: This builds on semantic segmentation but distinguishes between different individual of the same instance, e.g.&nbsp;two different cats in one image. One obvious challenge here is that even for a human labelling it might not always be clear if a pixel belongs to one instance or the other if the <em>overlap</em>.</p></li>
+<li><p><strong>Semantic segmentation</strong>: Assigning a class label to each pixel in an image. This can cause problems with class imbalance if e.g.&nbsp;<em>background</em> is the dominant class. Another problem occurs when capturing precise object boundaries and the challenges involved here with down- and upsampling. Furthermore, generalization can be a problem in these tasks if e.g.&nbsp;background is <em>always</em> black.</p></li>
+<li><p><strong>Instance segmentation</strong>: This builds on semantic segmentation but distinguishes between different individual of the same instance, e.g.&nbsp;two different cats in one image. One obvious challenge here is that even for a human labeller, it might not always be clear if a pixel belongs to one instance or the other if they <em>overlap</em>.</p></li>
 </ul>
 <p>Above, we discussed some specific challenges depending on the topic but there are also more general challenges in the context of labelling image data.</p>
 <ul>
-<li><p><strong>Subjectivity</strong>: Images allow for some form of interpretation what exactly is part of the image, instance. This might be where one object begins and another ends, e.g.&nbsp;satellite data and we need to distinguish between a roof with grass and an actual field, not to talk about different plants in the background of image. Furthermore, if we try to label emotions this might be hard due to cultural differences. The same is true for abstract concepts.</p></li>
-<li><p><strong>Scalability</strong>: The larger the dataset, the more time consuming and challenging the labelling process becomes. This is e.g.&nbsp;why old CAPTCHA algorithms <em>employed</em> users to read text to help improve OCR software<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. The task is even more challenging when pixel-level labels are required for segmentation.</p></li>
+<li><p><strong>Subjectivity</strong>: Images allow for some form of interpretation of what exactly is part of the image, for instance. This might be where one object begins and another ends, e.g., satellite data, and we need to distinguish between a roof with grass and an actual field, not to talk about different plants in the background of image. Furthermore, if we try to label emotions, this might be hard due to cultural differences. The same is true for abstract concepts.</p></li>
+<li><p><strong>Scalability</strong>: The larger the dataset, the more time consuming and challenging the labelling process becomes. This is, e.g., why old CAPTCHA algorithms <em>employed</em> users to read text to help improve OCR software<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. The task is even more challenging when pixel-level labels are required for segmentation.</p></li>
 </ul>
 <ul>
-<li><p><strong>Imbalance</strong>: This can be more subtle than we often think. E.g. there are not a lot of images of snow leopards and those existing might be from the same individual leading to problems we already discussed.</p></li>
-<li><p><strong>Errors</strong>: It is possible that labels are wrong or inconsistent. Such problems can propagate and influence workflow. While we can simply <em>correct</em> an error it might also be beneficial to keep track of the wrong labels to make sure we capture model drift and also to work against systematic errors.</p></li>
+<li><p><strong>Imbalance</strong>: This can be more subtle than we often think. E.g., there are not many images of snow leopards and those that exist might be from the same individual, leading to problems we already discussed.</p></li>
+<li><p><strong>Errors</strong>: It is possible that labels are wrong or inconsistent. Such problems can propagate and influence the workflow. While we can simply <em>correct</em> an error, it might also be beneficial to keep track of the wrong labels to make sure we capture model drift and also to work against systematic errors.</p></li>
 <li><p><strong>Cost</strong>: The costs for high-quality labelled data were made implicitly clear in the above points but we need to mention it separately as it can have serious implications on a project.</p></li>
 </ul>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -590,11 +590,11 @@ Best practices
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>In light of the above challenges, it is a good idea to keep the following checks in mind. Start small to establish a process, have <em>labeling guidelines</em> in place to allow for reproducible results, if possible allow for multiple annotators, implement a quality control, leverage pre-labelled data if possible.</p>
+<p>In light of the above challenges, it is a good idea to keep the following checks in mind. Start small to establish a process, have <em>labelling guidelines</em> in place to allow for reproducible results, if possible, allow for multiple annotators, implement a quality control, leverage pre-labelled data if possible.</p>
 </div>
 </div>
-<section id="tools-for-labeling" class="level3" data-number="11.2.1">
-<h3 data-number="11.2.1" class="anchored" data-anchor-id="tools-for-labeling"><span class="header-section-number">11.2.1</span> Tools for Labeling</h3>
+<section id="tools-for-labelling" class="level3" data-number="11.2.1">
+<h3 data-number="11.2.1" class="anchored" data-anchor-id="tools-for-labelling"><span class="header-section-number">11.2.1</span> Tools for Labelling</h3>
 <p>There are several tools available to help in the labelling process.</p>
 <ul>
 <li><a href="https://labelstud.io/">Label Studio</a>: Open-source tool for general data labelling (free, commercial with extended security features available)</li>
@@ -605,7 +605,7 @@ Best practices
 <li><a href="https://labelbox.com/">Labelbox</a>: General data labelling (commercial)</li>
 </ul>
 <p>As Label Studio is one of the most versatile and free tools available we highlight some of the main features as a general guide on how these tools work and what kind of workflows they provide.</p>
-<p>Label Studio supports a wide range of labelling/annotation tasks from image classification via object detection to segmentation tasks. This is handled via multiple types of labels like bounding boxes or polygons and allows cooperative processes. We can use tools ans assistant systems to facilitate semi-automated labelling where the human performs fine tuning and checks the results. Furthermore, we can define workflows and have quality control features (consensus scoring) available.</p>
+<p>Label Studio supports a wide range of labelling/annotation tasks from image classification via object detection to segmentation tasks. This is handled via multiple types of labels like bounding boxes or polygons and allows cooperative processes. We can use tools and assistant systems to facilitate semi-automated labelling where the human performs fine tuning and checks the results. Furthermore, we can define workflows and have quality control features (consensus scoring) available.</p>
 
 
 </section>

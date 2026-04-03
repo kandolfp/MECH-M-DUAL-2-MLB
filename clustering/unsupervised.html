@@ -98,9 +98,9 @@ div.csl-indent {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-f3e4be047f94999836566be8d7fec70b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-ea09258ad5f1d188cc767b8e4d27386e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-f3e4be047f94999836566be8d7fec70b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-fcef3a217c2dc59de9b524d1d56553e6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-28552b72345800c07c123eae77d1b5c4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-fcef3a217c2dc59de9b524d1d56553e6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
@@ -628,7 +628,7 @@ Tip
 <li>Repeat, starting from step 2, until the cluster centers stay stable up to some tolerance.</li>
 </ol>
 <p>This algorithm was first introduced in <span class="citation" data-cites="DBLP:journals/tit/Lloyd82">Lloyd (<a href="../references.html#ref-DBLP:journals/tit/Lloyd82" role="doc-biblioref">1982</a>)</span> and is therefore often called Lloyd algorithm.</p>
-<div id="76a142c7" class="cell" data-execution_count="1">
+<div id="32320949" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code for Lloyd algorithm</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> lloyd(data, centers, steps):</span>
@@ -891,7 +891,7 @@ Figure&nbsp;1.3: Validation against a test set.
 <div id="exr-kmean" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise 1.1 (Apply the <span class="math inline">\(k\)</span>-means algorithm to other datasets)</strong></span> As an exercise, to get some practice for using <span class="math inline">\(k\)</span>-means, apply the algorithm to some other datasets to see how it performs.</p>
 <ol type="1">
-<li><p>We already looked at the Fischer Iris dataset (see the introduction this part of the notes) and discussed some basic features. Try with only two dimensional data, as well as four dimensional data to find the three clusters.</p></li>
+<li><p>We already looked at the Fisher Iris dataset (see the introduction this part of the notes) and discussed some basic features. Try with only two dimensional data, as well as four dimensional data to find the three clusters.</p></li>
 <li><p>For <a href="#fig-clustering-unsupervised_dbscan" class="quarto-xref">Figure&nbsp;<span>1.7</span></a> we will look at the moons dataset. Try working out the clusters in this case.</p></li>
 <li><p>Apply the algorithm to the cats and dogs (in wavelet basis, see the introduction this part of the notes) for various principal components and find the two clusters.</p></li>
 </ol>
@@ -1186,10 +1186,10 @@ Note
 </div>
 <div class="callout-body-container">
 <div id="exr-dendrogram" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 1.2 (Apply the agglomerative clustering to the Fischer Iris dataset)</strong></span> &nbsp;</p>
+<p><span class="theorem-title"><strong>Exercise 1.2 (Apply the agglomerative clustering to the Fisher Iris dataset)</strong></span> &nbsp;</p>
 <ol type="1">
 <li><p>Work out how to use the <code>scikit-learn</code> alternative.</p></li>
-<li><p>We already looked at the Fischer Iris dataset (see the introduction this part of the notes) and discussed some basic features. Try with only two dimensional data, as well as four dimensional data, to find the three clusters.</p></li>
+<li><p>We already looked at the Fisher Iris dataset (see the introduction this part of the notes) and discussed some basic features. Try with only two dimensional data, as well as four dimensional data, to find the three clusters.</p></li>
 <li><p>For <a href="#fig-clustering-unsupervised_dbscan" class="quarto-xref">Figure&nbsp;<span>1.7</span></a> we will look at the moons dataset. Try working out the clusters in this case, look at the different possibilities with the <code>linkage</code> option as <code>{"ward", "complete", "average", "single"}</code>.</p></li>
 </ol>
 </div>
@@ -1332,8 +1332,8 @@ Note
 <div id="exr-dbscan" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise 1.3 (Application of DBSCAN)</strong></span> &nbsp;</p>
 <ol type="1">
-<li><p>Apply the DBSCAN algorithm to our toy example (the two ellipsoids from <a href="#sec-clustering-usl-kmeans" class="quarto-xref"><span>Section 1.1</span></a>) used through this section, to recover the two clusters as good as possible. Try different <span class="math inline">\(\epsilon\)</span> values as well as different norms (<code>metric</code> parameter).</p></li>
-<li><p>Additionally, for a higher dimensional problem, using DBSCAN to split the Fischer Iris dataset (see the introduction this part of the notes) into its three clusters of flowers.</p></li>
+<li><p>Apply the DBSCAN algorithm to our toy example (the two ellipsoids from <a href="#sec-clustering-usl-kmeans" class="quarto-xref"><span>Section 1.1</span></a>) used throughout this section, to recover the two clusters as good as possible. Try different <span class="math inline">\(\epsilon\)</span> values as well as different norms (<code>metric</code> parameter).</p></li>
+<li><p>Additionally, for a higher dimensional problem, using DBSCAN to split the Fisher Iris dataset (see the introduction this part of the notes) into its three clusters of flowers.</p></li>
 </ol>
 </div>
 </div>
@@ -1506,7 +1506,7 @@ Figure&nbsp;1.8: Fitting of the second and fourth principal value of the cats an
 <p><span class="theorem-title"><strong>Exercise 1.4 (Application of GMM)</strong></span> &nbsp;</p>
 <ol type="1">
 <li><p>Apply the GMM algorithm to our toy example (the two ellipsoids from <a href="#sec-clustering-usl-kmeans" class="quarto-xref"><span>Section 1.1</span></a>) used through this section to recover the two clusters as good as possible. This should be straight forward, as we constructed it via Gaussian distributions. Try constraining the algorithm by imposing the different values possible for <code>covariance_type</code>.</p></li>
-<li><p>Additionally, for a higher dimensional problem, split the Fischer Iris dataset into its three clusters of flowers.</p></li>
+<li><p>Additionally, for a higher dimensional problem, split the Fisher Iris dataset into its three clusters of flowers.</p></li>
 <li><p>Try to use GMM to get clusters for the moon dataset used in <a href="#sec-clustering-ul-dbscan" class="quarto-xref"><span>Section 1.3</span></a>. Also try with the <code>BayesianGaussianMixture</code> class, where no amount of clusters needs to be specified.</p></li>
 </ol>
 </div>
@@ -1560,16 +1560,16 @@ Figure&nbsp;1.9: Fitting of the second and fourth principal value of the cats an
 </section>
 <section id="sec-clustering-ul-me" class="level2" data-number="1.5">
 <h2 data-number="1.5" class="anchored" data-anchor-id="sec-clustering-ul-me"><span class="header-section-number">1.5</span> Motivational example</h2>
-<p>Before we make the leap to supervised learning, we we introduce a new dataset and see how our unsupervised approach works in this case.</p>
-<p>We do this with the (in)famous MNIST dataset of hand written digits. Lets start by looking at the dataset and establishing some basic properties.</p>
+<p>Before we make the leap to supervised learning, we introduce a new dataset and see how our unsupervised approach works in this case.</p>
+<p>We do this with the (in)famous MNIST dataset of handwritten digits. Let’s start by looking at the dataset and establishing some basic properties.</p>
 <p>We load the dataset and look at its description</p>
-<div id="19ccec93" class="cell" data-execution_count="10">
+<div id="b673d7f4" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_openml</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>mnist <span class="op">=</span> fetch_openml(data_id<span class="op">=</span><span class="dv">554</span>, as_frame<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mnist.DESCR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="c3a74ef7" class="cell styled-output" data-execution_count="11">
+<div id="24971a1b" class="cell styled-output" data-execution_count="11">
 <div class="cell-output cell-output-stdout">
 <pre><code>**Author**: Yann LeCun, Corinna Cortes, Christopher J.C. Burges
 **Source**: [MNIST Website](http://yann.lecun.com/exdb/mnist/) - Date
@@ -1664,10 +1664,10 @@ Figure&nbsp;1.10: First 100 digits from the MNIST dataset.
 </div>
 </div>
 </div>
-<p>As can be seen from <a href="#fig-clustering-usl-mnist" class="quarto-xref">Figure&nbsp;<span>1.10</span></a>, most digits are easy to distinguish for us, but there are some nasty things included. Especially, there are <code>1</code>s with the english style (just one straight line) of writing (1st row, 7th column), but also as a diagonal line (1st row, 4th column), and finally also the german style (connecting line at base and top) of writing (3rd row, 5th column).</p>
+<p>As can be seen from <a href="#fig-clustering-usl-mnist" class="quarto-xref">Figure&nbsp;<span>1.10</span></a>, most digits are easy to distinguish for us, but there are some nasty things included. Especially, there are <code>1</code>s with the English style (just one straight line) of writing (1st row, 7th column), but also as a diagonal line (1st row, 4th column), and finally also the German style (connecting line at base and top) of writing (3rd row, 5th column).</p>
 <p>Also the <code>2</code> digit comes in various forms, with loop (1st row, 6th column) and without (3rd row, 6th column). Finally we all know that a <code>3</code> can hide in an <code>8</code>, same as a <code>7</code> and <code>1</code> can hide in a <code>9</code> and much more.</p>
-<p>Now, before we go any further in the investigation we split up the dataset into a training and a test set, we will not use this here but we should establish some way of working right from the start.</p>
-<div id="8c42e7ce" class="cell" data-execution_count="13">
+<p>Now, before we go any further in the investigation, we split the dataset into training and test set. We will not use this right away but we should establish a sensible way of working right from the start.</p>
+<div id="4175aad2" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>X_train, X_test <span class="op">=</span> mnist.data[:<span class="dv">60000</span>], mnist.data[<span class="dv">60000</span>:]</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>y_train, y_test <span class="op">=</span> mnist.target[:<span class="dv">60000</span>], mnist.target[<span class="dv">60000</span>:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -1708,7 +1708,7 @@ Figure&nbsp;1.11: The cluster means of <span class="math inline">\(k\)</span>-me
 </div>
 </div>
 </div>
-<p>As can be seen from <a href="#fig-clustering-usl-mnist2" class="quarto-xref">Figure&nbsp;<span>1.11</span></a>, the cluster centers do not recover our ten digits. In general, they are, as expected, smudged as they do not represent an actual image. It looks like <span class="math inline">\(0, 1, 2, 3, 6, 8, 9\)</span> are <em>easy</em> to discover but <span class="math inline">\(4, 5, 7\)</span> not. If we look closely, we can see <span class="math inline">\(4, 5, 7\)</span> represented in our clusters but not as separate digits. Obviously this is not a good way to proceed and to find our digits. We will discuss methods to perform this task in the next section <a href="supervised.html" class="quarto-xref"><span>Chapter 2</span></a>. Furthermore, keep this part in mind, as we will come back to how this can still be helpful in a different aspect as semi-supervised learning <a href="semisupervised.html" class="quarto-xref"><span>Chapter 3</span></a>.</p>
+<p>As can be seen from <a href="#fig-clustering-usl-mnist2" class="quarto-xref">Figure&nbsp;<span>1.11</span></a>, the cluster centers do not recover our ten digits. In general, they are, as expected, smudged as they do not represent an actual image. It looks like <span class="math inline">\(0, 1, 2, 3, 6, 8\)</span>, and <span class="math inline">\(9\)</span> are <em>easy</em> to discover, but <span class="math inline">\(4, 5\)</span>, and <span class="math inline">\(7\)</span> are not. If we look closely, we can see <span class="math inline">\(4, 5, 7\)</span> represented in our clusters but not as separate digits. Obviously this is not a good way to proceed and to find our digits. We will discuss methods to perform this task in the next section <a href="supervised.html" class="quarto-xref"><span>Chapter 2</span></a>. Furthermore, keep this part in mind, as we will come back to how this can still be helpful in a different aspect in semi-supervised learning <a href="semisupervised.html" class="quarto-xref"><span>Chapter 3</span></a>.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">

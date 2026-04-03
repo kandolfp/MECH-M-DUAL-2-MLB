@@ -98,9 +98,9 @@ div.csl-indent {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-f3e4be047f94999836566be8d7fec70b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-ea09258ad5f1d188cc767b8e4d27386e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-f3e4be047f94999836566be8d7fec70b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-fcef3a217c2dc59de9b524d1d56553e6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-28552b72345800c07c123eae77d1b5c4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-fcef3a217c2dc59de9b524d1d56553e6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
@@ -592,7 +592,7 @@ window.Quarto = {
 </header>
 
 
-<p>If we recall <span class="citation" data-cites="Fischer">Fisher (<a href="../references.html#ref-Fischer" role="doc-biblioref">1936</a>)</span> from the Iris dataset, we can also find one of the first supervised learning methods in this paper. The introduced <em>linear discriminant analysis</em> (LDA) has survived over time and is still one of the standard techniques for classification, even though we use a more generalized and improved method nowadays.</p>
+<p>If we recall <span class="citation" data-cites="Fisher">Fisher (<a href="../references.html#ref-Fisher" role="doc-biblioref">1936</a>)</span> from the Iris dataset, we can also find one of the first supervised learning methods in this paper. The introduced <em>linear discriminant analysis</em> (LDA) has survived over time and is still one of the standard techniques for classification, even though we use a more generalized and improved method nowadays.</p>
 <section id="sec-clustering-sl-lda" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="sec-clustering-sl-lda"><span class="header-section-number">2.1</span> Linear Discriminant Analysis (LDA)</h2>
 <div class="callout callout-style-default callout-important callout-titled">
@@ -619,7 +619,7 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>For supervised learning, it is always good practice to split up our dataset into a <em>training</em> and <em>testing</em> section. <strong>It is important to have a test set that the algorithm has never seen!</strong> In general a <span class="math inline">\(80:20\)</span> split is common but other ratios might be advisable, depending on the dataset.</p>
+<p>For supervised learning, it is always good practice to split up our dataset into a <em>training</em> and <em>testing</em> section. <strong>It is important to have a test set that the algorithm has never seen!</strong> In general, a <span class="math inline">\(80:20\)</span> split is common but other ratios might be advisable, depending on the dataset.</p>
 <p>It is also common practice to use <span class="math inline">\(k\)</span>-folds cross-validation for the training set.</p>
 </div>
 </div>
@@ -630,7 +630,7 @@ Tip
 </div>
 <div class="callout-body-container">
 <div id="def-crossvalidation" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 2.1 (<span class="math inline">\(k\)</span>-folds cross-validation)</strong></span> The <span class="math inline">\(k\)</span>-folds cross-validation technique is a method to allow better <em>hyperparameter tuning</em>, especially for smaller datasets where training and validation data is small. The main idea is that we split our iterate over different validation sets by splitting up our training set. Lets say we use <span class="math inline">\(5\)</span>-fold cross-validation we split the training set into 5 parts. Therefore, we train the model with four parts and validate against the fifth. We then rotate the folds and select a different one for validation. At the end, we average over the five iterations to get our final parameters.</p>
+<p><span class="theorem-title"><strong>Definition 2.1 (<span class="math inline">\(k\)</span>-folds cross-validation)</strong></span> The <span class="math inline">\(k\)</span>-folds cross-validation technique is a method to allow better <em>hyperparameter tuning</em>, especially for smaller datasets where training and validation data is small. The main idea is that we iterate over different validation sets by splitting up our training set. Let’s say we use <span class="math inline">\(5\)</span>-fold cross-validation we split the training set into 5 parts. Therefore, we train the model with four parts and validate against the fifth. We then rotate the folds and select a different one for validation. At the end, we average over the five iterations to get our final parameters.</p>
 <p>This looks something like this:</p>
 <div id="fig-clustering-sl-5foldcrossvalidation" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -649,12 +649,12 @@ Figure&nbsp;2.1: Common split with the folds 1 to 4 for training and 5 for valid
 </div>
 <p>The main idea of LDA is to use projection. For a two-class LDA this becomes <span id="eq-grayleigh"><span class="math display">\[
 w = \operatorname{arg\, max}_w \frac{w^\mathrm{T}S_B w}{w^\mathrm{T}S_W w},
-\tag{2.1}\]</span></span> (the generalized Rayleigh quotient) where <span class="math inline">\(w\)</span> is our thought after projection. The two included scatter matrices are <span class="math display">\[
+\tag{2.1}\]</span></span> (the generalized Rayleigh quotient) where <span class="math inline">\(w\)</span> is our sought-after projection. The two included scatter matrices are <span class="math display">\[
 S_B = (\mu_2 - \mu_1)(\mu_2 - \mu_1)^\mathrm{T},
 \]</span> for between-class relation as well as <span class="math display">\[
 S_W = \sum_{j=1}^2 \sum_{x\in\mathcal{D}_j} (x - \mu_j)(x - \mu_j)^\mathrm{T},
 \]</span> for within-class data. The set <span class="math inline">\(\mathcal{D}_j\)</span> denotes the subdomain of the data associated with cluster <span class="math inline">\(j\)</span>. The two matrices measure the variance of the dataset as well as the means. To solve <a href="#eq-grayleigh" class="quarto-xref">Equation&nbsp;<span>2.1</span></a> we need to solve the generalized eigenvalue problem<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> <span class="math display">\[
-S_B w = \lambda S_w w
+S_B w = \lambda S_W w
 \]</span> where the maximal eigenvalue and the corresponding eigenvector are our solution.</p>
 <p>We try this with the cats and dogs dataset in both basis.</p>
 <div class="cell" data-execution_count="1">
@@ -745,13 +745,13 @@ S_B w = \lambda S_w w
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-sl-lda-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.2: Evaluation of the LDA for the second and fourth principal component on the test set of 40 animals. A bar going up corresponds to dogs and one going down to cats. The first 20 individuals should be dogs, the second 20 cats. The red dotted line shows the split. True positive can be found in the top-left as well as the bottom-right.
+Figure&nbsp;2.2: Evaluation of the LDA for the second and fourth principal component on the test set of 40 animals. A bar going up corresponds to dogs and one going down to cats. The first 20 individuals should be dogs, the second 20 cats. The red dotted line shows the split. True positives can be found in the top-left as well as the bottom-right.
 </figcaption>
 </figure>
 </div>
 </div>
 <p>If we use our raw dataset for the classification we get an overall accuracy of 67.5% with <span class="math inline">\(\tfrac{4}{20}\)</span> wrongly labelled dogs and <span class="math inline">\(\tfrac{9}{20}\)</span> wrongly labelled cats. We can increase this to an accuracy of 82.5% with <span class="math inline">\(\tfrac{5}{20}\)</span> wrongly labelled dogs and <span class="math inline">\(\tfrac{2}{20}\)</span> wrongly labelled cats.</p>
-<p>This could be expected, see <a href="index.html#fig-clustering-dvc-wavelet-pca_results_overview" class="quarto-xref">Figure&nbsp;<span>10</span></a> for the separation of the principal values for the two basis.</p>
+<p>This could be expected, see <a href="index.html#fig-clustering-dvc-wavelet-pca_results_overview" class="quarto-xref">Figure&nbsp;<span>10</span></a> for the separation of the principal values for the two bases.</p>
 <p>Of course we have very limited data with only 80 images for each of the classes. In this case we should do a cross-validation and we have not shuffled the data.</p>
 <p>Let us see how selecting different test and training sets influence the behaviour.</p>
 <div id="cell-fig-clustering-sl-lda2" class="cell" data-execution_count="2">
@@ -802,10 +802,10 @@ Figure&nbsp;2.2: Evaluation of the LDA for the second and fourth principal compo
 <div id="fig-clustering-sl-lda2" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-clustering-sl-lda2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="supervised_files/figure-html/fig-clustering-sl-lda2-output-1.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Figure&nbsp;2.3: Cross validation for the dataset in wavelet basis, use 100 run with different training and test sets. We always use 120 images for training and 40 for testing."><img src="supervised_files/figure-html/fig-clustering-sl-lda2-output-1.svg" class="img-fluid figure-img"></a>
+<a href="supervised_files/figure-html/fig-clustering-sl-lda2-output-1.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Figure&nbsp;2.3: Cross validation for the dataset in wavelet basis, use 100 runs with different training and test sets. We always use 120 images for training and 40 for testing."><img src="supervised_files/figure-html/fig-clustering-sl-lda2-output-1.svg" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-sl-lda2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.3: Cross validation for the dataset in wavelet basis, use 100 run with different training and test sets. We always use 120 images for training and 40 for testing.
+Figure&nbsp;2.3: Cross validation for the dataset in wavelet basis, use 100 runs with different training and test sets. We always use 120 images for training and 40 for testing.
 </figcaption>
 </figure>
 </div>
@@ -893,7 +893,7 @@ Figure&nbsp;2.5: Classification line for the QDA together with actual instances.
 </div>
 </div>
 </div>
-<p>As we can see in <a href="#fig-clustering-sl-lda3" class="quarto-xref">Figure&nbsp;<span>2.5</span></a>, having a quadratic discriminant classification line can be rather beneficial, like always depending on the observations. The QDA arises from LDA when we do not assume that the covariance of each of the classes is the same.</p>
+<p>As we can see in <a href="#fig-clustering-sl-lda3" class="quarto-xref">Figure&nbsp;<span>2.5</span></a>, having a quadratic discriminant classification line can be rather beneficial, as always depending on the observations. The QDA arises from LDA when we do not assume that the covariance of each of the classes is the same.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -930,7 +930,7 @@ Tip
 <p><span class="theorem-title"><strong>Exercise 2.1 (Application of LDA)</strong></span> &nbsp;</p>
 <ol type="1">
 <li><p>Apply the LDA algorithm to the toy example (see <a href="unsupervised.html#fig-clustering-unsupervised_lloyd" class="quarto-xref">Figure&nbsp;<span>1.1</span></a>) to recover the two clusters as good as possible.</p></li>
-<li><p>Additionally, for a higher dimensional problem, using LDA split the Fischer Iris dataset (see the introduction to part of the notes) into two clusters. Try for the harder split between <code>versicolor</code> and <code>virginica</code> types of flowers.</p></li>
+<li><p>Additionally, for a higher dimensional problem, using LDA split the Fisher Iris dataset (see the introduction to part of the notes) into two clusters. Try for the harder split between <code>versicolor</code> and <code>virginica</code> types of flowers.</p></li>
 </ol>
 </div>
 </div>
@@ -971,7 +971,7 @@ Note
 </div>
 </div>
 <p>First we load the MNIST dataset again and split it into a training and testing section, see <a href="unsupervised.html#sec-clustering-ul-me" class="quarto-xref"><span>Section 1.5</span></a>.</p>
-<div id="72ab32d5" class="cell" data-execution_count="4">
+<div id="86d885c1" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Show the code for loading and splitting the dataset</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -988,7 +988,7 @@ Note
 </details>
 </div>
 <p>Next, as we only want a binary classifier, we select one number, in our case <code>5</code> and relabel our data. With the new labels we can train our classifier, compare <a href="#def-multiclass-ovr" class="quarto-xref">Definition&nbsp;<span>2.9</span></a>.</p>
-<div id="c4006adf" class="cell" data-execution_count="5">
+<div id="49145599" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>y_train_5 <span class="op">=</span> (y_train <span class="op">==</span> <span class="st">"5"</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>y_test_5 <span class="op">=</span> (y_test <span class="op">==</span> <span class="st">"5"</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -996,11 +996,11 @@ Note
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>SGD.fit(X_train, y_train_5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In order to get a score for our method, we use <span class="math inline">\(k\)</span>-folds cross-validation <a href="#def-crossvalidation" class="quarto-xref">Definition&nbsp;<span>2.1</span></a> and the corresponding <code>scikit-learn</code> function <a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_score.html"><code>cross_val_score</code></a> to perform this task for our model.</p>
-<div id="0e25262d" class="cell" data-execution_count="6">
+<div id="9f9a409a" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> sklearn.model_selection.cross_val_score(</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    SGD, X_train, y_train_5, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">"accuracy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="e6476bcf" class="cell" data-execution_count="7">
+<div id="0c420ee2" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display" data-execution_count="7">
 <div>
 
@@ -1032,13 +1032,13 @@ Note
 </div>
 </div>
 <p>With scores in the high <span class="math inline">\(90\%\)</span> range the results look promising, if not great, but are they really that good? In order to get a better idea just always guess that we do not see a <code>5</code> that should be the most common class in our case. To simulate this we use the <code>DummyClassifier</code> class.</p>
-<div id="beec0441" class="cell" data-execution_count="8">
+<div id="792a54ed" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>dummy <span class="op">=</span> sklearn.dummy.DummyClassifier()</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>dummy.fit(X_train, y_train_5)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>scores_dummy <span class="op">=</span> sklearn.model_selection.cross_val_score(</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    dummy, X_train, y_train_5, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">"accuracy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="1bf5b20a" class="cell" data-execution_count="9">
+<div id="d488b09d" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-display" data-execution_count="9">
 <div>
 
@@ -1069,7 +1069,7 @@ Note
 </div>
 </div>
 </div>
-<p>As this is pretty much <span class="math inline">\(91\%\)</span> (as expected there are only about <span class="math inline">\(10\%\)</span> of <code>5</code>s in the dataset). Just using accuracy is apparently not the gold standard to measure performance, what other possibilities are there?</p>
+<p>This is pretty much <span class="math inline">\(91\%\)</span> (as expected, there are only about <span class="math inline">\(10\%\)</span> of <code>5</code>s in the dataset). Just using accuracy is apparently not the gold standard to measure performance, what other possibilities are there?</p>
 <div class="callout callout-style-simple callout-none no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -1077,16 +1077,16 @@ Note
 </div>
 <div class="callout-body-container">
 <div id="def-confusionmatrix" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 2.2 (Confusion Matrix)</strong></span> The confusion matrix, error matrix or for unsupervised learning sometimes called matching matrix allows an easy way of visualizing the performance of an algorithm.</p>
+<p><span class="theorem-title"><strong>Definition 2.2 (Confusion Matrix)</strong></span> The confusion matrix, error matrix, or (for unsupervised learning) matching matrix allows an easy way of visualizing the performance of an algorithm.</p>
 <p>The rows represent the true observations in each class, and the columns the predicted observations for each class.</p>
 <p>In our <span class="math inline">\(2\times 2\)</span> case we get</p>
 <div id="fig-clustering-sl-confusionmatrix" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-clustering-sl-confusionmatrix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../_assets/clustering/confusion_matrix.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Figure&nbsp;2.6: Names and abbreviations for a 2\times 2 confusion matrix together with an example form our test case."><img src="../_assets/clustering/confusion_matrix.svg" class="img-fluid figure-img" style="width:2.88in"></a>
+<a href="../_assets/clustering/confusion_matrix.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Figure&nbsp;2.6: Names and abbreviations for a 2\times 2 confusion matrix together with an example from our test case."><img src="../_assets/clustering/confusion_matrix.svg" class="img-fluid figure-img" style="width:2.88in"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-sl-confusionmatrix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.6: Names and abbreviations for a <span class="math inline">\(2\times 2\)</span> confusion matrix together with an example form our test case.
+Figure&nbsp;2.6: Names and abbreviations for a <span class="math inline">\(2\times 2\)</span> confusion matrix together with an example from our test case.
 </figcaption>
 </figure>
 </div>
@@ -1095,14 +1095,14 @@ Figure&nbsp;2.6: Names and abbreviations for a <span class="math inline">\(2\tim
 </div>
 </div>
 </div>
-<p>To compute the confusion matrix we first need predictions. This can be achieved by <a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_predict.html"><code>cross_val_predict</code></a> instead of <code>cross_val_score</code> and than we use <a href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html"><code>confusion_matrix</code></a> from <code>sklearn.metrics</code>.</p>
+<p>To compute the confusion matrix we first need predictions. This can be achieved by <a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_predict.html"><code>cross_val_predict</code></a> instead of <code>cross_val_score</code> and then we use <a href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html"><code>confusion_matrix</code></a> from <code>sklearn.metrics</code>.</p>
 <p>Combined, for our example, this reads as:</p>
-<div id="e06d1dcc" class="cell" data-execution_count="10">
+<div id="e6a4f906" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>y_train_pred <span class="op">=</span> sklearn.model_selection.cross_val_predict(</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                    SGD, X_train, y_train_5, cv<span class="op">=</span><span class="dv">3</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> sklearn.metrics.confusion_matrix(y_train_5, y_train_pred)                   </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="91b67c0e" class="cell" data-execution_count="11">
+<div id="45bae914" class="cell" data-execution_count="11">
 <div class="cell-output cell-output-display" data-execution_count="11">
 <div>
 
@@ -1149,7 +1149,7 @@ FPR = \frac{FP}{N}
 <li><p><strong>True negative rate</strong> (TNR): <span class="math display">\[
 TNR = \frac{TN}{N}
 \]</span></p></li>
-<li><p><strong>Positive predictive value</strong> (PPV) or <strong>precission</strong>: <span class="math display">\[
+<li><p><strong>Positive predictive value</strong> (PPV) or <strong>precision</strong>: <span class="math display">\[
 PPV = \frac{TP}{TP + FP}
 \]</span></p></li>
 <li><p><strong>False discovery rate</strong> (FDR): <span class="math display">\[
@@ -1165,14 +1165,14 @@ NPV = \frac{TN}{TN + FN}
 F_1 = \frac{2 TP}{2 TP + FP + FN}
 \]</span></p></li>
 </ol>
-<p>In the <a href="https://scikit-learn.org/stable/api/sklearn.metrics.html"><code>sklearn.metrics</code></a> most of these values have a corresponding function. If we look at <em>precission</em>, <em>recall</em>, and the <span class="math inline">\(F_1\)</span> score, for our example we see that our performance is viewed under a different light:</p>
-<div id="58d51a95" class="cell styled-output" data-execution_count="12">
+<p>In the <a href="https://scikit-learn.org/stable/api/sklearn.metrics.html"><code>sklearn.metrics</code></a> most of these values have a corresponding function. If we look at <em>precision</em>, <em>recall</em>, and the <span class="math inline">\(F_1\)</span> score, for our example we see that our performance is viewed under a different light:</p>
+<div id="353d7091" class="cell styled-output" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>precision <span class="op">=</span> sklearn.metrics.precision_score(y_train_5, y_train_pred)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>recall <span class="op">=</span> sklearn.metrics.recall_score(y_train_5, y_train_pred)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>f1_score <span class="op">=</span> sklearn.metrics.f1_score(y_train_5, y_train_pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This tells us that our classifier correctly classifies a <code>5</code> 81.31% of the time. On the other hand it only <em>recalls</em> or detects 77.2% of our <code>5</code>s. The <span class="math inline">\(F_1\)</span>-score is a combination of the two (the harmonic mean) and in our case 79.2%.</p>
-<p>Depending on the application we might want to have high precision (e.g.&nbsp;medical diagnosis to have no unnecessary treatment) or high recall (e.g.&nbsp;fraud detection where a missed fraudulent transaction can be costly). If we increase precision we reduce recall and the other way round so we can hardly have both. This dilemma is called <em>precision/recall trade-off</em>, see <a href="../appendices/explanations.html#sec-appendix-pvsr" class="quarto-xref"><span>Section A.2</span></a> for some more explanations.</p>
+<p>Depending on the application we might want to have high precision (e.g.&nbsp;medical diagnosis to have no unnecessary treatment) or high recall (e.g.&nbsp;fraud detection where a missed fraudulent transaction can be costly). If we increase precision, we reduce recall, and the other way round,If we increase precision so we can hardly have both. This dilemma is called <em>precision/recall trade-off</em>, see <a href="../appendices/explanations.html#sec-appendix-pvsr" class="quarto-xref"><span>Section A.2</span></a> for some more explanations.</p>
 <p>An alternative way to look at accuracy for binary classifiers is to look at the <em>receiver operating characteristic</em> (ROC). It looks at recall (TPR) vs.&nbsp;the <em>false positive rate</em> (FPR). Other than that it works similar.</p>
 </section>
 <section id="sec-clustering-sv-svm" class="level2" data-number="2.3">
@@ -1347,7 +1347,7 @@ Pipeline
 <li>apply a scaler to our observations</li>
 <li>apply the Linear SVM</li>
 </ul>
-<div id="97919f90" class="cell" data-execution_count="14">
+<div id="fb3a8786" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>composit_svm <span class="op">=</span> sklearn.pipeline.make_pipeline(</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    sklearn.preprocessing.PolynomialFeatures(<span class="dv">2</span>),</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    sklearn.preprocessing.StandardScaler(),</span>
@@ -1552,7 +1552,7 @@ K(x_j, x) = \exp\left(-\gamma\|x_j - x\|^2\right).
 <span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>svc <span class="op">=</span> svm.SVC(kernel<span class="op">=</span><span class="st">"rbf"</span>, gamma<span class="op">=</span><span class="st">"auto"</span>).fit(xtrain, label)</span>
 <span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>test_label <span class="op">=</span> svc.predict(xtest)</span>
 <span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>train_label <span class="op">=</span> svc.predict(xtrain)</span>
-<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> sklearn.metrics.confusion_matrix(test_label, truth)</span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> sklearn.metrics.confusion_matrix(truth, test_label)</span>
 <span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
 <span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>plt.scatter(xtrain[train_label <span class="op">==</span> <span class="dv">1</span>, <span class="dv">1</span>], xtrain[train_label <span class="op">==</span> <span class="dv">1</span>, <span class="dv">3</span>],</span>
 <span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>            alpha<span class="op">=</span><span class="fl">0.5</span>, color<span class="op">=</span><span class="st">"C0"</span>, label<span class="op">=</span><span class="st">"train_dogs"</span>)</span>
@@ -1587,7 +1587,7 @@ Figure&nbsp;2.11: Training a SVM with an RBF kernel for the singular vectors 2 t
 </div>
 </div>
 <p>We get a confusion matrix for our test set as</p>
-<div id="2281cb4a" class="cell" data-execution_count="18">
+<div id="b46f737f" class="cell" data-execution_count="18">
 <div class="cell-output cell-output-display" data-execution_count="18">
 <div>
 
@@ -1604,11 +1604,11 @@ Figure&nbsp;2.11: Training a SVM with an RBF kernel for the singular vectors 2 t
 <tr class="odd">
 <td data-quarto-table-cell-role="th">P</td>
 <td>18</td>
-<td>3</td>
+<td>2</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">N</td>
-<td>2</td>
+<td>3</td>
 <td>17</td>
 </tr>
 </tbody>
@@ -1625,7 +1625,7 @@ Figure&nbsp;2.11: Training a SVM with an RBF kernel for the singular vectors 2 t
 </div>
 <div class="callout-body-container">
 <div id="exr-nonlinear-SVM-rbf" class="theorem exercise">
-<p><span class="theorem-title"><strong>Exercise 2.4 (Nonlinear SVM with RBF)</strong></span> Recall the moons example from <a href="unsupervised.html#sec-clustering-ul-dbscan" class="quarto-xref"><span>Section 1.3</span></a> and use a <code>SVC</code> classification to distinguish the clusters. Look at four different results for <span class="math inline">\(\gamma \in \{0.1, 5\}\)</span> and <span class="math inline">\(C \in \{0.001, 1000\}\)</span>, compare <span class="citation" data-cites="Geron2022-xh">Geron (<a href="../references.html#ref-Geron2022-xh" role="doc-biblioref">2022</a>)</span>.</p>
+<p><span class="theorem-title"><strong>Exercise 2.4 (Nonlinear SVM with RBF)</strong></span> Recall the moons example from <a href="unsupervised.html#sec-clustering-ul-dbscan" class="quarto-xref"><span>Section 1.3</span></a> and use an <code>SVC</code> classification to distinguish the clusters. Look at four different results for <span class="math inline">\(\gamma \in \{0.1, 5\}\)</span> and <span class="math inline">\(C \in \{0.001, 1000\}\)</span>, compare <span class="citation" data-cites="Geron2022-xh">Geron (<a href="../references.html#ref-Geron2022-xh" role="doc-biblioref">2022</a>)</span>.</p>
 <p>In all of the four images plot the classification line in a projection onto the original 2D space.</p>
 </div>
 </div>
@@ -1639,7 +1639,7 @@ Figure&nbsp;2.11: Training a SVM with an RBF kernel for the singular vectors 2 t
 <div class="callout-body-container">
 <div id="exr-nonlinear-SVM-regression" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise 2.5 (Nonlinear SVM for regression)</strong></span> We can use SVM for regression. Have a look at <a href="https://scikit-learn.org/stable/auto_examples/svm/plot_svm_regression.html#sphx-glr-auto-examples-svm-plot-svm-regression-py">docs</a> and use the findings to fit the following observations with various degrees and kernel functions.</p>
-<div id="00bc519e" class="cell" data-execution_count="19">
+<div id="df634b0e" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
@@ -1685,8 +1685,8 @@ Figure&nbsp;2.11: Training a SVM with an RBF kernel for the singular vectors 2 t
 <li>Compare the prediction accuracy over all observations, the best result is used.</li>
 <li>Proceed with the two new branches in the same fashion.</li>
 </ol>
-<p>Let us apply it to the Fischer Iris dataset to better understand what is happening.</p>
-<div id="77e4c632" class="cell" data-execution_count="20">
+<p>Let us apply it to the Fisher Iris dataset to better understand what is happening.</p>
+<div id="76dd988b" class="cell" data-execution_count="20">
 <details class="code-fold">
 <summary>Show the code for the figure</summary>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -1705,7 +1705,7 @@ Figure&nbsp;2.11: Training a SVM with an RBF kernel for the singular vectors 2 t
 <span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>decision_tree <span class="op">=</span> DecisionTreeClassifier(max_depth<span class="op">=</span><span class="dv">2</span>, random_state<span class="op">=</span><span class="dv">6020</span>)</span>
 <span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>decision_tree.fit(X_iris, y_iris)</span>
 <span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>dot_data <span class="op">=</span> <span class="st">"fischer_tree.dot"</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>dot_data <span class="op">=</span> <span class="st">"fisher_tree.dot"</span></span>
 <span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>sklearn.tree.export_graphviz(decision_tree, out_file<span class="op">=</span>dot_data,  </span>
 <span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>                filled<span class="op">=</span><span class="va">True</span>, rounded<span class="op">=</span><span class="va">True</span>,</span>
@@ -1714,7 +1714,7 @@ Figure&nbsp;2.11: Training a SVM with an RBF kernel for the singular vectors 2 t
 <span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>                special_characters<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div class="cell" data-file="fischer_tree.dot" data-layout-align="default">
+<div class="cell" data-file="fisher_tree.dot" data-layout-align="default">
 <div class="cell-output-display">
 <div id="fig-clustering-sl-tree-iris" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -1802,7 +1802,7 @@ Figure&nbsp;2.11: Training a SVM with an RBF kernel for the singular vectors 2 t
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-sl-tree-iris-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.12: Decision tree for the Fischer iris dataset with depth 2.
+Figure&nbsp;2.12: Decision tree for the Fisher iris dataset with depth 2.
 </figcaption>
 </figure>
 </div>
@@ -1861,10 +1861,10 @@ Displaying <code>dot</code> files
 <div id="fig-clustering-sl-tree-iris-split" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-clustering-sl-tree-iris-split-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="supervised_files/figure-html/fig-clustering-sl-tree-iris-split-output-1.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-17" title="Figure&nbsp;2.13: Splits for the Fischer Iris dataset with the first two split form the above tree and the third split would be the next step for a larger tree."><img src="supervised_files/figure-html/fig-clustering-sl-tree-iris-split-output-1.svg" class="img-fluid figure-img"></a>
+<a href="supervised_files/figure-html/fig-clustering-sl-tree-iris-split-output-1.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-17" title="Figure&nbsp;2.13: Splits for the Fisher Iris dataset with the first two split form the above tree and the third split would be the next step for a larger tree."><img src="supervised_files/figure-html/fig-clustering-sl-tree-iris-split-output-1.svg" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-clustering-sl-tree-iris-split-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.13: Splits for the Fischer Iris dataset with the first two split form the above tree and the third split would be the next step for a larger tree.
+Figure&nbsp;2.13: Splits for the Fisher Iris dataset with the first two split form the above tree and the third split would be the next step for a larger tree.
 </figcaption>
 </figure>
 </div>
@@ -1872,7 +1872,7 @@ Figure&nbsp;2.13: Splits for the Fischer Iris dataset with the first two split f
 </div>
 <p>In <a href="#fig-clustering-sl-tree-iris-split" class="quarto-xref">Figure&nbsp;<span>2.13</span></a> we can see the the first two splits and the next split if we would increase the tree. With the first split, we immediately separate <em>setosa</em> with <span class="math inline">\(100\%\)</span> accuracy. The two other classes are a bit tricky and we can not classify everything correct right away. In total <span class="math inline">\(6\)</span> out of <span class="math inline">\(150\)</span> observations are wrongly classified with this simple tree.</p>
 <p>Let us also apply the tree classification to our cats and dogs example.</p>
-<div id="096d3631" class="cell" data-execution_count="22">
+<div id="e1ab53bd" class="cell" data-execution_count="22">
 <details class="code-fold">
 <summary>Show the code for the figure</summary>
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -1907,10 +1907,10 @@ Figure&nbsp;2.13: Splits for the Fischer Iris dataset with the first two split f
 <span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a>decision_tree_cvd <span class="op">=</span> DecisionTreeClassifier(max_depth<span class="op">=</span><span class="dv">2</span>).fit(xtrain, label)</span>
 <span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a>test_label <span class="op">=</span> decision_tree_cvd.predict(xtest)</span>
-<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> sklearn.metrics.confusion_matrix(test_label, truth)</span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> sklearn.metrics.confusion_matrix(truth, test_label)</span>
 <span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a>test_label <span class="op">=</span> svc.predict(xtest)</span>
-<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> sklearn.metrics.confusion_matrix(test_label, truth)</span>
+<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> sklearn.metrics.confusion_matrix(truth, test_label)</span>
 <span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a>dot_data <span class="op">=</span> <span class="st">"cvsd_tree.dot"</span></span>
 <span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a></span>
@@ -2054,7 +2054,7 @@ Figure&nbsp;2.14: Decision tree for the dogs and cats dataset with depth 2.
 </div>
 </div>
 </div>
-<div id="d5cccb2f" class="cell" data-execution_count="23">
+<div id="8b0db0c6" class="cell" data-execution_count="23">
 <div class="cell-output cell-output-display" data-execution_count="23">
 <div>
 
@@ -2071,11 +2071,11 @@ Figure&nbsp;2.14: Decision tree for the dogs and cats dataset with depth 2.
 <tr class="odd">
 <td data-quarto-table-cell-role="th">P</td>
 <td>18</td>
-<td>3</td>
+<td>2</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">N</td>
-<td>2</td>
+<td>3</td>
 <td>17</td>
 </tr>
 </tbody>
@@ -2392,14 +2392,14 @@ Figure&nbsp;2.18: Illustration of an <span class="math inline">\(m\)</span> laye
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> make_moons(n_samples<span class="op">=</span><span class="dv">500</span>, noise<span class="op">=</span><span class="fl">0.30</span>, random_state<span class="op">=</span><span class="dv">6020</span>)</span>
 <span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, random_state<span class="op">=</span><span class="dv">6020</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ol type="1">
-<li><p>Use the <code>VotingClassifier</code> class with an <em>LDA</em>, a <em>SVM</em>, and a <em>tree</em> for classification. Make sure to set <code>random_state</code> for each, to have reproducible results. Get the overall score for the test set, as well as the individual scores for the included classifiers.</p>
+<li><p>Use the <code>VotingClassifier</code> class with an <em>LDA</em>, an <em>SVM</em>, and a <em>tree</em> for classification. Make sure to set <code>random_state</code> for each, to have reproducible results. Get the overall score for the test set, as well as the individual scores for the included classifiers.</p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, clf <span class="kw">in</span> voting.named_estimators_.items():</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">, =, </span><span class="sc">{</span>clf<span class="sc">.</span>score(X_test, y_test)<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>Switch to <em>soft voting</em> for your ensemble classifier and see how this influences the results.</p></li>
-<li><p>Create a <code>BaggingClassifier</code> with 500 trees and and an appropriate <code>max_samples</code> value. Report the score for this new classifier, also report the out-of-bag score via <code>.oob_score_</code>.</p></li>
+<li><p>Create a <code>BaggingClassifier</code> with 500 trees and an appropriate <code>max_samples</code> value. Report the score for this new classifier, also report the out-of-bag score via <code>.oob_score_</code>.</p></li>
 <li><p>Create directly a <code>RandomForestClassifier</code> with 500 trees and appropriate value for <code>max_leaf_nodes</code>.</p></li>
 <li><p>Create a <code>StackingClassifier</code> with an <em>LDA</em>, a <em>SVM</em>, and a <em>tree</em> for classification and a <em>random forest</em> as the final blending step and report the score of this method.</p></li>
-<li><p>Train a random forest for the Fischer Iris dataset and check <code>.feature_importances_</code> to get an insight on the importance of each feature.</p></li>
+<li><p>Train a random forest for the Fisher Iris dataset and check <code>.feature_importances_</code> to get an insight on the importance of each feature.</p></li>
 <li><p>Train a random forest for our dogs and cats dataset in raw and wavelet form and check <code>.feature_importances_</code> to get an insight on the importance of each feature of the PCA.</p></li>
 </ol>
 </div>
@@ -2418,7 +2418,7 @@ Figure&nbsp;2.18: Illustration of an <span class="math inline">\(m\)</span> laye
 <div class="callout-body-container">
 <div id="def-multiclass-ovr" class="theorem definition">
 <p><span class="theorem-title"><strong>Definition 2.9 (One vs.&nbsp;the Rest (OvR) or One vs.&nbsp;All (OvA))</strong></span> The <em>one versus the rest</em> (OvR) or <em>one versus all</em> (OvA) strategy is to train a binary classifier for each class and always interpret all other classes as the others or the <em>rest class</em>. To classify an observation you get the scores for each classifier and select the one with the highest score.</p>
-<p>For the Fischer Iris dataset this would result in three classifiers (one for each iris), for the MNIST dataset in ten (one for each number).</p>
+<p>For the Fisher Iris dataset this would result in three classifiers (one for each iris), for the MNIST dataset in ten (one for each number).</p>
 </div>
 </div>
 </div>
@@ -2431,7 +2431,7 @@ Figure&nbsp;2.18: Illustration of an <span class="math inline">\(m\)</span> laye
 <div class="callout-body-container">
 <div id="def-multiclass-ovo" class="theorem definition">
 <p><span class="theorem-title"><strong>Definition 2.10 (One vs.&nbsp;One (OvO))</strong></span> The <em>one versus one</em> (OvO) strategy is to train a binary classifier for always two classes and build up a set of classifiers, for <span class="math inline">\(n\)</span> classes we get <span class="math inline">\(\tfrac{n (n-1)}{2}\)</span> classifiers. To classify an observation you get the result for each classifier and select the one class with the most duels won.</p>
-<p>For the Fischer Iris dataset this would result in three classifiers, for the MNIST dataset 45.</p>
+<p>For the Fisher Iris dataset this would result in three classifiers, for the MNIST dataset 45.</p>
 <p>The advantage of OvO over OvR is that each classifier only needs to be trained on a subset and not with the entire dataset. This is especially useful for algorithms that do not scale well, like SVMs.</p>
 </div>
 </div>
@@ -2460,7 +2460,7 @@ Tip
 <div id="exr-nonlinear-multi" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise 2.9 (Multiclass classification)</strong></span> &nbsp;</p>
 <ol type="1">
-<li>Use SVM for the Fischer Iris dataset and test it.</li>
+<li>Use SVM for the Fisher Iris dataset and test it.</li>
 <li>Compare with a random forest.</li>
 <li>Create a confusion matrix for more than two classes with your results and interpret the results.</li>
 </ol>
@@ -2474,7 +2474,7 @@ Tip
 <div id="ref-Brunton2022" class="csl-entry" role="listitem">
 Brunton, Steven L., and J. Nathan Kutz. 2022. <em>Data-Driven Science and Engineering - Machine Learning, Dynamical Systems, and Control</em>. 2nd ed. Cambridge: Cambridge University Press.
 </div>
-<div id="ref-Fischer" class="csl-entry" role="listitem">
+<div id="ref-Fisher" class="csl-entry" role="listitem">
 Fisher, R. A. 1936. <span>“The Use of Multiple Measurements in Taxonomic Problems.”</span> <em>Annals of Eugenics</em> 7 (2): 179–88. <a href="https://doi.org/10.1111/j.1469-1809.1936.tb02137.x">https://doi.org/10.1111/j.1469-1809.1936.tb02137.x</a>.
 </div>
 <div id="ref-Geron2022-xh" class="csl-entry" role="listitem">

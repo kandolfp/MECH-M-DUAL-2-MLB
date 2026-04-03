@@ -98,9 +98,9 @@ div.csl-indent {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-f3e4be047f94999836566be8d7fec70b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-ea09258ad5f1d188cc767b8e4d27386e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-f3e4be047f94999836566be8d7fec70b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-fcef3a217c2dc59de9b524d1d56553e6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-28552b72345800c07c123eae77d1b5c4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-fcef3a217c2dc59de9b524d1d56553e6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
@@ -570,7 +570,7 @@ Figure&nbsp;6.1: Illustration of an ETL pattern for data processing
 <li>If a format changes this can be incorporated into the ETL to allow backwards or forwards compatibility.</li>
 <li>Depending on our use-case we can extend this list.</li>
 </ol>
-<p>We illustrate this task in the context of our example project. This means, instead of directly using <code>catData_w.mat</code> we start of from the <em>raw</em> data <code>catData.mat</code>, see <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/b097ba6cba3e150eb1587ce62b861ed91d866b76">b097ba6</a> for the implementation details.</p>
+<p>We illustrate this task in the context of our example project. This means that, instead of directly using <code>catData_w.mat</code> we start of from the <em>raw</em> data <code>catData.mat</code>, see <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/b097ba6cba3e150eb1587ce62b861ed91d866b76">b097ba6</a> for the implementation details.</p>
 <p>We introduce a new module called <code>etl</code> with three files plus the module file to accomplish this task.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> tree src/etl</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -587,7 +587,7 @@ Figure&nbsp;6.1: Illustration of an ETL pattern for data processing
 <ol type="a">
 <li><strong>extract</strong>:
 <ul>
-<li>access <code>catData.mat</code> and extract the content as a <code>np.array</code></li>
+<li>access <code>catData.mat</code> and extract the content as an <code>np.array</code></li>
 </ul></li>
 <li><strong>transform</strong>:
 <ul>
@@ -597,10 +597,10 @@ Figure&nbsp;6.1: Illustration of an ETL pattern for data processing
 </ol></li>
 <li><strong>load</strong>:
 <ul>
-<li>return the content as a `np.array</li>
+<li>return the content as an `np.array</li>
 </ul></li>
 </ol>
-<p>We try to only store the processed data and not the <em>raw</em> data itself, as this would be a duplication. In this case, we therefore do not store <code>catData.mat</code> locally but just the <em>final</em> result. Depending on your ETL you might build up a buffer <em>locally</em> to optimize processing time over access time.</p>
+<p>We try to only store the processed data and not the <em>raw</em> data itself, as this would be a duplication. In this case, we therefore do not store <code>catData.mat</code> locally but just the <em>final</em> result. Depending on your ETL, you might build up a buffer <em>locally</em> to optimize processing time over access time.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -612,8 +612,8 @@ Storage
 </div>
 <div class="callout-body-container callout-body">
 <p>While for image processing, computational resources are often called out as <em>the bottleneck</em>, the influence of storage and the correct structure of data should not be ignored.</p>
-<p>Modern GPU architectures are designed for high data throughput. This comes with the drawback that we need to provide the data as quickly as it gets processed. Consequently, a high throughput for storage is required or the performance is not optimal.</p>
-<p>Note: as <code>dvc</code> uses a cache and links the data, this means the performance of the cache location is important.</p>
+<p>Modern GPU architectures are designed for high data throughput. This comes with the drawback that we need to provide the data as quickly as it is processed. Consequently, a high throughput for storage is required or the performance is not optimal.</p>
+<p>Note: As <code>dvc</code> uses a cache and links the data, this means the performance of the cache location is important.</p>
 </div>
 </div>
 <div class="callout callout-style-simple callout-caution no-icon">
@@ -644,8 +644,8 @@ Storage
 <span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a> <span class="ex">8</span> directories, 4 files</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p>Extend the transformation capabilities to allow an image as input.</p></li>
-<li><p>Extend the store capabilities to store the transformed images in an appropriate image format.</p></li>
-<li><p>Extend the load capabilities to only specify a folder (in our case <code>data/raw</code>), and the classes, as well as the test and training sets, are generated automatically from these files.</p></li>
+<li><p>Extend the storage capabilities to store the transformed images in an appropriate image format.</p></li>
+<li><p>Extend the load capabilities so that only a folder needs to be specified (in our case <code>data/raw</code>), and the classes, as well as the test and training sets, are generated automatically from these files.</p></li>
 </ol>
 </div>
 </div>
@@ -659,7 +659,7 @@ Storage
 <div class="callout-body-container">
 <div id="exr-data-data-result" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise 6.2 (Optional: Changed accuracy)</strong></span> <strong>Optional</strong>: If we rerun our training, we can see that the results change slightly. Find out what has changed.</p>
-<p>Note: This is not optimal but the upside is we control the ETL so we can actually make sure that a new image is processed in the same fashion and we do not need to ask the authors of <span class="citation" data-cites="Brunton2022">Brunton and Kutz (<a href="../references.html#ref-Brunton2022" role="doc-biblioref">2022</a>)</span> to help us out.</p>
+<p>Note: This is not optimal, but the upside is we control the ETL so we can actually make sure that a new image is processed in the same fashion and we do not need to ask the authors of <span class="citation" data-cites="Brunton2022">Brunton and Kutz (<a href="../references.html#ref-Brunton2022" role="doc-biblioref">2022</a>)</span> to help us out.</p>
 </div>
 </div>
 </div>
