@@ -28,8 +28,8 @@ The main idea behind machine learning is to construct or exploit the intrinsic l
 Before we go into specific algorithms lets have a general look at what we are going to talk about.
 We will follow [@Brunton2022, Section 5.1] for this introduction.
 
-### Fischer Iris dataset {#sec-fischer-iris-data-set}
-First we look into one of the standard datasets well known in the community, the so called Fischer Iris dataset @Fischer.
+### Fisher Iris dataset {#sec-Fisher-iris-data-set}
+First we look into one of the standard datasets well known in the community, the so called Fisher Iris dataset @Fisher.
 
 ::: {.callout-note}
 Luckily for us there are several data packages available for general use.
@@ -37,7 +37,7 @@ One of them is the [Fisher Iris dataset](https://en.wikipedia.org/wiki/Iris_flow
 
 :::: {#fig-medium-iris}
 
-![](../_assets/clustering/fischer)
+![](../_assets/clustering/fisher)
 
 Illustration of the recorded features and structure of the iris dataset inspired by the  [Medium article - Exploring the Iris flower dataset](https://eminebozkus.medium.com/exploring-the-iris-flower-dataset-4e000bcc266c).
 ::::
@@ -165,8 +165,8 @@ But be aware, as we will see later, the largest principal value might not be the
 
 ## Dimensionality Reduction
 
-As we can see with the Fischer Iris dataset, we often have a problem of _dimensionality_, if we try to visualize something.
-The data has four dimensions but it is very hard for us to perceive, let alone visualize, four dimensions (if the forth dimension is not time).
+As we can see with the Fisher Iris dataset, we often have a problem of _dimensionality_, if we try to visualize something.
+The data has four dimensions but it is very hard for us to perceive, let alone visualize, four dimensions (if the fourth dimension is not time).
 
 Therefore, **dimensional reduction** techniques are often applied.
 One of these is PCA others are:

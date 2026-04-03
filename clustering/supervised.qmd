@@ -1,6 +1,6 @@
 # Supervised learning {#sec-clustering-sl}
 
-If we recall @Fischer from the Iris dataset, we can also find one of the first supervised learning methods in this paper.
+If we recall @Fisher from the Iris dataset, we can also find one of the first supervised learning methods in this paper.
 The introduced _linear discriminant analysis_ (LDA) has survived over time and is still one of the standard techniques for classification, even though we use a more generalized and improved method nowadays.
 
 ## Linear Discriminant Analysis (LDA) {#sec-clustering-sl-lda}
@@ -275,7 +275,7 @@ Luckily the `scikit-learn` class/function [`DecisionBoundaryDisplay.from_estimat
 
 1. Apply the LDA algorithm to the toy example (see @fig-clustering-unsupervised_lloyd) to recover the two clusters as good as possible.
 
-1. Additionally, for a higher dimensional problem, using LDA split the Fischer Iris dataset (see the introduction to part of the notes) into two clusters. Try for the harder split between `versicolor` and `virginica` types of flowers.
+1. Additionally, for a higher dimensional problem, using LDA split the Fisher Iris dataset (see the introduction to part of the notes) into two clusters. Try for the harder split between `versicolor` and `virginica` types of flowers.
 ::::
 :::
 
@@ -910,7 +910,7 @@ While there are a lot of different optimizations the base algorithm follows thes
 1. Compare the prediction accuracy over all observations, the best result is used.
 1. Proceed with the two new branches in the same fashion.
 
-Let us apply it to the Fischer Iris dataset to better understand what is happening.
+Let us apply it to the Fisher Iris dataset to better understand what is happening.
 
 ```{python}
 #| code-fold: true
@@ -931,7 +931,7 @@ y_iris = iris.target
 decision_tree = DecisionTreeClassifier(max_depth=2, random_state=6020)
 decision_tree.fit(X_iris, y_iris)
 
-dot_data = "fischer_tree.dot"
+dot_data = "fisher_tree.dot"
 
 sklearn.tree.export_graphviz(decision_tree, out_file=dot_data,  
                 filled=True, rounded=True,
@@ -943,16 +943,16 @@ sklearn.tree.export_graphviz(decision_tree, out_file=dot_data,
 ::: {.content-visible when-format="html"}
 ```{dot}
 //| label: fig-clustering-sl-tree-iris
-//| fig-cap: "Decision tree for the Fischer iris dataset with depth 2."
-//|file: fischer_tree.dot
+//| fig-cap: "Decision tree for the Fisher iris dataset with depth 2."
+//|file: fisher_tree.dot
 ```
 :::
 
 ::: {.content-visible unless-format="html"}
 :::: {#fig-clustering-sl-tree-iris fig-env="figure"}
-![](../_assets/clustering/fischer_tree.png){width=4.32in}
+![](../_assets/clustering/fisher_tree.png){width=4.32in}
 
-Decision tree for the Fischer iris dataset with depth 2.
+Decision tree for the Fisher iris dataset with depth 2.
 ::::
 :::
 
@@ -981,7 +981,7 @@ As we only have the splits happening in these two variables we can also visualiz
 
 ```{python}
 #| label: fig-clustering-sl-tree-iris-split
-#| fig-cap: "Splits for the Fischer Iris dataset with the first two split form the above tree and the third split would be the next step for a larger tree."
+#| fig-cap: "Splits for the Fisher Iris dataset with the first two split form the above tree and the third split would be the next step for a larger tree."
 #| code-fold: true
 #| code-summary: "Show the code for the figure"
 import matplotlib.pyplot as plt
@@ -1349,7 +1349,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=6020)
 
 1. Create a `StackingClassifier` with an _LDA_, a _SVM_, and a _tree_ for classification and a _random forest_ as the final blending step and report the score of this method.
 
-1. Train a random forest for the Fischer Iris dataset and check `.feature_importances_` to get an insight on the importance of each feature.
+1. Train a random forest for the Fisher Iris dataset and check `.feature_importances_` to get an insight on the importance of each feature.
 
 1. Train a random forest for our dogs and cats dataset in raw and wavelet form and check `.feature_importances_` to get an insight on the importance of each feature of the PCA.
 ::::
@@ -1369,7 +1369,7 @@ For others, there are several approaches to create a multiclass classifier out o
 The _one versus the rest_ (OvR) or _one versus all_ (OvA) strategy is to train a binary classifier for each class and always interpret all other classes as the others or the _rest class_.
 To classify an observation you get the scores for each classifier and select the one with the highest score.
 
-For the Fischer Iris dataset this would result in three classifiers (one for each iris), for the MNIST dataset in ten (one for each number).
+For the Fisher Iris dataset this would result in three classifiers (one for each iris), for the MNIST dataset in ten (one for each number).
 
 ::::
 :::
@@ -1382,7 +1382,7 @@ For the Fischer Iris dataset this would result in three classifiers (one for eac
 The _one versus one_ (OvO) strategy is to train a binary classifier for always two classes and build up a set of classifiers, for $n$ classes we get $\tfrac{n (n-1)}{2}$ classifiers. 
 To classify an observation you get the result for each classifier and select the one class with the most duels won.
 
-For the Fischer Iris dataset this would result in three classifiers, for the MNIST dataset 45.
+For the Fisher Iris dataset this would result in three classifiers, for the MNIST dataset 45.
 
 The advantage of OvO over OvR is that each classifier only needs to be trained on a subset and not with the entire dataset. 
 This is especially useful for algorithms that do not scale well, like SVMs.
@@ -1400,7 +1400,7 @@ Nevertheless, there exist dedicated classes for the task as well [`sklearn.multi
 
 ## Multiclass classification
 
-1. Use SVM for the Fischer Iris dataset and test it.
+1. Use SVM for the Fisher Iris dataset and test it.
 1. Compare with a random forest.
 1. Create a confusion matrix for more than two classes with your results and interpret the results.
 ::::
