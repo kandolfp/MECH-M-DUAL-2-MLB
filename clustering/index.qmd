@@ -380,7 +380,7 @@ import pandas as pd
 %config InlineBackend.figure_formats = ["svg"]
 
 
-C_w = U_w[:, :4].T @ (CD_w - np.mean(CD))
+C_w = U_w[:, :4].T @ (CD_w - np.mean(CD_w))
 df_w = pd.DataFrame(C_w.T, columns=["PV1", "PV2", "PV3", "PV4"])
 df_w["target"] = target
 _ = sns.pairplot(df_w, hue="target", height=1.45)
