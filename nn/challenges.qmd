@@ -16,18 +16,19 @@ On the other hand it can also run in the opposite direction.
 These problems are often cited for one of the main reasons that NNs were abandoned in the early 2000s.
 In @Geron2022-xh we can find quite a nice introduction in the corresponding chapter. 
 In short, a combination of activation function and initialization of weights caused the problem is some cases.
-By introducing new weight initializations this could be mitigated and therefore it is not such a huge problem, if you see it change the weight init or rethink the choice of activation functions.
+By introducing new weight initializations, this could be mitigated and therefore it is not such a huge problem.
+If you see it, change the weight init or rethink the choice of activation functions.
 
 - **Dying ReLUs**: The vanishing gradient problem helped ReLU to rise to prominence, as it does not saturate like the sigmoid.
 Nevertheless, there is another problem where some neurons die during training (they output 0 only).
 This happens when the weights and bias always result in a negative number for any input.
-To mitigate this problem, _leaky ReLu_ was introduces.
-The so called SELU and ELU are alternatives as well.
+To mitigate this problem, _leaky ReLu_ was introduced.
+The so-called SELU and ELU are alternatives as well.
 
 - **Batch Normalization**: With better weight initialization and ReLU activation vanishing gradients can still happen.
 To have an additional safeguard batch normalization was introduced.
 After the activation it normalizes over a batch or training data and therefore the network learns the optimal mean and shift for the data.
-This is often the first layer and helps preparing the data and makes sure everything is in an expected range.
+This is often the first layer and helps to preparing the data and makes sure everything is within an expected range.
 
 - **Model/Data Drift**: Over the lifetime of a model it can happen that the output or performance degenerates.
 This might be due to a shift in the input data that is not known or considered.

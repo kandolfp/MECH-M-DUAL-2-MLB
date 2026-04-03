@@ -1,7 +1,7 @@
 # Data Preparation {#sec-nn-data}
 
-Now that we know how to design, train and work with neural networks we need to talk about one of the most important topic: data. 
-We could see throughout this notes that the algorithms need to have data to _learn_.
+Now that we know how to design, train and work with neural networks we need to talk about one of the most important topics: data. 
+We could see throughout these notes that the algorithms need to have data to _learn_.
 This includes labelled and unlabelled data. 
 
 There are several topics that need to be addressed when a project does not simply include training on available datasets.
@@ -18,13 +18,13 @@ The challenges in producing industries are different than astrophysics, medicine
 :::
 
 - **Cleaning and preprocessing**: The raw data often needs some cleaning and preprocessing.
-For images this starts with an appropriate image format - remember that most formats include some form of compression, that can lead to artifacts.
+For images this starts with an appropriate image format - remember that most formats include some form of compression that can lead to artifacts.
 We might also need to handle missing, blurry, out of focus, fuzzy, hazy, or grainy images.
-It might also be the useful that we detect the region of interest and cut the image to the appropriate dimensions to reduce the size of our problem already on this stage.
+It might also be useful that we detect the region of interest and cut the image to the appropriate dimensions to reduce the size of our problem already at this stage.
 The main idea of this step is to have data that can be processed in a standardized way.
 
 - **Dataset splitting**: The split of the available data is important.
-Already at this level it is essential, that for example the _test dataset_ is never touched by the training or validation.
+Already at this level it is essential that, for example, the _test dataset_ is never touched by the training or validation.
 
 - **Class imbalance**: A real-world dataset is often not balanced or not as balanced as it should be for good learning behaviour in NNs.
 The training techniques need to be adapted or the sample selection needs to be adjusted.
@@ -34,23 +34,23 @@ Some of the data augmentation techniques we discuss below @sec-nn-data-transform
 - **Feature engineering**: While NNs can be used to detect the important features it does not mean that for every application we can skip feature engineering.
 We might want to create new features from existing ones (e.g. transforming to wavelet basis to highlight vertical and horizontal features) or reduce to the most important features like only the edges. 
 
-- **Labeling**: The process of labeling data can be tedious and time consuming.
-Arguably it is the most important part as all supervised learning relies on the quality of the labels.
+- **Labelling**: The process of labelling data can be tedious and time consuming.
+Arguably, it is the most important part as all supervised learning relies on the quality of the labels.
 We discuss this in more detail below, @sec-nn-data-labelling.
 
 
-- **Augmentation**: By augmenting the data we have we can also greatly influence the training of our NNs. In short, we can use geometric transformations, colour adjustments, artificial noise, and random erasing to augment our data and create new data from the NNs point of view.
+- **Augmentation**: By augmenting the data we have, we can also greatly influence the training of our NNs. In short, we can use geometric transformations, colour adjustments, artificial noise, and random erasing to augment our data and create new data from the NN's point of view.
 We discuss this step in more detail in @sec-nn-data-transform.
 
 Besides these steps that are often part of a data preparation pipeline or directly included in the training there are other important aspects that greatly influence our outcome.
 
 - **Validation and quality assurance**: It is important to have some processes in place that ensure the quality of the data is accurate, especially if data is automatically generated and labelled.
-Making sure the labels are valid, and the quality of the data is as desired makes sure the training can have major impact on the performance.
+Making sure the labels are valid, and the quality of the data is as desired makes sure the training can have a major impact on the performance.
 It is also important to keep track of how balanced our dataset is.
 
-- **Scalability and efficiency**: Quite likely our dataset is growing over time and this can cause problems in terms of scalability and efficiency.
+- **Scalability and efficiency**: It is quite likely, that our dataset is growing over time and this can cause problems in terms of scalability and efficiency.
 You might need to apply batch processing and parallelization techniques to make sure the data can be processed at all. 
-Furthermore, the way it is stored and provided for the NN can often become the bottleneck of training. 
+Furthermore, the way it is stored and provided for the NN can often become the bottleneck in training. 
 
 - **Ethical considerations**: A bias in the dataset can create a bias in the model we train.
 This is especially important if we are working with sensitive data.
@@ -77,10 +77,10 @@ For `pytorch` we can find most of these in `torchvison.transforms.v2`, see [docs
 
 The most important aspects influenced by these augmentations are:
 
-1. **Dataset**: With data augmentation we can artificially increase the size of our dataset and therefore expose our network to more training data without the often tedious task of labeling. 
+1. **Dataset**: With data augmentation we can artificially increase the size of our dataset and therefore expose our network to more training data without the often tedious task of labelling. 
 If we apply this in a _random_ fashion we need to make sure that the seed is set and we can track the changes in case we need to get a deeper understanding of the mechanics behind it. 
 Overall, by always applying some augmentation, overfitting can be drastically reduced. 
-If our dataset is not balanced and one class is less frequent than it should be, these techniques can also produce more instances. This process is called _synthetic minority oversampling techniques_ (SMOTE).
+If our dataset is not balanced and one class is less frequent than it should be, these techniques can also produce more instances. This process is called _Synthetic Minority Oversampling Technique_ (SMOTE).
 
 1. **Generalization**: With data augmentation we can make sure the model learns on features that are invariant to geometric transformations or something like different zoom levels. Overall, this will lead to a better generalization of the network.
 
@@ -98,53 +98,53 @@ For instance, if a model is trained to classify images of cats and dogs, data au
 
 ## Use data augmentation to improve our models
 
-Similar to the pipeline use in @sec-nn-transferl create a pipeline to include some of the above described data augmentations and retrain the models we created with this pipeline in place for the training set. 
+Similar to the pipeline use in @sec-nn-transferl, create a pipeline to include some of the above described data augmentations and retrain the models we created with this pipeline in place for the training set. 
 Can you see any of the above described benefits?
 ::::
 :::
 
-## Data Labeling {#sec-nn-data-labelling}
+## Data Labelling {#sec-nn-data-labelling}
 
-Labeling data is a critical step in machine learning projects as the quality directly influences the performance of the model.
-For image data the process of labeling involves assigning meaningful annotations to images (what is in the image, or what classes it belongs to), bounding boxes or masks for objects visible in the image.
-Furthermore, these information should be easy to process by a machine and keeping a change log is also recommended.
+Labelling data is a critical step in machine learning projects as the quality directly influences the performance of the model.
+For image data the process of labelling involves assigning meaningful annotations to images (what is in the image, or what classes it belongs to), bounding boxes or masks for objects visible in the image.
+Furthermore, this information should be easy to process by a machine and keeping a changelog is also recommended.
 
 Depending on the task we set out to achieve, the requirements on labelling can be quite different.
 The following list covers some tasks and also highlights where specific labels can be problematic.
 
 - **Image classification**: Each image has a single label e.g., _cat_ or _dog_.
-This can cause problems, especially if we decide to move from superclasses like _animal_, _for legged_, _furry_ to subclasses or specific species of cats. 
+This can cause problems, especially if we decide to move from superclasses like _animal_, _four-legged_, _furry_ to subclasses or specific species of cats. 
 
 - **Object detection**: Annotating bounding boxes around objects within an image.
 This can be tricky in the case of objects overlapping each other or for a sequence of images where parts get obfuscated. 
 
 - **Semantic segmentation**: Assigning a class label to each pixel in an image.
-This can cause problems with class imbalance if e.g. _background_ is the dominate class.
-Another problem occurs when capturing precise object boundaries and the challenges involved here with down and upsampling.
+This can cause problems with class imbalance if e.g. _background_ is the dominant class.
+Another problem occurs when capturing precise object boundaries and the challenges involved here with down- and upsampling.
 Furthermore, generalization can be a problem in these tasks if e.g. background is _always_ black.
 
 - **Instance segmentation**: This builds on semantic segmentation but distinguishes between different individual of the same instance, e.g. two different cats in one image.
-One obvious challenge here is that even for a human labelling it might not always be clear if a pixel belongs to one instance or the other if the _overlap_.
+One obvious challenge here is that even for a human labeller, it might not always be clear if a pixel belongs to one instance or the other if they _overlap_.
   
 Above, we discussed some specific challenges depending on the topic but there are also more general challenges in the context of labelling image data.
 
-- **Subjectivity**: Images allow for some form of interpretation what exactly is part of the image, instance.
-This might be where one object begins and another ends, e.g. satellite data and we need to distinguish between a roof with grass and an actual field, not to talk about different plants in the background of image.
-Furthermore, if we try to label emotions this might be hard due to cultural differences.
+- **Subjectivity**: Images allow for some form of interpretation of what exactly is part of the image, for instance.
+This might be where one object begins and another ends, e.g., satellite data, and we need to distinguish between a roof with grass and an actual field, not to talk about different plants in the background of image.
+Furthermore, if we try to label emotions, this might be hard due to cultural differences.
 The same is true for abstract concepts. 
 
 - **Scalability**: The larger the dataset, the more time consuming and challenging the labelling process becomes.
-This is e.g. why old CAPTCHA algorithms _employed_ users to read text to help improve OCR software[^captcha].
+This is, e.g., why old CAPTCHA algorithms _employed_ users to read text to help improve OCR software[^captcha].
 The task is even more challenging when pixel-level labels are required for segmentation.
 
 [^captcha]: Mix some _known_ letters or words to check if the user is correct and collect the data for the second part to build up a statistically significant classification.
 
 - **Imbalance**: This can be more subtle than we often think.
-E.g. there are not a lot of images of snow leopards and those existing might be from the same individual leading to problems we already discussed. 
+E.g., there are not many images of snow leopards and those that exist might be from the same individual, leading to problems we already discussed. 
 
 - **Errors**: It is possible that labels are wrong or inconsistent.
-Such problems can propagate and influence workflow.
-While we can simply _correct_ an error it might also be beneficial to keep track of the wrong labels to make sure we capture model drift and also to work against systematic errors. 
+Such problems can propagate and influence the workflow.
+While we can simply _correct_ an error, it might also be beneficial to keep track of the wrong labels to make sure we capture model drift and also to work against systematic errors. 
 
 - **Cost**: The costs for high-quality labelled data were made implicitly clear in the above points but we need to mention it separately as it can have serious implications on a project.
 
@@ -153,11 +153,11 @@ While we can simply _correct_ an error it might also be beneficial to keep track
 ## Best practices
 
 In light of the above challenges, it is a good idea to keep the following checks in mind. 
-Start small to establish a process, have _labeling guidelines_ in place to allow for reproducible results, if possible allow for multiple annotators, implement a quality control, leverage pre-labelled data if possible.
+Start small to establish a process, have _labelling guidelines_ in place to allow for reproducible results, if possible, allow for multiple annotators, implement a quality control, leverage pre-labelled data if possible.
 
 :::
 
-### Tools for Labeling
+### Tools for Labelling
 
 There are several tools available to help in the labelling process. 
 
@@ -172,5 +172,5 @@ As Label Studio is one of the most versatile and free tools available we highlig
 
 Label Studio supports a wide range of labelling/annotation tasks from image classification via object detection to segmentation tasks.
 This is handled via multiple types of labels like bounding boxes or polygons and allows cooperative processes.
-We can use tools ans assistant systems to facilitate semi-automated labelling where the human performs fine tuning and checks the results.
+We can use tools and assistant systems to facilitate semi-automated labelling where the human performs fine tuning and checks the results.
 Furthermore, we can define workflows and have quality control features (consensus scoring) available.

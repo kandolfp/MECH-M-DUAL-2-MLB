@@ -6,11 +6,11 @@ This insight was the base for the first mathematical model of a NN, published in
 It contains a multi-layer structure, convolution, max pooling, and nonlinear dynamical nodes.
 
 The current high interest in NNs was arguably kickstarted with @NIPS2012_c399862d and their introduction of _ImageNet_.
-The used with high resolution images, facilitated with 15 million labels in over 22 000 categories.
+They used high-resolution images, facilitated with 15 million labels in over 22000 categories.
 This transformed the field of computer vision tasks for classification and identification.
 All of this was made possible by the large labelled dataset and the available compute power[^cpower].
 
-At its core a neural network consists of multiple layers (some with specific names) of interconnected nodes (or _neurons_).
+At its core, a neural network consists of multiple layers (some with specific names) of interconnected nodes (or _neurons_).
 
 :::: {#fig-nn-generic}
 
@@ -21,7 +21,7 @@ The connections (mapping) between the neurons can be defined but they do not hav
 ::::
 
 Similar to our view of the brain, the neurons process information and make decisions based on this information and their state (weights, biases, activation functions, etc.).
-Given enough data, computing power, the correct architecture, and hyperparameters they are universal functions approximation machines.
+Given enough data, computing power, the correct architecture, and hyperparameters they are universal function approximation machines.
 They can be used to _learn_ about complex relationships between the input and the output without requiring any rules or programming.
 They are ideal for pattern recognition, data classification, and regression analysis.
 
@@ -31,7 +31,7 @@ $$
 \underset{A_j}{\operatorname{arg min}}\, \big( f_m(A_m, f_{m-1}(A_{m-1}, \cdots, f_2(A_2, f_1(A_1, x)))) + \lambda g(A_j) \big)
 $$
 
-where $x$ denotes the input, the matrix $A_k$ denotes the weights connecting layer $k$ with layer $k+1$, $\lambda$ and $g$ are regularizations (bias) and $f_k$ is the _activation function_ $k$. 
+where $x$ denotes the input, the matrix $A_k$ denotes the weights connecting layer $k$ with layer $k+1$, $\lambda$ and $g$ are regularization terms (bias) and $f_k$ is the _activation function_ $k$. 
 
 In the context of deep learning models this is often written in the compact and generic form
 $$
@@ -39,7 +39,7 @@ $$
 $$
 for $\Theta$ denoting the weights of the network and $f$ the characteristics of the network (layers, structure, activation functions, etc.).
 
-The training of the network uses the labelled data to find the best weights such that the labels are recovered best from the observations (input), i.e. map $x_j$ to $y_j$. 
+The training of the network uses the labelled data to find the best weights such that the labels are best recovered from the observations (input), i.e. map $x_j$ to $y_j$. 
 This is often done via backpropagation algorithms and stochastic gradient descent. 
 
 ## Let us try to demystify the mathematics behind NN

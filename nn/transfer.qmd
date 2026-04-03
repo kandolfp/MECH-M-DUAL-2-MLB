@@ -9,28 +9,28 @@ As mentioned, if our training set is small, this is especially beneficial.
 
 The main scenarios for transfer learning are:
 
-- **Pretrained model**: It takes a lot of resources to train a _modern CNN_.
+- **Pre-trained model**: It takes a lot of resources to train a _modern CNN_.
 Quite often people release their final checkpoint and others can benefit from it.
 This means we can load the model and instead of working with random weights we have the trained weights of somebody else to start off with.
 We can now continue training with our dataset. 
 
-- **Fixed feature extractor**: After loading a pretrained model, we can also remove, for example, the last classification layers of the network and replace them with our own classification.
+- **Fixed feature extractor**: After loading a pre-trained model, we can also remove, for example, the last classification layers of the network and replace them with our own classification.
 In this process we can specify the number of features we need for our problem and we can get results for our case.
 Of course we need to make sure that we hold up the principles of the training of the network.
 So we basically we get a feature extraction like PCA and build our network on this features. 
 
 - **Fine-tuning**: Again, we can build on a pretrained model and use our data to fine-tune some layers of the network (with or without replacing the final stages).
-Usually, we would fix the first layers and only include single layers at the end of the network for this process.
-This goes along with the idea that the broad features are extracted in the beginning of the network (edges, colors, ...) and only the small details later on.
+Usually, we would fix the first layers and only include a single layer at the end of the network for this process.
+This goes along with the idea that the broad features are extracted in the beginning of the network (edges, colours, ...) and only the small details later on.
 This approach limits the probability of overfitting but can shift the network to better identify the specifics of our dataset.
 
-Of course it is not easy to decide exactly in which of the categories our problem falls but as a general rules: 
+Of course, it is not easy to decide exactly in which of the categories our problem falls but as a general rule: 
 
-- if the new dataset is small we should not not fine-tune but rather only train a classifier.
+- if the new dataset is small we should not fine-tune but rather only train a classifier.
 
-    - if the dataset is very different for the original training set we should probably remove a couple of layers and not the final stage.
+    - if the dataset is very different from the original training set we should probably remove a couple of layers and not the final stage.
 
-- if we have a large dataset we can risc fine-tuning of the network as overfitting is limited.
+- if we have a large dataset we can risk fine-tuning of the network as overfitting is limited.
     
     - if the dataset is very different from the original training set we can also train the entire model from scratch but we should still consider initializing with existing weights so we do not need to relearn everything (e.g. edges).
 
@@ -212,7 +212,7 @@ history = train_model(model, dataset, loss_fn, optimizer,
 1. Define the input an output size of the new layer
 1. Exchange the final layer of the network to allow for _only_ two classes
 
-Now that we have our model and it was trained for 1ß epochs we can have a look at its performance.
+Now that we have our model and it was trained for 10 epochs we can have a look at its performance.
 ```{python}
 #| label: fig-nn-transfer-dvc
 #| fig-cap: "Performance of our model."
@@ -251,10 +251,10 @@ plt.show()
 ```
 In @fig-nn-transfer-dvc-1 we can see the final classification of our model with regards to the test set.
 For only 7 dogs our model is convinced they are not _good dogs_ but cats, and 0 cats are classified as dogs, in comparison to @fig-nn-nn-dvc-non-linear-1 and @fig-nn-cnn-dvc-1 we gained some correct classifications.
-If we look at the probabilities @fig-nn-transfer-dvc-2, we can see that we have a no close calls, but rather a model that is quite sure about the classification.
+If we look at the probabilities @fig-nn-transfer-dvc-2, we can see that we have no close calls, but rather a model that is quite sure about the classification.
 Regarding the history of our optimization, we can see that we start quite good (our initial guess of what is a dog and what is a cat seems to be accurate).
 
-At the end, we have an accuracy of `{python} float(np.round(acc  * 100, 2))`% for our test set,
+At the end, we have an accuracy of `{python} float(np.round(acc  * 100, 2))`% for our test set.
 
 ::: {.callout-caution appearance="simple" icon=false}
 :::: {#exr-nn-transfer-dvc-classifier}

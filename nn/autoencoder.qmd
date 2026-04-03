@@ -174,7 +174,7 @@ epochs = 5
 history = train_model(model, trainLoader, valLoader, loss_fn, optimizer,
                       epochs=epochs)
 ```
-Note, we only used `{python} epochs` epochs for the following results and this time we used `Adam` as optimizer. 
+Note, we only used `{python} epochs` epochs for the following results and this time we used `Adam` as optimiser. 
 ```{python}
 #| label: fig-nn-autoencoder
 #| fig-cap: "Some of the test images denoised via the model. Top row shows the original image, second with noise and last row after calling the model."
@@ -223,7 +223,7 @@ Retrain the autoencoder with these training sets and see how it performs (can it
 ## Explore the latent space and generate numbers
 
 Rework the above autoencoder in such a fashion that the encoder an decoder can be accessed individually.
-If for the later tasks reworking the model such that the latent space is smaller is beneficial, feel free to do so, e.g. only 2 dimensions.
+If, for the later tasks, reworking the model such that the latent space is smaller is beneficial, feel free to do so, e.g. only 2 dimensions.
 
 1. Explore the latent space (e.g. similar to what was done in the introduction to Clustering and Classification for the cats and dogs dataset) and see how well the clusters of numbers can be seen.
 1. Use the knowledge of the previous task to create a number generator by providing different self generated elements from the latent space to the decoder part of our autoencoder.

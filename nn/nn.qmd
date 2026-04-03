@@ -296,7 +296,7 @@ print(f"\n\nThe estimated total size in KB {info.total_param_bytes / 1024}")
 
 It is often also quite useful to export the model as an image.
 Here the [`torchviz`](https://github.com/szagoruyko/pytorchviz) package comes in handy.
-In our case we can work again with a `dot` file, that is rendered as @fig-nn-nn-model-visual.
+In our case, we can work again with a `dot` file, that is rendered as @fig-nn-nn-model-visual.
 ```{python}
 #| output: false
 import torchviz
@@ -454,8 +454,8 @@ plt.show()
 In @fig-nn-nn-dvc-non-linear-1 we can see the final classification of our model with regards to the test set.
 For 11 dogs our model is convinced they are not _good dogs_ but cats, and 3 cats are classified as dogs.
 If we look at the probabilities @fig-nn-nn-dvc-non-linear-2, we can see that we have a couple of close calls, but in general our model is quite sure about the classification.
-Regarding the history of our optimization, we can see three phases, first our accuracy stays constant, right about for the first 80 iterations.
-Than the network starts learning up to 120 and after that only the loss function declines, but accuracy stays high. 
+Regarding the history of our optimization, we can see three phases, first our accuracy stays constant, for about the first 80 iterations.
+Then the network starts learning up to 120 and after that only the loss function declines, but accuracy stays high. 
 
 At the end, we have an accuracy of `{python} float(np.round(acc  * 100, 2))`% for our test set, a bit better than with our linear models @fig-nn-singlelayer.
 
@@ -464,10 +464,10 @@ At the end, we have an accuracy of `{python} float(np.round(acc  * 100, 2))`% fo
 
 ## Learning rate and momentum
 
-The optimizer [`SGD`](https://pytorch.org/docs/stable/generated/torch.optim.SGD.html#torch.optim.SGD) has two options we want to investigate further. The learning rate `lr` and the `momentum`.
+The optimizer [`SGD`](https://pytorch.org/docs/stable/generated/torch.optim.SGD.html#torch.optim.SGD) has two options we want to investigate further: the learning rate `lr` and the `momentum`.
 
 1. Change the learning rate and see how this influences performance, you might want to increase `epochs` as well. Try $lr \in [10^{-1}, 10^{-4}]$.
-1. Change the momentum between $0$ and $1$. Can this _improve_ the predictions for different learning rates and such that the NN is _more sure_ of its decision (in @fig-nn-nn-dvc-non-linear-2 the bars are not almost equal but lean to one side). 
+1. Change the momentum between $0$ and $1$. Can this _improve_ the predictions for different learning rates and such that the NN is _more confident_ in its decision (in @fig-nn-nn-dvc-non-linear-2 the bars are not almost equal but lean to one side). 
 ::::
 :::
 
@@ -559,7 +559,7 @@ It is also possible to export the model in the ONNX format, see @sec-data-model-
 Our first NN is a success, but how did it learn the necessary parameters to perform its task? 
 
 The answer is a technique called _Backward Propagation of Error_ or in short _Backpropagation_. 
-This essential component of for machine learning helps us to work out how the loss we compute translates into changes of the weights and biases in our network.
+This essential component of machine learning helps us to work out how the loss we compute translates into changes of the weights and biases in our network.
 In our training loop `train_model` the lines
 ```{.python}
 y_pred = model(X_batch)            # Forward pass through the model
@@ -576,9 +576,9 @@ A very nice and structured introduction by IBM can be found [here](https://www.i
 An introduction closer to the mathematics is shown in [@Brunton2022, Chapter 6.3].
 :::
 
-The introduction of the technique is contributed to the paper of @Rumelhart1986.
+The introduction of the technique is attributed to the paper of @Rumelhart1986.
 As usual, predecessors and independent similar proposals go back to the 1960s.
-As we have seen, our NN can mathematically be described by nested functions, that are called inside the loss function, $\mathscr{L}(\Theta)$, for $\Theta$ being all trainable parameters.
+As we have seen, our NN can be described mathematically by nested functions, that are called inside the loss function, $\mathscr{L}(\Theta)$, for $\Theta$ being all trainable parameters.
 
 During the training, we can compute the _change_ between the NN output and the provided label and use it in a gradient descent method[^gradient].
 The result is the following iteration 
@@ -659,13 +659,13 @@ $$
 :::: {#def-nn-backdrop}
 ## Backpropagation
 
-Now that we have a better understanding we can define the backdrop procedure, see @Brunton2022 as reference:
+Now that we have a better understanding we can define the backpropagation procedure, see @Brunton2022 as reference:
 
 1. Specify the NN along with the labeled training data.
-1. Initialize the weights and biases of the NN with random values. If they are initialized with zero the gradient method will update all of them in the same fashion which is not what we are looking for.
+1. Initialize the weights and biases of the NN with random values. If they are initialized with zero, the gradient method will update all of them in the same fashion, which is not what we are looking for.
 1. In a loop until convergence or a maximum of iterations is achieved:
     i. Run the training data through the NN to compute $y$. Compute the according loss and its derivatives with respect to each weight and bias.
-    i. For a given learning rate $\delta$ update the NN parameters via the gradient method.
+    i. For a given learning rate $\delta$, update the NN parameters via the gradient method.
 ::::
 :::
 
@@ -676,7 +676,7 @@ We can see this reflected in our code for the NN above.
 
 ## Dogs and cats
 
-Let us translate this findings to our example visualized in @fig-nn-cvd-nl.
+Let us translate these findings to our example visualized in @fig-nn-cvd-nl.
 In order to do so, we need to specify our variables in more detail.
 To simplify it a bit we set the biases to the zero vector. 
 
@@ -698,7 +698,7 @@ In order to make the computation of the derivatives easier we use the variables 
 
 Therefore, we get
 $p = g(z)=\sigma(B v)$ (softmax), and $v = f(u)= \tanh(A x)$.
-Overall we want to compute the change in $B_{i, j}$ (for some fixed indices $i$, and $j$).
+Overall, we want to compute the change in $B_{i, j}$ (for some fixed indices $i$ and $j$).
 $$
 \frac{\partial\, \mathscr{L}}{\partial \, B_{i, j}} = \frac{\partial\, \mathscr{L}}{\partial \, p} \cdot \frac{\partial\, p}{\partial \, z} \cdot \frac{\partial\, z}{\partial \, B_{i, j}}
 $$
