@@ -510,7 +510,7 @@ See @Geron2022-xh and  [GitHub](https://github.com/ageron/handson-ml3/blob/main/
 
 ## Application of DBSCAN
 
-1. Apply the DBSCAN algorithm to our toy example (the two ellipsoids from @sec-clustering-usl-kmeans) used through this section, to recover the two clusters as good as possible.
+1. Apply the DBSCAN algorithm to our toy example (the two ellipsoids from @sec-clustering-usl-kmeans) used throughout this section, to recover the two clusters as good as possible.
 Try different $\epsilon$ values as well as different norms (`metric` parameter).
 
 1. Additionally, for a higher dimensional problem, using DBSCAN to split the Fisher Iris dataset (see the introduction this part of the notes) into its three clusters of flowers.
@@ -732,10 +732,10 @@ See @Geron2022-xh and the corresponding [GitHub repository](https://github.com/a
 
 ## Motivational example {#sec-clustering-ul-me}
 
-Before we make the leap to supervised learning, we we introduce a new dataset and see how our unsupervised approach works in this case.
+Before we make the leap to supervised learning, we introduce a new dataset and see how our unsupervised approach works in this case.
 
-We do this with the (in)famous MNIST dataset of hand written digits. 
-Lets start by looking at the dataset and establishing some basic properties.
+We do this with the (in)famous MNIST dataset of handwritten digits. 
+Let's start by looking at the dataset and establishing some basic properties.
 
 We load the dataset and look at its description
 ```{python}
@@ -789,12 +789,13 @@ plt.show()
 ```
 
 As can be seen from @fig-clustering-usl-mnist, most digits are easy to distinguish for us, but there are some nasty things included. 
-Especially, there are `1`s with the english style (just one straight line) of writing (1st row, 7th column), but also as a diagonal line (1st row, 4th column), and finally also the german style (connecting line at base and top) of writing (3rd row, 5th column). 
+Especially, there are `1`s with the English style (just one straight line) of writing (1st row, 7th column), but also as a diagonal line (1st row, 4th column), and finally also the German style (connecting line at base and top) of writing (3rd row, 5th column). 
 
 Also the `2` digit comes in various forms, with loop (1st row, 6th column) and without (3rd row, 6th column).
 Finally we all know that a `3` can hide in an `8`, same as a `7` and `1` can hide in a `9` and much more. 
 
-Now, before we go any further in the investigation we split up the dataset into a training and a test set, we will not use this here but we should establish some way of working right from the start. 
+Now, before we go any further in the investigation, we split the dataset into training and test set. 
+We will not use this right away but we should establish a sensible way of working right from the start. 
 
 ```{python}
 X_train, X_test = mnist.data[:60000], mnist.data[60000:]
@@ -831,11 +832,11 @@ plt.show()
 
 As can be seen from @fig-clustering-usl-mnist2, the cluster centers do not recover our ten digits.
 In general, they are, as expected, smudged as they do not represent an actual image.
-It looks like $0, 1, 2, 3, 6, 8, 9$ are _easy_ to discover but $4, 5, 7$ not.
+It looks like $0, 1, 2, 3, 6, 8$, and $9$ are _easy_ to discover, but $4, 5$, and $7$ are not.
 If we look closely, we can see $4, 5, 7$ represented in our clusters but not as separate digits.
 Obviously this is not a good way to proceed and to find our digits.
 We will discuss methods to perform this task in the next section @sec-clustering-sl.
-Furthermore, keep this part in mind, as we will come back to how this can still be helpful in a different aspect as semi-supervised learning @sec-clustering-ssl.
+Furthermore, keep this part in mind, as we will come back to how this can still be helpful in a different aspect in semi-supervised learning @sec-clustering-ssl.
 
 [^norm]: see @Kandolf_GDM, Section 1.2 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/basics/linearalgebra.html#norms)
 

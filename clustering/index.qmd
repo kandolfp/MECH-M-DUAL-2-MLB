@@ -5,8 +5,8 @@ This process is referred to as clustering and classification.
 To achieve this task the main modus of operation is to find a _low-rank feature space_ that is informative and interpretable.
 
 One way to extract the dominant features from a dataset is the singular value decomposition (SVD) or principal component analysis, see [@Kandolf_GDM].
-The main idea is, to not work in the high dimensional measurement space, but instead in the low rank feature space.
-This allows us to significantly reduce the cost (of computation or learning) by performing our clustering in this low dimensional space. 
+The main idea is, to not work in the high dimensional measurement space, but instead in the low-rank feature space.
+This allows us to significantly reduce the cost (of computation or learning) by performing our clustering in this low-dimensional space. 
 
 In order to find the feature space there are two main paths for machine learning:
 
@@ -15,17 +15,17 @@ In order to find the feature space there are two main paths for machine learning
 
 As the names suggest, in _unsupervised learning_, no labels are given to the algorithm and it must find patterns in the data to generate clusters and labels such that predictions can be made.
 This is often used to _discover_ previously unknown patterns in the (low-rank) subspace of the data and leads to _feature engineering_ or _feature extraction_. 
-These features can than be used for building a model, e.g. a classifier.
+These features can then be used for building a model, e.g. a classifier.
 
 Supervised learning, on the other hand, uses labelled datasets.
 The training data is labelled for _cross-validation_ by a teacher or expert.
-I.e. the input and output for a model is explicitly provided and regression methods are used to find the _best model_ for the given labelled data.
+I.e., the input and output for a model is explicitly provided and regression methods are used to find the _best model_ for the given labelled data.
 There are several different forms of supervised learning like _reinforcement learning_, _semi-supervised learning_, or _active learning_. 
 
 The main idea behind machine learning is to construct or exploit the intrinsic low-rank feature space of a given dataset, how to find these is determined by the algorithm.
 
 ## Feature selection and generation of a feature space
-Before we go into specific algorithms lets have a general look at what we are going to talk about.
+Before we go into specific algorithms let's have a general look at what we are going to talk about.
 We will follow [@Brunton2022, Section 5.1] for this introduction.
 
 ### Fisher Iris dataset {#sec-Fisher-iris-data-set}
@@ -73,7 +73,7 @@ fig.show()
 ```{python}
 #| echo: false
 #| label: fig-clustering-iris
-#| fig-cap: "Iris dataset with 150 samples from three distinct species, _Setosa_, _Versicolor_, and _Virginica_, as a scatter 3D plot along the features sepal length, sepal width, and petal width, the forth feature petal width is not shown."
+#| fig-cap: "Iris dataset with 150 samples from three distinct species, _Setosa_, _Versicolor_, and _Virginica_, as a scatter 3D plot along the features sepal length, sepal width, and petal width, the fourth feature petal width is not shown."
 fig.show()
 ```
 :::
@@ -87,7 +87,7 @@ img = pio.to_image(fig, format="png", engine="kaleido")
 Image(img)
 ```
 
-Iris dataset with 150 samples from three distinct species, _Setosa_, _Versicolor_, and _Virginica_, as a scatter 3D plot along the features sepal length, sepal width, and petal width, the forth feature petal width is not shown.
+Iris dataset with 150 samples from three distinct species, _Setosa_, _Versicolor_, and _Virginica_, as a scatter 3D plot along the features sepal length, sepal width, and petal width, the fourth feature petal width is not shown.
 ::::
 :::
 
@@ -185,7 +185,7 @@ Now let us take a look at a more complicated example from @Brunton2022.
 
 ### Dogs and Cats {#sec-clustering-cvd}
 
-In this dataset we explore how to distinguish between images dogs and cats, more particular the head only.
+In this dataset, we explore how to distinguish between images dogs and cats, more particularly the head only.
 The dataset contains $80$ images of dogs and $80$ images of cats, each with $64 \times 64$ pixels and therefore a total of $4096$ feature measurements per image. 
 
 ::: {.callout-important}
@@ -194,7 +194,7 @@ Also see [GitHub](https://github.com/dynamicslab/databook_python).
 :::
 
 As before, a general inspection of the dataset is always a good idea.
-With image we usually look at some to get an overview.
+With images, we usually look at some to get an overview.
 
 ```{python}
 #| label: fig-clustering-dvc-overview
@@ -249,7 +249,7 @@ Again, we use PCA to reduce the feature space of our data.
 #|   - "First principal component."
 #|   - "Second principal component."
 #|   - "Third principal component."
-#|   - "Forth principal component."
+#|   - "Fourth principal component."
 #| code-fold: true
 #| layout-ncol: 2
 #| code-summary: "Show the code for the figure"
@@ -272,7 +272,7 @@ plt.show()
 ```
 
 In @fig-clustering-dvc-pca we can see the first four modes of the PCA.
-While mode 2 (@fig-clustering-dvc-pca-2) highlights the pointy ears common in cats, mode 3 (@fig-clustering-dvc-pca-3) is recovers more dog like features.
+While mode 2 (@fig-clustering-dvc-pca-2) highlights the pointy ears common in cats, mode 3 (@fig-clustering-dvc-pca-3) is recovers more dog-like features.
 Consequently, these two features make a good choice for classification.
 
 Of course this is not the only possible representation of the initial data.
@@ -280,7 +280,7 @@ We can also use the Wavelet transform[^wave2].
 
 [^wave2]: see @Kandolf_GDM, Section 10 or follow the direct [link](https://kandolfp.github.io/MECH-M-DUAL-1-DBM/signal/wavelet.html)
 
-The multi resolution analysis features of the Wavelet transformation can be used to transform the image in such a way that the resulting principal components yield a better separation of the two classes. 
+The multi-resolution analysis features of the Wavelet transformation can be used to transform the image in such a way that the resulting principal components yield a better separation of the two classes. 
 
 ::: {.callout-note}
 
@@ -292,7 +292,7 @@ In short, we combine the vertical and horizontal rescaled feature images, as we 
 
 Note that the image has now only a quarter of the pixels of the original image.
 
-For a more detailed explanation see @sec-appendix-dvc.
+For a more detailed explanation, see @sec-appendix-dvc.
 
 ```{python}
 #| code-fold: true
@@ -321,7 +321,7 @@ def img2wave(data):
 
 :::
 
-Let us try how this changes our first four modes. 
+Let us see how this changes our first four modes. 
 
 ```{python}
 #| label: fig-clustering-dvc-wavelet-pca_wavelet
@@ -330,7 +330,7 @@ Let us try how this changes our first four modes.
 #|   - "First principal component."
 #|   - "Second principal component."
 #|   - "Third principal component."
-#|   - "Forth principal component."
+#|   - "Fourth principal component."
 #| code-fold: true
 #| layout-ncol: 2
 #| code-summary: "Show the code for the figures"

@@ -1,10 +1,10 @@
 # Semi-Supervised learning {#sec-clustering-ssl}
 
-There is a hybrid between unsupervised and supervised learning, called _semi supervised learning_. 
+There is a hybrid between unsupervised and supervised learning, called _semi-supervised learning_. 
 If we have a dataset with just a couple of labelled observations, we might be able to use the discussed clustering methods to extend the labels and therefore generate more labelled data. 
 
 We try this with the (in)famous MNIST dataset of hand written digits. 
-As we did not do this when discussion MNIST in @sec-clustering-sl-performance we first looking at the dataset and establishing some basic properties.
+As we did not do this when discussing MNIST in @sec-clustering-sl-performance we first look at the dataset and establishing some basic properties.
 
 We load the dataset and look at its description (see @sec-clustering-ul-me for the output)
 ```{python}
@@ -206,7 +206,7 @@ X_train_pprop = X_train[partially_propagated]
 y_train_pprop = y_train_prop[partially_propagated]
 np.mean(y_train_pprop == y_train[partially_propagated])
 ```
-We have cleaned up our source but does it have a big influence?
+We have cleaned up our source, but does it have a big influence?
 ```{python}
 #| classes: styled-output
 forest_pprop = RandomForestClassifier(random_state=6020).fit(
@@ -215,9 +215,9 @@ score_forest_pprop = forest_pprop.score(X_test, y_test)
 print(f"score for training with {len(y_train_pprop)} "
       f"labels {score_forest_pprop}")
 ```
-We actually do not change our result with this step much.
+This steps actually do not change our result much.
 
-Nevertheless, overall we could see that by smartly labeling `{python} k` out of `{python} X_train.shape[0]` instances we could increase our score from from about `{python} float(np.round(score_forest * 100, 2))`% to `{python} float(np.round(score_forest_pprop * 100, 2))`%, which is not bad.
+Nevertheless, overall we could see that by smartly labeling `{python} k` out of `{python} X_train.shape[0]` instances we could increase our score from about `{python} float(np.round(score_forest * 100, 2))`% to `{python} float(np.round(score_forest_pprop * 100, 2))`%, which is not bad.
 
 
 
@@ -232,7 +232,7 @@ There are several ways we can improve our results.
 
 1. Optimize the clustering for the first step.
 
-1. We can use other methods we have seen in @sec-clustering-sl and combine them to an ensemble learning. 
+1. We can use other methods we have seen in @sec-clustering-sl and combine them into ensemble learning. 
 
 1. By starting to additionally label observations where our classifier is the least sure about. 
 

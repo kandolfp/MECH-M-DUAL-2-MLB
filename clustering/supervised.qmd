@@ -16,7 +16,7 @@ At its core, the algorithm aims to solve an optimization problem: find an optima
 ::: {.callout-tip}
 For supervised learning, it is always good practice to split up our dataset into a _training_ and _testing_ section.
 **It is important to have a test set that the algorithm has never seen!**
-In general a $80:20$ split is common but other ratios might be advisable, depending on the dataset. 
+In general, a $80:20$ split is common but other ratios might be advisable, depending on the dataset. 
 
 It is also common practice to use $k$-folds cross-validation for the training set. 
 :::
@@ -27,8 +27,8 @@ It is also common practice to use $k$-folds cross-validation for the training se
 ## $k$-folds cross-validation
 
 The $k$-folds cross-validation technique is a method to allow better _hyperparameter tuning_, especially for smaller datasets where training and validation data is small.
-The main idea is that we split our iterate over different validation sets by splitting up our training set.
-Lets say we use $5$-fold cross-validation we split the training set into 5 parts.
+The main idea is that we iterate over different validation sets by splitting up our training set.
+Let's say we use $5$-fold cross-validation we split the training set into 5 parts.
 Therefore, we train the model with four parts and validate against the fifth.
 We then rotate the folds and select a different one for validation.
 At the end, we average over the five iterations to get our final parameters.
@@ -46,7 +46,7 @@ For a two-class LDA this becomes
 $$
 w = \operatorname{arg\, max}_w \frac{w^\mathrm{T}S_B w}{w^\mathrm{T}S_W w},
 $$ {#eq-grayleigh}
-(the generalized Rayleigh quotient) where $w$ is our thought after projection.
+(the generalized Rayleigh quotient) where $w$ is our sought-after projection.
 The two included scatter matrices are
 $$
 S_B = (\mu_2 - \mu_1)(\mu_2 - \mu_1)^\mathrm{T},
@@ -60,7 +60,7 @@ The set $\mathcal{D}_j$ denotes the subdomain of the data associated with cluste
 The two matrices measure the variance of the dataset as well as the means.
 To solve @eq-grayleigh we need to solve the generalized eigenvalue problem[^GEV]
 $$
-S_B w = \lambda S_w w
+S_B w = \lambda S_W w
 $$
 where the maximal eigenvalue and the corresponding eigenvector are our solution.
 
@@ -68,7 +68,7 @@ We try this with the cats and dogs dataset in both basis.
 
 ```{python}
 #| label: fig-clustering-sl-lda
-#| fig-cap: "Evaluation of the LDA for the second and fourth principal component on the test set of 40 animals. A bar going up corresponds to dogs and one going down to cats. The first 20 individuals should be dogs, the second 20 cats. The red dotted line shows the split. True positive can be found in the top-left as well as the bottom-right."
+#| fig-cap: "Evaluation of the LDA for the second and fourth principal component on the test set of 40 animals. A bar going up corresponds to dogs and one going down to cats. The first 20 individuals should be dogs, the second 20 cats. The red dotted line shows the split. True positives can be found in the top-left as well as the bottom-right."
 #| fig-subcap: 
 #|   - "Trained and evaluated against the raw data."
 #|   - "Trained and evaluated against the data in wavelet basis."
@@ -134,7 +134,7 @@ plt.show()
 If we use our raw dataset for the classification we get an overall accuracy of `{python} float(np.round(E, 2))`% with $\tfrac{4}{20}$ wrongly labelled dogs and $\tfrac{9}{20}$ wrongly labelled cats.
 We can increase this to an accuracy of `{python} float(np.round(E_w, 2))`% with $\tfrac{5}{20}$ wrongly labelled dogs and $\tfrac{2}{20}$ wrongly labelled cats.
 
-This could be expected, see @fig-clustering-dvc-wavelet-pca_results_overview for the separation of the principal values for the two basis. 
+This could be expected, see @fig-clustering-dvc-wavelet-pca_results_overview for the separation of the principal values for the two bases. 
 
 Of course we have very limited data with only 80 images for each of the classes.
 In this case we should do a cross-validation and we have not shuffled the data.
@@ -143,7 +143,7 @@ Let us see how selecting different test and training sets influence the behaviou
 
 ```{python}
 #| label: fig-clustering-sl-lda2
-#| fig-cap: "Cross validation for the dataset in wavelet basis, use 100 run with different training and test sets. We always use 120 images for training and 40 for testing."
+#| fig-cap: "Cross validation for the dataset in wavelet basis, use 100 runs with different training and test sets. We always use 120 images for training and 40 for testing."
 #| code-fold: true
 #| code-summary: "Show the code for the figure"
 import numpy as np
@@ -254,7 +254,7 @@ plt.legend(["dogs", "cats", "classification line"])
 plt.show()
 ```
 
-As we can see in @fig-clustering-sl-lda3, having a quadratic discriminant classification line can be rather beneficial, like always depending on the observations.
+As we can see in @fig-clustering-sl-lda3, having a quadratic discriminant classification line can be rather beneficial, as always depending on the observations.
 The QDA arises from LDA when we do not assume that the covariance of each of the classes is the same. 
 
 ::: {.callout-note}
@@ -364,20 +364,20 @@ scores_dummy = sklearn.model_selection.cross_val_score(
 pd.DataFrame({"accuracy [%]": np.round(scores_dummy * 100, 2)}).T
 ```
 
-As this is pretty much $91\%$ (as expected there are only about $10\%$ of `5`s in the dataset).
+This is pretty much $91\%$ (as expected, there are only about $10\%$ of `5`s in the dataset).
 Just using accuracy is apparently not the gold standard to measure performance, what other possibilities are there?
 
 ::: {.callout appearance="simple"}
 :::: {#def-confusionmatrix}
 
 ## Confusion Matrix
-The confusion matrix, error matrix or for unsupervised learning sometimes called matching matrix allows an easy way of visualizing the performance of an algorithm.
+The confusion matrix, error matrix, or (for unsupervised learning) matching matrix allows an easy way of visualizing the performance of an algorithm.
 
 The rows represent the true observations in each class, and the columns the predicted observations for each class.
 
 In our $2\times 2$ case we get
 
-![Names and abbreviations for a $2\times 2$ confusion matrix together with an example form our test case.](../_assets/clustering/confusion_matrix){#fig-clustering-sl-confusionmatrix width=2.88in}
+![Names and abbreviations for a $2\times 2$ confusion matrix together with an example from our test case.](../_assets/clustering/confusion_matrix){#fig-clustering-sl-confusionmatrix width=2.88in}
 
 but it can be extended for multi-class segmentation.
 
@@ -385,7 +385,7 @@ but it can be extended for multi-class segmentation.
 :::
 
 To compute the confusion matrix we first need predictions.
-This can be achieved by [`cross_val_predict`](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_predict.html) instead of `cross_val_score` and than we use [`confusion_matrix`](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html) from `sklearn.metrics`. 
+This can be achieved by [`cross_val_predict`](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_predict.html) instead of `cross_val_score` and then we use [`confusion_matrix`](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html) from `sklearn.metrics`. 
 
 Combined, for our example, this reads as:
 ```{python}
@@ -429,7 +429,7 @@ $$
 TNR = \frac{TN}{N}
 $$
 
-1. **Positive predictive value** (PPV) or **precission**:
+1. **Positive predictive value** (PPV) or **precision**:
 $$
 PPV = \frac{TP}{TP + FP}
 $$
@@ -455,7 +455,7 @@ F_1 = \frac{2 TP}{2 TP + FP + FN}
 $$
 
 In the [`sklearn.metrics`](https://scikit-learn.org/stable/api/sklearn.metrics.html) most of these values have a corresponding function. 
-If we look at _precission_, _recall_, and the $F_1$ score, for our example we see that our performance is viewed under a different light:
+If we look at _precision_, _recall_, and the $F_1$ score, for our example we see that our performance is viewed under a different light:
 
 ```{python}
 #| classes: styled-output
@@ -469,7 +469,7 @@ On the other hand it only _recalls_ or detects `{python} float(np.round(recall *
 The $F_1$-score is a combination of the two (the harmonic mean) and in our case `{python} float(np.round(f1_score * 100, 2))`%.
 
 Depending on the application we might want to have high precision (e.g. medical diagnosis to have no unnecessary treatment) or high recall (e.g. fraud detection where a missed fraudulent transaction can be costly).
-If we increase precision we reduce recall and the other way round so we can hardly have both.
+If we increase precision, we reduce recall, and the other way round,If we increase precision so we can hardly have both.
 This dilemma is called _precision/recall trade-off_, see @sec-appendix-pvsr for some more explanations.
 
 An alternative way to look at accuracy for binary classifiers is to look at the _receiver operating characteristic_ (ROC).
@@ -848,7 +848,7 @@ With the parameters `C` and `gamma` we can influence the classification.
 
 ## Nonlinear SVM with RBF
 
-Recall the moons example from @sec-clustering-ul-dbscan and use a `SVC` classification to distinguish the clusters.
+Recall the moons example from @sec-clustering-ul-dbscan and use an `SVC` classification to distinguish the clusters.
 Look at four different results for $\gamma \in \{0.1, 5\}$ and $C \in \{0.001, 1000\}$, compare @Geron2022-xh.
 
 In all of the four images plot the classification line in a projection onto the original 2D space.
@@ -1335,7 +1335,7 @@ X, y = make_moons(n_samples=500, noise=0.30, random_state=6020)
 X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=6020)
 ```
 
-1. Use the `VotingClassifier` class with an _LDA_, a _SVM_, and a _tree_ for classification. Make sure to set `random_state` for each, to have reproducible results. Get the overall score for the test set, as well as the individual scores for the included classifiers. 
+1. Use the `VotingClassifier` class with an _LDA_, an _SVM_, and a _tree_ for classification. Make sure to set `random_state` for each, to have reproducible results. Get the overall score for the test set, as well as the individual scores for the included classifiers. 
    ```{.python}
    for name, clf in voting.named_estimators_.items():
        print(f"{name}, =, {clf.score(X_test, y_test)}")
@@ -1343,7 +1343,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=6020)
 
 1. Switch to _soft voting_ for your ensemble classifier and see how this influences the results.
 
-1. Create a `BaggingClassifier` with 500 trees and and an appropriate `max_samples` value. Report the score for this new classifier, also report the out-of-bag score via `.oob_score_`.
+1. Create a `BaggingClassifier` with 500 trees and an appropriate `max_samples` value. Report the score for this new classifier, also report the out-of-bag score via `.oob_score_`.
 
 1. Create directly a `RandomForestClassifier` with 500 trees and appropriate value for `max_leaf_nodes`.
 
