@@ -31,7 +31,7 @@ plt.figure()
 plt.imshow(np.reshape(cats[:, 0], (64, 64)).T, cmap=plt.get_cmap("gray"))
 plt.axis("off")
 ```
-We use the Haar-Wavelet and we only need to do one level of transformation.
+We use the Haar wavelet, and we only need to do one level of transformation.
 As per usual we get four images, each half the resolution, that represent the decomposition.
 The images are, a downsampled version of the original image, one highlighting the vertical features, one highlighting the horizontal features, and one highlighting the diagonal features.
 
@@ -41,7 +41,7 @@ The images are, a downsampled version of the original image, one highlighting th
 #|   - "The downsampled version of the image"
 #|   - "The vertical highlights of the image."
 #|   - "The horizontal highlights of the image."
-#|   - "The diagonal highlights of the image"
+#|   - "The diagonal highlights of the image."
 #| layout-ncol: 2
 #| code-fold: true
 #| code-summary: "Show the code for the figure"
@@ -111,7 +111,7 @@ def img2wave(images):
     return data_w
 ```
 
-Note, the resulting image has only one forth of the pixels as the original image.
+Note, the resulting image has only one forth of the pixels of the original image.
 We can also visualize the transformation steps as follows in @fig-appendices-dvc-workflow.
 
 ![Workflow to get from the original image to the wavelet transformed version.](../_assets/appendices/catvdogs_workflow){#fig-appendices-dvc-workflow}

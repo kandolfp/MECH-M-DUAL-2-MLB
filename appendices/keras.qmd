@@ -1,12 +1,12 @@
 # Our first Neural Network in `tensorflow.keras` {#sec-appendix-keras}
 
-As mentioned there are multiple frameworks to work neural networks (NNs) and we focus on `pytorch`. 
+As mentioned, there are multiple frameworks to work neural networks (NNs) and we focus on `pytorch`. 
 Nevertheless, `tensorflow.keras` is often used in industry and to give an idea how it works we also implemented the first model in this framework.
 
 In this section we will focus on [`keras`](https://keras.io/) with [`TensorFlow`](https://www.tensorflow.org/) as backend.
 This means we find our main modules under `tensorflow.keras`.
 We will, in general, reference the documentation via `tensorflow`, the content on [keras.io Api Docs](https://keras.io/api/) is mostly equivalent.
-Where some tutorials and examples might differ.
+Some tutorials and examples might differ.
 
 ```{python}
 #| code-fold: true
@@ -51,7 +51,7 @@ If we translate it into a `tensorflow.keras` model this looks like the following
 ```{python}
 #| echo: false
 #| output: false
-# Code to avoid having some warning from ts in the notes.
+# Code to avoid having some warning from tf in the notes.
 import tensorflow as tf
 ```
 ```{python}
@@ -74,7 +74,7 @@ model = tf.keras.Sequential([                                              # <1>
 model.summary(line_length=60)                                              # <5>
 ```
 1. Generate a [_sequential_ model](https://www.tensorflow.org/api_docs/python/tf/keras/Sequential), the `keras` way of calling a linear stack of layers.
-1. Our fist layer defines the input size, in our case we have _flat_ images of size $1024$.
+1. Our first layer defines the input size, in our case we have _flat_ images of size $1024$.
 1. Use the activation function $\tanh$ and we reduce down to $2$ neurons.
 1. Use the activation function `softmax` to compute the probability per class, not recommended directly in the model.
 1. Print the summary of the model.
@@ -202,11 +202,11 @@ Overall, we have an accuracy of `{python} float(np.round(model.evaluate(X_test, 
 ## Switch to `one_hot` representation
 
 In the compile step we used `sparse_categorical_crossentropy` to allow for the computation of the loss function. 
-Often a so called _one_hot_ vector is more appropriate, this is supported via `categorical_crossentropy` as `loss` function. 
+Often a so-called _one_hot_ vector is more appropriate, this is supported via `categorical_crossentropy` as the `loss` function. 
 
 1. Change to [`categorical_crossentropy`](https://www.tensorflow.org/api_docs/python/tf/keras/losses/categorical_crossentropy).
 
-1. Use the function [`tensorflow.keras.utils.to_categorical`](https://www.tensorflow.org/api_docs/python/tf/keras/utils/to_categorical) to switch to a one_hot encoding.
+1. Use the function [`tensorflow.keras.utils.to_categorical`](https://www.tensorflow.org/api_docs/python/tf/keras/utils/to_categorical) to switch to a one-hot encoding.
 
 1. To switch back we can use `np.argmax` as in the code above.
 ::::

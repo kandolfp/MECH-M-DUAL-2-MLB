@@ -108,7 +108,7 @@ Visualization of the basic architecture of an Agentic AI.
 
 From @def-agenticai it is easy to understand why Agetic AI is gaining traction in industry.
 It increases the decision space in comparison to classical methods and allows for flexibility and adaptation to changing conditions.
-It has the potential to help transform industries with more automation by keeping track of ever growing data and promising _real-time_ action. 
+It has the potential to help transform industries with more automation by keeping track of ever-growing data and promising _real-time_ action. 
 Of course it also comes with limitations and challenges.
 
 To get a better idea on all of these concepts, we look at an industry example that somewhat relates to machine learning in image processing but also features processing of time series.
@@ -134,16 +134,15 @@ In our little factory @fig-appendix-agentic-factory there are a lot of possibili
     - In manufacturing, ensuring product quality is critical.
     We no longer purely rely on manual inspection, we see automation and often with machine learning at hand. 
     An Agentic AI system can integrate nicely into such a system by using the existing parts together with the process data to not only check for quality but also take action with regards to the results at hand. 
-    E.g. adjust process parameters, trigger a new learning phase for a machine learning model, inform about delays in the process (from in-house to the customer), decide where and how to rework, remove defect parts from the line (controlling a robotic arm), trigger the next stage of production, etc.
+    E.g. adjust process parameters, trigger a new learning phase for a machine learning model, inform about delays in the process (from in-house teams to the customer), decide where and how to rework, remove defect parts from the line (controlling a robotic arm), trigger the next stage of production, etc.
     
-    - As the Agentic AI keeps track of the processes it can also trigger maintenance, like ordering replacement parts.
+    - As the Agentic AI keeps track of the processes, it can also trigger maintenance, like ordering replacement parts.
 
     - The Agentic AI can track errors and with this knowledge adjust production processes to improve them.
 
 1. **Supply chain management**: 
     - If we fully connect the warehouse, an Agentic AI can trigger restocking of components.
-   It can ask for a quote from different suppliers.
-   Decide according to price, delivery time, stock, (expected) orders, strategic diversification, etc. 
+   It can ask for a quote from different suppliers, decide according to price, delivery time, stock, (expected) orders, strategic diversification, etc. 
 
 1. **Scheduling and resource optimization**: 
     - When new orders come in, the Agentic AI can create a schedule that best utilizes the resources, from the human work force, via part availability or electricity cost to the market prices.
@@ -156,7 +155,7 @@ In our little factory @fig-appendix-agentic-factory there are a lot of possibili
 
 ::: {.callout-important}
 
-There is good reason, that a lot of the above applications for Agentic AI are not implemented.
+There is good reason that a lot of the above applications for Agentic AI are not implemented.
 If you only believe advertisement of AI companies the above list sounds great but we will see below that there are relevant concerns.
 
 :::
@@ -193,7 +192,7 @@ On the other hand, maybe in such situations the system should stop the process a
 
 Another argument is the ease of _programming_ an Agentic AI.
 As input we can use natural language (because we all know that there is never any room for misinterpretation in language) and employ LLMs (Large Language Models) to contextualize the input together with the data to find an appropriate action.
-In low-code / no-code environments everybody, especially non-programmers and domain experts, can easily create such a system and the system itself knows how to use _tools_ like connect to a database or a PROFIBUS[^1] interface of a milling machine.
+In low-code / no-code environments everybody, especially non-programmers and domain experts, can easily create such a system and the system itself knows how to use _tools_ such as connecting to a database or a PROFIBUS[^1] interface of a milling machine.
 In this context, the _Model Context Protocol_ (MCP)[^2] plays an important role to establish a standard. 
 It should also be mentioned here, already classical automation tasks where often represented in low-code / no-code systems, so also this development is not completely new.
 
@@ -228,8 +227,8 @@ We group the challenges to make them easier to understand.
 1. A lot of these systems rely on LLMs and they have multiple problems:
     a. An LLM does not deliver reproducible results which is critical for automation.
     b. LLMs might hallucinate a solution or follow a wrong path.
-    c. Language is not a precise tool to convey exact instructions, there is always room for interpretation and common phrases or hidden assumptions, that differ from domain to domain (domain experts tend to forget to mention what is obvious).
-    d. Behaviour after update of an LLM or switch to another vendor is not like a normal software update.
+    c. Language is not a precise tool to convey exact instructions, there is always room for interpretation, and common phrases or hidden assumptions, that differ from domain to domain (domain experts tend to forget to mention what is obvious).
+    d. Behaviour after an update of an LLM, or switch to another vendor, is not like a normal software update.
     e. Bias in the training data and therefore the model.
     f. Prompt injection might occur somewhere in the system.
 1. The data quality and availability needs to be at a certain standard, otherwise the system will have problems.
@@ -238,8 +237,8 @@ We group the challenges to make them easier to understand.
 ### Operational challenges  
 
 1. Integration with legacy systems.
-1. Availability to process large quantity of data and the costs connected to such systems.
-1. Maintainability of the system over years.
+1. Availability to process large quantities of data and the costs connected to such systems.
+1. Maintainability of the system over the years.
 1. Integration of innovative processes or tools from R&D that the AI does not know.
 
 ### Regulatory and ethical challenges
@@ -263,12 +262,12 @@ These systems need to be accepted and in order to achieve this goal trustworthy 
 :::: {#fig-appendices-agentic-trutworthy}
 [![](https://www.frontiersin.org/files/Articles/1467222/fdata-07-1467222-HTML/image_m/fdata-07-1467222-g001.jpg){width=4in}](https://www.frontiersin.org/journals/big-data/articles/10.3389/fdata.2024.1467222/full)
 
-An illustration of the six requirements of trustworthy AI investigated @10.3389/fdata.2024.1467222. Click the image to view the original or use the [direct link to the article](https://www.frontiersin.org/journals/big-data/articles/10.3389/fdata.2024.1467222/full) (accessed 07.11.2025). 
+An illustration of the six requirements of trustworthy AI is investigated in @10.3389/fdata.2024.1467222. Click the image to view the original or use the [direct link to the article](https://www.frontiersin.org/journals/big-data/articles/10.3389/fdata.2024.1467222/full) (accessed 07.11.2025). 
 ::::
 
 :::
 
-## Popular tools
+## Popular tools (Winter 2025)
 
 This field is developing rapidly and a list of popular tools is going to be outdated as soon as it is.
 Anyway, we should mention some tools:
@@ -299,6 +298,6 @@ The challenges from technical limitations to ethical concerns are not solved and
 ## Current research
 
 Of course research is happening in this field.
-For example [Otera](https://www.otera.ai/) (previously DeepOpinion) developed an approach to create trustworthy agents with the help of first-order logic and a solver to verify e.g. insurance claims, see @peer2025ataneurosymbolicapproachimplement or find [slides](https://engineeringkiosk.dev/meetup/alps/slides/2511-david-ata.pdf) to a talk of David Peer at the _Engineering Kiosk Alps Meetup Innsbruck_ from 6th November 2025.
+For example [Otera](https://www.otera.ai/) (previously DeepOpinion) developed an approach to create trustworthy agents with the help of first-order logic and a solver to verify, e.g., insurance claims, see @peer2025ataneurosymbolicapproachimplement or find [slides](https://engineeringkiosk.dev/meetup/alps/slides/2511-david-ata.pdf) to a talk of David Peer at the _Engineering Kiosk Alps Meetup Innsbruck_ from 6th November 2025.
 
 :::

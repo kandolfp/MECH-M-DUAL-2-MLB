@@ -7,7 +7,7 @@ We use all of the information provided in the according part of this lecture, se
 This section is based on a similar introduction by Gregor Ehrensperger that he generously provided the authors as a basis.
 :::
 
-A jupyter notebook is available for a convenient implementation of the following parts. 
+A Jupyter notebook is available for a convenient implementation of the following parts. 
 Download it [here](../_assets/appendices/nn_from_scratch.ipynb).
 
 In the following codeblock we find our dependencies and we also fix the random number generation such that we fix the seed and therefore get reproducible results.
@@ -469,10 +469,10 @@ In the example we simplified but we can extend this to the general case with wei
 Furthermore, the combination of the derivatives is an iterative process and we can _reuse_ intermediate results for different parts, giving us some kind of _recursion_.
 Now, if we combine all theses findings we can compute the backpropagation as follows.
 
-First, we define some helper variables with _intermedia_ results.
+First, we define some helper variables with _intermediate_ results.
 The symbol $\odot$ denotes the point wise multiplication of matrices/vectors.
 Furthermore, we will train our network with multiple training values at the same time. 
-To facilitate this we need to dived the difference from our output and the labels by the negative number of samples $N$.
+To facilitate this, we need to dived the difference from our output and the labels by the negative number of samples, $N$.
 $$
 \begin{aligned}
 \Delta^{(3)} &= \frac{Y - x^{(3)}}{-N} \\
@@ -613,15 +613,15 @@ print("Looks like backward propagation is working :)")
 
 ## Update parameters
 
-Now that we have computed the differential of each of the parameters we can use them to update the results.
+Now that we have computed the differential of each of the parameters, we can use them to update the results.
 For this we recall the definition of the gradient descent method[^1] but we slightly adapt the notation to our purposes.
 
 We express this algorithm in terms of the iterations $\Theta_k$ for guesses of the minimum with the updates
 $$
 \Theta_{k+1} = \Theta_{k} - \delta\, \partial f(\Theta_{k}) 
 $$
-where the parameter $\delta$ defines how far along the gradient descent curve we move and so far we called this _learning rate_.
-Here the $\Theta$ corresponds to the different variables so in our case this applies to each individual, i.e. $A_i$ and $b_i$.
+where the parameter $\delta$ defines how far along the gradient descent curve we move, which we have so far called the _learning rate_.
+Here, $\Theta$ corresponds to the different variables, so in our case this applies to each individual, i.e., $A_i$ and $b_i$.
 
 ::: {.callout-caution appearance="simple" collapse="false" icon=false}
 :::: {#exr-appendices-nnfs-self-parameterupdate}
@@ -772,7 +772,7 @@ np.random.seed(42) # Make sure to have a reproducible result
 weights = initialize_weights(2, 8, 5, 1)
 p = predict(weights, X, f1, f2, f3)
 np.testing.assert_allclose(np.sum(p), 645)
-print("Looks like your implementation is working, congratulation!")
+print("Looks like your implementation is working, congratulations!")
 ```
 
 :::::
@@ -826,7 +826,7 @@ weights = initialize_weights(2, 8, 5, 1)
 outputLayer, cache = forward_propagation(X, weights, f1, f2, f3)
 result = compute_loss(outputLayer, Y)
 np.testing.assert_allclose(result, 0.7360633961687931)
-print("Looks like your implementation is working, congratulation!")
+print("Looks like your implementation is working, congratulations!")
 ```
 
 :::::
@@ -932,7 +932,7 @@ reference = np.array([0.28620967900953265, -0.13481751949641932,
                      -0.4163217207836666, 0.014763485056667431,
                      -0.1323179529728214, 0.33857324167613034])
 np.testing.assert_allclose(result, reference)
-print("Looks like your implementation is working, congratulation!")
+print("Looks like your implementation is working, congratulations!")
 ```
 
 :::::
