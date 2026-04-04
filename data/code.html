@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.9.36">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>5&nbsp; Code persistence – Machine Learning in Industrial Image Processing</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -59,7 +62,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -93,14 +95,14 @@ div.csl-indent {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-f418161beb48e0141c760e455f12af2c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fcef3a217c2dc59de9b524d1d56553e6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-28552b72345800c07c123eae77d1b5c4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-fcef3a217c2dc59de9b524d1d56553e6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dcd7854cf360aa6b65a1b8a4f628da3c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-dd7b356a231c5fc6e5c7ed64db24e82d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-dcd7854cf360aa6b65a1b8a4f628da3c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -560,7 +562,7 @@ div.csl-indent {
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Reference repository
+<span class="screen-reader-only">Important</span>Reference repository
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -573,7 +575,7 @@ Reference repository
 </div>
 </div>
 <p>After the redesign, we get a structure looking something like the following, see <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/22788a608b76d0b3180728c36c0351cc531b1def"><code>22788a6</code></a> for reference and file content:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> tree</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> tree</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">.</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> pdm.lock</span>
@@ -586,25 +588,25 @@ Reference repository
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> myio.py</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        <span class="ex">└──</span> train.py</span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="ex">3</span> directories, 7 files</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="ex">3</span> directories, 7 files</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>We can train the model by calling <code>train.py</code> (in this case with a logger<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> on <code>DEBUG</code> enabled).</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run src/MECH-M-DUAL-2-MLB-DATA/train.py </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run src/MECH-M-DUAL-2-MLB-DATA/train.py </span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">DEBUG:root:</span> Loaded the data with Split of 60 to 20 per category.</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">DEBUG:root:</span> Create classifier</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">DEBUG:root:</span> Train classifier</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ex">DEBUG:root:</span> Score classifier</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="ex">INFO:root:</span> We have a hard voting score of 0.8</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="ex">DEBUG:root:</span> Save clf to skops file models/model.skops</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="ex">DEBUG:root:</span> Save clf to skops file models/model.skops</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Of course we can also load the model again and do inference with it by calling <code>inference.py</code></p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run src/MECH-M-DUAL-2-MLB-DATA/inference.py </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run src/MECH-M-DUAL-2-MLB-DATA/inference.py </span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">DEBUG:root:</span> Loaded the data with Split of 60 to 20 per category.</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">DEBUG:root:</span> Load classifier</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">DEBUG:root:</span> Load clf from skops file models/model.skops</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ex">WARNING:root:</span> Unknown type at 0 is sklearn.utils._bunch.Bunch.</span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="ex">DEBUG:root:</span> Score classifier</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="ex">INFO:root:</span> We have a hard voting score of 0.8</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="ex">INFO:root:</span> We have a hard voting score of 0.8</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Now we can start connecting the model and the code. Our model was created at commit <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/22788a608b76d0b3180728c36c0351cc531b1def"><code>22788a6</code></a> and stored in the directory <code>model</code>.</p>
 <p>Now there are several things we can do to make sure this is reflected within our little project.</p>
 <ol type="1">
@@ -632,7 +634,7 @@ Reference repository
 <h2 data-number="5.1" class="anchored" data-anchor-id="externalize-the-parametersconfiguration"><span class="header-section-number">5.1</span> Externalize the parameters/configuration</h2>
 <p>First thing we do is we externalize the configuration to make sure this is no longer part of our main code source. This means we can distinguish between actual changes to the structure, source code, as well as a commit for a <em>simple experiment</em>.</p>
 <p><code>YAML</code> is the format to go for these aspects, see <a href="https://en.wikipedia.org/wiki/YAML">Wikipedia</a>. It is a human readable data serialization language. One possible interpretation of the configuration (among many others) can be seen in the next code block.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">PCA</span><span class="kw">:</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">PCA</span><span class="kw">:</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> sklearn.decomposition.PCA</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">init_args</span><span class="kw">:</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">n_components</span><span class="kw">:</span><span class="at"> </span><span class="dv">41</span></span>
@@ -663,10 +665,10 @@ Reference repository
 <span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">init_args</span><span class="kw">:</span></span>
 <span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">kernel</span><span class="kw">:</span><span class="at"> linear</span></span>
 <span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">probability</span><span class="kw">:</span><span class="at"> </span><span class="ch">True</span></span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">random_state</span><span class="kw">:</span><span class="at"> </span><span class="dv">6020</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">random_state</span><span class="kw">:</span><span class="at"> </span><span class="dv">6020</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>We can use the Python package <a href="https://omegaconf.readthedocs.io/en/2.3_branch/"><code>omegaconf</code></a> to load and use it.</p>
 <p>One feature of the <code>OmegaConf</code> class is that we can use <em>unpacking</em><a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> and therefore write a line like:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>PCA(<span class="op">**</span>params[<span class="st">"PCA"</span>].init_args)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>PCA(<span class="op">**</span>params[<span class="st">"PCA"</span>].init_args)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>dramatically simplifying our code. Have a look at commit <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/9f7dead95663d9cef7a7cc21ec8133b03acb650c">9f7dead</a> to see this implemented and in action. As our default parameter template we include the above parameters as <code>params.yaml</code> in the main directory of our project.</p>
 <div class="callout callout-style-simple callout-caution no-icon">
 <div class="callout-body d-flex">
@@ -676,10 +678,10 @@ Reference repository
 <div class="callout-body-container">
 <div id="exr-data-code-params" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise 5.2 (Externalize params)</strong></span> We can generate the entire model from the params, even the different classes. By using the function <code>from importlib import import_module</code> we can dynamically load a class with the following snippet:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>module <span class="op">=</span> import_module(params[<span class="st">"PCA"</span>].<span class="bu">type</span>.rsplit(<span class="st">"."</span>, <span class="dv">1</span>)[<span class="dv">0</span>])</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>module <span class="op">=</span> import_module(params[<span class="st">"PCA"</span>].<span class="bu">type</span>.rsplit(<span class="st">"."</span>, <span class="dv">1</span>)[<span class="dv">0</span>])</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>PCA <span class="op">=</span> <span class="bu">getattr</span>(module, params[<span class="st">"PCA"</span>].<span class="bu">type</span>.rsplit(<span class="st">"."</span>, <span class="dv">1</span>)[<span class="op">-</span><span class="dv">1</span>])(</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">**</span>params[<span class="st">"PCA"</span>].init_args</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Use this to make the model creation more and more dynamic.</p>
 <ol type="1">
 <li>Replace the array <code>estimators=[]</code> by dynamically loading the different estimators.</li>
@@ -718,7 +720,7 @@ Important
 </div>
 </div>
 <p>One tool for data version control is <a href="https://dvc.org/doc"><code>dvc</code></a>. As it is written in Python, we can even add and track the version via our package manager <code>pdm add dvc</code>. Once installed we can initialize it in our project,</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc init</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc init</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Initialized</span> DVC repository.</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -736,10 +738,10 @@ Important
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="st">------------</span></span>
 <span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="st">- Check out the documentation: &lt;https://dvc.org/doc&gt;</span></span>
 <span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="st">- Get help and share ideas: &lt;https://dvc.org/chat&gt;</span></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="st">- Star us on GitHub: &lt;https://github.com/iterative/dvc&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="st">- Star us on GitHub: &lt;https://github.com/iterative/dvc&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>To make the changes permanent we commit the directory <code>.dvc</code> (there is an <code>.gitignore</code> in <code>.dvc</code> that will make sure to not include e.g.&nbsp;<code>.dvc/cache</code>) to <code>git</code> and therefore our project now runs with <code>dvc</code>, see commit <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/df38086b756ed27e70fa2573b8d01c51ea69086c">df38086</a> for reference.</p>
 <p>To add the <code>data</code> directory simply run</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc add data</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc add data</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ex">100%</span> Adding...<span class="kw">|</span><span class="ex">███████████████████████████████████████</span><span class="kw">|</span><span class="ex">1/1</span> [00:00,  5.67file/s]</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -749,7 +751,7 @@ Important
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="ex">To</span> enable auto staging, run:</span>
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        <span class="ex">dvc</span> config core.autostage true</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        <span class="ex">dvc</span> config core.autostage true</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Again, to make it permanent in the project we need to add <code>data.dvc</code> to <code>git</code> (as suggested).</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -765,14 +767,14 @@ Note
 </div>
 </div>
 <p>If we take a look into <code>data.dvc</code> we can see that it tracks the files via md5 SHAs and includes some additional useful information .</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> cat data.dvc</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> cat data.dvc</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="ex">outs:</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="ex">-</span> md5: 5987e80830fc2caf6d475da3deca1dfe.dir</span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="ex">size:</span> 111165</span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="ex">nfiles:</span> 2</span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="ex">hash:</span> md5</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="ex">path:</span> data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="ex">path:</span> data</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>As mentioned, <code>dvc</code> works similar to <code>git</code> so eventually we will need to include a remote that we <em>push</em> data to. For now we just work locally, similar as we could do for a <code>git</code> repository.</p>
 <p>Other than that, we can now change the files use <code>dvc add data</code> and as soon as we commit the corresponding change in the <code>data.dvc</code> to <code>git</code> we know exactly what data is used and we can also restore it.</p>
 <p>To do these operations <code>dvc</code> uses a cache (default location is in <code>.dvc/cache</code>) and the files are links to the cache.</p>
@@ -811,24 +813,24 @@ Note
 <h2 data-number="5.3" class="anchored" data-anchor-id="dvclive-for-experiment-management"><span class="header-section-number">5.3</span> <code>dvclive</code> for experiment management</h2>
 <p><code>dvclive</code> works best with the big ML Frameworks like <code>keras</code> or <code>pytorch</code> but we can also utilize it for our example project. The introduction to the experiment management from the <code>dvc</code> perspective can be found in the <a href="https://dvc.org/doc/start/experiments">docs</a>.</p>
 <p>To show some of the <code>dvclive</code> features we reworked the code, see commit <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/519a8544c82667cec5356f92ddde77993f0a0e76">519a85</a> for the changes (including <code>pdm add dvclive</code>). Now, when we run our job once more it will create the <code>dvclive</code> directory with a couple of subdirectories containing our metrics, looking like the following output.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run src/MECH-M-DUAL-2-MLB-DATA/train.py</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run src/MECH-M-DUAL-2-MLB-DATA/train.py</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="ex">INFO:root:</span> We have a hard voting train-score of 1.0</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="ex">INFO:root:</span> We have a hard voting test-score of 0.8</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="ex">100%</span> Adding...<span class="kw">|</span><span class="ex">███████████████████████████████████████</span><span class="kw">|</span><span class="ex">1/1</span> [00:00,  7.64file/s]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="ex">100%</span> Adding...<span class="kw">|</span><span class="ex">███████████████████████████████████████</span><span class="kw">|</span><span class="ex">1/1</span> [00:00,  7.64file/s]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="callout callout-style-simple callout-none no-icon callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Output with logger on DEBUG.
+<span class="screen-reader-only">None</span>Output with logger on DEBUG.
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run src/MECH-M-DUAL-2-MLB-DATA/train.py</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run src/MECH-M-DUAL-2-MLB-DATA/train.py</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ex">DEBUG:root:</span> Loaded the data with Split of 60 to 20 per category.</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="ex">DEBUG:root:</span> Load config</span>
@@ -866,13 +868,13 @@ Output with logger on DEBUG.
 <span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a><span class="ex">Collecting</span> files and computing hashes in data        <span class="kw">|</span><span class="ex">0.00</span> [00:00,     <span class="pp">?</span>file/s]</span>
 <span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a><span class="ex">DEBUG:fsspec.memoryfs:</span> open file /.nJTqHs5Fi91gZyK82VYbvA.tmp</span>
 <span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a><span class="ex">DEBUG:fsspec.memoryfs:</span> info: memory://.nJTqHs5Fi91gZyK82VYbvA.tmp</span>
-<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a><span class="ex">DEBUG:scmrepo.git:</span> Restore HEAD to <span class="st">'main'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a><span class="ex">DEBUG:scmrepo.git:</span> Restore HEAD to <span class="st">'main'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Here we can also see how <code>dvc</code> interacts with <code>git</code> to store the files.</p>
 </div>
 </div>
 </div>
 <p>And the resulting files are stored in <code>dvclive</code>.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> tree dvclive/</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> tree dvclive/</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="ex">dvclive/</span></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> artifacts</span>
@@ -886,9 +888,9 @@ Output with logger on DEBUG.
 <span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="ex">└──</span> sklearn</span>
 <span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>        <span class="ex">└──</span> confusion_matrix.json</span>
 <span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="ex">5</span> directories, 6 files</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="ex">5</span> directories, 6 files</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The experiment is automatically added. We can check this with <code>dvc exp show</code></p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc exp show</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc exp show</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a> <span class="ex">────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span> </span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Experiment</span>                 Created        trainscore   testscore   PCA/n_components   LinearDiscriminantAnalysis/solver   RandomForestClassifier/n_estimators   RandomForestClassifier/max_leaf_nodes   RandomForestClassifier/random_state   SVC/kernel   SVC/probability   SVC/random_state   PCA.type                    PCA.init_args.n_components   VotingClassifier.type               VotingClassifier.init_args.flatten_transform   VotingClassifier.estimators                                       LinearDiscriminantAnalysis.type                            LinearDiscriminantAnalysis.init_args.solver   RandomForestClassifier.type               RandomForestClassifier.init_args.n_estimators   RandomForestClassifier.init_args.max_leaf_nodes   RandomForestClassifier.init_args.random_state   SVC.type          SVC.init_args.kernel   SVC.init_args.probability   SVC.init_args.random_state  </span>
@@ -896,7 +898,7 @@ Output with logger on DEBUG.
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="ex">workspace</span>                  <span class="at">-</span>                       1         0.8   41                 svd                                 500                                   2                                       6020                                  linear       True              6020               sklearn.decomposition.PCA   41                           sklearn.ensemble.VotingClassifier   False                                          [<span class="st">'LinearDiscriminantAnalysis'</span>, <span class="st">'RandomForestClassifier'</span>, <span class="st">'SVC'</span>]   sklearn.discriminant_analysis.LinearDiscriminantAnalysis   svd                                           sklearn.ensemble.RandomForestClassifier   500                                             2                                                 6020                                            sklearn.svm.SVC   linear                 True                        6020                        </span>
 <span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="ex">main</span>                       Mar 19, 2025            <span class="at">-</span>           <span class="at">-</span>   <span class="at">-</span>                  <span class="at">-</span>                                   <span class="at">-</span>                                     <span class="at">-</span>                                       <span class="at">-</span>                                     <span class="at">-</span>            <span class="at">-</span>                 <span class="at">-</span>                  sklearn.decomposition.PCA   41                           sklearn.ensemble.VotingClassifier   False                                          [<span class="st">'LinearDiscriminantAnalysis'</span>, <span class="st">'RandomForestClassifier'</span>, <span class="st">'SVC'</span>]   sklearn.discriminant_analysis.LinearDiscriminantAnalysis   svd                                           sklearn.ensemble.RandomForestClassifier   500                                             2                                                 6020                                            sklearn.svm.SVC   linear                 True                        6020                        </span>
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="ex">└──</span> 9e83c73 <span class="pp">[</span><span class="ss">sural</span><span class="pp">-</span><span class="ss">cyma</span><span class="pp">]</span>   10:03 AM                1         0.8   41                 svd                                 500                                   2                                       6020                                  linear       True              6020               sklearn.decomposition.PCA   41                           sklearn.ensemble.VotingClassifier   False                                          [<span class="st">'LinearDiscriminantAnalysis'</span>, <span class="st">'RandomForestClassifier'</span>, <span class="st">'SVC'</span>]   sklearn.discriminant_analysis.LinearDiscriminantAnalysis   svd                                           sklearn.ensemble.RandomForestClassifier   500                                             2                                                 6020                                            sklearn.svm.SVC   linear                 True                        6020                        </span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a> <span class="ex">────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a> <span class="ex">────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -927,7 +929,7 @@ Note
 </div>
 </div>
 <p><code>dvclive</code> relies on <code>git</code> to do its magic for files and the <code>dvc</code> cache for large files. How this works is that a reference inside <code>git</code> is created for each experiment and stores the changes there. We can see this in the above logger output or via git.</p>
-<div class="sourceCode" id="annotated-cell-11"><pre class="sourceCode bash code-annotation-code code-with-copy code-annotated"><code class="sourceCode bash"><a class="code-annotation-anchor" data-target-cell="annotated-cell-11" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-11-1" class="code-annotation-target"><a href="#annotated-cell-11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> git lg</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-11"><pre class="sourceCode bash code-annotation-code code-with-copy code-annotated"><code class="sourceCode bash"><a class="code-annotation-anchor" data-target-cell="annotated-cell-11" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-11-1" class="code-annotation-target"><a href="#annotated-cell-11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> git lg</span>
 <span id="annotated-cell-11-2"><a href="#annotated-cell-11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-11-3"><a href="#annotated-cell-11-3" aria-hidden="true" tabindex="-1"></a><span class="kw">|</span> <span class="ex">*</span> 1f2bee5 <span class="at">-</span> <span class="er">(</span><span class="ex">29</span> hours ago<span class="kw">)</span> <span class="ex">dvc:</span> commit experiment 44136fa35 <span class="at">-</span> Authors</span>
 <span id="annotated-cell-11-4"><a href="#annotated-cell-11-4" aria-hidden="true" tabindex="-1"></a><span class="kw">|</span><span class="ex">/</span>  </span>
@@ -936,7 +938,7 @@ Note
 <span id="annotated-cell-11-7"><a href="#annotated-cell-11-7" aria-hidden="true" tabindex="-1"></a><span class="ex">*</span> df38086 <span class="at">-</span> <span class="er">(</span><span class="ex">2</span> days ago<span class="kw">)</span> <span class="ex">feat:</span> init dvc <span class="at">-</span> Authors</span>
 <span id="annotated-cell-11-8"><a href="#annotated-cell-11-8" aria-hidden="true" tabindex="-1"></a><span class="ex">*</span> 073fb93 <span class="at">-</span> <span class="er">(</span><span class="ex">2</span> days ago<span class="kw">)</span> <span class="ex">fixup!</span> feat: externalize params via omegaconfig <span class="at">-</span> Authors</span>
 <span id="annotated-cell-11-9"><a href="#annotated-cell-11-9" aria-hidden="true" tabindex="-1"></a><span class="ex">*</span> 9f7dead <span class="at">-</span> <span class="er">(</span><span class="ex">2</span> days ago<span class="kw">)</span> <span class="ex">feat:</span> externalize params via omegaconfig <span class="at">-</span> Authors</span>
-<span id="annotated-cell-11-10"><a href="#annotated-cell-11-10" aria-hidden="true" tabindex="-1"></a><span class="ex">*</span> 22788a6 <span class="at">-</span> <span class="er">(</span><span class="ex">2</span> days ago<span class="kw">)</span> <span class="ex">init:</span> project <span class="at">-</span> Authors</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="annotated-cell-11-10"><a href="#annotated-cell-11-10" aria-hidden="true" tabindex="-1"></a><span class="ex">*</span> 22788a6 <span class="at">-</span> <span class="er">(</span><span class="ex">2</span> days ago<span class="kw">)</span> <span class="ex">init:</span> project <span class="at">-</span> Authors</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-11" data-target-annotation="1">1</dt>
 <dd>
@@ -946,13 +948,13 @@ Note
 <p>Furthermore, we did not commit our changes to git (bad practice!!!) but they are stored alongside the experiment, so no information is lost (we can find them in <code>.git/refs</code> , see below.)</p>
 <p>To clean up, we commit our changes as we know they work and then rerun the code for a new experiment, see <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/519a8544c82667cec5356f92ddde77993f0a0e76">519a854</a>. We can remove the previous version with <code>dvc exp rm &lt;name&gt;</code>.</p>
 <p>By default, this is not moved to the <code>git</code> remote, to do so we need to run <code>dvc exp push &lt;git remote&gt;</code>.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc exp push origin</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc exp push origin</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Collecting</span>                                           <span class="kw">|</span><span class="ex">0.00</span> [00:00,    <span class="pp">?</span>entry/s]</span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Pushing</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Experiment</span> sural-cyma is up to date on Git remote <span class="st">'origin'</span>.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Experiment</span> sural-cyma is up to date on Git remote <span class="st">'origin'</span>.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>We can also see this in the <code>git reflog</code> (compare above output).</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> git reflog</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> git reflog</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="ex">519a854</span> <span class="er">(</span><span class="ex">HEAD</span> <span class="at">-</span><span class="op">&gt;</span> main<span class="kw">)</span> <span class="ex">HEAD@{0}:</span> dvc: Restore HEAD to <span class="st">'main'</span></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="ex">1f2bee5</span> HEAD@{1}: commit: dvc: commit experiment 44136fa355b3678</span>
@@ -969,13 +971,13 @@ Note
 <span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="ex">4afc6af</span> HEAD@{12}: commit: dvc: commit experiment 44136fa355b3678a</span>
 <span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="ex">f264314</span> HEAD@{13}: checkout: moving from main to f264314e5442315</span>
 <span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="ex">f264314</span> HEAD@{14}: dvc: Restore HEAD to <span class="st">'main'</span></span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="ex">f264314</span> HEAD@{15}: checkout: moving from main to f264314e5442315</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="ex">f264314</span> HEAD@{15}: checkout: moving from main to f264314e5442315</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>In the file system we can look inside (via <code>ls</code> on Linux).</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> ls .git/refs/exps/51/9a8544c82667cec5356f92ddde77993f0a0e76/</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> ls .git/refs/exps/51/9a8544c82667cec5356f92ddde77993f0a0e76/</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="ex">sural-cyma</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="ex">sural-cyma</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>We can also see, that a new file has appeared in our root directory, <code>dvc.yaml</code> with the following content.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">params</span><span class="kw">:</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">params</span><span class="kw">:</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> dvclive/params.yaml</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">metrics</span><span class="kw">:</span></span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> dvclive/metrics.json</span></span>
@@ -992,7 +994,7 @@ Note
 <span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="fu">artifacts</span><span class="kw">:</span></span>
 <span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">model</span><span class="kw">:</span></span>
 <span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">path</span><span class="kw">:</span><span class="at"> dvclive/artifacts/model.skops</span></span>
-<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">type</span><span class="kw">:</span><span class="at"> model</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">type</span><span class="kw">:</span><span class="at"> model</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The content reflects our call and integration with <code>dvclive</code> from the <code>dvc</code> perspective and is called a <em>stage</em>. Furthermore, the file <code>dvclive/artifacts/model.skops.dvc</code> keeps track of the model itself.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -1011,7 +1013,7 @@ Important
 <section id="dvc-pipeline" class="level2" data-number="5.4">
 <h2 data-number="5.4" class="anchored" data-anchor-id="dvc-pipeline"><span class="header-section-number">5.4</span> <code>dvc</code> pipeline</h2>
 <p>The pipeline features we are after are part of the <code>dvc stage</code> command and we add our training call in the following fashion.</p>
-<div class="sourceCode" id="annotated-cell-16"><pre class="sourceCode bash code-annotation-code code-with-copy code-annotated"><code class="sourceCode bash"><a class="code-annotation-anchor" data-target-cell="annotated-cell-16" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-16-1" class="code-annotation-target"><a href="#annotated-cell-16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc stage add <span class="at">--name</span> train <span class="dt">\</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-16"><pre class="sourceCode bash code-annotation-code code-with-copy code-annotated"><code class="sourceCode bash"><a class="code-annotation-anchor" data-target-cell="annotated-cell-16" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-16-1" class="code-annotation-target"><a href="#annotated-cell-16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc stage add <span class="at">--name</span> train <span class="dt">\</span></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-16" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-16-2" class="code-annotation-target"><a href="#annotated-cell-16-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">--deps</span> data <span class="at">--deps</span> src/MECH-M-DUAL-2-MLB-DATA/ <span class="at">--deps</span> params.yaml <span class="dt">\</span></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-16" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-16-3" class="code-annotation-target"><a href="#annotated-cell-16-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">--outs</span> dvclive <span class="dt">\</span></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-16" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-16-4" class="code-annotation-target"><a href="#annotated-cell-16-4" aria-hidden="true" tabindex="-1"></a>          pdm run src/MECH-M-DUAL-2-MLB-DATA/train.py</span>
@@ -1020,7 +1022,7 @@ Important
 <span id="annotated-cell-16-7"><a href="#annotated-cell-16-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-16-8"><a href="#annotated-cell-16-8" aria-hidden="true" tabindex="-1"></a><span class="ex">To</span> track the changes with git, run:</span>
 <span id="annotated-cell-16-9"><a href="#annotated-cell-16-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-16-10"><a href="#annotated-cell-16-10" aria-hidden="true" tabindex="-1"></a>        <span class="fu">git</span> add dvc.yaml dvclive/artifacts/.gitignore</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="annotated-cell-16-10"><a href="#annotated-cell-16-10" aria-hidden="true" tabindex="-1"></a>        <span class="fu">git</span> add dvc.yaml dvclive/artifacts/.gitignore</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-16" data-target-annotation="1">1</dt>
 <dd>
@@ -1040,9 +1042,9 @@ Important
 </dd>
 </dl>
 <p>Before we follow the instructions for the <code>git</code> commit, we make a <code>dvc commit</code>.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc commit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc commit</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This creates the <code>dvc.lock</code> file associated with the stage. It keeps track of the dependencies (see above explanations):</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">schema</span><span class="kw">:</span><span class="at"> </span><span class="st">'2.0'</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">schema</span><span class="kw">:</span><span class="at"> </span><span class="st">'2.0'</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">stages</span><span class="kw">:</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">train</span><span class="kw">:</span></span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">cmd</span><span class="kw">:</span><span class="at"> pdm run src/MECH-M-DUAL-2-MLB-DATA/train.py</span></span>
@@ -1066,10 +1068,10 @@ Important
 <span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">hash</span><span class="kw">:</span><span class="at"> md5</span></span>
 <span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">md5</span><span class="kw">:</span><span class="at"> c2bbfd7cb23c3aa8700bc24287b56fee.dir</span></span>
 <span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">size</span><span class="kw">:</span><span class="at"> </span><span class="dv">5569537</span></span>
-<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">nfiles</span><span class="kw">:</span><span class="at"> </span><span class="dv">6</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">nfiles</span><span class="kw">:</span><span class="at"> </span><span class="dv">6</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Have a look at <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/1282a7e926e17d4a5ac2f02a30764bfd1026872f">1282a7e9</a> to see how this is reflected in our reference project.</p>
 <p>Now we can put it to action and execute (all) stages and therefore create a new experiment.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc exp run</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc exp run</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Reproducing</span> experiment <span class="st">'mesic-beep'</span>  </span>
 <span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Building</span> workspace index                            <span class="kw">|</span><span class="ex">16.0</span> [00:00, 1.23kentry/s]</span>
@@ -1079,9 +1081,9 @@ Important
 <span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="st">Stage '</span>train<span class="st">' didn'</span>t change, skipping</span>
 <span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>                                 </span>
 <span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="ex">Ran</span> experiment<span class="er">(</span><span class="ex">s</span><span class="kw">)</span><span class="bu">:</span> mesic-beep</span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="ex">Experiment</span> results have been applied to your workspace.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="ex">Experiment</span> results have been applied to your workspace.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>As we did no change anything in our configuration (see dependencies above), <code>dvc</code> is smart enough to basically just copy the experiment. But we can also change the parameters, either the file directly or interactively as seen in the next command block.</p>
-<div class="sourceCode" id="annotated-cell-20"><pre class="sourceCode bash code-annotation-code code-with-copy code-annotated"><code class="sourceCode bash"><span id="annotated-cell-20-1"><a href="#annotated-cell-20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc exp run <span class="at">--set-param</span> <span class="st">'PCA.init_args.n_components=5'</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-20"><pre class="sourceCode bash code-annotation-code code-with-copy code-annotated"><code class="sourceCode bash"><span id="annotated-cell-20-1"><a href="#annotated-cell-20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc exp run <span class="at">--set-param</span> <span class="st">'PCA.init_args.n_components=5'</span></span>
 <span id="annotated-cell-20-2"><a href="#annotated-cell-20-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-20-3"><a href="#annotated-cell-20-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Reproducing</span> experiment <span class="st">'sappy-corm'</span></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-20" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-20-4" class="code-annotation-target"><a href="#annotated-cell-20-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Building</span> workspace index                             <span class="kw">|</span><span class="ex">4.00</span> [00:00,  378entry/s]</span>
@@ -1101,7 +1103,7 @@ Important
 <span id="annotated-cell-20-18"><a href="#annotated-cell-20-18" aria-hidden="true" tabindex="-1"></a><span class="st">Updating lock file '</span>dvc.lock<span class="st">'</span></span>
 <span id="annotated-cell-20-19"><a href="#annotated-cell-20-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-20-20"><a href="#annotated-cell-20-20" aria-hidden="true" tabindex="-1"></a><span class="st">Ran experiment(s): sappy-corm</span></span>
-<span id="annotated-cell-20-21"><a href="#annotated-cell-20-21" aria-hidden="true" tabindex="-1"></a><span class="st">Experiment results have been applied to your workspace.</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="annotated-cell-20-21"><a href="#annotated-cell-20-21" aria-hidden="true" tabindex="-1"></a><span class="st">Experiment results have been applied to your workspace.</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-20" data-target-annotation="1">1</dt>
 <dd>
@@ -1113,7 +1115,7 @@ Important
 </dd>
 </dl>
 <p>The result can be seen in the experiment list, of course under a new commit SHA.</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a> <span class="ex">─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a> <span class="ex">─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span> </span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Experiment</span>                 Created        trainscore   testscore   PCA/n_components   LinearDiscriminantAnalysis/solver   RandomForestClassifier/n_estimators   RandomForestClassifier/max_leaf_nodes   RandomForestClassifier/random_state   SVC/kernel   SVC/probability   SVC/random_state   PCA.type                    PCA.init_args.n_components   VotingClassifier.type               VotingClassifier.init_args.flatten_transform   VotingClassifier.estimators                                       LinearDiscriminantAnalysis.type                            LinearDiscriminantAnalysis.init_args.solver   RandomForestClassifier.type               RandomForestClassifier.init_args.n_estimators   RandomForestClassifier.init_args.max_leaf_nodes   RandomForestClassifier.init_args.random_state   SVC.type          SVC.init_args.kernel   SVC.init_args.probability   SVC.init_args.random_state   data                                   params.yaml                        src/MECH-M-DUAL-2-MLB-DATA            </span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a> <span class="ex">─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span> </span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="ex">workspace</span>                  <span class="at">-</span>                 0.99167         0.6   5                  svd                                 500                                   2                                       6020                                  linear       True              6020               sklearn.decomposition.PCA   5                            sklearn.ensemble.VotingClassifier   False                                          [<span class="st">'LinearDiscriminantAnalysis'</span>, <span class="st">'RandomForestClassifier'</span>, <span class="st">'SVC'</span>]   sklearn.discriminant_analysis.LinearDiscriminantAnalysis   svd                                           sklearn.ensemble.RandomForestClassifier   500                                             2                                                 6020                                            sklearn.svm.SVC   linear                 True                        6020                         5987e80830fc2caf6d475da3deca1dfe.dir   0ad678c7c338214916d88a106b4fe90a   c93360b2cf461f6b2f8e9656882331a7.dir  </span>
@@ -1127,20 +1129,20 @@ Important
 <span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  <span class="ex">073fb93</span>                    Mar 19, 2025            <span class="at">-</span>           <span class="at">-</span>   <span class="at">-</span>                  <span class="at">-</span>                                   <span class="at">-</span>                                     <span class="at">-</span>                                       <span class="at">-</span>                                     <span class="at">-</span>            <span class="at">-</span>                 <span class="at">-</span>                  sklearn.decomposition.PCA   41                           sklearn.ensemble.VotingClassifier   False                                          [<span class="st">'LinearDiscriminantAnalysis'</span>, <span class="st">'RandomForestClassifier'</span>, <span class="st">'SVC'</span>]   sklearn.discriminant_analysis.LinearDiscriminantAnalysis   svd                                           sklearn.ensemble.RandomForestClassifier   500                                             2                                                 6020                                            sklearn.svm.SVC   linear                 True                        6020                         <span class="at">-</span>                                      <span class="at">-</span>                                  <span class="at">-</span>                                     </span>
 <span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  <span class="ex">9f7dead</span>                    Mar 19, 2025            <span class="at">-</span>           <span class="at">-</span>   <span class="at">-</span>                  <span class="at">-</span>                                   <span class="at">-</span>                                     <span class="at">-</span>                                       <span class="at">-</span>                                     <span class="at">-</span>            <span class="at">-</span>                 <span class="at">-</span>                  <span class="at">-</span>                           <span class="at">-</span>                            <span class="at">-</span>                                   <span class="at">-</span>                                              <span class="at">-</span>                                                                 <span class="at">-</span>                                                          <span class="at">-</span>                                             <span class="at">-</span>                                         <span class="at">-</span>                                               <span class="at">-</span>                                                 <span class="at">-</span>                                               <span class="at">-</span>                 <span class="at">-</span>                      <span class="at">-</span>                           <span class="at">-</span>                            <span class="at">-</span>                                      <span class="at">-</span>                                  <span class="at">-</span>                                     </span>
 <span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>  <span class="ex">22788a6</span>                    Mar 19, 2025            <span class="at">-</span>           <span class="at">-</span>   <span class="at">-</span>                  <span class="at">-</span>                                   <span class="at">-</span>                                     <span class="at">-</span>                                       <span class="at">-</span>                                     <span class="at">-</span>            <span class="at">-</span>                 <span class="at">-</span>                  <span class="at">-</span>                           <span class="at">-</span>                            <span class="at">-</span>                                   <span class="at">-</span>                                              <span class="at">-</span>                                                                 <span class="at">-</span>                                                          <span class="at">-</span>                                             <span class="at">-</span>                                         <span class="at">-</span>                                               <span class="at">-</span>                                                 <span class="at">-</span>                                               <span class="at">-</span>                 <span class="at">-</span>                      <span class="at">-</span>                           <span class="at">-</span>                            <span class="at">-</span>                                      <span class="at">-</span>                                  <span class="at">-</span>                                     </span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a> <span class="ex">─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a> <span class="ex">─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>If we want to restore a specific experiment we can use <code>dvc exp apply</code> to restore it, note that this will also restore the code and the data.</p>
 <p>In order to share experiments we need to push them to the remote, <code>git</code> and <code>dvc</code>. This is done via</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc exp push origin <span class="at">-A</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc exp push origin <span class="at">-A</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Experiment</span> sural-cyma is up to date on Git remote <span class="st">'origin'</span>.</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Pushed</span> experiment sappy-corm and mesic-beep to Git remote <span class="st">'origin'</span>.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Pushed</span> experiment sappy-corm and mesic-beep to Git remote <span class="st">'origin'</span>.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Warning: Be careful with changed <code>git</code> SHAs
+<span class="screen-reader-only">Warning</span>Warning: Be careful with changed <code>git</code> SHAs
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1192,15 +1194,15 @@ Important
 </div>
 </div>
 <p>We can add the remote with the <code>dvc remote add</code> command.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc remote add <span class="at">-d</span> myremote <span class="dt">\</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc remote add <span class="at">-d</span> myremote <span class="dt">\</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    webdavs://sakai.mci4me.at/dav/Course-ID-SLVA-46549/MECH-M-DUAL-2-MLB-DATA</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Setting</span> <span class="st">'myremote'</span> as a default remote.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Setting</span> <span class="st">'myremote'</span> as a default remote.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This creates the file <code>.dvc/config</code> with the following content (a TOML file).</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[core]</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[core]</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">remote</span> <span class="op">=</span> <span class="dt">myremote</span></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="kw">['</span><span class="dt">remote "myremote"'</span><span class="kw">]</span></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">url</span> <span class="op">=</span> <span class="dt">webdavs</span><span class="er">://</span><span class="dt">sakai.mci4me.at</span><span class="er">/</span><span class="dt">dav</span><span class="er">/</span><span class="dt">Course-ID-SLVA-46549</span><span class="er">/</span><span class="dt">MECH-M-DUAL-2-MLB-DATA</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">url</span> <span class="op">=</span> <span class="dt">webdavs</span><span class="er">://</span><span class="dt">sakai.mci4me.at</span><span class="er">/</span><span class="dt">dav</span><span class="er">/</span><span class="dt">Course-ID-SLVA-46549</span><span class="er">/</span><span class="dt">MECH-M-DUAL-2-MLB-DATA</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1212,28 +1214,28 @@ Important
 </div>
 <div class="callout-body-container callout-body">
 <p>Due to the server structure we need to limit the number of parallel processes for synchronizing the content. In order to do so, we limit the default value for the number of jobs:</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc remote modify myremote jobs 4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc remote modify myremote jobs 4</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This will result in the following TOML file:</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[core]</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[core]</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">remote</span> <span class="op">=</span> <span class="dt">myremote</span></span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="kw">['</span><span class="dt">remote "myremote"'</span><span class="kw">]</span></span>
 <span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">url</span> <span class="op">=</span> <span class="dt">webdavs</span><span class="er">://</span><span class="dt">sakai.mci4me.at</span><span class="er">/</span><span class="dt">dav</span><span class="er">/</span><span class="dt">Course-ID-SLVA-46549</span><span class="er">/</span><span class="dt">MECH-M-DUAL-2-MLB-DATA</span></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">jobs</span> <span class="op">=</span> <span class="dv">4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">jobs</span> <span class="op">=</span> <span class="dv">4</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>As this issue only occurred late in the project the last line will not show up in the commit <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/afe08488167a3a68788f67b64cbd76e7261deee6">afe0848</a> and only after <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/0a98a0941c77ed0daa9371904df6bb916a6a45f4">0a98a09</a></p>
 </div>
 </div>
 <p>To nicely separate the sensitive information for the access, there also exist a <code>.dvc/config.local</code> file that is in the <code>.gitignore</code> and will not be committed. We add our user information to this file or via a command in the terminal</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc remote modify <span class="at">--local</span> myremote user <span class="pp">***</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc remote modify <span class="at">--local</span> myremote user <span class="pp">***</span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc remote modify <span class="at">--local</span> myremote password <span class="pp">***</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc remote modify <span class="at">--local</span> myremote password <span class="pp">***</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>(the user is without the <code>@mci4me.at</code>)</p>
 <p>To handle WebDAV <code>dvc</code> requires the package <code>dvc-webdav</code>, we install it via <code>pdm</code>. See <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/afe08488167a3a68788f67b64cbd76e7261deee6">afe0848</a> on how this is reflected in our reference project.</p>
 <p>Now we can run <code>dvc push</code> and our data is stored remotely,</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc push</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> pdm run dvc push</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Collecting</span>                                           <span class="kw">|</span><span class="ex">14.0</span> [00:00,  381entry/s]</span>
 <span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Pushing</span>                                   </span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="ex">10</span> files pushed</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="ex">10</span> files pushed</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>And of course, <code>dvc pull</code> to get the files on another computer.</p>
 <div class="callout callout-style-simple callout-caution no-icon">
 <div class="callout-body d-flex">
@@ -1257,9 +1259,9 @@ Important
 </div>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-Brunton2022" class="csl-entry" role="listitem">
-Brunton, Steven L., and J. Nathan Kutz. 2022. <em>Data-Driven Science and Engineering - Machine Learning, Dynamical Systems, and Control</em>. 2nd ed. Cambridge: Cambridge University Press.
+Brunton, Steven L., and J. Nathan Kutz. 2022. <em>Data-Driven Science and Engineering - Machine Learning, Dynamical Systems, and Control</em>. 2nd ed. Cambridge University Press.
 </div>
 </div>
 </section>
@@ -1341,13 +1343,14 @@ Brunton, Steven L., and J. Nathan Kutz. 2022. <em>Data-Driven Science and Engine
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

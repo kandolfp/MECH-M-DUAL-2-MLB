@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.9.36">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>6&nbsp; Data persistence – Machine Learning in Industrial Image Processing</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -59,7 +62,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -93,14 +95,14 @@ div.csl-indent {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-f418161beb48e0141c760e455f12af2c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fcef3a217c2dc59de9b524d1d56553e6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-28552b72345800c07c123eae77d1b5c4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-fcef3a217c2dc59de9b524d1d56553e6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dcd7854cf360aa6b65a1b8a4f628da3c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-dd7b356a231c5fc6e5c7ed64db24e82d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-dcd7854cf360aa6b65a1b8a4f628da3c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
@@ -545,8 +547,8 @@ div.csl-indent {
 
 
 <p>In our example the data is downloaded from a remote and added to <code>dvc</code>. This already covers the basic data persistence problems as we described it. We can always make sure that the data content is verified and we know the state. If we run an experiment we see it in the output:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Applying</span> changes                                     <span class="kw">|</span><span class="ex">0.00</span> [00:00,     <span class="pp">?</span>file/s]</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="st">'data.dvc'</span> didn<span class="st">'t change, skipping     </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Applying</span> changes                                     <span class="kw">|</span><span class="ex">0.00</span> [00:00,     <span class="pp">?</span>file/s]</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="st">'data.dvc'</span> didn<span class="st">'t change, skipping     </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>If we change the data we know that we need to update the training as well. Nevertheless, we want to highlight some different aspects in this context.</p>
 <p>It is quite common, if not always the case, that the model we want to train is not using the <em>raw</em> data but rather processed data. On common pattern to get from the raw data to the processed data is called ETL (<em>extract, transform, load</em>).</p>
 <p>In <a href="#fig-data-etl" class="quarto-xref">Figure&nbsp;<span>6.1</span></a> we can see an illustration of the pattern and <span class="citation" data-cites="Reis2022-tm">Reis (<a href="../references.html#ref-Reis2022-tm" role="doc-biblioref">2022</a>)</span> covers this concept as well.</p>
@@ -572,7 +574,7 @@ Figure&nbsp;6.1: Illustration of an ETL pattern for data processing
 </ol>
 <p>We illustrate this task in the context of our example project. This means that, instead of directly using <code>catData_w.mat</code> we start of from the <em>raw</em> data <code>catData.mat</code>, see <a href="https://github.com/kandolfp/MECH-M-DUAL-2-MLB-DATA/tree/b097ba6cba3e150eb1587ce62b861ed91d866b76">b097ba6</a> for the implementation details.</p>
 <p>We introduce a new module called <code>etl</code> with three files plus the module file to accomplish this task.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> tree src/etl</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> tree src/etl</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">etl</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> extract.py</span>
@@ -580,7 +582,7 @@ Figure&nbsp;6.1: Illustration of an ETL pattern for data processing
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> load.py</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> transform.py</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="ex">1</span> directory, 4 files</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="ex">1</span> directory, 4 files</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Now a simple call to <code>etl.load("catData_w.mat")</code> will run the following chain:</p>
 <ol type="1">
 <li>If the file does not exist:
@@ -607,7 +609,7 @@ Figure&nbsp;6.1: Illustration of an ETL pattern for data processing
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Storage
+<span class="screen-reader-only">Note</span>Storage
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -627,7 +629,7 @@ Storage
 <ol type="1">
 <li><p>From the original <code>.mat</code> files extract the single images and store them in an appropriate format - consider compression loss - separate for the two classes.</p></li>
 <li><p>Split them up into a test and a training set. The structure should look like the following tree.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> tree data</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">MLB-DATA$</span> tree data</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">data</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a> <span class="ex">└──</span> raw</span>
@@ -642,7 +644,7 @@ Storage
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>         <span class="ex">└──</span> train</span>
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>             <span class="ex">└──</span> dog0</span>
 <span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a> <span class="ex">8</span> directories, 4 files</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a> <span class="ex">8</span> directories, 4 files</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
 <li><p>Extend the transformation capabilities to allow an image as input.</p></li>
 <li><p>Extend the storage capabilities to store the transformed images in an appropriate image format.</p></li>
 <li><p>Extend the load capabilities so that only a folder needs to be specified (in our case <code>data/raw</code>), and the classes, as well as the test and training sets, are generated automatically from these files.</p></li>
@@ -666,12 +668,12 @@ Storage
 </div>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-Brunton2022" class="csl-entry" role="listitem">
-Brunton, Steven L., and J. Nathan Kutz. 2022. <em>Data-Driven Science and Engineering - Machine Learning, Dynamical Systems, and Control</em>. 2nd ed. Cambridge: Cambridge University Press.
+Brunton, Steven L., and J. Nathan Kutz. 2022. <em>Data-Driven Science and Engineering - Machine Learning, Dynamical Systems, and Control</em>. 2nd ed. Cambridge University Press.
 </div>
 <div id="ref-Reis2022-tm" class="csl-entry" role="listitem">
-Reis, Joe. 2022. <em>Fundamentals of Data Engineering</em>. Sebastopol, CA: O’Reilly Media.
+Reis, Joe. 2022. <em>Fundamentals of Data Engineering</em>. O’Reilly Media.
 </div>
 </div>
 
@@ -740,13 +742,14 @@ Reis, Joe. 2022. <em>Fundamentals of Data Engineering</em>. Sebastopol, CA: O’
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

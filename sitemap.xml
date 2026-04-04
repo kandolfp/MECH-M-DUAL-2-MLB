@@ -2,94 +2,94 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://kandolfp.github.io/MECH-M-DUAL-2-MLB/index.html</loc>
-    <lastmod>2026-04-03T20:05:12.470Z</lastmod>
+    <lastmod>2026-04-04T09:23:32.706Z</lastmod>
   </url>
   <url>
     <loc>https://kandolfp.github.io/MECH-M-DUAL-2-MLB/intro.html</loc>
-    <lastmod>2026-04-03T20:05:12.470Z</lastmod>
+    <lastmod>2026-04-04T09:23:32.706Z</lastmod>
   </url>
   <url>
     <loc>https://kandolfp.github.io/MECH-M-DUAL-2-MLB/clustering/index.html</loc>
-    <lastmod>2026-04-03T20:05:12.468Z</lastmod>
+    <lastmod>2026-04-04T09:23:32.704Z</lastmod>
   </url>
   <url>
     <loc>https://kandolfp.github.io/MECH-M-DUAL-2-MLB/clustering/unsupervised.html</loc>
-    <lastmod>2026-04-03T20:05:12.469Z</lastmod>
+    <lastmod>2026-04-04T09:23:32.705Z</lastmod>
   </url>
   <url>
     <loc>https://kandolfp.github.io/MECH-M-DUAL-2-MLB/clustering/supervised.html</loc>
-    <lastmod>2026-04-03T20:05:12.469Z</lastmod>
+    <lastmod>2026-04-04T09:23:32.705Z</lastmod>
   </url>
   <url>
     <loc>https://kandolfp.github.io/MECH-M-DUAL-2-MLB/clustering/semisupervised.html</loc>
-    <lastmod>2026-04-03T20:05:12.469Z</lastmod>
+    <lastmod>2026-04-04T09:23:32.705Z</lastmod>
   </url>
   <url>
     <loc>https://kandolfp.github.io/MECH-M-DUAL-2-MLB/data/index.html</loc>
-    <lastmod>2026-04-03T20:05:12.470Z</lastmod>
+    <lastmod>2026-04-04T09:23:32.706Z</lastmod>
   </url>
   <url>
     <loc>https://kandolfp.github.io/MECH-M-DUAL-2-MLB/data/model.html</loc>
-    <lastmod>2026-04-03T20:05:12.470Z</lastmod>
+    <lastmod>2026-04-04T09:23:32.706Z</lastmod>
   </url>
   <url>
     <loc>https://kandolfp.github.io/MECH-M-DUAL-2-MLB/data/code.html</loc>
-    <lastmod>2026-04-03T20:05:12.469Z</lastmod>
+    <lastmod>2026-04-04T09:23:32.705Z</lastmod>
   </url>
   <url>
     <loc>https://kandolfp.github.io/MECH-M-DUAL-2-MLB/data/data.html</loc>
-    <lastmod>2026-04-03T20:05:12.470Z</lastmod>
+    <lastmod>2026-04-04T09:23:32.706Z</lastmod>
   </url>
   <url>
     <loc>https://kandolfp.github.io/MECH-M-DUAL-2-MLB/nn/index.html</loc>
-    <lastmod>2026-04-03T20:05:12.470Z</lastmod>
+    <lastmod>2026-04-04T09:23:32.707Z</lastmod>
   </url>
   <url>
     <loc>https://kandolfp.github.io/MECH-M-DUAL-2-MLB/nn/nn.html</loc>
-    <lastmod>2026-04-03T20:05:12.470Z</lastmod>
+    <lastmod>2026-04-04T09:23:32.707Z</lastmod>
   </url>
   <url>
     <loc>https://kandolfp.github.io/MECH-M-DUAL-2-MLB/nn/cnn.html</loc>
-    <lastmod>2026-04-03T20:05:12.470Z</lastmod>
+    <lastmod>2026-04-04T09:23:32.707Z</lastmod>
   </url>
   <url>
     <loc>https://kandolfp.github.io/MECH-M-DUAL-2-MLB/nn/autoencoder.html</loc>
-    <lastmod>2026-04-03T20:05:12.470Z</lastmod>
+    <lastmod>2026-04-04T09:23:32.706Z</lastmod>
   </url>
   <url>
     <loc>https://kandolfp.github.io/MECH-M-DUAL-2-MLB/nn/transfer.html</loc>
-    <lastmod>2026-04-03T20:05:12.470Z</lastmod>
+    <lastmod>2026-04-04T09:23:32.707Z</lastmod>
   </url>
   <url>
     <loc>https://kandolfp.github.io/MECH-M-DUAL-2-MLB/nn/data.html</loc>
-    <lastmod>2026-04-03T20:05:12.470Z</lastmod>
+    <lastmod>2026-04-04T09:23:32.707Z</lastmod>
   </url>
   <url>
     <loc>https://kandolfp.github.io/MECH-M-DUAL-2-MLB/nn/challenges.html</loc>
-    <lastmod>2026-04-03T20:05:12.470Z</lastmod>
+    <lastmod>2026-04-04T09:23:32.707Z</lastmod>
   </url>
   <url>
     <loc>https://kandolfp.github.io/MECH-M-DUAL-2-MLB/summary.html</loc>
-    <lastmod>2026-04-03T20:05:12.471Z</lastmod>
+    <lastmod>2026-04-04T09:23:32.708Z</lastmod>
   </url>
   <url>
     <loc>https://kandolfp.github.io/MECH-M-DUAL-2-MLB/references.html</loc>
-    <lastmod>2026-04-03T20:05:12.471Z</lastmod>
+    <lastmod>2026-04-04T09:23:32.708Z</lastmod>
   </url>
   <url>
     <loc>https://kandolfp.github.io/MECH-M-DUAL-2-MLB/appendices/explanations.html</loc>
-    <lastmod>2026-04-03T20:05:12.468Z</lastmod>
+    <lastmod>2026-04-04T09:23:32.704Z</lastmod>
   </url>
   <url>
     <loc>https://kandolfp.github.io/MECH-M-DUAL-2-MLB/appendices/keras.html</loc>
-    <lastmod>2026-04-03T20:05:12.468Z</lastmod>
+    <lastmod>2026-04-04T09:23:32.704Z</lastmod>
   </url>
   <url>
     <loc>https://kandolfp.github.io/MECH-M-DUAL-2-MLB/appendices/nn_from_scratch.html</loc>
-    <lastmod>2026-04-03T20:05:12.468Z</lastmod>
+    <lastmod>2026-04-04T09:23:32.704Z</lastmod>
   </url>
   <url>
     <loc>https://kandolfp.github.io/MECH-M-DUAL-2-MLB/appendices/agentic_ai.html</loc>
-    <lastmod>2026-04-03T20:05:12.467Z</lastmod>
+    <lastmod>2026-04-04T09:23:32.703Z</lastmod>
   </url>
 </urlset>

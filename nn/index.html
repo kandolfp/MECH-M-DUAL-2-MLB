@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.9.36">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>Neural Networks and Deep Learning – Machine Learning in Industrial Image Processing</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -59,7 +62,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -93,14 +95,14 @@ div.csl-indent {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-f418161beb48e0141c760e455f12af2c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fcef3a217c2dc59de9b524d1d56553e6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-28552b72345800c07c123eae77d1b5c4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-fcef3a217c2dc59de9b524d1d56553e6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dcd7854cf360aa6b65a1b8a4f628da3c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-dd7b356a231c5fc6e5c7ed64db24e82d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-dcd7854cf360aa6b65a1b8a4f628da3c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
@@ -133,7 +135,7 @@ div.csl-indent {
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -146,7 +148,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -580,7 +582,7 @@ window.Quarto = {
 
 
 <p><em>Neural Networks</em> (NNs) are inspired by the work of <span class="citation" data-cites="hubel1962receptive">Hubel and Wiesel (<a href="../references.html#ref-hubel1962receptive" role="doc-biblioref">1962</a>)</span> about the visual cortex of cats. They showed how <em>hierarchical layers of cells</em> process visual stimuli. This insight was the base for the first mathematical model of a NN, published in 1980 (<span class="citation" data-cites="Fukushima1980">Fukushima (<a href="../references.html#ref-Fukushima1980" role="doc-biblioref">1980</a>)</span>), that would in the modern terminology be best described as a deep convolutional neural network (DCNN). It contains a multi-layer structure, convolution, max pooling, and nonlinear dynamical nodes.</p>
-<p>The current high interest in NNs was arguably kickstarted with <span class="citation" data-cites="NIPS2012_c399862d">Krizhevsky, Sutskever, and Hinton (<a href="../references.html#ref-NIPS2012_c399862d" role="doc-biblioref">2012</a>)</span> and their introduction of <em>ImageNet</em>. They used high-resolution images, facilitated with 15 million labels in over 22000 categories. This transformed the field of computer vision tasks for classification and identification. All of this was made possible by the large labelled dataset and the available compute power<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<p>The current high interest in NNs was arguably kickstarted with <span class="citation" data-cites="NIPS2012_c399862d">Krizhevsky et al. (<a href="../references.html#ref-NIPS2012_c399862d" role="doc-biblioref">2012</a>)</span> and their introduction of <em>ImageNet</em>. They used high-resolution images, facilitated with 15 million labels in over 22000 categories. This transformed the field of computer vision tasks for classification and identification. All of this was made possible by the large labelled dataset and the available compute power<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
 <p>At its core, a neural network consists of multiple layers (some with specific names) of interconnected nodes (or <em>neurons</em>).</p>
 <div id="fig-nn-generic" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -661,7 +663,7 @@ y = A x.
 <div class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Show the code for the figure</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> io</span>
@@ -711,7 +713,7 @@ y = A x.
 <span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>ridge <span class="op">=</span> linear_model.Ridge(random_state<span class="op">=</span><span class="dv">6020</span>).fit(X_train, y_train)</span>
 <span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>y_test_ridge <span class="op">=</span> np.sign(ridge.predict(X_test))</span>
 <span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>myplot(y_test_ridge)</span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="fig-nn-singlelayer" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="1">
 <figure class="quarto-float quarto-float-fig figure">
@@ -751,9 +753,9 @@ Figure&nbsp;5: Linear single layer neural network for different solutions of the
 <p>Nevertheless, we can only cover a limited range of possibilities with linear functions. Therefore, the extension to <em>arbitrary</em> activation functions is a natural progression.</p>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-Brunton2022" class="csl-entry" role="listitem">
-Brunton, Steven L., and J. Nathan Kutz. 2022. <em>Data-Driven Science and Engineering - Machine Learning, Dynamical Systems, and Control</em>. 2nd ed. Cambridge: Cambridge University Press.
+Brunton, Steven L., and J. Nathan Kutz. 2022. <em>Data-Driven Science and Engineering - Machine Learning, Dynamical Systems, and Control</em>. 2nd ed. Cambridge University Press.
 </div>
 <div id="ref-Fukushima1980" class="csl-entry" role="listitem">
 Fukushima, Kunihiko. 1980. <span>“Neocognitron: A Self-Organizing Neural Network Model for a Mechanism of Pattern Recognition Unaffected by Shift in Position.”</span> <em>Biological Cybernetics</em> 36 (4): 193–202. <a href="https://doi.org/10.1007/BF00344251">https://doi.org/10.1007/BF00344251</a>.
@@ -762,10 +764,10 @@ Fukushima, Kunihiko. 1980. <span>“Neocognitron: A Self-Organizing Neural Netwo
 Hubel, D., and T. Wiesel. 1962. <span>“Receptive Fields, Binocular Interaction, and Functional Architecture in the Cat’s Visual Cortex.”</span> <em>Journal of Physiology</em> 160: 106–54.
 </div>
 <div id="ref-Kandolf_GDM" class="csl-entry" role="listitem">
-Kandolf, Peter. 2025. <span>“MECH-m-DUAL-1-DBM - Grundlagen Datenbasierter Methoden.”</span> <em>Management Center Innsbruck, Course Material</em>. <a href="https://doi.org/10.5281/zenodo.14671708">https://doi.org/10.5281/zenodo.14671708</a>.
+Kandolf, Peter. 2025. <span>“MECH-m-DUAL-1-DBM - Grundlagen Datenbasierter Methoden.”</span> In <em>Management Center Innsbruck, Course Material</em>. <a href="https://doi.org/10.5281/zenodo.14671708">https://doi.org/10.5281/zenodo.14671708</a>.
 </div>
 <div id="ref-NIPS2012_c399862d" class="csl-entry" role="listitem">
-Krizhevsky, Alex, Ilya Sutskever, and Geoffrey E Hinton. 2012. <span>“ImageNet Classification with Deep Convolutional Neural Networks.”</span> In <em>Advances in Neural Information Processing Systems</em>, edited by F. Pereira, C. J. Burges, L. Bottou, and K. Q. Weinberger. Vol. 25. Curran Associates, Inc. <a href="https://proceedings.neurips.cc/paper_files/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf">https://proceedings.neurips.cc/paper_files/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf</a>.
+Krizhevsky, Alex, Ilya Sutskever, and Geoffrey E Hinton. 2012. <span>“ImageNet Classification with Deep Convolutional Neural Networks.”</span> In <em>Advances in Neural Information Processing Systems</em>, edited by F. Pereira, C. J. Burges, L. Bottou, and K. Q. Weinberger, vol. 25. Curran Associates, Inc. <a href="https://proceedings.neurips.cc/paper_files/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf">https://proceedings.neurips.cc/paper_files/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf</a>.
 </div>
 </div>
 </section>
@@ -842,13 +844,14 @@ Krizhevsky, Alex, Ilya Sutskever, and Geoffrey E Hinton. 2012. <span>“ImageNet
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

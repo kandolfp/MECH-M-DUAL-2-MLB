@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.9.36">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>4&nbsp; Model persistence – Machine Learning in Industrial Image Processing</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -73,14 +76,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-f418161beb48e0141c760e455f12af2c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fcef3a217c2dc59de9b524d1d56553e6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-28552b72345800c07c123eae77d1b5c4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-fcef3a217c2dc59de9b524d1d56553e6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dcd7854cf360aa6b65a1b8a4f628da3c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-dd7b356a231c5fc6e5c7ed64db24e82d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-dcd7854cf360aa6b65a1b8a4f628da3c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -536,14 +539,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>For example, it might be that we do our training in a different environment than the <em>inference or prediction</em>. It might even be the case that we switch programming language for these tasks to extract the best performance.</p>
 <p>As we mainly work with <code>scikit-learn</code>, we introduce the concepts with it. Our first step is to check the documentation <a href="https://scikit-learn.org/stable/model_persistence.html">docs - model persistence</a> and we can use it as a reference for this introduction. We introduce different possibilities, all of them have strengths and weaknesses, unfortunately there is no gold standard.</p>
 <p>Let us use the following toy example, see <a href="#lst-data-mp-toyexample" class="quarto-xref">Listing&nbsp;<span>4.1</span></a>, with our cats and dogs.</p>
-<div id="3c970ffb" class="cell styled-output" data-execution_count="1">
+<div id="99d3a807" class="cell styled-output" data-execution_count="1">
 <div id="lst-data-mp-toyexample" class="python cell-code listing quarto-float quarto-figure quarto-figure-left anchored">
 <figure class="quarto-float quarto-float-lst figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-data-mp-toyexample-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Listing&nbsp;4.1: Code for the toy example
 </figcaption>
 <div aria-describedby="lst-data-mp-toyexample-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> io</span>
@@ -589,7 +592,7 @@ Listing&nbsp;4.1: Code for the toy example
 <span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>voting_clf.fit(X_train, y_train)</span>
 <span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>score <span class="op">=</span> voting_clf.score(X_test, y_test)</span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"We have a hard voting score of </span><span class="sc">{</span>score<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"We have a hard voting score of </span><span class="sc">{</span>score<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </figure>
 </div>
@@ -622,7 +625,7 @@ Important
 <div class="callout-body-container callout-body">
 <p>We need to install several packages for the following exercises.</p>
 <p>All of them can be installed via:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pdm</span> add skl2onnx onnxruntime skops</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pdm</span> add skl2onnx onnxruntime skops</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <section id="sec-data-model-onnx" class="level2" data-number="4.1">
@@ -633,11 +636,11 @@ Important
 </blockquote>
 <p>The use-case for ONNX is to persist a model without necessarily using the Python object itself. This is especially useful, when the runtime for distributing the model is not Python or a very restricted Python environment.</p>
 <p>Now let us see how we can persist the model of <a href="#lst-data-mp-toyexample" class="quarto-xref">Listing&nbsp;<span>4.1</span></a> via ONNX.</p>
-<div id="3e8dcfd4" class="cell styled-output" data-execution_count="2">
-<div class="sourceCode cell-code" id="annotated-cell-2"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-2-1"><a href="#annotated-cell-2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> skl2onnx <span class="im">import</span> to_onnx</span>
+<div id="82fc1f13" class="cell styled-output" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-2"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-2-1"><a href="#annotated-cell-2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> skl2onnx <span class="im">import</span> to_onnx</span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-2-2" class="code-annotation-target"><a href="#annotated-cell-2-2" aria-hidden="true" tabindex="-1"></a>onx <span class="op">=</span> to_onnx(voting_clf, X_train[:<span class="dv">1</span>].astype(np.int64))</span>
 <span id="annotated-cell-2-3"><a href="#annotated-cell-2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"model.onnx"</span>, <span class="st">"wb"</span>) <span class="im">as</span> f:</span>
-<span id="annotated-cell-2-4"><a href="#annotated-cell-2-4" aria-hidden="true" tabindex="-1"></a>    f.write(onx.SerializeToString())</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="annotated-cell-2-4"><a href="#annotated-cell-2-4" aria-hidden="true" tabindex="-1"></a>    f.write(onx.SerializeToString())</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-2" data-target-annotation="1">1</dt>
@@ -648,14 +651,14 @@ Important
 </div>
 </div>
 <p>As mentioned, the file format is binary, so it does not make a lot of sense to actually read the resulting file in plain text but we can have a look at the size.</p>
-<div id="c4b48c42" class="cell styled-output" data-execution_count="3">
+<div id="4af750b6" class="cell styled-output" data-execution_count="3">
 <div class="cell-output cell-output-stdout">
 <pre><code>80K model.onnx</code></pre>
 </div>
 </div>
 <p>Unfortunately, there is no method to convert back to our <code>scikit-learn</code> model. What we can do is to use the <code>onnxruntime</code> and see if we still get the same score as before.</p>
-<div id="59aea6ba" class="cell styled-output" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> onnxruntime <span class="im">as</span> ort</span>
+<div id="5c1ddecd" class="cell styled-output" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> onnxruntime <span class="im">as</span> ort</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> ort.InferenceSession(<span class="st">"model.onnx"</span>)</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>input_name <span class="op">=</span> model.get_inputs()[<span class="dv">0</span>].name</span>
@@ -665,10 +668,16 @@ Important
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"We have a test_score of </span><span class="sc">{</span>score<span class="sc">}</span><span class="ss"> for the recovered model."</span>)</span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> model.run(<span class="va">None</span>, {input_name: X_train.astype(np.int64)})</span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>score <span class="op">=</span> sklearn.metrics.accuracy_score(y_train, predictions[<span class="dv">0</span>])</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"We have a train_score of </span><span class="sc">{</span>score<span class="sc">}</span><span class="ss"> for the recovered model."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"We have a train_score of </span><span class="sc">{</span>score<span class="sc">}</span><span class="ss"> for the recovered model."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>We have a test_score of 0.825 for the recovered model.
 We have a train_score of 1.0 for the recovered model.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-bright-yellow-fg">2026-04-04 09:29:35.785377251 [W:onnxruntime:Default, device_discovery.cc:132 GetPciBusId] Skipping pci_bus_id for PCI path at "/sys/devices/LNXSYSTM:00/LNXSYBUS:00/ACPI0004:00/MSFT1000:00/5620e0c7-8062-4dce-aeb7-520c7ef76171" because filename ""5620e0c7-8062-4dce-aeb7-520c7ef76171"" dit not match expected pattern of [0-9a-f]+:[0-9a-f]+:[0-9a-f]+[.][0-9a-f]+</span>
+</pre>
+</div>
 </div>
 </div>
 <p>As we can see, the score is actually better than before, which is odd and definitely not intended.</p>
@@ -715,7 +724,7 @@ Important
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-The <code>pickle</code> module is not secure. Only <em>unpickle</em> data you trust.
+<span class="screen-reader-only">Important</span>The <code>pickle</code> module is not secure. Only <em>unpickle</em> data you trust.
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -729,27 +738,27 @@ The <code>pickle</code> module is not secure. Only <em>unpickle</em> data you tr
 <p>This notably implies it is not guaranteed that a model can be loaded with a different <code>scikit-learn</code> version or let alone a different <code>numpy</code> version, which is only a sub-dependency of <code>scikit-learn</code>. Furthermore, if different hardware is involved there might be problems as well, e.g.&nbsp;a different architecture of an integer or float. As a consequence, if we use <code>pickle</code> a thorough version control with package management is key, and a lock file really helps!</p>
 <p>If we have a model that moves between different processes via the disc or is restored frequently from storage but can not be permanently in storage and therefore performance for loading and storing is of interest we can also use <a href="https://joblib.readthedocs.io/en/latest/index.html#module-joblib"><code>joblib</code></a> as a more performant alternative.</p>
 <p>Now let us see how we can persist the model of <a href="#lst-data-mp-toyexample" class="quarto-xref">Listing&nbsp;<span>4.1</span></a> as a <code>pickle</code> file.</p>
-<div id="13dbff4c" class="cell styled-output" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pickle <span class="im">import</span> dump</span>
+<div id="ddba908f" class="cell styled-output" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pickle <span class="im">import</span> dump</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"model.pkl"</span>, <span class="st">"wb"</span>) <span class="im">as</span> f:</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    dump(voting_clf, f, protocol<span class="op">=</span><span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    dump(voting_clf, f, protocol<span class="op">=</span><span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Again, the file format is binary so it does not make a lot of sense to actually read the file in plain text but we can have a look at the size</p>
-<div id="ce903345" class="cell styled-output" data-execution_count="7">
+<div id="f29b2852" class="cell styled-output" data-execution_count="7">
 <div class="cell-output cell-output-stdout">
 <pre><code>304K    model.pkl</code></pre>
 </div>
 </div>
 <p>and we can see that the storage demands are higher than for ONNX.</p>
 <p>We restore the model via</p>
-<div id="fea56589" class="cell styled-output" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pickle <span class="im">import</span> load</span>
+<div id="b71425d0" class="cell styled-output" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pickle <span class="im">import</span> load</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"model.pkl"</span>, <span class="st">"rb"</span>) <span class="im">as</span> f:</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    clf <span class="op">=</span> load(f)</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>score <span class="op">=</span> clf.score(X_test, y_test)</span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"We have test_score of </span><span class="sc">{</span>score<span class="sc">}</span><span class="ss"> after loading the object again."</span>)</span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>score <span class="op">=</span> clf.score(X_train, y_train)</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"We have train_score of </span><span class="sc">{</span>score<span class="sc">}</span><span class="ss"> after loading the object again."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"We have train_score of </span><span class="sc">{</span>score<span class="sc">}</span><span class="ss"> after loading the object again."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>We have test_score of 0.8 after loading the object again.
 We have train_score of 1.0 after loading the object again.</code></pre>
@@ -766,10 +775,10 @@ We have train_score of 1.0 after loading the object again.</code></pre>
 <p><span class="theorem-title"><strong>Exercise 4.2 (Further investigations for <code>pickle</code>)</strong></span> &nbsp;</p>
 <ol type="1">
 <li><p>For the loaded model, switch to soft voting by calling</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>clf[<span class="dv">1</span>].voting <span class="op">=</span> <span class="st">"soft"</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>clf[<span class="dv">1</span>].voting <span class="op">=</span> <span class="st">"soft"</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>clf[<span class="dv">1</span>].named_estimators[<span class="st">"svc"</span>].probability <span class="op">=</span> <span class="va">True</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>clf.fit(X_train, y_train)</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>clf.score(X_test, y_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>clf.score(X_test, y_test)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
 <li><p>Use <a href="https://joblib.readthedocs.io/en/latest/index.html#module-joblib"><code>joblib</code></a> to persist and load the module, also check the file size.</p></li>
 <li><p>Switch for the <code>SVC</code> to a <code>"rbf"</code> kernel and see if you can fully recover the object.</p></li>
 <li><p>Some user defined functions can cause problems for <code>pickle</code> try persisting the model with <a href="https://github.com/cloudpipe/cloudpickle"><code>cloudpickle</code></a> and test with the user defined kernel function <code>rbf = lambda x, y: np.exp(1e-2 * np.abs(x@y.T))</code>.</p></li>
@@ -784,20 +793,20 @@ We have train_score of 1.0 after loading the object again.</code></pre>
 <p>As an alternative to <code>pickle</code> we can use <a href="https://skops.readthedocs.io/en/stable/persistence.html#persistence"><code>skops.io</code></a>. It is developed as a secure alternative for <code>pickle</code> and therefore supports a wide range of objects. The main idea is, that only <em>trusted functions</em> are loaded and not everything included in the file. It is also possible to verify our data before loading it into our program, increasing the security further. Still, it returns the Python object, if it can be loaded, and we can manipulate it in the same fashion as with <code>pickle</code>.</p>
 <p>As a downside, the process is slower and some user defined functions/object might not work as desired. This also implies, that we need to have the same environment for loading as we had for storing the Python object, similar to <code>pickle</code>.</p>
 <p>The interface itself is simple and follows <code>pickle</code>.</p>
-<div id="ea05eb3f" class="cell styled-output" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> skops.io <span class="im">as</span> sio</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>obj <span class="op">=</span> sio.dump(voting_clf, <span class="st">"model.skops"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="0d11c490" class="cell styled-output" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> skops.io <span class="im">as</span> sio</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>obj <span class="op">=</span> sio.dump(voting_clf, <span class="st">"model.skops"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>For comparison, we show the size of the file</p>
-<div id="997a0624" class="cell styled-output" data-execution_count="11">
+<div id="69849226" class="cell styled-output" data-execution_count="11">
 <div class="cell-output cell-output-stdout">
 <pre><code>26M model.skops</code></pre>
 </div>
 </div>
 <p>and we can see that this format has a significant higher overhead as the other formats.</p>
 <p>Retrieving the model is a two step process, first loading the <em>untrusted types</em> and than loading the verified objects.</p>
-<div id="c704d7b3" class="cell styled-output" data-execution_count="12">
-<div class="sourceCode cell-code" id="annotated-cell-7"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-7-1" class="code-annotation-target"><a href="#annotated-cell-7-1" aria-hidden="true" tabindex="-1"></a>unknown_types <span class="op">=</span> sio.get_untrusted_types(<span class="bu">file</span><span class="op">=</span><span class="st">"model.skops"</span>)</span>
+<div id="894d1902" class="cell styled-output" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-7"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-7-1" class="code-annotation-target"><a href="#annotated-cell-7-1" aria-hidden="true" tabindex="-1"></a>unknown_types <span class="op">=</span> sio.get_untrusted_types(<span class="bu">file</span><span class="op">=</span><span class="st">"model.skops"</span>)</span>
 <span id="annotated-cell-7-2"><a href="#annotated-cell-7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, a <span class="kw">in</span> <span class="bu">enumerate</span>(unknown_types):</span>
 <span id="annotated-cell-7-3"><a href="#annotated-cell-7-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Unknown type at </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss"> is </span><span class="sc">{</span>a<span class="sc">}</span><span class="ss">."</span>)</span>
 <span id="annotated-cell-7-4"><a href="#annotated-cell-7-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -805,7 +814,7 @@ We have train_score of 1.0 after loading the object again.</code></pre>
 <span id="annotated-cell-7-6"><a href="#annotated-cell-7-6" aria-hidden="true" tabindex="-1"></a>score <span class="op">=</span> clf.score(X_test, y_test)</span>
 <span id="annotated-cell-7-7"><a href="#annotated-cell-7-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"We have test_score of </span><span class="sc">{</span>score<span class="sc">}</span><span class="ss"> after loading the object again."</span>)</span>
 <span id="annotated-cell-7-8"><a href="#annotated-cell-7-8" aria-hidden="true" tabindex="-1"></a>score <span class="op">=</span> clf.score(X_train, y_train)</span>
-<span id="annotated-cell-7-9"><a href="#annotated-cell-7-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"We have train_score of </span><span class="sc">{</span>score<span class="sc">}</span><span class="ss"> after loading the object again."</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="annotated-cell-7-9"><a href="#annotated-cell-7-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"We have train_score of </span><span class="sc">{</span>score<span class="sc">}</span><span class="ss"> after loading the object again."</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-7" data-target-annotation="1">1</dt>
@@ -932,13 +941,14 @@ We have train_score of 1.0 after loading the object again.</code></pre>
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

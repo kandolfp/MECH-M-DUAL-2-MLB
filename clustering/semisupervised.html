@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.9.36">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>3&nbsp; Semi-Supervised learning – Machine Learning in Industrial Image Processing</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -59,7 +62,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -93,14 +95,14 @@ div.csl-indent {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-f418161beb48e0141c760e455f12af2c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fcef3a217c2dc59de9b524d1d56553e6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-28552b72345800c07c123eae77d1b5c4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-fcef3a217c2dc59de9b524d1d56553e6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dcd7854cf360aa6b65a1b8a4f628da3c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-dd7b356a231c5fc6e5c7ed64db24e82d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-dcd7854cf360aa6b65a1b8a4f628da3c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
@@ -133,7 +135,7 @@ div.csl-indent {
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -146,7 +148,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -576,17 +578,17 @@ window.Quarto = {
 <p>There is a hybrid between unsupervised and supervised learning, called <em>semi-supervised learning</em>. If we have a dataset with just a couple of labelled observations, we might be able to use the discussed clustering methods to extend the labels and therefore generate more labelled data.</p>
 <p>We try this with the (in)famous MNIST dataset of hand written digits. As we did not do this when discussing MNIST in <a href="supervised.html#sec-clustering-sl-performance" class="quarto-xref"><span>Section 2.2</span></a> we first look at the dataset and establishing some basic properties.</p>
 <p>We load the dataset and look at its description (see <a href="unsupervised.html#sec-clustering-ul-me" class="quarto-xref"><span>Section 1.5</span></a> for the output)</p>
-<div id="d66503ae" class="cell styled-output" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_openml</span>
+<div id="6c64636e" class="cell styled-output" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_openml</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>mnist <span class="op">=</span> fetch_openml(<span class="st">"mnist_784"</span>, as_frame<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mnist.DESCR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mnist.DESCR)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The images are stored in <code>.data</code> and the label in <code>.target</code>. We can look at the first 100 digits</p>
 <div id="cell-fig-clustering-ssl-mnist" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Show the code for the figure</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_openml</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
@@ -599,7 +601,7 @@ window.Quarto = {
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>plt.imshow(im, cmap<span class="op">=</span><span class="st">"binary"</span>)</span>
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span>
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-clustering-ssl-mnist" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -615,15 +617,15 @@ Figure&nbsp;3.1: First 100 digits from the MNIST dataset.
 </div>
 </div>
 <p>Before we go any further in the investigation, we split up the dataset into a training and a test set.</p>
-<div id="3f65abf5" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>X_train, X_test <span class="op">=</span> mnist.data[:<span class="dv">60000</span>], mnist.data[<span class="dv">60000</span>:]</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>y_train, y_test <span class="op">=</span> mnist.target[:<span class="dv">60000</span>], mnist.target[<span class="dv">60000</span>:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="da095488" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>X_train, X_test <span class="op">=</span> mnist.data[:<span class="dv">60000</span>], mnist.data[<span class="dv">60000</span>:]</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>y_train, y_test <span class="op">=</span> mnist.target[:<span class="dv">60000</span>], mnist.target[<span class="dv">60000</span>:]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Now let us try with <span class="math inline">\(k\)</span>-means to find the 10 digits.</p>
 <div id="cell-fig-clustering-ssl-mnist2" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Show the code for the figure</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_openml</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> KMeans</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -641,7 +643,7 @@ Figure&nbsp;3.1: First 100 digits from the MNIST dataset.
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>plt.imshow(im, cmap<span class="op">=</span><span class="st">"binary"</span>)</span>
 <span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span>
 <span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-clustering-ssl-mnist2" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -669,9 +671,9 @@ Important
 </div>
 <div class="callout-body-container callout-body">
 <p>Due to the nature of these notes, being compiled interactively, we restrict the dataset to 2000 points.</p>
-<div id="9b3b9cd8" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> X_train[:<span class="dv">2000</span>]</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> y_train[:<span class="dv">2000</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="9da59bd2" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> X_train[:<span class="dv">2000</span>]</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> y_train[:<span class="dv">2000</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -689,8 +691,8 @@ Important
 </div>
 </div>
 <p>To get a baseline for our algorithm we use a random forest for the classification and only work with 50 labels.</p>
-<div id="f98bb512" class="cell styled-output" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
+<div id="fe80f6e0" class="cell styled-output" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>n_labels <span class="op">=</span> <span class="dv">50</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>forest <span class="op">=</span> RandomForestClassifier(random_state<span class="op">=</span><span class="dv">6020</span>).fit(</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>            X_train[:n_labels], y_train[:n_labels])</span>
@@ -699,7 +701,7 @@ Important
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>forest_full <span class="op">=</span> RandomForestClassifier(random_state<span class="op">=</span><span class="dv">6020</span>).fit(X_train, y_train)</span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>score_forest_full <span class="op">=</span> forest_full.score(X_test, y_test)</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"score for training with </span><span class="sc">{</span><span class="bu">len</span>(y_train)<span class="sc">}</span><span class="ss"> labels </span><span class="sc">{</span>score_forest_full<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"score for training with </span><span class="sc">{</span><span class="bu">len</span>(y_train)<span class="sc">}</span><span class="ss"> labels </span><span class="sc">{</span>score_forest_full<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>score for training with 50 labels 0.5618
 score for training with 2000 labels 0.9117</code></pre>
@@ -710,7 +712,7 @@ score for training with 2000 labels 0.9117</code></pre>
 <div id="cell-fig-clustering-ssl-mnist3" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Show the code for the figure</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_openml</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> KMeans</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -731,7 +733,7 @@ score for training with 2000 labels 0.9117</code></pre>
 <span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>plt.imshow(im, cmap<span class="op">=</span><span class="st">"binary"</span>)</span>
 <span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span>
 <span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-clustering-ssl-mnist3" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -747,8 +749,8 @@ Figure&nbsp;3.3: The representative (closest image to the cluster mean) of the 5
 </div>
 </div>
 <p>We can now label these observations</p>
-<div id="73625587" class="cell styled-output" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>y_rep <span class="op">=</span> np.array([</span>
+<div id="0d191311" class="cell styled-output" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>y_rep <span class="op">=</span> np.array([</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"3"</span>, <span class="st">"4"</span>, <span class="st">"1"</span>, <span class="st">"9"</span>, <span class="st">"9"</span>, <span class="st">"0"</span>, <span class="st">"3"</span>, <span class="st">"0"</span>, <span class="st">"9"</span>, <span class="st">"1"</span>,</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"9"</span>, <span class="st">"8"</span>, <span class="st">"0"</span>, <span class="st">"9"</span>, <span class="st">"3"</span>, <span class="st">"6"</span>, <span class="st">"6"</span>, <span class="st">"7"</span>, <span class="st">"1"</span>, <span class="st">"6"</span>,</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"6"</span>, <span class="st">"5"</span>, <span class="st">"3"</span>, <span class="st">"2"</span>, <span class="st">"2"</span>, <span class="st">"0"</span>, <span class="st">"0"</span>, <span class="st">"6"</span>, <span class="st">"7"</span>, <span class="st">"2"</span>,</span>
@@ -758,14 +760,14 @@ Figure&nbsp;3.3: The representative (closest image to the cluster mean) of the 5
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>forest_rep <span class="op">=</span> RandomForestClassifier(random_state<span class="op">=</span><span class="dv">6020</span>).fit(X_rep, y_rep)</span>
 <span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>score_forest_rep <span class="op">=</span> forest_rep.score(X_test, y_test)</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"score for training with </span><span class="sc">{</span><span class="bu">len</span>(y_rep)<span class="sc">}</span><span class="ss"> labels </span><span class="sc">{</span>score_forest_rep<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"score for training with </span><span class="sc">{</span><span class="bu">len</span>(y_rep)<span class="sc">}</span><span class="ss"> labels </span><span class="sc">{</span>score_forest_rep<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>score for training with 50 labels 0.6551</code></pre>
 </div>
 </div>
 <p>This helped us increase our score significantly, but we can do better. We can extend our labels from the representatives to the entire cluster and train with that.</p>
-<div id="0902357b" class="cell styled-output" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>y_train_prop <span class="op">=</span> np.empty(<span class="bu">len</span>(X_train), dtype<span class="op">=</span><span class="bu">str</span>)</span>
+<div id="3c0d2415" class="cell styled-output" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>y_train_prop <span class="op">=</span> np.empty(<span class="bu">len</span>(X_train), dtype<span class="op">=</span><span class="bu">str</span>)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(k):</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    y_train_prop[kmeans.labels_ <span class="op">==</span> i] <span class="op">=</span> y_rep[i]</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -773,21 +775,21 @@ Figure&nbsp;3.3: The representative (closest image to the cluster mean) of the 5
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    X_train, y_train_prop)</span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>score_forest_prop <span class="op">=</span> forest_prop.score(X_test, y_test)</span>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"score for training with </span><span class="sc">{</span><span class="bu">len</span>(y_train_prop)<span class="sc">}</span><span class="ss"> "</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"propagated labels </span><span class="sc">{</span>score_forest_prop<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"propagated labels </span><span class="sc">{</span>score_forest_prop<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>score for training with 2000 propagated labels 0.7672</code></pre>
 </div>
 </div>
 <p>This again increases our score by another good 10%. If we check our propagated labels, we see that, we can not expect more as we only have an accuracy slightly higher than our classification result, i.e.&nbsp;we provide wrong results labels for our classification.</p>
-<div id="dd02ea9c" class="cell styled-output" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>np.mean(y_train_prop <span class="op">==</span> y_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="c5301aeb" class="cell styled-output" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>np.mean(y_train_prop <span class="op">==</span> y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="10">
 <pre><code>np.float64(0.7745)</code></pre>
 </div>
 </div>
 <p>Let us try to eliminate outliers by removing the 10% of instances that are far away from our cluster centers.</p>
-<div id="f77bb18e" class="cell styled-output" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>percentile_closest <span class="op">=</span> <span class="dv">90</span></span>
+<div id="cedcbcc2" class="cell styled-output" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>percentile_closest <span class="op">=</span> <span class="dv">90</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>X_cluster_dist <span class="op">=</span> X_digits_dist[np.arange(<span class="bu">len</span>(X_train)), kmeans.labels_]</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(k):</span>
@@ -800,18 +802,18 @@ Figure&nbsp;3.3: The representative (closest image to the cluster mean) of the 5
 <span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>partially_propagated <span class="op">=</span> (X_cluster_dist <span class="op">!=</span> <span class="op">-</span><span class="dv">1</span>)</span>
 <span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>X_train_pprop <span class="op">=</span> X_train[partially_propagated]</span>
 <span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>y_train_pprop <span class="op">=</span> y_train_prop[partially_propagated]</span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>np.mean(y_train_pprop <span class="op">==</span> y_train[partially_propagated])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>np.mean(y_train_pprop <span class="op">==</span> y_train[partially_propagated])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="11">
 <pre><code>np.float64(0.8102189781021898)</code></pre>
 </div>
 </div>
 <p>We have cleaned up our source, but does it have a big influence?</p>
-<div id="62e7a9d8" class="cell styled-output" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>forest_pprop <span class="op">=</span> RandomForestClassifier(random_state<span class="op">=</span><span class="dv">6020</span>).fit(</span>
+<div id="604b9d5f" class="cell styled-output" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>forest_pprop <span class="op">=</span> RandomForestClassifier(random_state<span class="op">=</span><span class="dv">6020</span>).fit(</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    X_train_pprop, y_train_pprop)</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>score_forest_pprop <span class="op">=</span> forest_pprop.score(X_test, y_test)</span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"score for training with </span><span class="sc">{</span><span class="bu">len</span>(y_train_pprop)<span class="sc">}</span><span class="ss"> "</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"labels </span><span class="sc">{</span>score_forest_pprop<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"labels </span><span class="sc">{</span>score_forest_pprop<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>score for training with 1781 labels 0.768</code></pre>
 </div>
@@ -840,9 +842,9 @@ Figure&nbsp;3.3: The representative (closest image to the cluster mean) of the 5
 </div>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-Geron2022-xh" class="csl-entry" role="listitem">
-Geron, Aurelien. 2022. <em>Hands-on Machine Learning with Scikit-Learn, Keras, and <span>TensorFlow</span> 3e</em>. 3rd ed. Sebastopol, CA: O’Reilly Media.
+Geron, Aurelien. 2022. <em>Hands-on Machine Learning with Scikit-Learn, Keras, and <span>TensorFlow</span> 3e</em>. 3rd ed. O’Reilly Media.
 </div>
 </div>
 
@@ -911,13 +913,14 @@ Geron, Aurelien. 2022. <em>Hands-on Machine Learning with Scikit-Learn, Keras, a
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
