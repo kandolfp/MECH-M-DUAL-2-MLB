@@ -2,16 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.36">
+<meta name="generator" content="quarto-1.7.31">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>Appendix C — Writing a Neural Network from scratch – Machine Learning in Industrial Image Processing</title>
 <style>
-/* Default styles provided by pandoc.
-** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
-*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -62,6 +59,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -95,14 +93,14 @@ div.csl-indent {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-f418161beb48e0141c760e455f12af2c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-dcd7854cf360aa6b65a1b8a4f628da3c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-dd7b356a231c5fc6e5c7ed64db24e82d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-dcd7854cf360aa6b65a1b8a4f628da3c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-fcef3a217c2dc59de9b524d1d56553e6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-28552b72345800c07c123eae77d1b5c4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-fcef3a217c2dc59de9b524d1d56553e6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
@@ -135,7 +133,7 @@ div.csl-indent {
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -148,7 +146,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+      if (mathElements[i].tagName == "SPAN") {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -605,17 +603,17 @@ Important
 </div>
 <p>A Jupyter notebook is available for a convenient implementation of the following parts. Download it <a href="../_assets/appendices/nn_from_scratch.ipynb">here</a>.</p>
 <p>In the following codeblock we find our dependencies and we also fix the random number generation such that we fix the seed and therefore get reproducible results.</p>
-<div id="4561193b" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<div id="8a2add9f" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sklearn.datasets <span class="im">as</span> skd</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="48da775f" class="cell" data-execution_count="2">
+<div id="1292a6d5" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code fragment for implementation.</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_dataset(</span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_dataset(</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    setName: <span class="bu">str</span>, nrPoints: <span class="bu">int</span>, noise_factor: <span class="bu">float</span> <span class="op">=</span> <span class="dv">0</span>,</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    normalizeData: <span class="bu">bool</span> <span class="op">=</span> <span class="va">True</span>):</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
@@ -743,7 +741,7 @@ Important
 <span id="cb2-126"><a href="#cb2-126" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">"x2"</span>)</span>
 <span id="cb2-127"><a href="#cb2-127" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">"x1"</span>)</span>
 <span id="cb2-128"><a href="#cb2-128" aria-hidden="true" tabindex="-1"></a>    plt.scatter(X[<span class="dv">0</span>, :], X[<span class="dv">1</span>, :], c<span class="op">=</span>Y[<span class="dv">0</span>, :], cmap<span class="op">=</span>plt.cm.Spectral)</span>
-<span id="cb2-129"><a href="#cb2-129" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-129"><a href="#cb2-129" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <section id="weights-and-biases" class="level2" data-number="C.1">
@@ -769,8 +767,8 @@ Figure&nbsp;C.1: Generic NN with activation functions, weights and biases.
 <div class="callout-body-container">
 <div id="exr-appendices-nnfs-self-wb" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise C.1 (Self implementation: Initialize the weights and biases)</strong></span> The following code snippet is incomplete, fill out the blanks to implement the correct functionality.</p>
-<div id="6eb9936f" class="cell" data-execution_count="3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-7"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-7-1"><a href="#annotated-cell-7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> initialize_weights(nodes0, nodes1, nodes2, nodes3):</span>
+<div id="fc9a87e4" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="annotated-cell-7"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-7-1"><a href="#annotated-cell-7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> initialize_weights(nodes0, nodes1, nodes2, nodes3):</span>
 <span id="annotated-cell-7-2"><a href="#annotated-cell-7-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="annotated-cell-7-3"><a href="#annotated-cell-7-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Argument:</span></span>
 <span id="annotated-cell-7-4"><a href="#annotated-cell-7-4" aria-hidden="true" tabindex="-1"></a><span class="co">    nodes0 -- size of the input layer</span></span>
@@ -806,7 +804,7 @@ Figure&nbsp;C.1: Generic NN with activation functions, weights and biases.
 <span id="annotated-cell-7-34"><a href="#annotated-cell-7-34" aria-hidden="true" tabindex="-1"></a>               <span class="st">"A3"</span>: A3,</span>
 <span id="annotated-cell-7-35"><a href="#annotated-cell-7-35" aria-hidden="true" tabindex="-1"></a>               <span class="st">"b3"</span>: b3}</span>
 <span id="annotated-cell-7-36"><a href="#annotated-cell-7-36" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="annotated-cell-7-37"><a href="#annotated-cell-7-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> weights</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="annotated-cell-7-37"><a href="#annotated-cell-7-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> weights</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-7" data-target-annotation="1">1</dt>
@@ -817,20 +815,20 @@ Figure&nbsp;C.1: Generic NN with activation functions, weights and biases.
 </div>
 </div>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Check the implementation of the weights and biases
+Check the implementation of the weights and biases
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Run the following code snippet to check the implementation.</p>
-<div id="f33c314d" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>) <span class="co"># Make sure to have a reproducible result</span></span>
+<div id="8ff1fb0f" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>) <span class="co"># Make sure to have a reproducible result</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>weights <span class="op">=</span> initialize_weights(<span class="dv">2</span>, <span class="dv">8</span>, <span class="dv">5</span>, <span class="dv">1</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> np.array([np.mean(weights[<span class="st">"A1"</span>]), np.mean(weights[<span class="st">"A2"</span>]), </span>
@@ -839,7 +837,7 @@ Figure&nbsp;C.1: Generic NN with activation functions, weights and biases.
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>reference <span class="op">=</span> np.array([<span class="op">-</span><span class="fl">0.0179896655582674</span>, <span class="op">-</span><span class="fl">0.0798199810455688</span>,</span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>                   <span class="op">-</span><span class="fl">0.0286928288067441</span>, <span class="fl">0.</span>, <span class="fl">0.</span>, <span class="fl">0.</span>])</span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>np.testing.assert_allclose(result, reference)</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Looks like your implementation for the weights is working :)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Looks like your implementation for the weights is working :)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
@@ -870,8 +868,8 @@ Figure&nbsp;C.1: Generic NN with activation functions, weights and biases.
 <div class="callout-body-container">
 <div id="exr-appendices-nnfs-self-afs" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise C.2 (Self implementation: Activation functions)</strong></span> &nbsp;</p>
-<div id="3b81cfb8" class="cell" data-execution_count="5">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> actFunctionLinear(x, derivative: <span class="bu">bool</span> <span class="op">=</span> <span class="va">False</span>):</span>
+<div id="338e607a" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> actFunctionLinear(x, derivative: <span class="bu">bool</span> <span class="op">=</span> <span class="va">False</span>):</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> derivative:</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> </span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
@@ -898,7 +896,7 @@ Figure&nbsp;C.1: Generic NN with activation functions, weights and biases.
 <span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> derivative:</span>
 <span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> </span>
 <span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><strong>Hint</strong>: If you visualize the functions you can compare the results to <a href="../nn/nn.html#fig-nn-singlelayer" class="quarto-xref">Figure&nbsp;<span>7.1</span></a>.</p>
 </div>
@@ -927,8 +925,8 @@ Figure&nbsp;C.2: Generic NN with activation functions, weights and biases.
 <div class="callout-body-container">
 <div id="exr-appendices-nnfs-self-forwards" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise C.3 (Self implementation: Forward step)</strong></span> &nbsp;</p>
-<div id="2536a654" class="cell" data-execution_count="6">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-10"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-10-1"><a href="#annotated-cell-10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> forward_propagation(X, weights, f1, f2, f3):</span>
+<div id="3affc73a" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="annotated-cell-10"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-10-1"><a href="#annotated-cell-10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> forward_propagation(X, weights, f1, f2, f3):</span>
 <span id="annotated-cell-10-2"><a href="#annotated-cell-10-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="annotated-cell-10-3"><a href="#annotated-cell-10-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Argument:</span></span>
 <span id="annotated-cell-10-4"><a href="#annotated-cell-10-4" aria-hidden="true" tabindex="-1"></a><span class="co">    X -- input data</span></span>
@@ -967,7 +965,7 @@ Figure&nbsp;C.2: Generic NN with activation functions, weights and biases.
 <span id="annotated-cell-10-37"><a href="#annotated-cell-10-37" aria-hidden="true" tabindex="-1"></a>             <span class="st">"x3"</span>: x3}</span>
 <span id="annotated-cell-10-38"><a href="#annotated-cell-10-38" aria-hidden="true" tabindex="-1"></a></span>
 <span id="annotated-cell-10-39"><a href="#annotated-cell-10-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-10-40"><a href="#annotated-cell-10-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> outputLayer, cache</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="annotated-cell-10-40"><a href="#annotated-cell-10-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> outputLayer, cache</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-10" data-target-annotation="1">1</dt>
@@ -979,20 +977,20 @@ Figure&nbsp;C.2: Generic NN with activation functions, weights and biases.
 </div>
 <p><strong>Hint</strong>: In <code>numpy</code> the matrix-matrix/matrix-vector multiplication is defined <code>@</code>.</p>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Check the implementation for the forward step
+Check the implementation for the forward step
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Run the following code snippet to check the implementation, if there is no error the implementation looks good.</p>
-<div id="ac7b7d86" class="cell" data-execution_count="7">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> actFunctionLinear <span class="co"># function used for hidden layer 1</span></span>
+<div id="c83e7894" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> actFunctionLinear <span class="co"># function used for hidden layer 1</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>f2 <span class="op">=</span> actFunctionLinear <span class="co"># function used for hidden layer 2</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>f3 <span class="op">=</span> actFunctionSigmoid <span class="co"># function used for output layer</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>) <span class="co"># Make sure to have a reproducible result</span></span>
@@ -1010,7 +1008,7 @@ Figure&nbsp;C.2: Generic NN with activation functions, weights and biases.
 <span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>                     <span class="op">-</span><span class="fl">1.5318738340852145</span>, <span class="fl">1.1329044156610317</span>, </span>
 <span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>                      <span class="fl">0.7420574800205959</span>])</span>
 <span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>np.testing.assert_allclose(result, reference)</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Looks like the forward propagation is working :)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Looks like the forward propagation is working :)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
@@ -1121,8 +1119,8 @@ b^{(k+1)} &amp;= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b} = 
 <div class="callout-body-container">
 <div id="exr-appendices-nnfs-self-backward" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise C.4 (Self implementation: Backward propagation)</strong></span> &nbsp;</p>
-<div id="f8de3441" class="cell" data-execution_count="8">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-12"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-12-1"><a href="#annotated-cell-12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> backward_propagation(weights, cache, X, Y):</span>
+<div id="30412718" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="annotated-cell-12"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-12-1"><a href="#annotated-cell-12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> backward_propagation(weights, cache, X, Y):</span>
 <span id="annotated-cell-12-2"><a href="#annotated-cell-12-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="annotated-cell-12-3"><a href="#annotated-cell-12-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Arguments:</span></span>
 <span id="annotated-cell-12-4"><a href="#annotated-cell-12-4" aria-hidden="true" tabindex="-1"></a><span class="co">    weights -- python dictionary containing our weights</span></span>
@@ -1171,7 +1169,7 @@ b^{(k+1)} &amp;= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b} = 
 <span id="annotated-cell-12-47"><a href="#annotated-cell-12-47" aria-hidden="true" tabindex="-1"></a>             <span class="st">"dA3"</span>: dA3,</span>
 <span id="annotated-cell-12-48"><a href="#annotated-cell-12-48" aria-hidden="true" tabindex="-1"></a>             <span class="st">"db3"</span>: db3}</span>
 <span id="annotated-cell-12-49"><a href="#annotated-cell-12-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-12-50"><a href="#annotated-cell-12-50" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> grads</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="annotated-cell-12-50"><a href="#annotated-cell-12-50" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> grads</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-12" data-target-annotation="1">1</dt>
@@ -1182,20 +1180,20 @@ b^{(k+1)} &amp;= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b} = 
 </div>
 </div>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Check the implementation for the backward step
+Check the implementation for the backward step
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Run the following code snippet to check the implementation, if there is no error the implementation looks good.</p>
-<div id="1a75d591" class="cell" data-execution_count="9">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> actFunctionLinear <span class="co"># function used for hidden layer 1</span></span>
+<div id="800a7fd9" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> actFunctionLinear <span class="co"># function used for hidden layer 1</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>f2 <span class="op">=</span> actFunctionLinear <span class="co"># function used for hidden layer 2</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>f3 <span class="op">=</span> actFunctionSigmoid <span class="co"># function used for output layer</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>) <span class="co"># Make sure to have a reproducible result</span></span>
@@ -1213,7 +1211,7 @@ b^{(k+1)} &amp;= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b} = 
 <span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>                      <span class="op">-</span><span class="fl">0.006945313835622825</span>, <span class="fl">0.24205748002059585</span>])</span>
 <span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>np.testing.assert_allclose(result, reference)</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Looks like backward propagation is working :)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Looks like backward propagation is working :)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
@@ -1237,8 +1235,8 @@ b^{(k+1)} &amp;= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b} = 
 <div class="callout-body-container">
 <div id="exr-appendices-nnfs-self-parameterupdate" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise C.5 (Self implementation: Parameter update)</strong></span> &nbsp;</p>
-<div id="c8b856fc" class="cell" data-execution_count="10">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-14"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-14-1"><a href="#annotated-cell-14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> update_weights(weights, grads, learning_rate):</span>
+<div id="23ca1675" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="annotated-cell-14"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-14-1"><a href="#annotated-cell-14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> update_weights(weights, grads, learning_rate):</span>
 <span id="annotated-cell-14-2"><a href="#annotated-cell-14-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="annotated-cell-14-3"><a href="#annotated-cell-14-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Arguments:</span></span>
 <span id="annotated-cell-14-4"><a href="#annotated-cell-14-4" aria-hidden="true" tabindex="-1"></a><span class="co">    weights -- python dictionary containing your weights</span></span>
@@ -1277,7 +1275,7 @@ b^{(k+1)} &amp;= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b} = 
 <span id="annotated-cell-14-37"><a href="#annotated-cell-14-37" aria-hidden="true" tabindex="-1"></a>    weights[<span class="st">"A3"</span>] <span class="op">=</span> A3</span>
 <span id="annotated-cell-14-38"><a href="#annotated-cell-14-38" aria-hidden="true" tabindex="-1"></a>    weights[<span class="st">"b3"</span>] <span class="op">=</span> b3</span>
 <span id="annotated-cell-14-39"><a href="#annotated-cell-14-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-14-40"><a href="#annotated-cell-14-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> weights</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="annotated-cell-14-40"><a href="#annotated-cell-14-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> weights</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-14" data-target-annotation="1">1</dt>
@@ -1288,20 +1286,20 @@ b^{(k+1)} &amp;= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b} = 
 </div>
 </div>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Check the implementation for the parameter update
+Check the implementation for the parameter update
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Run the following code snippet to check the implementation, if there is no error the implementation looks good.</p>
-<div id="3b669bf4" class="cell" data-execution_count="11">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> actFunctionLinear <span class="co"># function used for hidden layer 1</span></span>
+<div id="fa36e413" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> actFunctionLinear <span class="co"># function used for hidden layer 1</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>f2 <span class="op">=</span> actFunctionLinear <span class="co"># function used for hidden layer 2</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>f3 <span class="op">=</span> actFunctionSigmoid <span class="co"># function used for output layer</span></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>) <span class="co"># Make sure to have a reproducible result</span></span>
@@ -1321,7 +1319,7 @@ b^{(k+1)} &amp;= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b} = 
 <span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>                       <span class="fl">1.9140274093792395e-05</span>, <span class="op">-</span><span class="fl">0.0006670751853262199</span>])</span>
 <span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>np.testing.assert_allclose(result, reference)</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Looks like the weights are updated correctly :)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Looks like the weights are updated correctly :)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
@@ -1343,8 +1341,8 @@ b^{(k+1)} &amp;= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b} = 
 <div class="callout-body-container">
 <div id="exr-appendices-nnfs-self-loss" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise C.6 (Self implementation: Predict function)</strong></span> &nbsp;</p>
-<div id="b55840e6" class="cell" data-execution_count="12">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-16"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-16-1"><a href="#annotated-cell-16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> predict(weights, X, f1, f2, f3):</span>
+<div id="d05669f6" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="annotated-cell-16"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-16-1"><a href="#annotated-cell-16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> predict(weights, X, f1, f2, f3):</span>
 <span id="annotated-cell-16-2"><a href="#annotated-cell-16-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="annotated-cell-16-3"><a href="#annotated-cell-16-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Using the learned weights, predicts a class for each example in X</span></span>
 <span id="annotated-cell-16-4"><a href="#annotated-cell-16-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -1360,7 +1358,7 @@ b^{(k+1)} &amp;= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b} = 
 <span id="annotated-cell-16-14"><a href="#annotated-cell-16-14" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-16" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-16-15" class="code-annotation-target"><a href="#annotated-cell-16-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1. Computes probabilities using forward propagation,</span></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-16" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-16-16" class="code-annotation-target"><a href="#annotated-cell-16-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 2. and classifies to 0/1 using 0.5 as the threshold.</span></span>
-<span id="annotated-cell-16-17"><a href="#annotated-cell-16-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> predictions</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="annotated-cell-16-17"><a href="#annotated-cell-16-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> predictions</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-16" data-target-annotation="1">1</dt>
@@ -1375,20 +1373,20 @@ b^{(k+1)} &amp;= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b} = 
 </div>
 </div>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Check the implementation for the predict function
+Check the implementation for the predict function
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Run the following code snippet to check the implementation, if there is no error the implementation looks good.</p>
-<div id="17d7c2a8" class="cell" data-execution_count="13">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> actFunctionLinear <span class="co"># function used for hidden layer 1</span></span>
+<div id="0284b42e" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> actFunctionLinear <span class="co"># function used for hidden layer 1</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>f2 <span class="op">=</span> actFunctionLinear <span class="co"># function used for hidden layer 2</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>f3 <span class="op">=</span> actFunctionSigmoid <span class="co"># function used for output layer</span></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>) <span class="co"># Make sure to have a reproducible result</span></span>
@@ -1397,7 +1395,7 @@ b^{(k+1)} &amp;= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b} = 
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>weights <span class="op">=</span> initialize_weights(<span class="dv">2</span>, <span class="dv">8</span>, <span class="dv">5</span>, <span class="dv">1</span>)</span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> predict(weights, X, f1, f2, f3)</span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>np.testing.assert_allclose(np.<span class="bu">sum</span>(p), <span class="dv">645</span>)</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Looks like your implementation is working, congratulations!"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Looks like your implementation is working, congratulations!"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
@@ -1423,28 +1421,28 @@ b^{(k+1)} &amp;= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b} = 
 <div class="callout-body-container">
 <div id="exr-appendices-nnfs-self-loss" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise C.7 (Self implementation: Loss function)</strong></span> &nbsp;</p>
-<div id="a6a37895" class="cell" data-execution_count="14">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_loss(nn_output, Y):</span>
+<div id="8f46419f" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_loss(nn_output, Y):</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># This function takes the nn_outputs and Ys of the training set</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># and returns the log loss</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Check the implementation for the loss function
+Check the implementation for the loss function
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-7" class="callout-7-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Run the following code snippet to check the implementation, if there is no error the implementation looks good.</p>
-<div id="8eca0277" class="cell" data-execution_count="15">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> actFunctionLinear <span class="co"># function used for hidden layer 1</span></span>
+<div id="284e0e54" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> actFunctionLinear <span class="co"># function used for hidden layer 1</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>f2 <span class="op">=</span> actFunctionLinear <span class="co"># function used for hidden layer 2</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>f3 <span class="op">=</span> actFunctionSigmoid <span class="co"># function used for output layer</span></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>) <span class="co"># Make sure to have a reproducible result</span></span>
@@ -1454,7 +1452,7 @@ b^{(k+1)} &amp;= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b} = 
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>outputLayer, cache <span class="op">=</span> forward_propagation(X, weights, f1, f2, f3)</span>
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> compute_loss(outputLayer, Y)</span>
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>np.testing.assert_allclose(result, <span class="fl">0.7360633961687931</span>)</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Looks like your implementation is working, congratulations!"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Looks like your implementation is working, congratulations!"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
@@ -1475,8 +1473,8 @@ b^{(k+1)} &amp;= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b} = 
 <div class="callout-body-container">
 <div id="exr-appendices-nnfs-self-training" class="theorem exercise">
 <p><span class="theorem-title"><strong>Exercise C.8 (Self implementation: Network training)</strong></span> &nbsp;</p>
-<div id="029ec34f" class="cell" data-execution_count="16">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-20"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-20-1"><a href="#annotated-cell-20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> nn_model(X_train, Y_train, nodes0, nodes1, nodes2, nodes3, </span>
+<div id="6f553c1e" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="annotated-cell-20"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-20-1"><a href="#annotated-cell-20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> nn_model(X_train, Y_train, nodes0, nodes1, nodes2, nodes3, </span>
 <span id="annotated-cell-20-2"><a href="#annotated-cell-20-2" aria-hidden="true" tabindex="-1"></a>             f1, f2, f3, lossfun, learning_rate, predict, </span>
 <span id="annotated-cell-20-3"><a href="#annotated-cell-20-3" aria-hidden="true" tabindex="-1"></a>             num_iterations, print_cost<span class="op">=</span><span class="va">False</span>, X_test<span class="op">=</span><span class="va">None</span>, Y_test<span class="op">=</span><span class="va">None</span>):</span>
 <span id="annotated-cell-20-4"><a href="#annotated-cell-20-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
@@ -1526,7 +1524,7 @@ b^{(k+1)} &amp;= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b} = 
 <span id="annotated-cell-20-48"><a href="#annotated-cell-20-48" aria-hidden="true" tabindex="-1"></a>            loss <span class="op">=</span> lossfun(outputLayer, Y_train)</span>
 <span id="annotated-cell-20-49"><a href="#annotated-cell-20-49" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">"Cost after iteration </span><span class="sc">%i</span><span class="st">: </span><span class="sc">%f</span><span class="st"> </span><span class="sc">%s</span><span class="st">"</span> <span class="op">%</span>(i, loss, accStr))</span>
 <span id="annotated-cell-20-50"><a href="#annotated-cell-20-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="annotated-cell-20-51"><a href="#annotated-cell-20-51" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> weights</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="annotated-cell-20-51"><a href="#annotated-cell-20-51" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> weights</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-20" data-target-annotation="1">1</dt>
@@ -1550,20 +1548,20 @@ b^{(k+1)} &amp;= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b} = 
 </div>
 <p><strong>Hint</strong>: All the parts that need to be implemented here are a one-liner with the help of the previously defined functions.</p>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Check the implementation for the network training
+Check the implementation for the network training
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-8" class="callout-8-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Run the following code snippet to check the implementation, if there is no error the implementation looks good.</p>
-<div id="7930a40c" class="cell" data-execution_count="17">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> actFunctionLinear <span class="co"># function used for hidden layer 1</span></span>
+<div id="eea9a83f" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> actFunctionLinear <span class="co"># function used for hidden layer 1</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>f2 <span class="op">=</span> actFunctionLinear <span class="co"># function used for hidden layer 2</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>f3 <span class="op">=</span> actFunctionSigmoid <span class="co"># function used for output layer</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>loss_fun <span class="op">=</span> compute_loss</span>
@@ -1581,7 +1579,7 @@ b^{(k+1)} &amp;= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b} = 
 <span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>                     <span class="op">-</span><span class="fl">0.4163217207836666</span>, <span class="fl">0.014763485056667431</span>,</span>
 <span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>                     <span class="op">-</span><span class="fl">0.1323179529728214</span>, <span class="fl">0.33857324167613034</span>])</span>
 <span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>np.testing.assert_allclose(result, reference)</span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Looks like your implementation is working, congratulations!"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Looks like your implementation is working, congratulations!"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
@@ -1595,22 +1593,22 @@ b^{(k+1)} &amp;= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b} = 
 <h2 data-number="C.9" class="anchored" data-anchor-id="our-implementation-in-action"><span class="header-section-number">C.9</span> Our implementation in action</h2>
 <p>Now it is time to actually use and play around with our implementation of a NN. For this we provide some helper functions to make your life easier.</p>
 <div class="callout callout-style-simple callout-important no-icon callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Reference implementation
+Reference implementation
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-9" class="callout-9-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>In the following we present a reference implementation. This should only be used in case somebody is stuck in the implementation.</p>
-<div id="e448abf7" class="cell styled-output" data-execution_count="18">
+<div id="8772d8f4" class="cell styled-output" data-execution_count="18">
 <details class="code-fold">
 <summary>Code for initialization of the weights</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> initialize_weights(nodes0, nodes1, nodes2, nodes3):</span>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> initialize_weights(nodes0, nodes1, nodes2, nodes3):</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Argument:</span></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">    nodes0 -- size of the input layer</span></span>
@@ -1658,16 +1656,16 @@ b^{(k+1)} &amp;= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b} = 
 <span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a>reference <span class="op">=</span> np.array([<span class="op">-</span><span class="fl">0.0179896655582674</span>, <span class="op">-</span><span class="fl">0.0798199810455688</span>,</span>
 <span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a>                   <span class="op">-</span><span class="fl">0.0286928288067441</span>, <span class="fl">0.</span>, <span class="fl">0.</span>, <span class="fl">0.</span>])</span>
 <span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a>np.testing.assert_allclose(result, reference)</span>
-<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Looks like the weights are implemented correct :)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Looks like the weights are implemented correct :)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Looks like the weights are implemented correct :)</code></pre>
 </div>
 </div>
-<div id="ea94ba1b" class="cell styled-output" data-execution_count="19">
+<div id="fbaafded" class="cell styled-output" data-execution_count="19">
 <details class="code-fold">
 <summary>Code for definition of activation functions</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> actFunctionLinear(x, derivative: <span class="bu">bool</span> <span class="op">=</span> <span class="va">False</span>):</span>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> actFunctionLinear(x, derivative: <span class="bu">bool</span> <span class="op">=</span> <span class="va">False</span>):</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> derivative:</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> np.ones_like(x)</span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
@@ -1693,13 +1691,13 @@ b^{(k+1)} &amp;= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b} = 
 <span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> derivative:</span>
 <span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="fl">1.0</span> <span class="op">/</span> np.cosh(x)<span class="op">**</span><span class="dv">2</span></span>
 <span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> np.tanh(x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> np.tanh(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="86f4ef42" class="cell styled-output" data-execution_count="20">
+<div id="334d007c" class="cell styled-output" data-execution_count="20">
 <details class="code-fold">
 <summary>Code for definition of forward propagation</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> forward_propagation(X, weights, f1, f2, f3):</span>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> forward_propagation(X, weights, f1, f2, f3):</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Argument:</span></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">    X -- input data</span></span>
@@ -1759,16 +1757,16 @@ b^{(k+1)} &amp;= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b} = 
 <span id="cb15-58"><a href="#cb15-58" aria-hidden="true" tabindex="-1"></a>                     <span class="op">-</span><span class="fl">1.5318738340852145</span>, <span class="fl">1.1329044156610317</span>,</span>
 <span id="cb15-59"><a href="#cb15-59" aria-hidden="true" tabindex="-1"></a>                      <span class="fl">0.7420574800205959</span>])</span>
 <span id="cb15-60"><a href="#cb15-60" aria-hidden="true" tabindex="-1"></a>np.testing.assert_allclose(result, reference)</span>
-<span id="cb15-61"><a href="#cb15-61" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Looks like the forward propagation is working :)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb15-61"><a href="#cb15-61" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Looks like the forward propagation is working :)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Looks like the forward propagation is working :)</code></pre>
 </div>
 </div>
-<div id="e80de883" class="cell styled-output" data-execution_count="21">
+<div id="861b7c5a" class="cell styled-output" data-execution_count="21">
 <details class="code-fold">
 <summary>Code for definition of backward propagation</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> backward_propagation(weights, cache, X, Y):</span>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> backward_propagation(weights, cache, X, Y):</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Arguments:</span></span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co">    weights -- python dictionary containing our weights</span></span>
@@ -1838,16 +1836,16 @@ b^{(k+1)} &amp;= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b} = 
 <span id="cb17-68"><a href="#cb17-68" aria-hidden="true" tabindex="-1"></a>                      <span class="op">-</span><span class="fl">0.006945313835622825</span>, <span class="fl">0.24205748002059585</span>])</span>
 <span id="cb17-69"><a href="#cb17-69" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-70"><a href="#cb17-70" aria-hidden="true" tabindex="-1"></a>np.testing.assert_allclose(result, reference)</span>
-<span id="cb17-71"><a href="#cb17-71" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Looks like backward propagation is working :)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb17-71"><a href="#cb17-71" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Looks like backward propagation is working :)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Looks like backward propagation is working :)</code></pre>
 </div>
 </div>
-<div id="0c0d1db4" class="cell styled-output" data-execution_count="22">
+<div id="ee30cd64" class="cell styled-output" data-execution_count="22">
 <details class="code-fold">
 <summary>Code for definition of updating the parameters</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> update_weights(weights, grads, learning_rate):</span>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> update_weights(weights, grads, learning_rate):</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Arguments:</span></span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co">    weights -- python dictionary containing your weights</span></span>
@@ -1909,16 +1907,16 @@ b^{(k+1)} &amp;= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b} = 
 <span id="cb19-60"><a href="#cb19-60" aria-hidden="true" tabindex="-1"></a>                       <span class="fl">1.9140274093792395e-05</span>, <span class="op">-</span><span class="fl">0.0006670751853262199</span>])</span>
 <span id="cb19-61"><a href="#cb19-61" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-62"><a href="#cb19-62" aria-hidden="true" tabindex="-1"></a>np.testing.assert_allclose(result, reference)</span>
-<span id="cb19-63"><a href="#cb19-63" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Looks like the weights are updated correctly :)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb19-63"><a href="#cb19-63" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Looks like the weights are updated correctly :)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Looks like the weights are updated correctly :)</code></pre>
 </div>
 </div>
-<div id="221732af" class="cell styled-output" data-execution_count="23">
+<div id="da01defa" class="cell styled-output" data-execution_count="23">
 <details class="code-fold">
 <summary>Code for making a prediction</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> predict(weights, X, f1, f2, f3):</span>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> predict(weights, X, f1, f2, f3):</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Using the learned weights, predicts a class for each example in X</span></span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -1949,16 +1947,16 @@ b^{(k+1)} &amp;= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b} = 
 <span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a>weights <span class="op">=</span> initialize_weights(<span class="dv">2</span>, <span class="dv">8</span>, <span class="dv">5</span>, <span class="dv">1</span>)</span>
 <span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> predict(weights, X, f1, f2, f3)</span>
 <span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a>np.testing.assert_allclose(np.<span class="bu">sum</span>(p), <span class="dv">645</span>)</span>
-<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Looks like prediction is working :)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Looks like prediction is working :)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Looks like prediction is working :)</code></pre>
 </div>
 </div>
-<div id="53c0f321" class="cell styled-output" data-execution_count="24">
+<div id="4b0c34df" class="cell styled-output" data-execution_count="24">
 <details class="code-fold">
 <summary>Code for making a loss function</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_loss(nn_output, Y):</span>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_loss(nn_output, Y):</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># This function takes the nn_outputs and Ys of the training set</span></span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># and returns the log loss</span></span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    N <span class="op">=</span> Y.shape[<span class="dv">1</span>]</span>
@@ -1977,16 +1975,16 @@ b^{(k+1)} &amp;= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b} = 
 <span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> compute_loss(outputLayer, Y)</span>
 <span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>np.testing.assert_allclose(result, <span class="fl">0.7360633961687931</span>)</span>
-<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Looks like the loss function is working!"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Looks like the loss function is working!"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Looks like the loss function is working!</code></pre>
 </div>
 </div>
-<div id="3437d990" class="cell styled-output" data-execution_count="25">
+<div id="274960ed" class="cell styled-output" data-execution_count="25">
 <details class="code-fold">
 <summary>Code for doing the network training</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-29"><pre class="sourceCode python code-annotation-code code-with-copy"><code class="sourceCode python"><span id="annotated-cell-29-1"><a href="#annotated-cell-29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> nn_model(X_train, Y_train, nodes0, nodes1, nodes2, nodes3, </span>
+<div class="sourceCode cell-code" id="annotated-cell-29"><pre class="sourceCode python code-annotation-code code-with-copy"><code class="sourceCode python"><span id="annotated-cell-29-1"><a href="#annotated-cell-29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> nn_model(X_train, Y_train, nodes0, nodes1, nodes2, nodes3, </span>
 <span id="annotated-cell-29-2"><a href="#annotated-cell-29-2" aria-hidden="true" tabindex="-1"></a>             f1, f2, f3, lossfun, learning_rate, predict, </span>
 <span id="annotated-cell-29-3"><a href="#annotated-cell-29-3" aria-hidden="true" tabindex="-1"></a>             num_iterations, print_cost<span class="op">=</span><span class="va">False</span>, X_test<span class="op">=</span><span class="va">None</span>, Y_test<span class="op">=</span><span class="va">None</span>):</span>
 <span id="annotated-cell-29-4"><a href="#annotated-cell-29-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
@@ -2063,7 +2061,7 @@ b^{(k+1)} &amp;= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b} = 
 <span id="annotated-cell-29-75"><a href="#annotated-cell-29-75" aria-hidden="true" tabindex="-1"></a>                     <span class="op">-</span><span class="fl">0.4163217207836666</span>, <span class="fl">0.014763485056667431</span>,</span>
 <span id="annotated-cell-29-76"><a href="#annotated-cell-29-76" aria-hidden="true" tabindex="-1"></a>                     <span class="op">-</span><span class="fl">0.1323179529728214</span>, <span class="fl">0.33857324167613034</span>])</span>
 <span id="annotated-cell-29-77"><a href="#annotated-cell-29-77" aria-hidden="true" tabindex="-1"></a>np.testing.assert_allclose(result, reference)</span>
-<span id="annotated-cell-29-78"><a href="#annotated-cell-29-78" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Looks like the network training is working :)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="annotated-cell-29-78"><a href="#annotated-cell-29-78" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Looks like the network training is working :)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Looks like the network training is working :)</code></pre>
@@ -2073,8 +2071,8 @@ b^{(k+1)} &amp;= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b} = 
 </div>
 </div>
 <p>First we define some training settings.</p>
-<div id="574eae4e" class="cell styled-output" data-execution_count="26">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>datasetName <span class="op">=</span> <span class="st">'flower'</span> <span class="co"># see function generateDataset()</span></span>
+<div id="0d46084c" class="cell styled-output" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>datasetName <span class="op">=</span> <span class="st">'flower'</span> <span class="co"># see function generateDataset()</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>nrSamplePoints <span class="op">=</span> <span class="dv">1000</span></span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>noise_factor <span class="op">=</span> <span class="fl">0.1</span></span>
 <span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>normalize_data <span class="op">=</span> <span class="va">True</span></span>
@@ -2085,11 +2083,11 @@ b^{(k+1)} &amp;= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b} = 
 <span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="co"># learning options</span></span>
 <span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>learning_rate <span class="op">=</span> <span class="fl">0.1</span></span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>nrIterations <span class="op">=</span> <span class="dv">10000</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>nrIterations <span class="op">=</span> <span class="dv">10000</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The next part is not to be modified. We define the required functions and the dataset.</p>
-<div id="266838e9" class="cell styled-output" data-execution_count="27">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># do not change the following settings</span></span>
+<div id="5adb4a0f" class="cell styled-output" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># do not change the following settings</span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>f3 <span class="op">=</span> actFunctionSigmoid</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>nodes0 <span class="op">=</span> <span class="dv">2</span> <span class="co"># nr of nodes of the input layer</span></span>
 <span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>nodes3 <span class="op">=</span> <span class="dv">1</span> <span class="co"># nr of nodes of the output layer</span></span>
@@ -2101,11 +2099,11 @@ b^{(k+1)} &amp;= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b} = 
 <span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> X_train.T</span>
 <span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> X_test.T</span>
 <span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> y_train.T</span>
-<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>y_test <span class="op">=</span> y_test.T</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>y_test <span class="op">=</span> y_test.T</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now, we have liberty in the dimension of the hidden nodes.</p>
-<div id="4d56edcc" class="cell styled-output" data-execution_count="28">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>nodes1 <span class="op">=</span> <span class="dv">15</span></span>
+<div id="52613ec1" class="cell styled-output" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>nodes1 <span class="op">=</span> <span class="dv">15</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>nodes2 <span class="op">=</span> <span class="dv">10</span></span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>) <span class="co"># Make sure to have a reproducible result</span></span>
@@ -2113,7 +2111,7 @@ b^{(k+1)} &amp;= b^{(k)} - \delta \frac{\partial\, \mathscr{L}}{\partial\, b} = 
 <span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>                   f1, f2, f3, loss_fun, learning_rate, predict_fun,</span>
 <span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>                   nrIterations, <span class="va">True</span>, X_test, y_test)</span>
 <span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> predict(weights, X_test, f1, f2, f3)</span>
-<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>accuracy <span class="op">=</span> accuracy_score(predictions.flatten(), y_test.flatten())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>accuracy <span class="op">=</span> accuracy_score(predictions.flatten(), y_test.flatten())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Cost after iteration 500: 0.240941 (Acc: 0.895000)
 Cost after iteration 1000: 0.184200 (Acc: 0.895000)
@@ -2140,10 +2138,10 @@ Cost after iteration 10000: 0.162360 (Acc: 0.870000)</code></pre>
 <div id="cell-fig-appendices-nnfs-final-classification" class="cell" data-execution_count="29">
 <details class="code-fold">
 <summary>Click to see the code for the figure</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>plot_decision_boundary(<span class="kw">lambda</span> x: predict(weights, x.T, f1, f2, f3),</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>                       X_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>                       X_train, y_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div id="fig-appendices-nnfs-final-classification" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -2160,9 +2158,9 @@ Figure&nbsp;C.4: Performance of our model.
 </div>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
 <div id="ref-Kandolf_GDM" class="csl-entry" role="listitem">
-Kandolf, Peter. 2025. <span>“MECH-m-DUAL-1-DBM - Grundlagen Datenbasierter Methoden.”</span> In <em>Management Center Innsbruck, Course Material</em>. <a href="https://doi.org/10.5281/zenodo.14671708">https://doi.org/10.5281/zenodo.14671708</a>.
+Kandolf, Peter. 2025. <span>“MECH-m-DUAL-1-DBM - Grundlagen Datenbasierter Methoden.”</span> <em>Management Center Innsbruck, Course Material</em>. <a href="https://doi.org/10.5281/zenodo.14671708">https://doi.org/10.5281/zenodo.14671708</a>.
 </div>
 </div>
 </section>
@@ -2238,14 +2236,13 @@ Kandolf, Peter. 2025. <span>“MECH-m-DUAL-1-DBM - Grundlagen Datenbasierter Met
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-      const outerScaffold = trigger.parentElement.cloneNode(true);
-      const codeEl = outerScaffold.querySelector('code');
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
         }
-      }
-      return codeEl.innerText;
+        return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
