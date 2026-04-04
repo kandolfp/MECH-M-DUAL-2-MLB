@@ -185,3 +185,4 @@ Course_*
 literatur
 # Tree result files
 *.dot
+**/*.quarto_ipynb
