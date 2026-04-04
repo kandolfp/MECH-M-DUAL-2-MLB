@@ -5,7 +5,7 @@
 groups = ["default"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:ae8d8033559e94b86146ab1a89b6b477c06fa6057f88da74a710e8b78ace3f80"
+content_hash = "sha256:e8d4747317e1ca0940504b296a9ca1e81be69e531e45df394177c6d60694f310"
 
 [[metadata.targets]]
 requires_python = "==3.12.*"
@@ -1899,7 +1899,7 @@ files = [
 
 [[package]]
 name = "quarto-cli"
-version = "1.9.36"
+version = "1.7.31"
 summary = "Open-source scientific and technical publishing system built on Pandoc."
 groups = ["default"]
 dependencies = [
@@ -1908,7 +1908,7 @@ dependencies = [
     "wheel",
 ]
 files = [
-    {file = "quarto_cli-1.9.36.tar.gz", hash = "sha256:c9e49793e478c019a1c979ba88b492b6a734c065b675b60d448aad3d094f2127"},
+    {file = "quarto_cli-1.7.31.tar.gz", hash = "sha256:47f6f6af0cfdb8b0b6a693edc88c63ec86d01f60545cec28b624b84fd6e04bb5"},
 ]
 
 [[package]]

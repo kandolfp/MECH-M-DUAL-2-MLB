@@ -8,7 +8,7 @@ authors = [
 dependencies = [
     "jupyter==1.1.1",
     "matplotlib>=3.9.2",
-    "quarto-cli>=1.5.57",
+    "quarto-cli==1.7.31",
     "pyqt5>=5.15.11",
     "pandas>=2.2.3",
     "scipy>=1.14.1",
